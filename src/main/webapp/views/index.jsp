@@ -521,6 +521,26 @@
             margin-bottom: 15px;
         }
 
+        body {
+            font-family: 'Dosis', sans-serif;
+            background-color: #002244;
+            color: #ffffff;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            position: relative;
+        }
+        
+        /* Ensure all main sections are above the fish */
+        section, footer, header, .yt-new-nav {
+            position: relative;
+            z-index: 1;
+        }
+
+        #fish-container {
+            z-index: -1;
+        }
+
         .btn-red-sm {
             background: #e63946;
             color: #fff;
@@ -753,7 +773,92 @@
             .input-group-custom input { border: 1px solid rgba(255,255,255,0.2); border-radius: 6px; width: 100%; }
             .input-group-custom button { padding: 12px; border-radius: 6px; width: 100%; }
         }
+
+        /* Underwater Fish Animation */
+        .fish-container {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: -1; /* Strictly behind all content */
+            overflow: hidden;
+        }
+
+        .fish {
+            position: absolute;
+            width: 130px;
+            height: 90px;
+            opacity: 1;
+            animation-iteration-count: infinite;
+            animation-timing-function: linear;
+            filter: drop-shadow(0 8px 25px rgba(0,0,0,0.5));
+            -webkit-mask-repeat: no-repeat;
+            mask-repeat: no-repeat;
+            -webkit-mask-size: contain;
+            mask-size: contain;
+            background-size: cover;
+            background-position: center;
+        }
+
+        /* Shape 1: Realistic Fish with Tail (Clownfish style) */
+        .shape-oval {
+            -webkit-mask-image: url('data:image/svg+xml;utf8,<svg viewBox="0 0 100 60" xmlns="http://www.w3.org/2000/svg"><path d="M5,30 C15,10 50,5 75,30 C50,55 15,50 5,30 M75,30 L95,10 L95,50 Z" fill="black"/></svg>');
+            mask-image: url('data:image/svg+xml;utf8,<svg viewBox="0 0 100 60" xmlns="http://www.w3.org/2000/svg"><path d="M5,30 C15,10 50,5 75,30 C50,55 15,50 5,30 M75,30 L95,10 L95,50 Z" fill="black"/></svg>');
+        }
+
+        /* Shape 2: Deep Bodied Realistic Fish (Angelfish style) */
+        .shape-tall {
+            width: 110px; height: 110px;
+            -webkit-mask-image: url('data:image/svg+xml;utf8,<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M10,50 C20,10 60,5 80,50 C60,95 20,90 10,50 M80,50 L98,20 L98,80 Z" fill="black"/></svg>');
+            mask-image: url('data:image/svg+xml;utf8,<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M10,50 C20,10 60,5 80,50 C60,95 20,90 10,50 M80,50 L98,20 L98,80 Z" fill="black"/></svg>');
+        }
+
+        /* Shape 3: Slender Realistic Fish (Shark/Tuna style) */
+        .shape-long {
+            width: 170px; height: 80px;
+            -webkit-mask-image: url('data:image/svg+xml;utf8,<svg viewBox="0 0 120 50" xmlns="http://www.w3.org/2000/svg"><path d="M5,25 C15,5 70,5 90,25 C70,45 15,45 5,25 M90,25 L115,5 L115,45 Z" fill="black"/></svg>');
+            mask-image: url('data:image/svg+xml;utf8,<svg viewBox="0 0 120 50" xmlns="http://www.w3.org/2000/svg"><path d="M5,25 C15,5 70,5 90,25 C70,45 15,45 5,25 M90,25 L115,5 L115,45 Z" fill="black"/></svg>');
+        }
+
+
+        .fish-1 { top: 15%; animation: swim-right 28s linear infinite; }
+        .fish-2 { top: 35%; animation: swim-left 34s linear infinite; animation-delay: 4s; }
+        .fish-3 { top: 55%; animation: swim-right 22s linear infinite; animation-delay: 10s; }
+        .fish-4 { top: 75%; animation: swim-left 31s linear infinite; animation-delay: 2s; }
+        .fish-5 { top: 25%; animation: swim-left 25s linear infinite; animation-delay: 15s; }
+        .fish-6 { top: 85%; animation: swim-right 38s linear infinite; animation-delay: 8s; }
+
+
+        @keyframes swim-right {
+            0% { transform: translateX(-100px) scaleX(1); }
+            100% { transform: translateX(calc(100vw + 100px)) scaleX(1); }
+        }
+
+        @keyframes swim-left {
+            0% { transform: translateX(calc(100vw + 100px)) scaleX(-1); }
+            100% { transform: translateX(-100px) scaleX(-1); }
+        }
+
     </style>
+
+    <div class="fish-container">
+        <!-- 1. Clownfish (Oval) -->
+        <div class="fish fish-1 shape-oval" style="background-image: url('https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=400&q=80');"></div>
+        
+        <!-- 2. Blue Tang (Tall) -->
+        <div class="fish fish-2 shape-tall" style="background-image: url('https://images.unsplash.com/photo-1524704659690-3f8037bd0223?w=400&q=80');"></div>
+        
+        <!-- 3. Yellow Tang (Oval) -->
+        <div class="fish fish-3 shape-oval" style="background-image: url('https://images.unsplash.com/photo-1535591273668-578e31182c4f?w=400&q=80');"></div>
+        
+        <!-- 4. Silver Reef Fish (Long) -->
+        <div class="fish fish-4 shape-long" style="background-image: url('https://images.unsplash.com/photo-1522069169874-c58ec4b76be5?w=400&q=80');"></div>
+        
+        <!-- 5. Exotic Purple Fish (Tall) -->
+        <div class="fish fish-5 shape-tall" style="background-image: url('https://images.unsplash.com/photo-1534685033190-0948958cc0e7?w=400&q=80');"></div>
+        
+        <!-- 6. Golden Butterfly Fish (Oval) -->
+        <div class="fish fish-6 shape-oval" style="background-image: url('https://images.unsplash.com/photo-1524704659690-3f8037bd0223?w=400&q=80');"></div>
+    </div>
 
     <section class="yt-new-hero">
         <div class="yt-new-nav">
@@ -992,7 +1097,7 @@
         <div class="hero-bottom-area">
             <div class="container">
                 <div class="hero-cards-wrapper">
-                    <div class="card-nav left"><i class="fa fa-arrow-left"></i></div>
+
                     <div class="hero-cards-grid">
                         <div class="hero-card">
                             <i class="fa fa-area-chart"></i>
@@ -1020,7 +1125,7 @@
                             <p>Sleep under stars,<br>wake to dreams.</p>
                         </div>
                     </div>
-                    <div class="card-nav right"><i class="fa fa-arrow-right"></i></div>
+
                     
                     <div class="hero-special-card">
                         <h4 style="font-family: 'Permanent Marker', cursive; font-size: 36px; line-height: 1.2; margin-bottom: 15px; color: #1a1a1a; transform: rotate(-2deg);">Adventure Awaits!</h4>
