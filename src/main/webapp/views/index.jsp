@@ -188,10 +188,29 @@
             font-weight: 600;
             text-decoration: none;
             transition: 0.3s;
+            display: inline-block;
         }
 
         .nav-right .login-btn:hover {
             background: #c1121f;
+        }
+        
+        .nav-mobile-toggle {
+            display: none;
+            color: #fff;
+            font-size: 28px;
+            cursor: pointer;
+            z-index: 2000;
+            transition: 0.3s;
+        }
+
+        /* Visibility Utilities */
+        @media (min-width: 992px) {
+            .d-lg-none { display: none !important; }
+            .d-lg-inline-block { display: inline-block !important; }
+        }
+        @media (max-width: 991px) {
+            .d-none { display: none !important; }
         }
 
         .hero-main-container {
@@ -211,7 +230,7 @@
 
         .hero-title {
             font-family: 'Permanent Marker', cursive;
-            font-size: 78px;
+            font-size: clamp(36px, 6vw, 78px);
             line-height: 1.1;
             text-transform: uppercase;
             margin: 0 0 25px 0;
@@ -584,9 +603,9 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 80px;
+            gap: 40px;
             padding: 25px 0 20px 0;
-            max-width: 1140px;
+            max-width: 1200px;
             margin: 0 auto;
         }
 
@@ -701,77 +720,161 @@
         @media (max-width: 1200px) {
             .hero-play-btn { right: 5%; }
             .hero-special-card { width: 250px; }
-            .stats-box { gap: 20px; }
+            .stats-box { gap: 15px; }
+            .hero-stats-footer { gap: 30px; }
         }
 
         @media (max-width: 991px) {
-            .nav-mobile-toggle { display: block; }
-            .hero-title { font-size: 50px; }
-            .hero-cards-wrapper { flex-direction: column; gap: 20px; }
+            .nav-mobile-toggle { 
+                display: flex !important; 
+                position: fixed !important;
+                top: 20px;
+                right: 20px;
+                z-index: 99999 !important; 
+                background: rgba(255, 255, 255, 0.1);
+                backdrop-filter: blur(10px);
+                -webkit-backdrop-filter: blur(10px);
+                width: 50px;
+                height: 50px;
+                align-items: center;
+                justify-content: center;
+                border-radius: 50%;
+                border: 1px solid rgba(255, 255, 255, 0.2);
+                box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+                color: #fff;
+                cursor: pointer;
+                transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            }
+            .nav-mobile-toggle:hover {
+                background: rgba(255, 255, 255, 0.2);
+                transform: scale(1.05);
+            }
+            .nav-links {
+                display: flex !important;
+                position: fixed !important;
+                top: 0;
+                right: -100%;
+                width: 100%;
+                height: 100vh;
+                background: rgba(8, 12, 20, 1);
+                backdrop-filter: blur(35px);
+                -webkit-backdrop-filter: blur(35px);
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                padding: 40px;
+                z-index: 999999 !important; 
+                transition: 0.6s cubic-bezier(0.77, 0, 0.175, 1);
+                gap: 20px;
+                visibility: hidden;
+            }
+            .nav-links.active {
+                right: 0;
+                visibility: visible;
+            }
+            .nav-links a {
+                padding: 15px 30px;
+                width: 80%;
+                text-align: center;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+                font-size: 24px;
+                font-weight: 700;
+                letter-spacing: 3px;
+                text-transform: uppercase;
+                color: rgba(255, 255, 255, 0.9);
+                opacity: 0;
+                transform: translateY(30px);
+                transition: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+                text-decoration: none;
+            }
+            .nav-links a:last-of-type { border-bottom: none; }
+            .nav-links.active a {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            /* Stagger delays for links */
+            .nav-links.active a:nth-child(1) { transition-delay: 0.2s; }
+            .nav-links.active a:nth-child(2) { transition-delay: 0.3s; }
+            .nav-links.active a:nth-child(3) { transition-delay: 0.4s; }
+            .nav-links.active a:nth-child(4) { transition-delay: 0.5s; }
+            .nav-links.active a:nth-child(5) { transition-delay: 0.6s; }
+            .nav-links.active .mobile-btn-wrap { opacity: 1; transform: translateY(0); transition-delay: 0.7s; }
+
+            .nav-links .mobile-btn-wrap {
+                margin-top: 30px;
+                display: flex !important;
+                flex-direction: column;
+                align-items: center;
+                gap: 15px;
+                width: 100%;
+                opacity: 0;
+                transform: translateY(20px);
+                transition: 0.4s;
+            }
+            .nav-links a:hover, .nav-links a.active {
+                color: #e63946;
+                transform: scale(1.05);
+            }
+            .mobile-btn-wrap .login-btn {
+                width: 220px;
+                text-align: center;
+            }
+            .nav-right .login-btn { display: none; }
+            
+            .hero-title { font-size: 42px; text-align: left; }
+            .hero-subtitle { font-size: 16px; text-align: left; }
+
+            .hero-cards-wrapper { flex-direction: column; gap: 25px; }
             .card-nav { display: none; }
             .hero-cards-grid { 
-                flex-wrap: nowrap; 
-                overflow-x: auto; 
-                -webkit-overflow-scrolling: touch;
-                padding-bottom: 15px;
-                scroll-snap-type: x mandatory;
+                flex-wrap: wrap; 
+                justify-content: center;
+                gap: 12px;
+                overflow-x: visible; 
+                padding-bottom: 0;
             }
             .hero-card { 
-                min-width: 220px; 
-                scroll-snap-align: start;
-                flex: 0 0 auto;
+                flex: 0 0 calc(50% - 10px);
+                min-width: 140px; 
+                padding: 20px 10px;
+                border-radius: 12px;
             }
-            .hero-special-card { width: 100%; }
+            .hero-card i { font-size: 24px; margin-bottom: 10px; }
+            .hero-card h4 { font-size: 13px; margin-bottom: 6px; }
+            .hero-card p { display: none; } /* Hide description on mobile for neatness */
+            
+            .hero-special-card { width: 100%; margin-top: 10px; }
             .hero-stats-footer { flex-direction: column; gap: 30px; text-align: center; }
             .hero-play-btn, .hero-social { display: none; }
             .stats-box { flex-wrap: wrap; justify-content: center; gap: 20px; }
-            
-            .nav-links {
-                display: none;
-                position: absolute;
-                top: 70px;
-                left: 0;
-                right: 0;
-                background: #111111;
-                flex-direction: column;
-                padding: 15px 0;
-                border-radius: 8px;
-                z-index: 1050;
-                border: 1px solid rgba(255,255,255,0.1);
-                box-shadow: 0 20px 40px rgba(0,0,0,0.8);
-                gap: 0;
-            }
-            .nav-links.active {
-                display: flex;
-            }
-            .nav-links a {
-                padding: 12px 25px;
-                width: 100%;
-                text-align: left;
-                border-bottom: 1px solid rgba(255,255,255,0.05);
-                font-size: 18px;
-            }
-            .nav-links a:last-child {
-                border-bottom: none;
-            }
-            .nav-links a:hover {
-                background: rgba(255,255,255,0.05);
-                padding-left: 30px;
-            }
+            .hero-main-container { z-index: 1 !important; }
         }
 
         @media (max-width: 576px) {
-            .hero-title { font-size: 36px; }
-            .hero-subtitle { font-size: 16px; margin-bottom: 30px; }
-            .hero-action-btns { flex-direction: column; width: 100%; }
-            .hero-action-btns a { width: 100%; justify-content: center; }
-            .nav-right .login-btn { padding: 8px 16px; font-size: 14px; }
-            .stats-box { flex-direction: row; flex-wrap: wrap; justify-content: space-between; }
-            .stat-item { flex-direction: column; text-align: center; gap: 5px; width: 45%; margin-bottom: 15px; }
-            .stat-item i { font-size: 24px; }
+            .hero-title { font-size: 32px; }
+            .hero-subtitle { font-size: 14px; margin-bottom: 25px; }
+            .hero-action-btns { flex-direction: column; width: 100%; gap: 10px; }
+            .hero-action-btns a { width: 100%; justify-content: center; padding: 12px 20px; }
+            .nav-right .login-btn { padding: 6px 12px; font-size: 13px; }
+            .stats-box { flex-direction: row; flex-wrap: wrap; justify-content: center; gap: 15px; }
+            .stat-item { flex-direction: column; text-align: center; gap: 4px; width: 42%; margin-bottom: 10px; }
+            .stat-item i { font-size: 20px; }
+            .stat-item strong { font-size: 16px; }
             .input-group-custom { flex-direction: column; background: transparent; border: none; gap: 10px; }
             .input-group-custom input { border: 1px solid rgba(255,255,255,0.2); border-radius: 6px; width: 100%; }
             .input-group-custom button { padding: 12px; border-radius: 6px; width: 100%; }
+            
+            .hero-main-container { padding-top: 30px; }
+            .hero-cards-wrapper { margin-top: 20px; }
+        }
+
+        /* Prevent infinite horizontal stretch on ultra-wide screens */
+        @media (min-width: 2000px) {
+            .yt-new-hero, .yt-home-section {
+                max-width: 1920px;
+                margin-left: auto;
+                margin-right: auto;
+            }
         }
 
         /* Underwater Fish Animation */
@@ -804,6 +907,19 @@
         </div>
     </div>
 
+    <!-- MOBILE NAVIGATION DRAWER (Moved to Body level for absolute layering priority) -->
+    <div class="nav-links">
+        <a href="<c:url value='/'/>" class="active">Home</a>
+        <a href="<c:url value='/gallery'/>">Gallery</a>
+        <a href="<c:url value='/about'/>">About Us</a>
+        <a href="<c:url value='/contact'/>">Contact Us</a>
+        
+        <div class="mobile-btn-wrap d-lg-none">
+            <a href="<c:url value='/user/login'/>" class="login-btn">Login / Sign Up</a>
+            <a href="<c:url value='/vendor/login'/>" class="login-btn" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2);">Vendor Portal</a>
+        </div>
+    </div>
+
     <section class="yt-new-hero">
         <div class="yt-new-nav">
             <div class="container">
@@ -811,18 +927,11 @@
                     <div class="logo">
                         <a href="<c:url value='/'/>"><img src="<c:url value='/views/assets/images/logo.png'/>" alt="Youth Travel" /></a>
                     </div>
-                    <div class="nav-links">
-                        <a href="<c:url value='/'/>" class="active">Home</a>
-                        <a href="#choose-adventure">Explore <i class="fa fa-caret-down"></i></a>
-                        <a href="<c:url value='/gallery'/>">Gallery</a>
-                        <a href="<c:url value='/about'/>">About Us</a>
-                        <a href="<c:url value='/contact'/>">Contact Us</a>
-                    </div>
                     <div class="nav-right" style="display: flex; align-items: center; gap: 10px;">
-                        <a href="<c:url value='/user/login'/>" class="login-btn">Login / Sign Up</a>
-                        <a href="<c:url value='/vendor/login'/>" class="login-btn" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); font-size: 14px; padding: 10px 18px;">Vendor Portal</a>
-                        <div class="nav-mobile-toggle" onclick="document.querySelector('.nav-links').classList.toggle('active')">
-                            <i class="fa fa-bars"></i>
+                        <a href="<c:url value='/user/login'/>" class="login-btn d-none d-lg-inline-block">Login / Sign Up</a>
+                        <a href="<c:url value='/vendor/login'/>" class="login-btn d-none d-lg-inline-block" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); font-size: 14px; padding: 10px 18px;">Vendor Portal</a>
+                        <div class="nav-mobile-toggle" onclick="toggleMobileMenu()">
+                            <i class="fa fa-bars" id="menuIcon"></i>
                         </div>
                     </div>
                 </div>
@@ -846,7 +955,7 @@
                 /* Outer wrap — absolute positioned in hero */
                 .hero-vss-wrap {
                     position: absolute;
-                    right: 85px;
+                    right: 4%;
                     top: 50%;
                     transform: translateY(-50%);
                     display: flex;
@@ -1735,6 +1844,22 @@
         jQuery(function() {
             jQuery("a#video").YouTubePopUp();
         })
+    </script>
+    <script>
+        function toggleMobileMenu() {
+            const menu = document.querySelector('.nav-links');
+            const icon = document.getElementById('menuIcon');
+            if(menu && icon) {
+                menu.classList.toggle('active');
+                if (menu.classList.contains('active')) {
+                    icon.classList.remove('fa-bars');
+                    icon.classList.add('fa-times');
+                } else {
+                    icon.classList.remove('fa-times');
+                    icon.classList.add('fa-bars');
+                }
+            }
+        }
     </script>
 </body>
 

@@ -41,6 +41,8 @@
             transition: all 0.3s;
             box-shadow: 4px 0 15px rgba(0,0,0,0.5);
             border-right: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            z-index: 1100;
         }
         
         .sidebar-header {
@@ -249,6 +251,56 @@
             background: #3a3a45;
             color: #fff;
         }
+
+        .mobile-toggle {
+            display: none;
+            background: rgba(230, 57, 70, 0.2);
+            border: 1px solid #e63946;
+            color: #fff;
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-right: 15px;
+        }
+
+        @media (max-width: 991px) {
+            .admin-sidebar {
+                position: fixed;
+                left: -260px;
+                top: 0;
+                bottom: 0;
+            }
+            .admin-sidebar.active {
+                left: 0;
+            }
+            .admin-main {
+                padding: 20px;
+                width: 100%;
+            }
+            .admin-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+            .mobile-toggle {
+                display: block;
+            }
+            .admin-header h1 { font-size: 24px; }
+        }
+
+        @media (max-width: 576px) {
+            .stat-card { min-width: 100%; }
+            .admin-section { padding: 15px; }
+        }
+
+        /* Prevent infinite horizontal stretch on ultra-wide screens */
+        @media (min-width: 2000px) {
+            .admin-layout {
+                max-width: 1920px;
+                margin-left: auto;
+                margin-right: auto;
+            }
+        }
     </style>
 </head>
 
@@ -298,7 +350,12 @@
         <!-- Main Content -->
         <main class="admin-main">
             <header class="admin-header">
-                <h1 style="font-weight: 800; font-size: 36px; text-shadow: 0 4px 15px rgba(0,0,0,0.8);">Dashboard Overview</h1>
+                <div style="display: flex; align-items: center;">
+                    <button class="mobile-toggle" onclick="document.querySelector('.admin-sidebar').classList.toggle('active')">
+                        <i class="fa fa-bars"></i>
+                    </button>
+                    <h1 style="font-weight: 800; font-size: 36px; text-shadow: 0 4px 15px rgba(0,0,0,0.8);">Dashboard Overview</h1>
+                </div>
                 <div class="admin-user">
                     <span style="color: #888; margin-right: 10px;">Welcome, <strong>System Admin</strong></span>
                     <img src="https://ui-avatars.com/api/?name=Admin&background=ff4d4d&color=fff" alt="Admin" style="width: 40px; height: 40px; border-radius: 50%;">

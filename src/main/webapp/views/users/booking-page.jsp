@@ -60,6 +60,24 @@
         @media (max-width: 992px) {
             .booking-grid { grid-template-columns: 1fr; }
             .summary-sidebar { position: static; }
+            .page-wrapper { padding: 80px 15px 40px; }
+            .section-card { padding: 25px; }
+        }
+
+        @media (max-width: 576px) {
+            .trip-summary-mini { flex-direction: column; align-items: flex-start; gap: 15px; }
+            .trip-thumb { width: 100%; height: 160px; }
+            .summary-card { padding: 25px; }
+            .summary-total { font-size: 20px; }
+        }
+
+        /* Prevent infinite horizontal stretch on ultra-wide screens */
+        @media (min-width: 2000px) {
+            .header, .page-wrapper {
+                max-width: 1400px;
+                margin-left: auto;
+                margin-right: auto;
+            }
         }
     </style>
 </head>
