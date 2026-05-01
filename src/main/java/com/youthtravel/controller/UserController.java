@@ -73,7 +73,7 @@ public class UserController {
 
     @GetMapping("/forgot-password")
     public String showForgotPasswordForm() {
-        return "/users/forgot-password";
+        return "users/forgot-password";
     }
 
     @PostMapping("/forgot-password")
@@ -114,7 +114,7 @@ public class UserController {
         if (session.getAttribute("resetEmail") == null) {
             return "redirect:/user/forgot-password";
         }
-        return "/users/verify-otp";
+        return "users/verify-otp";
     }
 
     @PostMapping("/verify-otp")
@@ -133,7 +133,7 @@ public class UserController {
         if (session.getAttribute("resetEmail") == null || session.getAttribute("resetOtp") == null) {
             return "redirect:/user/forgot-password";
         }
-        return "/users/reset-password";
+        return "users/reset-password";
     }
 
     @PostMapping("/reset-password")
@@ -165,7 +165,7 @@ public class UserController {
 
     @GetMapping("/login")
     public String showLoginForm() {
-        return "/users/login";
+        return "users/login";
     }
 
     @PostMapping("/login")
@@ -184,7 +184,7 @@ public class UserController {
 
     @GetMapping("/register")
     public String showRegisterForm() {
-        return "/users/register";
+        return "users/register";
     }
 
     @PostMapping("/register")
@@ -255,7 +255,7 @@ public class UserController {
         model.addAttribute("posts", posts);
         model.addAttribute("advices", advices);
         model.addAttribute("searchQuery", search);
-        return "/users/explore";
+        return "users/explore";
     }
 
     @GetMapping("/dashboard")
@@ -414,7 +414,7 @@ public class UserController {
         
         model.addAttribute("currentParams", currentParams);
 
-        return "/users/user-dashboard";
+        return "users/user-dashboard";
     }
 
     private void calculateTripAvailability(Trip trip) {
@@ -470,7 +470,7 @@ public class UserController {
                 model.addAttribute("gallery", trip.getMediaUrls().split(","));
             }
 
-            return "/users/package-details";
+            return "users/package-details";
         }
 
         return "redirect:/user/dashboard";
@@ -507,7 +507,7 @@ public class UserController {
         if (tripOpt.isPresent()) {
             model.addAttribute("trip", tripOpt.get());
             model.addAttribute("user", user);
-            return "/users/booking-page";
+            return "users/booking-page";
         }
         return "redirect:/user/dashboard";
     }
@@ -561,7 +561,7 @@ public class UserController {
             }
             model.addAttribute("booking", booking);
             model.addAttribute("user", user);
-            return "/users/payment";
+            return "users/payment";
         }
         return "redirect:/user/dashboard";
     }
@@ -580,7 +580,7 @@ public class UserController {
             model.addAttribute("booking", booking);
             model.addAttribute("user", user);
             model.addAttribute("messages", messageRepository.findByBookingOrderBySentAtAsc(booking));
-            return "/users/booking-chat";
+            return "users/booking-chat";
         }
         return "redirect:/user/my-bookings";
     }
@@ -616,7 +616,7 @@ public class UserController {
     public String listUsers(Model model) {
         List<User> users = userService.getAllUsers();
         model.addAttribute("users", users);
-        return "/users/user-list";
+        return "users/user-list";
     }
 
     @GetMapping("/my-bookings")
@@ -627,7 +627,7 @@ public class UserController {
         }
         model.addAttribute("user", user);
         model.addAttribute("bookings", bookingService.getBookingsByUserEmail(user.getEmail()));
-        return "/users/my-bookings";
+        return "users/my-bookings";
     }
 
     @GetMapping("/save-trip/{id}")
@@ -657,7 +657,7 @@ public class UserController {
         }
         model.addAttribute("user", user);
         model.addAttribute("savedPackages", savedPackageService.getSavedPackagesByEmail(user.getEmail()));
-        return "/users/saved-trips";
+        return "users/saved-trips";
     }
 
     @GetMapping("/my-reviews")
@@ -668,7 +668,7 @@ public class UserController {
         }
         model.addAttribute("user", user);
         model.addAttribute("reviews", dashboardService.getUserReviews(user.getEmail()));
-        return "/users/my-reviews";
+        return "users/my-reviews";
     }
 
     @GetMapping("/payments")
@@ -679,7 +679,7 @@ public class UserController {
         }
         model.addAttribute("user", user);
         model.addAttribute("payments", dashboardService.getUserPayments(user.getEmail()));
-        return "/users/payments";
+        return "users/payments";
     }
 
     @GetMapping("/messages")
@@ -699,7 +699,7 @@ public class UserController {
                 model.addAttribute("chatWithVendor", vendor);
             }
         }
-        return "/users/messages";
+        return "users/messages";
     }
 
     @PostMapping("/send-reply")
