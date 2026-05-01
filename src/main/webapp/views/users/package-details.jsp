@@ -420,6 +420,29 @@
                                 </div>
                             </div>
 
+                            <div class="section-box">
+                                <h2 class="section-title"><i class="fa fa-bed"></i> Stay & Accommodation</h2>
+                                <div class="d-flex align-items-center gap-3 mb-3 p-3 bg-dark rounded-4 border border-secondary border-opacity-10">
+                                    <div style="background: rgba(240, 76, 38, 0.1); color: #f04c26; padding: 15px; border-radius: 12px; font-size: 20px;">
+                                        <i class="fa fa-university"></i>
+                                    </div>
+                                    <div>
+                                        <div class="fw-bold text-white">${not empty trip.stayName ? trip.stayName : 'Premium Accommodation'}</div>
+                                        <div class="small text-white-50">${trip.stayCategory} • ${trip.stayType} • ${trip.roomSharing} Sharing</div>
+                                    </div>
+                                </div>
+                                <c:if test="${not empty trip.stayDescription}">
+                                    <p class="small text-white-50 mb-3">${trip.stayDescription}</p>
+                                </c:if>
+                                
+                                <!-- Stay Gallery (If backend maps stayPhotos to a gallery list) -->
+                                <div class="d-flex flex-wrap gap-2 mt-2">
+                                    <c:forEach var="photo" items="${stayGallery}" varStatus="status">
+                                        <img src="${photo}" class="rounded-3" style="width: 100px; height: 100px; object-fit: cover; border: 1px solid rgba(255,255,255,0.1);">
+                                    </c:forEach>
+                                </div>
+                            </div>
+
                             <!-- Pre-process Itinerary JSON in JS later if needed, for now just show a visual mock/raw -->
                             <div class="section-box">
                                 <h2 class="section-title"><i class="fa fa-map"></i> Tour Itinerary</h2>
@@ -583,10 +606,19 @@
                                         data.forEach((day, index) => {
                                             const node = document.createElement("div");
                                             node.className = "day-node";
+                                            
+                                            let galleryHtml = '';
+                                            if (day.images && Array.isArray(day.images) && day.images.length > 0) {
+                                                galleryHtml = `<div class="day-gallery mt-3 d-flex flex-wrap gap-2">
+                                                    \${day.images.map(img => `<img src="\${img}" class="rounded shadow-sm" style="width: 120px; height: 120px; object-fit: cover; border: 2px solid rgba(255,255,255,0.1);">`).join('')}
+                                                </div>`;
+                                            }
+
                                             node.innerHTML = `
-                                <div class="day-title">Day \${index + 1}: \${day.title || 'Adventure'}</div>
-                                <div class="day-desc">\${day.description || ''}</div>
-                            `;
+                                                <div class="day-title">Day \${index + 1}: \${day.title || 'Adventure'}</div>
+                                                <div class="day-desc">\${day.activities || day.description || ''}</div>
+                                                \${galleryHtml}
+                                            `;
                                             timeline.appendChild(node);
                                         });
                                     }
