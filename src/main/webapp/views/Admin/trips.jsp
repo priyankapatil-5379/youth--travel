@@ -22,6 +22,8 @@
             flex-shrink: 0; 
             box-shadow: 4px 0 15px rgba(0,0,0,0.5); 
             border-right: 1px solid rgba(255,255,255,0.1); 
+            position: relative;
+            z-index: 1100;
         }
         .sidebar-header { padding: 30px 20px; text-align: center; border-bottom: 1px solid #222; }
         .sidebar-header img { max-width: 150px; filter: brightness(0) invert(1); }
@@ -204,6 +206,57 @@
             transition: 0.2s;
         }
         .view-btn:hover { background: #e60000; color: #fff; text-decoration: none; }
+
+        .mobile-toggle {
+            display: none;
+            background: rgba(255, 77, 77, 0.2);
+            border: 1px solid #ff4d4d;
+            color: #fff;
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-right: 15px;
+        }
+
+        @media (max-width: 991px) {
+            .admin-sidebar {
+                position: fixed;
+                left: -260px;
+                top: 0;
+                bottom: 0;
+            }
+            .admin-sidebar.active {
+                left: 0;
+            }
+            .admin-main {
+                padding: 20px;
+                width: 100%;
+            }
+            .admin-header {
+                flex-direction: row;
+                align-items: center;
+                gap: 15px;
+            }
+            .mobile-toggle {
+                display: block;
+            }
+            .admin-header h1 { font-size: 24px; }
+            .packages-grid { grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); }
+        }
+
+        @media (max-width: 576px) {
+            .packages-grid { grid-template-columns: 1fr; }
+            .pkg-header { flex-direction: column; gap: 10px; }
+        }
+
+        /* Prevent infinite horizontal stretch on ultra-wide screens */
+        @media (min-width: 2000px) {
+            .admin-layout {
+                max-width: 1920px;
+                margin-left: auto;
+                margin-right: auto;
+            }
+        }
     </style>
 </head>
 <body class="premium-theme">
@@ -223,6 +276,7 @@
                 <a href="<c:url value='/admin/trips'/>" class="admin-nav-item active"><i class="fa fa-suitcase"></i> Manage Trips</a>
                 <a href="<c:url value='/admin/users'/>" class="admin-nav-item"><i class="fa fa-users"></i> User Accounts</a>
                 <a href="<c:url value='/admin/vendors'/>" class="admin-nav-item"><i class="fa fa-handshake-o"></i> Vendor Requests</a>
+                <a href="<c:url value='/admin/home-images'/>" class="admin-nav-item"><i class="fa fa-image"></i> Homepage Photos</a>
                 <a href="<c:url value='/admin/inquiries'/>" class="admin-nav-item"><i class="fa fa-envelope"></i> Inquiries</a>
                 <div style="margin-top: 50px; border-top: 1px solid #222; padding-top: 20px;">
                     <a href="<c:url value='/'/>" class="admin-nav-item"><i class="fa fa-sign-out"></i> Back to Site</a>
@@ -231,7 +285,12 @@
         </aside>
         <main class="admin-main">
             <header class="admin-header">
-                <h1 style="font-weight: 800; font-size: 36px; text-shadow: 0 4px 15px rgba(0,0,0,0.8);">All Trip Packages</h1>
+                <div style="display: flex; align-items: center;">
+                    <button class="mobile-toggle" onclick="document.querySelector('.admin-sidebar').classList.toggle('active')">
+                        <i class="fa fa-bars"></i>
+                    </button>
+                    <h1 style="font-weight: 800; font-size: 36px; text-shadow: 0 4px 15px rgba(0,0,0,0.8);">All Trip Packages</h1>
+                </div>
             </header>
             <div>
                 <c:choose>

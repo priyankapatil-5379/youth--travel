@@ -82,6 +82,11 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
+            position: relative;
+        }
+
+        .nav-flex .logo {
+            flex: 1;
         }
 
         .nav-flex .logo img {
@@ -92,6 +97,8 @@
             display: flex;
             gap: 35px;
             align-items: center;
+            justify-content: center;
+            flex: 2;
         }
 
         .nav-links a {
@@ -106,6 +113,14 @@
             color: #e63946;
         }
 
+        .nav-right {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 10px;
+            flex: 1;
+        }
+
         .nav-right .login-btn {
             background: #e63946;
             color: #fff;
@@ -114,6 +129,7 @@
             font-weight: 600;
             text-decoration: none;
             transition: 0.3s;
+            display: inline-block;
         }
 
         .nav-right .login-btn:hover {
@@ -123,37 +139,133 @@
         .nav-mobile-toggle {
             display: none;
             color: #fff;
-            font-size: 26px;
+            font-size: 28px;
             cursor: pointer;
-            padding: 5px;
+            z-index: 2000;
+            transition: 0.3s;
+        }
+
+        /* Visibility Utilities */
+        @media (min-width: 992px) {
+            .d-lg-none { display: none !important; }
+            .d-lg-inline-block { display: inline-block !important; }
+        }
+        @media (max-width: 991px) {
+            .d-none { display: none !important; }
         }
 
         @media (max-width: 991px) {
-            .nav-mobile-toggle { display: block; }
+            .nav-mobile-toggle { 
+                display: flex !important; 
+                position: fixed !important;
+                top: 20px;
+                right: 20px;
+                z-index: 99999 !important; 
+                background: rgba(255, 255, 255, 0.1);
+                backdrop-filter: blur(10px);
+                -webkit-backdrop-filter: blur(10px);
+                width: 50px;
+                height: 50px;
+                align-items: center;
+                justify-content: center;
+                border-radius: 50%;
+                border: 1px solid rgba(255, 255, 255, 0.2);
+                box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+                color: #fff;
+                cursor: pointer;
+                transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            }
+            .nav-mobile-toggle:hover {
+                background: rgba(255, 255, 255, 0.2);
+                transform: scale(1.05);
+            }
             .nav-links {
-                display: none;
-                position: absolute;
-                top: 70px;
-                left: 0;
-                right: 0;
-                background: #111111;
+                display: flex !important;
+                position: fixed !important;
+                top: 0;
+                right: -100%;
+                width: 100%;
+                height: 100vh;
+                background: rgba(8, 12, 20, 1);
+                backdrop-filter: blur(35px);
+                -webkit-backdrop-filter: blur(35px);
                 flex-direction: column;
-                padding: 15px 0;
-                border-radius: 8px;
-                z-index: 1050;
-                border: 1px solid rgba(255,255,255,0.1);
-                box-shadow: 0 20px 40px rgba(0,0,0,0.8);
-                gap: 0;
+                align-items: center;
+                justify-content: center;
+                padding: 40px;
+                z-index: 999999 !important; 
+                transition: 0.6s cubic-bezier(0.77, 0, 0.175, 1);
+                gap: 20px;
+                visibility: hidden;
             }
             .nav-links.active {
-                display: flex;
+                right: 0;
+                visibility: visible;
             }
             .nav-links a {
-                padding: 12px 25px;
-                width: 100%;
-                text-align: left;
-                border-bottom: 1px solid rgba(255,255,255,0.05);
+                padding: 15px 30px;
+                width: 80%;
+                text-align: center;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+                font-size: 24px;
+                font-weight: 700;
+                letter-spacing: 3px;
+                text-transform: uppercase;
+                color: rgba(255, 255, 255, 0.9);
+                opacity: 0;
+                transform: translateY(30px);
+                transition: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+                text-decoration: none;
             }
+            .nav-links a:last-of-type { border-bottom: none; }
+            .nav-links.active a {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            /* Stagger delays for links */
+            .nav-links.active a:nth-child(1) { transition-delay: 0.2s; }
+            .nav-links.active a:nth-child(2) { transition-delay: 0.3s; }
+            .nav-links.active a:nth-child(3) { transition-delay: 0.4s; }
+            .nav-links.active a:nth-child(4) { transition-delay: 0.5s; }
+            .nav-links.active a:nth-child(5) { transition-delay: 0.6s; }
+            .nav-links.active .mobile-btn-wrap { opacity: 1; transform: translateY(0); transition-delay: 0.7s; }
+
+            .nav-links .mobile-btn-wrap {
+                margin-top: 30px;
+                display: flex !important;
+                flex-direction: column;
+                align-items: center;
+                gap: 15px;
+                width: 100%;
+                opacity: 0;
+                transform: translateY(30px);
+                transition: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            }
+            .nav-links a:hover, .nav-links a.active {
+                color: #e63946;
+                transform: scale(1.05);
+            }
+            .mobile-btn-wrap .login-btn {
+                width: 220px;
+                text-align: center;
+            }
+            .nav-right .login-btn { display: none; }
+            .yt-about-hero { z-index: 1 !important; }
+        }
+        
+        /* Ensure all main sections are above the fish */
+        section, footer, header {
+            position: relative;
+            z-index: 1;
+        }
+
+        .yt-new-nav {
+            position: relative;
+            z-index: 999999 !important; /* Critical fix for mobile overlap */
+        }
+
+        #fish-container {
+            z-index: -1;
         }
 
         /* PREMIUM HERO SECTION */
@@ -164,13 +276,14 @@
 
         .hero-title {
             font-family: 'Permanent Marker', cursive;
-            font-size: 72px;
+            font-size: clamp(38px, 6.5vw, 72px);
             line-height: 1.1;
             text-transform: uppercase;
             margin-bottom: 30px;
             letter-spacing: 2px;
             transform: skewX(-5deg);
             color: #fff;
+            text-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
         }
 
         .text-red {
@@ -310,8 +423,32 @@
         }
 
         @media (max-width: 768px) {
-            .hero-title { font-size: 48px; }
-            .hero-subtitle { font-size: 18px; }
+            .yt-about-hero { padding: 60px 0 40px; }
+            .hero-subtitle { font-size: 16px; }
+            .yt-about-card { padding: 25px 20px; }
+            .yt-about-card i { font-size: 32px; margin-bottom: 15px; }
+            .hero-special-card { padding: 25px; margin-top: 40px; }
+            .hero-special-card h4 { font-size: 32px; }
+            .yt-section-title h3 { font-size: 28px; margin-bottom: 30px; }
+        }
+
+        @media (max-width: 576px) {
+            .input-group-custom { flex-direction: column; background: transparent !important; border: none !important; gap: 10px; }
+            .input-group-custom input { border: 1px solid rgba(255,255,255,0.2) !important; border-radius: 8px !important; width: 100%; }
+            .input-group-custom button { padding: 15px !important; border-radius: 8px !important; width: 100%; }
+            .social-icons { justify-content: center; margin-top: 20px; }
+        }
+
+        /* Prevent infinite horizontal stretch on ultra-wide screens */
+        @media (min-width: 2000px) {
+            .yt-new-nav .container, .yt-about-page .container, .footer .container {
+                max-width: 1600px;
+            }
+            .yt-about-page {
+                max-width: 1920px;
+                margin-left: auto;
+                margin-right: auto;
+            }
         }
     </style>
 </head>
@@ -334,6 +471,34 @@
         <div class="ray ray-6"></div>
     </div>
 
+    <!-- Underwater Animation (Global Fish and Divers) -->
+    <div class="fish-container">
+        <!-- 1. Clownfish -->
+        <div class="fish fish-1 fish-orange">
+            <div class="fish-body"></div>
+        </div>
+        
+        <!-- 2. Blue Tang -->
+        <div class="fish fish-2 fish-cyan">
+            <div class="fish-body"></div>
+        </div>
+        
+        <!-- 3. Yellow Tang -->
+        <div class="fish fish-3 fish-golden">
+            <div class="fish-body"></div>
+        </div>
+
+        <!-- Scuba Divers -->
+        <div class="diver diver-1">
+            <div class="diver-body"></div>
+            <div class="bubble-stream"><span></span><span></span><span></span></div>
+        </div>
+        <div class="diver diver-2">
+            <div class="diver-body"></div>
+            <div class="bubble-stream"><span></span><span></span><span></span></div>
+        </div>
+    </div>
+
     <div class="yt-new-nav">
         <div class="container">
             <div class="nav-flex">
@@ -345,9 +510,15 @@
                     <a href="<c:url value='/gallery'/>">Gallery</a>
                     <a href="<c:url value='/about'/>" class="active">About Us</a>
                     <a href="<c:url value='/contact'/>">Contact Us</a>
+                    
+                    <div class="mobile-btn-wrap d-lg-none">
+                        <a href="<c:url value='/user/login'/>" class="login-btn">Login / Sign Up</a>
+                        <a href="<c:url value='/vendor/login'/>" class="login-btn" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2);">Vendor Portal</a>
+                    </div>
                 </div>
-                <div class="nav-right" style="display: flex; align-items: center; gap: 15px;">
-                    <a href="<c:url value='/user/login'/>" class="login-btn">Login / Sign Up</a>
+                <div class="nav-right">
+                    <a href="<c:url value='/user/login'/>" class="login-btn d-none d-lg-inline-block">Login / Sign Up</a>
+                    <a href="<c:url value='/vendor/login'/>" class="login-btn d-none d-lg-inline-block" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); font-size: 14px; padding: 10px 18px;">Vendor Portal</a>
                     <div class="nav-mobile-toggle" onclick="document.querySelector('.nav-links').classList.toggle('active')">
                         <i class="fa fa-bars"></i>
                     </div>
@@ -433,21 +604,50 @@
                     <div class="footer-logo" style="margin-bottom: 25px;">
                         <img src="<c:url value='/views/assets/images/footer-logo.png'/>" alt="" style="height: 45px;"/>
                     </div>
-                    <p style="color: #bbb; font-size: 16px; margin-bottom: 35px; max-width: 450px;">Collect moments, not things. Youth Travel is your gateway to the most authentic adventures across India.</p>
-                    <div class="footer-address" style="color: #999; font-size: 15px;">
-                        <p><i class="fa fa-map-marker" style="color: #e63946; margin-right: 15px;"></i> king Street, Huntavilla, Ontario Canada</p>
-                        <p><i class="fa fa-phone" style="color: #e63946; margin-right: 15px;"></i> +(000)-865-5842</p>
-                        <p><i class="fa fa-envelope" style="color: #e63946; margin-right: 15px;"></i> contact@youthtravel.in</p>
+                    <p style="color: #fff; margin-bottom: 30px; font-size: 16px; line-height: 1.8;">Not just places, but moments that stay with you forever. Explore the unexplored with Youth Travel.</p>
+                    <div class="footer-address" style="color: #fff;">
+                        <p style="margin-bottom: 12px;"><i class="fa fa-map-marker" style="color: #e63946; margin-right: 12px; width: 20px;"></i> Youth Travel, MG Road, Bengaluru, Karnataka, India</p>
+                        <p style="margin-bottom: 12px;"><i class="fa fa-phone" style="color: #e63946; margin-right: 12px; width: 20px;"></i> +91 98765 43210</p>
+                        <p style="margin-bottom: 12px;"><i class="fa fa-envelope" style="color: #e63946; margin-right: 12px; width: 20px;"></i> support@youthtravel.in</p>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="news">
-                        <p style="font-weight: 700; text-transform: uppercase; margin-bottom: 20px; letter-spacing: 1px;">Join the Inner Circle</p>
+                        <p style="font-weight: 700; text-transform: uppercase; margin-bottom: 20px; letter-spacing: 1px; color: #fff;">Join the Inner Circle</p>
                     </div>
-                    <div class="input-group-custom" style="margin-bottom: 35px; display: flex; background: rgba(255,255,255,0.05); border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); overflow: hidden;">
-                        <input type="email" placeholder="Your Email Address" style="flex: 1; background: transparent; border: none; padding: 15px; color: #fff; outline: none;">
-                        <button style="background: #e63946; border: none; padding: 0 30px; color: #fff; font-weight: 600; cursor: pointer;">SUBSCRIBE</button>
-                    </div>
+                    <form id="newsFormAbout" onsubmit="subscribeNewsAbout(event)">
+                        <div class="input-group-custom" style="margin-bottom: 35px; display: flex; background: rgba(255,255,255,0.05); border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); overflow: hidden;">
+                            <input type="email" id="emailAbout" placeholder="Your Email Address" style="flex: 1; background: transparent; border: none; padding: 15px; color: #fff; outline: none;" required>
+                            <button type="submit" id="btnAbout" style="background: #e63946; border: none; padding: 0 30px; color: #fff; font-weight: 600; cursor: pointer;">SUBSCRIBE</button>
+                        </div>
+                    </form>
+                    <script>
+                        function subscribeNewsAbout(e) {
+                            e.preventDefault();
+                            const email = document.getElementById('emailAbout').value;
+                            const btn = document.getElementById('btnAbout');
+                            const formData = new FormData();
+                            formData.append("name", "Newsletter Subscriber");
+                            formData.append("email", email);
+                            formData.append("message", "Subscribed to newsletter.");
+                            fetch('/enquiry/submit', { method: 'POST', body: formData })
+                            .then(res => {
+                                if(res.ok) {
+                                    const originalText = btn.innerHTML;
+                                    const originalBg = btn.style.background;
+                                    btn.innerHTML = "SUBSCRIBED";
+                                    btn.style.background = "#4caf50";
+                                    btn.disabled = true;
+                                    document.getElementById('emailAbout').value = "";
+                                    setTimeout(() => {
+                                        btn.innerHTML = originalText;
+                                        btn.style.background = originalBg;
+                                        btn.disabled = false;
+                                    }, 3000);
+                                }
+                            });
+                        }
+                    </script>
                     <div class="social-icons" style="display: flex; gap: 25px;">
                         <a href="#" style="color: #fff; font-size: 24px; transition: 0.3s;" onmouseover="this.style.color='#e63946'" onmouseout="this.style.color='#fff'"><i class="fa fa-instagram"></i></a>
                         <a href="#" style="color: #fff; font-size: 24px; transition: 0.3s;" onmouseover="this.style.color='#e63946'" onmouseout="this.style.color='#fff'"><i class="fa fa-youtube-play"></i></a>

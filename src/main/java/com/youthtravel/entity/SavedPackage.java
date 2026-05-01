@@ -19,19 +19,12 @@ public class SavedPackage {
     @JoinColumn(name = "trip_id", nullable = false)
     private Trip trip;
 
-    // Safe Fix: Satisfy the redundant 'package_id' column if it still exists in the DB
-    @Column(name = "package_id", nullable = true)
-    private Long packageId;
-
     @Column(name = "saved_at")
     private LocalDateTime savedAt;
 
     @PrePersist
     protected void onCreate() {
         savedAt = LocalDateTime.now();
-        if (trip != null) {
-            this.packageId = trip.getId();
-        }
     }
 
     public SavedPackage() {}

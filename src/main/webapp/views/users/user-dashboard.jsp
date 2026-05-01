@@ -482,6 +482,31 @@
                     border-radius: 20px;
                     border: 1px dotted rgba(255, 255, 255, 0.1);
                 }
+
+                @media (max-width: 991px) {
+                    .main-content { margin-left: 0; padding: 90px 20px 40px; }
+                    .dash-header { flex-direction: column; align-items: flex-start; gap: 20px; padding: 20px; }
+                    .search-container { width: 100% !important; }
+                    .results-meta { flex-direction: column; align-items: flex-start; gap: 15px; }
+                    .sort-container { flex-direction: column; width: 100%; align-items: flex-start; }
+                    .sort-container > div { width: 100%; justify-content: space-between; }
+                }
+
+                @media (max-width: 576px) {
+                    .package-grid { grid-template-columns: 1fr; }
+                    .category-title { font-size: 20px; }
+                    .category-header { flex-direction: column; align-items: flex-start; gap: 5px; }
+                }
+
+                /* Prevent infinite horizontal stretch on ultra-wide screens */
+                @media (min-width: 2000px) {
+                    .header, .main-content {
+                        max-width: 1920px;
+                        margin-left: auto;
+                        margin-right: auto;
+                    }
+                    .wrapper { justify-content: center; }
+                }
             </style>
         </head>
 
@@ -497,6 +522,7 @@
                 <div class="header-logo"><a href="<c:url value='/'/>"><img
                             src="<c:url value='/views/assets/images/logo.png'/>" style="height: 35px;"></a></div>
                 <div style="display: flex; align-items: center; gap: 20px;">
+                    <a href="<c:url value='/vendor/login'/>" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; text-decoration: none; padding: 8px 15px; border-radius: 8px; font-size: 13px; font-weight: 600; transition: 0.3s; opacity: 0.8;" onmouseover="this.style.opacity='1'; this.style.background='rgba(255,255,255,0.1)'" onmouseout="this.style.opacity='0.8'; this.style.background='rgba(255,255,255,0.05)'">Vendor Portal</a>
                     <div style="display: flex; align-items: center; gap: 15px;">
                         <span style="font-weight: 700;">Hi, ${user.name}</span>
                         <c:set var="defaultAvatar"
