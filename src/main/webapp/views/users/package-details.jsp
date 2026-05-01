@@ -518,27 +518,35 @@
                                     <input type="hidden" name="guestDetails" value="N/A">
 
                                     <label class="form-label">Select Date & Schedule</label>
-                                    <select name="selectedDate" class="custom-select" required>
-                                        <option value="" disabled selected>Choose an available date...</option>
+                                    <select id="scheduleSelect" name="selectedDate" class="custom-select" onchange="handleScheduleChange()" required>
+                                        <option value="" data-seats="30" disabled selected>Choose an available date...</option>
                                         <c:forEach var="schedule" items="${schedules}">
-                                            <option value="${schedule.startDate} to ${schedule.endDate}">
+                                            <option value="${schedule.startDate} to ${schedule.endDate}" data-seats="${schedule.availableSeats}">
                                                 ${schedule.startDate} to ${schedule.endDate}
                                                 (${schedule.availableSeats} seats left)
                                             </option>
                                         </c:forEach>
                                         <c:if test="${empty schedules}">
-                                            <option value="" disabled>No upcoming schedules available</option>
+                                            <option value="" data-seats="0" disabled>No upcoming schedules available</option>
                                         </c:if>
                                     </select>
 
+                                    <style>
+                                        input[type="number"]::-webkit-inner-spin-button, 
+                                        input[type="number"]::-webkit-outer-spin-button { 
+                                            -webkit-appearance: none; 
+                                            margin: 0; 
+                                        }
+                                        input[type="number"] {
+                                            -moz-appearance: textfield;
+                                        }
+                                    </style>
                                     <label class="form-label">Number of Travelers</label>
-                                    <select name="travelers" class="custom-select" required>
-                                        <option value="1">1 Traveler</option>
-                                        <option value="2">2 Travelers</option>
-                                        <option value="3">3 Travelers</option>
-                                        <option value="4">4 Travelers</option>
-                                        <option value="5">5+ Travelers</option>
-                                    </select>
+                                    <div class="traveler-counter" style="display: flex; align-items: center; justify-content: space-between; background: rgba(0, 0, 0, 0.3); border: 1px solid var(--border-color); border-radius: 12px; padding: 8px 15px;">
+                                        <button type="button" class="btn-counter" onclick="updateTravelers(-1)" style="background: rgba(255,255,255,0.1); border: none; color: #fff; font-size: 18px; cursor: pointer; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: var(--transition);" onmouseover="this.style.background='var(--primary-blue)'" onmouseout="this.style.background='rgba(255,255,255,0.1)'"><i class="fa fa-minus" style="font-size: 12px;"></i></button>
+                                        <input type="number" id="travelers" name="travelers" value="1" min="1" max="30" readonly style="background: transparent; border: none; color: #fff; text-align: center; font-size: 18px; font-weight: 700; width: 60px; outline: none;">
+                                        <button type="button" class="btn-counter" onclick="updateTravelers(1)" style="background: rgba(255,255,255,0.1); border: none; color: #fff; font-size: 18px; cursor: pointer; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: var(--transition);" onmouseover="this.style.background='var(--primary-blue)'" onmouseout="this.style.background='rgba(255,255,255,0.1)'"><i class="fa fa-plus" style="font-size: 12px;"></i></button>
+                                    </div>
 
                                     <button type="submit" class="btn-book" ${trip.soldOut
                                         ? 'disabled style="background:gray;"' : '' }>
@@ -596,6 +604,50 @@
                                 }
                             }
                         });
+                    </script>
+                    <script>
+                        function getMaxSeats() {
+                            const select = document.getElementById('scheduleSelect');
+                            if (!select || select.selectedIndex === -1) return 30;
+                            const option = select.options[select.selectedIndex];
+                            const seats = option.getAttribute('data-seats');
+                            return seats ? parseInt(seats) : 30;
+                        }
+
+                        function handleScheduleChange() {
+                            const input = document.getElementById('travelers');
+                            let currentVal = parseInt(input.value) || 1;
+                            const maxSeats = getMaxSeats();
+                            if (currentVal > maxSeats && maxSeats > 0) {
+                                input.value = maxSeats;
+                            } else if (maxSeats === 0) {
+                                input.value = 1;
+                            }
+                        }
+
+                        function updateTravelers(change) {
+                            const select = document.getElementById('scheduleSelect');
+                            if (select && select.value === "") {
+                                alert("Please select a date and schedule first.");
+                                return;
+                            }
+                            const input = document.getElementById('travelers');
+                            let currentVal = parseInt(input.value) || 1;
+                            const maxSeats = getMaxSeats();
+                            
+                            if (maxSeats <= 0) {
+                                alert("No seats available for this schedule.");
+                                return;
+                            }
+
+                            let newVal = currentVal + change;
+                            
+                            if(newVal >= 1 && newVal <= maxSeats) {
+                                input.value = newVal;
+                            } else if (newVal > maxSeats) {
+                                alert("Only " + maxSeats + " seats available for this schedule!");
+                            }
+                        }
                     </script>
                     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
                     <script>

@@ -202,7 +202,7 @@
                             <h5>Logo</h5>
                             <c:choose>
                                 <c:when test="${not empty vendor.logoPath}">
-                                    <a href="<c:url value='/${fn:replace(vendor.logoPath, "\\\\", "/")}'/>" target="_blank">View Logo</a>
+                                    <a href="<c:url value='/${vendor.logoPath}'/>" target="_blank">View Logo</a>
                                 </c:when>
                                 <c:otherwise>
                                     <span style="color: #888; font-size: 14px;">Not Provided</span>
@@ -214,7 +214,7 @@
                             <h5>Banner</h5>
                             <c:choose>
                                 <c:when test="${not empty vendor.bannerPath}">
-                                    <a href="<c:url value='/${fn:replace(vendor.bannerPath, "\\\\", "/")}'/>" target="_blank">View Banner</a>
+                                    <a href="<c:url value='/${vendor.bannerPath}'/>" target="_blank">View Banner</a>
                                 </c:when>
                                 <c:otherwise>
                                     <span style="color: #888; font-size: 14px;">Not Provided</span>
@@ -226,7 +226,7 @@
                             <h5>ID Proof</h5>
                             <c:choose>
                                 <c:when test="${not empty vendor.idProofPath}">
-                                    <a href="<c:url value='/${fn:replace(vendor.idProofPath, "\\\\", "/")}'/>" target="_blank">View Document</a>
+                                    <a href="<c:url value='/${vendor.idProofPath}'/>" target="_blank">View Document</a>
                                 </c:when>
                                 <c:otherwise>
                                     <span style="color: #888; font-size: 14px;">Not Provided</span>
@@ -238,7 +238,7 @@
                             <h5>Business Details / License</h5>
                             <c:choose>
                                 <c:when test="${not empty vendor.licensePath}">
-                                    <a href="<c:url value='/${fn:replace(vendor.licensePath, "\\\\", "/")}'/>" target="_blank">View Document</a>
+                                    <a href="<c:url value='/${vendor.licensePath}'/>" target="_blank">View Document</a>
                                 </c:when>
                                 <c:otherwise>
                                     <span style="color: #888; font-size: 14px;">Not Provided</span>
@@ -250,7 +250,7 @@
                             <h5>Insurance Document</h5>
                             <c:choose>
                                 <c:when test="${not empty vendor.insurancePath}">
-                                    <a href="<c:url value='/${fn:replace(vendor.insurancePath, "\\\\", "/")}'/>" target="_blank">View Document</a>
+                                    <a href="<c:url value='/${vendor.insurancePath}'/>" target="_blank">View Document</a>
                                 </c:when>
                                 <c:otherwise>
                                     <span style="color: #888; font-size: 14px;">Not Provided</span>

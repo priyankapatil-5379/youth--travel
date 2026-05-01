@@ -12,7 +12,7 @@
             <link rel="stylesheet" href="<c:url value='/views/assets/css/style.css'/>">
             <link rel="stylesheet" href="<c:url value='/views/assets/css/font-awesome.min.css'/>">
             <link href="https://fonts.googleapis.com/css?family=Dosis:300,400,500,600,700,800" rel="stylesheet">
-            <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css" />
             <style>
                 #map {
                     height: 250px;
@@ -93,6 +93,10 @@
                     align-items: center;
                     gap: 12px;
                     flex: 1;
+                    cursor: pointer;
+                }
+                .step:hover .step-circle {
+                    border-color: rgba(255, 255, 255, 0.4);
                 }
 
                 .step-circle {
@@ -200,6 +204,10 @@
                     background: rgba(255, 255, 255, 0.08);
                     border-color: #f04c26;
                     box-shadow: 0 0 0 4px rgba(240, 76, 38, 0.15);
+                }
+
+                .form-control.is-invalid, .file-upload-wrapper.is-invalid, .custom-checkbox.is-invalid {
+                    border-color: #e11d48 !important;
                 }
 
                 textarea.form-control {
@@ -329,15 +337,15 @@
 
                     <!-- Stepper -->
                     <div class="stepper">
-                        <div class="step active" id="stepIndicator1">
+                        <div class="step active" id="stepIndicator1" onclick="nextStep(1)">
                             <div class="step-circle">1</div>
                             <div class="step-label">Business</div>
                         </div>
-                        <div class="step" id="stepIndicator2">
+                        <div class="step" id="stepIndicator2" onclick="nextStep(2)">
                             <div class="step-circle">2</div>
                             <div class="step-label">Brand & Profile</div>
                         </div>
-                        <div class="step" id="stepIndicator3">
+                        <div class="step" id="stepIndicator3" onclick="nextStep(3)">
                             <div class="step-circle">3</div>
                             <div class="step-label">Verification</div>
                         </div>
@@ -378,7 +386,7 @@
                             </div>
                             <div class="row">
                                 <div class="col-md-6 form-group">
-                                    <label>Company Registration Number (Optional)</label>
+                                    <label>Company Registration Number</label>
                                     <input type="text" name="registrationId" class="form-control"
                                         placeholder="REG-12345678">
                                 </div>
@@ -554,7 +562,7 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label>Insurance Details (if applicable)</label>
+                                <label>Insurance Details</label>
                                 <div class="file-upload-wrapper">
                                     <i class="fa fa-shield"></i>
                                     <p class="m-0 text-white-50">Upload Insurance Doc</p>
@@ -586,7 +594,7 @@
             </div>
 
             <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-            <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
             <script>
                 // Map Logic
                 let map = L.map('map').setView([12.9716, 77.5946], 10);
@@ -619,21 +627,125 @@
                         });
                 }
                 function validateStep(step) {
-                    return true; // BYPASS ALL VALIDATION
+                    let isValid = true;
+                    // Reset previous validation
+                    $('#step' + step + ' .is-invalid').removeClass('is-invalid');
+                    $('#step' + step + ' .invalid-feedback').remove();
+
+                    if (step === 1) {
+                        const requiredFields = ['businessName', 'ownerName', 'emailId', 'phoneNumber', 'companyAddress', 'password', 'registrationId', 'gstNumber'];
+                        requiredFields.forEach(field => {
+                            const $input = $('[name="' + field + '"]');
+                            if (!$input.val() || !$input.val().trim()) {
+                                isValid = false;
+                                $input.addClass('is-invalid');
+                                if($input.next('.invalid-feedback').length === 0) {
+                                    $input.after('<div class="invalid-feedback" style="color:#e11d48; font-size:12px; margin-top:5px;">This field is required</div>');
+                                }
+                            }
+                        });
+                        
+                        // Validations for phone number
+                        const phone = $('[name="phoneNumber"]').val();
+                        if(phone && !/^\d{10}$/.test(phone.trim())) {
+                            isValid = false;
+                            $('[name="phoneNumber"]').addClass('is-invalid');
+                            if($('[name="phoneNumber"]').next('.invalid-feedback').length === 0) {
+                                $('[name="phoneNumber"]').after('<div class="invalid-feedback" style="color:#e11d48; font-size:12px; margin-top:5px;">Please enter exactly 10 digits</div>');
+                            } else {
+                                $('[name="phoneNumber"]').next('.invalid-feedback').text('Please enter exactly 10 digits');
+                            }
+                        }
+
+                        // Password length validation
+                        const password = $('[name="password"]').val();
+                        if (password && password.length < 6) {
+                            isValid = false;
+                            $('[name="password"]').addClass('is-invalid');
+                            if($('[name="password"]').next('.invalid-feedback').length === 0) {
+                                $('[name="password"]').after('<div class="invalid-feedback" style="color:#e11d48; font-size:12px; margin-top:5px;">Password must be at least 6 characters</div>');
+                            } else {
+                                $('[name="password"]').next('.invalid-feedback').text('Password must be at least 6 characters');
+                            }
+                        }
+                    } else if (step === 2) {
+                        const requiredFields = ['about', 'experienceYears', 'city', 'serviceAreas'];
+                        requiredFields.forEach(field => {
+                            const $input = $('[name="' + field + '"]');
+                            if (!$input.val() || !$input.val().toString().trim()) {
+                                isValid = false;
+                                $input.addClass('is-invalid');
+                                if($input.next('.invalid-feedback').length === 0) {
+                                    $input.after('<div class="invalid-feedback" style="color:#e11d48; font-size:12px; margin-top:5px;">This field is required</div>');
+                                }
+                            }
+                        });
+
+                        // Check map location
+                        if(!$('#mapsLink').val()) {
+                            isValid = false;
+                            const $mapDiv = $('#map');
+                            if($mapDiv.nextAll('.invalid-feedback').length === 0) {
+                                $mapDiv.after('<div class="invalid-feedback" style="color:#e11d48; font-size:12px; margin-top:5px; display:block;">Please select a location on the map</div>');
+                            }
+                        }
+
+                        // Check target audience
+                        if(!$('#targetAudienceInput').val()) {
+                            isValid = false;
+                            const $chips = $('.audience-chips');
+                            if($chips.next('.invalid-feedback').length === 0) {
+                                $chips.after('<div class="invalid-feedback" style="color:#e11d48; font-size:12px; margin-top:5px; display:block;">Please select at least one target audience</div>');
+                            }
+                        }
+                    } else if (step === 3) {
+                        const filesToCheck = ['idProofFile', 'licenseFile', 'insuranceFile'];
+                        filesToCheck.forEach(file => {
+                            const $fileInput = $('[name="' + file + '"]');
+                            if (!$fileInput.val()) {
+                                isValid = false;
+                                const $wrapper = $fileInput.closest('.file-upload-wrapper');
+                                $wrapper.addClass('is-invalid');
+                                if($wrapper.next('.invalid-feedback').length === 0) {
+                                    $wrapper.after('<div class="invalid-feedback" style="color:#e11d48; font-size:12px; margin-top:5px; display:block;">This document is required</div>');
+                                }
+                            }
+                        });
+
+                        const termsChecked = $('#termsCheck').is(':checked');
+                        if (!termsChecked) {
+                            isValid = false;
+                            const $checkbox = $('#termsCheck').closest('.custom-checkbox');
+                            $checkbox.addClass('is-invalid');
+                            if($checkbox.next('.invalid-feedback').length === 0) {
+                                $checkbox.after('<div class="invalid-feedback" style="color:#e11d48; font-size:12px; margin-top:5px; display:block;">You must accept the terms</div>');
+                            }
+                        }
+                    }
+                    
+                    return isValid;
                 }
 
                 function nextStep(step) {
-                    const currentStep = step > 1 ? step - 1 : 1;
+                    const activeStepElem = document.querySelector('.form-step.active');
+                    const currentStep = activeStepElem ? parseInt(activeStepElem.id.replace('step', '')) : 1;
 
                     // Only validate when going FORWARD
                     if (step > currentStep && !validateStep(currentStep)) {
-                        // Alert for user feedback if needed
+                        // Scroll to the first error so the user sees why the button is "not working"
+                        const $firstError = $('#step' + currentStep + ' .is-invalid, #step' + currentStep + ' .invalid-feedback').first();
+                        if ($firstError.length > 0 && $firstError.offset()) {
+                            $('html, body').animate({
+                                scrollTop: $firstError.offset().top - 100
+                            }, 500);
+                        }
                         return;
                     }
 
                     // Remove active class from all steps and indicators
                     $('.form-step').removeClass('active');
                     $('.step').removeClass('active');
+                    $('.step').removeClass('completed');
 
                     // Add active class to current step and indicator
                     $('#step' + step).addClass('active');
@@ -674,6 +786,28 @@
                     if ($(this).val()) {
                         $(this).removeClass('is-invalid');
                         $(this).next('.invalid-feedback').remove();
+                    }
+                });
+
+                // Prevent Enter key from auto-submitting the form
+                $(window).keydown(function(event){
+                    if(event.keyCode == 13 && event.target.nodeName !== 'TEXTAREA') {
+                        event.preventDefault();
+                        return false;
+                    }
+                });
+
+                // Validate step 3 on submit
+                $('#vendorRegForm').on('submit', function(e) {
+                    if (!validateStep(3)) {
+                        e.preventDefault();
+                        // Scroll to the first error so the user sees why submission is blocked
+                        const $firstError = $('#step3 .is-invalid, #step3 .invalid-feedback').first();
+                        if ($firstError.length > 0 && $firstError.offset()) {
+                            $('html, body').animate({
+                                scrollTop: $firstError.offset().top - 100
+                            }, 500);
+                        }
                     }
                 });
             </script>

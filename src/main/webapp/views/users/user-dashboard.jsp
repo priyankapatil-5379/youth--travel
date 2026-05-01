@@ -77,13 +77,33 @@
         .package-card.sold-out { opacity: 0.6; filter: grayscale(0.8); cursor: not-allowed; }
         .package-card.sold-out:hover { transform: none; box-shadow: none; border-color: rgba(255,255,255,0.05); }
         .sold-out-badge { position: absolute; top: 15px; left: 15px; background: #e11d48; color: #fff; padding: 5px 12px; border-radius: 6px; font-size: 11px; font-weight: 800; text-transform: uppercase; z-index: 10; box-shadow: 0 4px 10px rgba(225, 29, 72, 0.3); }
-        .sold-out .btn-view { display: none; }
 
 
                 .main-content {
                     flex: 1;
                     margin-left: 240px;
                     padding: 100px 30px 40px;
+                    transition: margin-left 0.3s;
+                }
+
+                @media (max-width: 991px) {
+                    .main-content {
+                        margin-left: 70px;
+                        padding: 90px 15px 40px;
+                    }
+                    .results-meta {
+                        flex-direction: column;
+                        gap: 15px;
+                        align-items: stretch !important;
+                    }
+                    .sort-container {
+                        flex-direction: column;
+                        align-items: stretch !important;
+                    }
+                    .search-container {
+                        width: 100% !important;
+                        max-width: none !important;
+                    }
                 }
 
                 /* Search & Filters */
@@ -513,18 +533,18 @@
                 </jsp:include>
                 <main class="main-content">
                     <form action="<c:url value='/user/dashboard'/>" method="GET" id="filterForm">
-                        <div class="dash-header">
-                            <div>
+                        <div class="dash-header d-flex flex-column flex-md-row text-center text-md-start">
+                            <div class="mb-3 mb-md-0">
                                 <h1 style="font-weight: 800; margin: 0; font-size: 32px; text-shadow: 0 4px 15px rgba(0,0,0,0.8); color: #fff;">Dashboard</h1>
                                 <p style="color: #fff; margin: 0; text-shadow: 0 2px 8px rgba(0,0,0,0.8); font-weight: 600; font-size: 15px;">Discover amazing travel packages and plan your next adventure.</p>
                             </div>
-                            <div style="display: flex; gap: 15px; align-items: center;">
-                                <div class="search-container" style="width: 300px;">
+                            <div class="d-flex flex-column flex-md-row gap-3 align-items-center w-100" style="max-width: fit-content;">
+                                <div class="search-container w-100" style="max-width: 300px;">
                                     <input type="text" name="search" value="${currentParams.search}"
                                         placeholder="Search trips, destinations...">
                                     <i class="fa fa-search"></i>
                                 </div>
-                                <button type="button" class="btn-filter-toggle" onclick="toggleFilter()">
+                                <button type="button" class="btn-filter-toggle w-100 w-md-auto justify-content-center" onclick="toggleFilter()">
                                     <i class="fa fa-sliders"></i> Filters
                                 </button>
                             </div>
@@ -638,9 +658,9 @@
                                 <div class="results-meta" style="margin-bottom: 30px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 20px;">
                                     <div style="font-weight: 700; font-size: 16px; text-shadow: 0 2px 10px rgba(0,0,0,0.8); color: #fff;">Showing ${totalCount} packages</div>
                                     <div class="sort-container" style="display: flex; align-items: center; gap: 15px;">
-                                        <div style="display: flex; align-items: center; gap: 8px;">
-                                            <span style="font-size: 13px; font-weight: 700; color: #fff; text-shadow: 0 1px 5px rgba(0,0,0,0.8);">Group by:</span>
-                                            <select name="groupBy" class="form-select-custom" style="width: auto; padding: 8px 15px; border-radius: 10px;" onchange="this.form.submit()">
+                                        <div class="d-flex align-items-center gap-2 flex-grow-1">
+                                            <span style="font-size: 13px; font-weight: 700; color: #fff; text-shadow: 0 1px 5px rgba(0,0,0,0.8); white-space: nowrap;">Group by:</span>
+                                            <select name="groupBy" class="form-select-custom w-100" style="padding: 8px 15px; border-radius: 10px;" onchange="this.form.submit()">
                                                 <option value="travelerType" ${currentParams.groupBy == 'travelerType' ? 'selected' : ''}>Traveler Type</option>
                                                 <option value="activity" ${currentParams.groupBy == 'activity' ? 'selected' : ''}>Activity</option>
                                                 <option value="adventure" ${currentParams.groupBy == 'adventure' ? 'selected' : ''}>Adventures</option>
@@ -648,9 +668,9 @@
                                                 <option value="stay" ${currentParams.groupBy == 'stay' ? 'selected' : ''}>Stay Category</option>
                                             </select>
                                         </div>
-                                        <div style="display: flex; align-items: center; gap: 8px;">
-                                            <span style="font-size: 13px; font-weight: 700; color: #fff; text-shadow: 0 1px 5px rgba(0,0,0,0.8);">Sort by:</span>
-                                            <select name="sortBy" class="form-select-custom" style="width: auto; padding: 8px 15px; border-radius: 10px;" onchange="this.form.submit()">
+                                        <div class="d-flex align-items-center gap-2 flex-grow-1">
+                                            <span style="font-size: 13px; font-weight: 700; color: #fff; text-shadow: 0 1px 5px rgba(0,0,0,0.8); white-space: nowrap;">Sort by:</span>
+                                            <select name="sortBy" class="form-select-custom w-100" style="padding: 8px 15px; border-radius: 10px;" onchange="this.form.submit()">
                                                 <option value="latest" ${currentParams.sortBy == 'latest' ? 'selected' : ''}>Latest</option>
                                                 <option value="priceLow" ${currentParams.sortBy == 'priceLow' ? 'selected' : ''}>Price: Low to High</option>
                                                 <option value="priceHigh" ${currentParams.sortBy == 'priceHigh' ? 'selected' : ''}>Price: High to Low</option>
@@ -729,8 +749,14 @@
                                                     <div class="package-footer">
                                                         <div class="package-price">₹${trip.price} <span>/ person</span>
                                                         </div>
-                                                        <a href="<c:url value='/user/package/${trip.id}'/>"
-                                                            class="btn-view">View Details</a>
+                                                        <c:choose>
+                                                            <c:when test="${trip.soldOut}">
+                                                                <button class="btn-view" disabled style="background: rgba(255,255,255,0.05); color: rgba(255,255,255,0.3); cursor: not-allowed; border-color: transparent;">Sold Out</button>
+                                                            </c:when>
+                                                            <c:otherwise>
+                                                                <a href="<c:url value='/user/package/${trip.id}'/>" class="btn-view">View Details</a>
+                                                            </c:otherwise>
+                                                        </c:choose>
                                                     </div>
                                                 </div>
                                             </div>
