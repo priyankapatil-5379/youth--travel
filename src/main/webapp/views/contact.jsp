@@ -90,6 +90,11 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
+            position: relative;
+        }
+
+        .nav-flex .logo {
+            flex: 1;
         }
 
         .nav-flex .logo img {
@@ -100,6 +105,8 @@
             display: flex;
             gap: 35px;
             align-items: center;
+            justify-content: center;
+            flex: 2;
         }
 
         .nav-links a {
@@ -114,6 +121,14 @@
             color: #e63946;
         }
 
+        .nav-right {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 10px;
+            flex: 1;
+        }
+
         .nav-right .login-btn {
             background: #e63946;
             color: #fff;
@@ -122,6 +137,7 @@
             font-weight: 600;
             text-decoration: none;
             transition: 0.3s;
+            display: inline-block;
         }
 
         .nav-right .login-btn:hover {
@@ -250,7 +266,17 @@
             }
         }
 
-        /* Contact Page Styles */
+        /* Ensure all main sections are above the fish */
+        section, footer, header {
+            position: relative;
+            z-index: 1;
+        }
+
+        #fish-container {
+            z-index: -1;
+        }
+        
+        /* CONTACT SPECIFIC STYLES */
         .contact-form {
             padding: 80px 0;
         }
@@ -397,9 +423,15 @@
                     <a href="<c:url value='/gallery'/>">Gallery</a>
                     <a href="<c:url value='/about'/>">About Us</a>
                     <a href="<c:url value='/contact'/>" class="active">Contact Us</a>
+                    
+                    <div class="mobile-btn-wrap d-lg-none">
+                        <a href="<c:url value='/user/login'/>" class="login-btn">Login / Sign Up</a>
+                        <a href="<c:url value='/vendor/login'/>" class="login-btn" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2);">Vendor Portal</a>
+                    </div>
                 </div>
-                <div class="nav-right" style="display: flex; align-items: center; gap: 15px;">
-                    <a href="<c:url value='/user/login'/>" class="login-btn">Login / Sign Up</a>
+                <div class="nav-right">
+                    <a href="<c:url value='/user/login'/>" class="login-btn d-none d-lg-inline-block">Login / Sign Up</a>
+                    <a href="<c:url value='/vendor/login'/>" class="login-btn d-none d-lg-inline-block" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); font-size: 14px; padding: 10px 18px;">Vendor Portal</a>
                     <div class="nav-mobile-toggle" onclick="document.querySelector('.nav-links').classList.toggle('active')">
                         <i class="fa fa-bars"></i>
                     </div>

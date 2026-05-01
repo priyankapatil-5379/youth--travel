@@ -27,6 +27,21 @@
             font-family: 'Dosis', sans-serif;
         }
 
+        /* Ensure all main sections are above the fish */
+        section, footer, header {
+            position: relative;
+            z-index: 1;
+        }
+
+        .yt-new-nav {
+            position: relative;
+            z-index: 999999 !important; /* Critical fix for mobile overlap */
+        }
+
+        #fish-container {
+            z-index: -1;
+        }
+
         /* === SUNLIGHT RAYS === */
         .sun-rays-container {
             position: fixed;
@@ -71,8 +86,6 @@
         }
 
         .yt-new-nav {
-            position: relative;
-            z-index: 1000;
             padding: 20px 0;
             background: rgba(0,0,0,0.2);
             backdrop-filter: blur(10px);
@@ -83,6 +96,11 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
+            position: relative;
+        }
+
+        .nav-flex .logo {
+            flex: 1;
         }
 
         .nav-flex .logo img {
@@ -93,6 +111,8 @@
             display: flex;
             gap: 35px;
             align-items: center;
+            justify-content: center;
+            flex: 2;
         }
 
         .nav-links a {
@@ -107,6 +127,14 @@
             color: #e63946;
         }
 
+        .nav-right {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 10px;
+            flex: 1;
+        }
+
         .nav-right .login-btn {
             background: #e63946;
             color: #fff;
@@ -115,6 +143,7 @@
             font-weight: 600;
             text-decoration: none;
             transition: 0.3s;
+            display: inline-block;
         }
 
         .nav-right .login-btn:hover {
@@ -234,13 +263,7 @@
                 width: 220px;
                 text-align: center;
             }
-            .nav-right .login-btn { display: none; }
             .yt-gallery-hero { z-index: 1 !important; }
-        }
-            .nav-links a:hover {
-                background: rgba(255,255,255,0.05);
-                padding-left: 30px;
-            }
         }
 
         /* Gallery specific styles */
@@ -367,9 +390,15 @@
                     <a href="<c:url value='/gallery'/>" class="active">Gallery</a>
                     <a href="<c:url value='/about'/>">About Us</a>
                     <a href="<c:url value='/contact'/>">Contact Us</a>
+                    
+                    <div class="mobile-btn-wrap d-lg-none">
+                        <a href="<c:url value='/user/login'/>" class="login-btn">Login / Sign Up</a>
+                        <a href="<c:url value='/vendor/login'/>" class="login-btn" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2);">Vendor Portal</a>
+                    </div>
                 </div>
-                <div class="nav-right" style="display: flex; align-items: center; gap: 15px;">
-                    <a href="<c:url value='/user/login'/>" class="login-btn">Login / Sign Up</a>
+                <div class="nav-right">
+                    <a href="<c:url value='/user/login'/>" class="login-btn d-none d-lg-inline-block">Login / Sign Up</a>
+                    <a href="<c:url value='/vendor/login'/>" class="login-btn d-none d-lg-inline-block" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); font-size: 14px; padding: 10px 18px;">Vendor Portal</a>
                     <div class="nav-mobile-toggle" onclick="document.querySelector('.nav-links').classList.toggle('active')">
                         <i class="fa fa-bars"></i>
                     </div>

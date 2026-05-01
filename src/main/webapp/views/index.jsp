@@ -156,6 +156,11 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
+            position: relative;
+        }
+
+        .nav-flex .logo {
+            flex: 1;
         }
 
         .nav-flex .logo img {
@@ -166,6 +171,8 @@
             display: flex;
             gap: 35px;
             align-items: center;
+            justify-content: center;
+            flex: 2;
         }
 
         .nav-links a {
@@ -178,6 +185,14 @@
 
         .nav-links a:hover, .nav-links a.active {
             color: #e63946;
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 10px;
+            flex: 1;
         }
 
         .nav-right .login-btn {
@@ -551,9 +566,14 @@
         }
         
         /* Ensure all main sections are above the fish */
-        section, footer, header, .yt-new-nav {
+        section, footer, header {
             position: relative;
             z-index: 1;
+        }
+
+        .yt-new-nav {
+            position: relative;
+            z-index: 999999 !important; /* Critical fix for mobile overlap */
         }
 
         #fish-container {
@@ -907,19 +927,6 @@
         </div>
     </div>
 
-    <!-- MOBILE NAVIGATION DRAWER (Moved to Body level for absolute layering priority) -->
-    <div class="nav-links">
-        <a href="<c:url value='/'/>" class="active">Home</a>
-        <a href="<c:url value='/gallery'/>">Gallery</a>
-        <a href="<c:url value='/about'/>">About Us</a>
-        <a href="<c:url value='/contact'/>">Contact Us</a>
-        
-        <div class="mobile-btn-wrap d-lg-none">
-            <a href="<c:url value='/user/login'/>" class="login-btn">Login / Sign Up</a>
-            <a href="<c:url value='/vendor/login'/>" class="login-btn" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2);">Vendor Portal</a>
-        </div>
-    </div>
-
     <section class="yt-new-hero">
         <div class="yt-new-nav">
             <div class="container">
@@ -927,7 +934,21 @@
                     <div class="logo">
                         <a href="<c:url value='/'/>"><img src="<c:url value='/views/assets/images/logo.png'/>" alt="Youth Travel" /></a>
                     </div>
-                    <div class="nav-right" style="display: flex; align-items: center; gap: 10px;">
+                    
+                    <div class="nav-links">
+                        <a href="<c:url value='/'/>" class="active">Home</a>
+                        <a href="#choose-adventure">Explore</a>
+                        <a href="<c:url value='/gallery'/>">Gallery</a>
+                        <a href="<c:url value='/about'/>">About Us</a>
+                        <a href="<c:url value='/contact'/>">Contact Us</a>
+                        
+                        <div class="mobile-btn-wrap d-lg-none">
+                            <a href="<c:url value='/user/login'/>" class="login-btn">Login / Sign Up</a>
+                            <a href="<c:url value='/vendor/login'/>" class="login-btn" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2);">Vendor Portal</a>
+                        </div>
+                    </div>
+
+                    <div class="nav-right">
                         <a href="<c:url value='/user/login'/>" class="login-btn d-none d-lg-inline-block">Login / Sign Up</a>
                         <a href="<c:url value='/vendor/login'/>" class="login-btn d-none d-lg-inline-block" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); font-size: 14px; padding: 10px 18px;">Vendor Portal</a>
                         <div class="nav-mobile-toggle" onclick="toggleMobileMenu()">
