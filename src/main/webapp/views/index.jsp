@@ -829,14 +829,15 @@
 
 
         @keyframes swim-right {
-            0% { transform: translateX(-100px) scaleX(1); }
-            100% { transform: translateX(calc(100vw + 100px)) scaleX(1); }
+            0% { transform: translateX(-150px) scaleX(-1); }
+            100% { transform: translateX(calc(100vw + 150px)) scaleX(-1); }
         }
 
         @keyframes swim-left {
-            0% { transform: translateX(calc(100vw + 100px)) scaleX(-1); }
-            100% { transform: translateX(-100px) scaleX(-1); }
+            0% { transform: translateX(calc(100vw + 150px)) scaleX(1); }
+            100% { transform: translateX(-150px) scaleX(1); }
         }
+
 
     </style>
 
