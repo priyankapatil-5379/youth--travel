@@ -334,6 +334,34 @@
         <div class="ray ray-6"></div>
     </div>
 
+    <!-- Underwater Animation (Global Fish and Divers) -->
+    <div class="fish-container">
+        <!-- 1. Clownfish -->
+        <div class="fish fish-1 fish-orange">
+            <div class="fish-body"></div>
+        </div>
+        
+        <!-- 2. Blue Tang -->
+        <div class="fish fish-2 fish-cyan">
+            <div class="fish-body"></div>
+        </div>
+        
+        <!-- 3. Yellow Tang -->
+        <div class="fish fish-3 fish-golden">
+            <div class="fish-body"></div>
+        </div>
+
+        <!-- Scuba Divers -->
+        <div class="diver diver-1">
+            <div class="diver-body"></div>
+            <div class="bubble-stream"><span></span><span></span><span></span></div>
+        </div>
+        <div class="diver diver-2">
+            <div class="diver-body"></div>
+            <div class="bubble-stream"><span></span><span></span><span></span></div>
+        </div>
+    </div>
+
     <div class="yt-new-nav">
         <div class="container">
             <div class="nav-flex">
@@ -433,21 +461,50 @@
                     <div class="footer-logo" style="margin-bottom: 25px;">
                         <img src="<c:url value='/views/assets/images/footer-logo.png'/>" alt="" style="height: 45px;"/>
                     </div>
-                    <p style="color: #bbb; font-size: 16px; margin-bottom: 35px; max-width: 450px;">Collect moments, not things. Youth Travel is your gateway to the most authentic adventures across India.</p>
-                    <div class="footer-address" style="color: #999; font-size: 15px;">
-                        <p><i class="fa fa-map-marker" style="color: #e63946; margin-right: 15px;"></i> king Street, Huntavilla, Ontario Canada</p>
-                        <p><i class="fa fa-phone" style="color: #e63946; margin-right: 15px;"></i> +(000)-865-5842</p>
-                        <p><i class="fa fa-envelope" style="color: #e63946; margin-right: 15px;"></i> contact@youthtravel.in</p>
+                    <p style="color: #fff; margin-bottom: 30px; font-size: 16px; line-height: 1.8;">Not just places, but moments that stay with you forever. Explore the unexplored with Youth Travel.</p>
+                    <div class="footer-address" style="color: #fff;">
+                        <p style="margin-bottom: 12px;"><i class="fa fa-map-marker" style="color: #e63946; margin-right: 12px; width: 20px;"></i> Youth Travel, MG Road, Bengaluru, Karnataka, India</p>
+                        <p style="margin-bottom: 12px;"><i class="fa fa-phone" style="color: #e63946; margin-right: 12px; width: 20px;"></i> +91 98765 43210</p>
+                        <p style="margin-bottom: 12px;"><i class="fa fa-envelope" style="color: #e63946; margin-right: 12px; width: 20px;"></i> support@youthtravel.in</p>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="news">
-                        <p style="font-weight: 700; text-transform: uppercase; margin-bottom: 20px; letter-spacing: 1px;">Join the Inner Circle</p>
+                        <p style="font-weight: 700; text-transform: uppercase; margin-bottom: 20px; letter-spacing: 1px; color: #fff;">Join the Inner Circle</p>
                     </div>
-                    <div class="input-group-custom" style="margin-bottom: 35px; display: flex; background: rgba(255,255,255,0.05); border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); overflow: hidden;">
-                        <input type="email" placeholder="Your Email Address" style="flex: 1; background: transparent; border: none; padding: 15px; color: #fff; outline: none;">
-                        <button style="background: #e63946; border: none; padding: 0 30px; color: #fff; font-weight: 600; cursor: pointer;">SUBSCRIBE</button>
-                    </div>
+                    <form id="newsFormAbout" onsubmit="subscribeNewsAbout(event)">
+                        <div class="input-group-custom" style="margin-bottom: 35px; display: flex; background: rgba(255,255,255,0.05); border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); overflow: hidden;">
+                            <input type="email" id="emailAbout" placeholder="Your Email Address" style="flex: 1; background: transparent; border: none; padding: 15px; color: #fff; outline: none;" required>
+                            <button type="submit" id="btnAbout" style="background: #e63946; border: none; padding: 0 30px; color: #fff; font-weight: 600; cursor: pointer;">SUBSCRIBE</button>
+                        </div>
+                    </form>
+                    <script>
+                        function subscribeNewsAbout(e) {
+                            e.preventDefault();
+                            const email = document.getElementById('emailAbout').value;
+                            const btn = document.getElementById('btnAbout');
+                            const formData = new FormData();
+                            formData.append("name", "Newsletter Subscriber");
+                            formData.append("email", email);
+                            formData.append("message", "Subscribed to newsletter.");
+                            fetch('/enquiry/submit', { method: 'POST', body: formData })
+                            .then(res => {
+                                if(res.ok) {
+                                    const originalText = btn.innerHTML;
+                                    const originalBg = btn.style.background;
+                                    btn.innerHTML = "SUBSCRIBED";
+                                    btn.style.background = "#4caf50";
+                                    btn.disabled = true;
+                                    document.getElementById('emailAbout').value = "";
+                                    setTimeout(() => {
+                                        btn.innerHTML = originalText;
+                                        btn.style.background = originalBg;
+                                        btn.disabled = false;
+                                    }, 3000);
+                                }
+                            });
+                        }
+                    </script>
                     <div class="social-icons" style="display: flex; gap: 25px;">
                         <a href="#" style="color: #fff; font-size: 24px; transition: 0.3s;" onmouseover="this.style.color='#e63946'" onmouseout="this.style.color='#fff'"><i class="fa fa-instagram"></i></a>
                         <a href="#" style="color: #fff; font-size: 24px; transition: 0.3s;" onmouseover="this.style.color='#e63946'" onmouseout="this.style.color='#fff'"><i class="fa fa-youtube-play"></i></a>

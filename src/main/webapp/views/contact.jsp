@@ -264,6 +264,21 @@
         <div class="ray ray-6"></div>
     </div>
 
+    <!-- Underwater Animation (Global Fish and Divers) -->
+    <div class="fish-container">
+        <div class="fish fish-1 fish-orange"><div class="fish-body"></div></div>
+        <div class="fish fish-2 fish-cyan"><div class="fish-body"></div></div>
+        <div class="fish fish-3 fish-golden"><div class="fish-body"></div></div>
+        <div class="diver diver-1">
+            <div class="diver-body"></div>
+            <div class="bubble-stream"><span></span><span></span><span></span></div>
+        </div>
+        <div class="diver diver-2">
+            <div class="diver-body"></div>
+            <div class="bubble-stream"><span></span><span></span><span></span></div>
+        </div>
+    </div>
+
     <div class="yt-new-nav">
         <div class="container">
             <div class="nav-flex">
@@ -292,19 +307,19 @@
                 <h1>Contact Us</h1>
                 <h3>You can send your feedback or report any issues by submitting the form.</h3>
             </div>
-            <form id="contact" action="" method="post">
-                <h3>Leave your query here</h3>
+            <form id="contact" onsubmit="submitContactForm(event)">
+                <h3 style="color: #fff; margin-bottom: 20px;">Leave your query here</h3>
                 <fieldset>
-                    <input placeholder="Your name" type="text" required autofocus>
+                    <input name="name" placeholder="Your name" type="text" required autofocus>
                 </fieldset>
                 <fieldset>
-                    <input placeholder="Your Email Address" type="email" required>
+                    <input name="email" placeholder="Your Email Address" type="email" required>
                 </fieldset>
                 <fieldset>
-                    <input placeholder="Your Phone Number (optional)" type="tel" required>
+                    <input name="phone" placeholder="Your Phone Number (optional)" type="tel">
                 </fieldset>
                 <fieldset>
-                    <textarea placeholder="Type your message here...." required style="height: 150px;"></textarea>
+                    <textarea name="message" placeholder="Type your message here...." required style="height: 150px;"></textarea>
                 </fieldset>
                 <fieldset>
                     <button name="submit" type="submit" id="contact-submit">Submit Message</button>
@@ -313,6 +328,28 @@
         </div>
     </section>
 
+    <script>
+        function submitContactForm(e) {
+            e.preventDefault();
+            const form = document.getElementById('contact');
+            const formData = new FormData(form);
+            
+            fetch('/enquiry/submit', {
+                method: 'POST',
+                body: formData
+            }).then(res => {
+                if(res.ok) {
+                    alert('Message sent successfully! We will contact you soon.');
+                    form.reset();
+                } else {
+                    alert('Something went wrong. Please try again.');
+                }
+            }).catch(err => {
+                alert('Connection error. Please try again.');
+            });
+        }
+    </script>
+
     <section class="footer" style="background: rgba(0,0,0,0.2); padding: 80px 0; border-top: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);">
         <div class="container">
             <div class="row">
@@ -320,21 +357,50 @@
                     <div class="footer-logo" style="margin-bottom: 20px;">
                         <img src="<c:url value='/views/assets/images/footer-logo.png'/>" alt="" style="height: 40px;"/>
                     </div>
-                    <p style="color: #bbb; margin-bottom: 30px;">Not just places, but moments that stay with you forever. Explore the unexplored with Youth Travel.</p>
-                    <div class="footer-address" style="color: #999;">
-                        <p><i class="fa fa-map-marker" style="color: #e63946; margin-right: 10px;"></i> king Street, Huntavilla, Ontario Canada</p>
-                        <p><i class="fa fa-phone" style="color: #e63946; margin-right: 10px;"></i> +(000)-865-5842</p>
-                        <p><i class="fa fa-envelope" style="color: #e63946; margin-right: 10px;"></i> demo@gmail.com</p>
+                    <p style="color: #fff; margin-bottom: 30px;">Not just places, but moments that stay with you forever. Explore the unexplored with Youth Travel.</p>
+                    <div class="footer-address" style="color: #fff;">
+                        <p><i class="fa fa-map-marker" style="color: #e63946; margin-right: 10px;"></i> Youth Travel, MG Road, Bengaluru, Karnataka, India</p>
+                        <p><i class="fa fa-phone" style="color: #e63946; margin-right: 10px;"></i> +91 98765 43210</p>
+                        <p><i class="fa fa-envelope" style="color: #e63946; margin-right: 10px;"></i> support@youthtravel.in</p>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="news">
-                        <p style="font-weight: 700; text-transform: uppercase; margin-bottom: 15px;">Newsletter Subscribe</p>
+                        <p style="font-weight: 700; text-transform: uppercase; margin-bottom: 15px; color: #fff;">Newsletter Subscribe</p>
                     </div>
-                    <div class="input-group-custom" style="margin-bottom: 30px;">
-                        <input type="email" placeholder="Enter E-mail" style="flex: 1; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); padding: 12px; color: #fff; border-radius: 6px 0 0 6px;">
-                        <button style="background: #e63946; border: none; padding: 0 25px; border-radius: 0 6px 6px 0; font-weight: 600;">Subscribe</button>
-                    </div>
+                    <form id="newsFormContact" onsubmit="subscribeNewsContact(event)">
+                        <div class="input-group-custom" style="margin-bottom: 30px; display: flex; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; overflow: hidden;">
+                            <input type="email" id="emailContact" placeholder="Enter E-mail" style="flex: 1; background: transparent; border: none; padding: 12px; color: #fff; outline: none;" required>
+                            <button type="submit" id="btnContact" style="background: #e63946; border: none; padding: 0 25px; color: #fff; font-weight: 600; cursor: pointer;">Subscribe</button>
+                        </div>
+                    </form>
+                    <script>
+                        function subscribeNewsContact(e) {
+                            e.preventDefault();
+                            const email = document.getElementById('emailContact').value;
+                            const btn = document.getElementById('btnContact');
+                            const formData = new FormData();
+                            formData.append("name", "Newsletter Subscriber");
+                            formData.append("email", email);
+                            formData.append("message", "Subscribed to newsletter.");
+                            fetch('/enquiry/submit', { method: 'POST', body: formData })
+                            .then(res => {
+                                if(res.ok) {
+                                    const originalText = btn.innerHTML;
+                                    const originalBg = btn.style.background;
+                                    btn.innerHTML = "Subscribed";
+                                    btn.style.background = "#4caf50";
+                                    btn.disabled = true;
+                                    document.getElementById('emailContact').value = "";
+                                    setTimeout(() => {
+                                        btn.innerHTML = originalText;
+                                        btn.style.background = originalBg;
+                                        btn.disabled = false;
+                                    }, 3000);
+                                }
+                            });
+                        }
+                    </script>
                     <div class="social-icons" style="display: flex; gap: 20px;">
                         <a href="#" style="color: #fff; font-size: 20px;"><i class="fa fa-facebook"></i></a>
                         <a href="#" style="color: #fff; font-size: 20px;"><i class="fa fa-twitter"></i></a>

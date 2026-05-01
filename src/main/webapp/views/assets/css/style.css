@@ -824,9 +824,9 @@ img {
 }
 
 .yt-float-btn {
-    width: 64px;
-    height: 64px;
-    border-radius: 16px;
+    width: 50px;
+    height: 50px;
+    border-radius: 12px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -838,15 +838,17 @@ img {
     color: rgba(255, 255, 255, 0.92);
     cursor: pointer;
     text-decoration: none !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .yt-float-btn:hover {
-    transform: translateY(-1px);
+    transform: translateY(-2px) scale(1.05);
     box-shadow: 0 18px 44px rgba(0, 0, 0, 0.40);
+    background: rgba(9, 11, 18, 0.7);
 }
 
 .yt-float-btn .fa {
-    font-size: 26px;
+    font-size: 22px;
 }
 
 .yt-float-btn-whatsapp {
@@ -868,20 +870,20 @@ img {
 }
 
 .yt-chatbot-icon {
-    width: 56px;
-    height: 56px;
-    border-radius: 14px;
+    width: 42px;
+    height: 42px;
+    border-radius: 10px;
     object-fit: cover;
     display: block;
-    filter: drop-shadow(0 10px 18px rgba(0, 0, 0, 0.35));
+    filter: drop-shadow(0 8px 15px rgba(0, 0, 0, 0.3));
 }
 
 .yt-chatbot-hand {
     position: absolute;
-    right: -8px;
-    bottom: -8px;
-    width: 26px;
-    height: 26px;
+    right: -6px;
+    bottom: -6px;
+    width: 20px;
+    height: 20px;
     border-radius: 999px;
     background: rgba(255, 255, 255, 0.10);
     border: 1px solid rgba(255, 255, 255, 0.16);
@@ -893,8 +895,8 @@ img {
 }
 
 .yt-chatbot-hand svg {
-    width: 18px;
-    height: 18px;
+    width: 14px;
+    height: 14px;
     display: block;
 }
 
@@ -2669,4 +2671,116 @@ img {
     .d-flex.justify-content-end {
         display: block !important;
     }
+}
+/* === UNDERWATER BACKGROUND ANIMATION === */
+.fish-container {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: -1;
+    overflow: hidden;
+}
+
+.fish {
+    position: absolute;
+    width: 140px;
+    height: 100px;
+    opacity: 0.9;
+    filter: drop-shadow(0 12px 25px rgba(0,0,0,0.4));
+    z-index: -1;
+    pointer-events: none;
+}
+
+.fish-body {
+    width: 100%;
+    height: 100%;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    animation: fishWiggle 2.5s ease-in-out infinite;
+}
+
+.fish-orange .fish-body {
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 80'><defs><clipPath id='b'><path d='M15,45 C15,20 85,20 85,45 C85,70 15,70 15,45'/></clipPath></defs><path d='M90,40 L115,20 Q120,40 115,60 L90,40' fill='%23ff7700' stroke='%23331100' stroke-width='2'/><path d='M40,20 Q60,0 90,30' fill='%23ff7700' stroke='%23331100' stroke-width='2'/><path d='M45,60 Q65,80 90,50' fill='%23ff7700' stroke='%23331100' stroke-width='2'/><path d='M15,45 C15,20 85,20 85,45 C85,70 15,70 15,45' fill='%23ff9922' stroke='%23331100' stroke-width='2'/><g clip-path='url(%23b)'><path d='M35,10 Q45,45 35,80 M55,10 Q65,45 55,80 M75,10 Q85,45 75,80' fill='none' stroke='white' stroke-width='9' opacity='0.8'/></g><circle cx='32' cy='40' r='9' fill='white' stroke='%23331100' stroke-width='1.5'/><circle cx='34' cy='40' r='5' fill='black'/><circle cx='32' cy='38' r='2' fill='white'/><circle cx='38' cy='52' r='2.5' fill='%23ff77aa' opacity='0.6'/><path d='M15,45 Q10,45 10,48 Q10,51 15,50' fill='none' stroke='%23331100' stroke-width='2'/></svg>");
+}
+
+.fish-cyan .fish-body {
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 80'><defs><clipPath id='b'><path d='M15,45 C15,20 85,20 85,45 C85,70 15,70 15,45'/></clipPath></defs><path d='M90,40 L115,20 Q120,40 115,60 L90,40' fill='%230077be' stroke='%23003366' stroke-width='2'/><path d='M40,20 Q60,0 90,30' fill='%230077be' stroke='%23003366' stroke-width='2'/><path d='M45,60 Q65,80 90,50' fill='%230077be' stroke='%23003366' stroke-width='2'/><path d='M15,45 C15,20 85,20 85,45 C85,70 15,70 15,45' fill='%2300aaff' stroke='%23003366' stroke-width='2'/><g clip-path='url(%23b)'><path d='M35,10 Q45,45 35,80 M55,10 Q65,45 55,80 M75,10 Q85,45 75,80' fill='none' stroke='%23ffdd00' stroke-width='9' opacity='0.8'/></g><circle cx='32' cy='40' r='9' fill='white' stroke='%23003366' stroke-width='1.5'/><circle cx='34' cy='40' r='5' fill='black'/><circle cx='32' cy='38' r='2' fill='white'/><circle cx='38' cy='52' r='2.5' fill='%23ff77aa' opacity='0.6'/><path d='M15,45 Q10,45 10,48 Q10,51 15,50' fill='none' stroke='%23003366' stroke-width='2'/></svg>");
+}
+
+.fish-golden .fish-body {
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 80'><defs><clipPath id='b'><path d='M15,45 C15,20 85,20 85,45 C85,70 15,70 15,45'/></clipPath></defs><path d='M90,40 L115,20 Q120,40 115,60 L90,40' fill='%238800cc' stroke='%23330066' stroke-width='2'/><path d='M40,20 Q60,0 90,30' fill='%238800cc' stroke='%23330066' stroke-width='2'/><path d='M45,60 Q65,80 90,50' fill='%238800cc' stroke='%23330066' stroke-width='2'/><path d='M15,45 C15,20 85,20 85,45 C85,70 15,70 15,45' fill='%23aa33ff' stroke='%23330066' stroke-width='2'/><g clip-path='url(%23b)'><path d='M35,10 Q45,45 35,80 M55,10 Q65,45 55,80 M75,10 Q85,45 75,80' fill='none' stroke='%23ff66cc' stroke-width='9' opacity='0.8'/></g><circle cx='32' cy='40' r='9' fill='white' stroke='%23330066' stroke-width='1.5'/><circle cx='34' cy='40' r='5' fill='black'/><circle cx='32' cy='38' r='2' fill='white'/><circle cx='38' cy='52' r='2.5' fill='%23ff99cc' opacity='0.6'/><path d='M15,45 Q10,45 10,48 Q10,51 15,50' fill='none' stroke='%23330066' stroke-width='2'/></svg>");
+}
+
+.fish-1 { top: 15%; animation: swim-right 28s linear infinite; }
+.fish-2 { top: 45%; animation: swim-left 34s linear infinite; }
+.fish-3 { top: 75%; animation: swim-right 22s linear infinite; }
+
+.diver {
+    position: absolute;
+    width: 200px;
+    height: 100px;
+    opacity: 0.8;
+    filter: drop-shadow(0 10px 15px rgba(0,0,0,0.5));
+    z-index: -1;
+    pointer-events: none;
+}
+
+.diver-body {
+    width: 100%;
+    height: 100%;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 240 120'><defs><linearGradient id='g1' x1='0%25' y1='0%25' x2='0%25' y2='100%25'><stop offset='0%25' stop-color='%232563eb'/><stop offset='100%25' stop-color='%231e3a8a'/></linearGradient><linearGradient id='g2' x1='0%25' y1='0%25' x2='0%25' y2='100%25'><stop offset='0%25' stop-color='%23ffffff'/><stop offset='100%25' stop-color='%23d1d5db'/></linearGradient></defs><path d='M100,20 L160,40 Q165,45 160,50 L100,30 Z' fill='url(%23g2)' stroke='%234b5563' stroke-width='1'/><path d='M115,25 L117,45 M140,33 L142,53' stroke='%23374151' stroke-width='2' opacity='0.3'/><path d='M30,55 Q60,35 120,45 L170,55 L165,85 L140,75 L80,80 Q40,80 30,55 Z' fill='url(%23g1)' stroke='%231e1b4b' stroke-width='1.5'/><path d='M40,55 Q70,50 110,55' fill='none' stroke='%233b82f6' stroke-width='3' opacity='0.4'/><path d='M170,55 L210,40 L215,60 Z' fill='%231e40af' stroke='%231e3a8a' stroke-width='1'/><path d='M165,85 L205,100 L210,80 Z' fill='%231e40af' stroke='%231e3a8a' stroke-width='1'/><circle cx='38' cy='52' r='14' fill='%230f172a'/><path d='M25,48 Q50,48 50,56 Q50,64 25,64 Z' fill='%23334155'/><rect x='28' y='50' width='18' height='10' rx='3' fill='%23bae6fd' opacity='0.8'/><path d='M110,25 Q80,25 50,55' fill='none' stroke='%23111' stroke-width='2'/></svg>");
+    animation: diverWiggle 5s ease-in-out infinite;
+}
+
+.bubble-stream {
+    position: absolute;
+    top: 40%;
+    left: 20%;
+}
+
+.bubble-stream span {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background: rgba(255, 255, 255, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    border-radius: 50%;
+    animation: risingBubbles 3s infinite ease-out;
+}
+
+.bubble-stream span:nth-child(2) { animation-delay: 1s; left: 5px; width: 6px; height: 6px; }
+.bubble-stream span:nth-child(3) { animation-delay: 2s; left: -5px; width: 10px; height: 10px; }
+
+@keyframes risingBubbles {
+    0% { transform: translateY(0) scale(1); opacity: 0; }
+    20% { opacity: 0.6; }
+    100% { transform: translateY(-100px) scale(1.5); opacity: 0; }
+}
+
+.diver-1 { top: 25%; animation: swim-right 48s linear infinite; }
+.diver-2 { top: 65%; animation: swim-left 58s linear infinite; }
+
+@keyframes diverWiggle {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-8px) rotate(1deg); }
+}
+
+@keyframes fishWiggle {
+    0%, 100% { transform: rotate(0deg) translateY(0); }
+    25% { transform: rotate(2deg) translateY(-2px); }
+    75% { transform: rotate(-2deg) translateY(2px); }
+}
+
+@keyframes swim-right {
+    0% { transform: translateX(-150px) scaleX(-1); }
+    100% { transform: translateX(calc(100vw + 150px)) scaleX(-1); }
+}
+
+@keyframes swim-left {
+    0% { transform: translateX(calc(100vw + 150px)) scaleX(1); }
+    100% { transform: translateX(-150px) scaleX(1); }
 }
