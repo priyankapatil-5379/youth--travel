@@ -36,6 +36,7 @@
     <header class="header">
         <div class="header-logo"><a href="<c:url value='/'/>"><img src="<c:url value='/views/assets/images/logo.png'/>" style="height: 35px;"></a></div>
         <div style="display: flex; align-items: center; gap: 20px;">
+            <a href="<c:url value='/vendor/login'/>" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; text-decoration: none; padding: 8px 15px; border-radius: 8px; font-size: 13px; font-weight: 600; transition: 0.3s; opacity: 0.8;" onmouseover="this.style.opacity='1'; this.style.background='rgba(255,255,255,0.1)'" onmouseout="this.style.opacity='0.8'; this.style.background='rgba(255,255,255,0.05)'">Vendor Portal</a>
             <div style="display: flex; align-items: center; gap: 15px;">
                 <span style="font-weight: 700;">Hi, ${user.name}</span>
                 <c:set var="defaultAvatar" value="https://ui-avatars.com/api/?name=${user.name}&background=f04c26&color=fff" />

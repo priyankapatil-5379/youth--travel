@@ -29,6 +29,10 @@ public class AdminController {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private com.youthtravel.repository.HomeImageRepository homeImageRepository;
+
     @GetMapping("/login")
     public String showLoginForm(jakarta.servlet.http.HttpSession session) {
         if (session.getAttribute("adminLoggedIn") != null) {
@@ -162,4 +166,59 @@ public class AdminController {
         model.addAttribute("vendorInquiries", new java.util.ArrayList<>());
         return "Admin/inquiries";
     }
+
+    @GetMapping("/home-images")
+    public String homeImages(Model model, jakarta.servlet.http.HttpSession session) {
+        if (session.getAttribute("adminLoggedIn") == null) return "redirect:/admin/login";
+        model.addAttribute("galleryImages", homeImageRepository.findBySection("GALLERY"));
+        model.addAttribute("momentImages", homeImageRepository.findBySection("MOMENTS"));
+        return "Admin/home-images";
+    }
+
+    @PostMapping("/home-images/upload")
+    public String uploadHomeImage(@RequestParam("file") org.springframework.web.multipart.MultipartFile file,
+                                  @RequestParam("section") String section,
+                                  @RequestParam(value = "caption", required = false) String caption,
+                                  jakarta.servlet.http.HttpSession session,
+                                  org.springframework.web.servlet.mvc.support.RedirectAttributes redirectAttributes) {
+        if (session.getAttribute("adminLoggedIn") == null) return "redirect:/admin/login";
+        
+        if (file.isEmpty()) {
+            redirectAttributes.addFlashAttribute("error", "Please select a file to upload.");
+            return "redirect:/admin/home-images";
+        }
+
+        try {
+            String uploadDir = "uploads/home/";
+            java.nio.file.Path uploadPath = java.nio.file.Paths.get(uploadDir);
+            if (!java.nio.file.Files.exists(uploadPath)) {
+                java.nio.file.Files.createDirectories(uploadPath);
+            }
+
+            String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
+            java.nio.file.Path filePath = uploadPath.resolve(fileName);
+            java.nio.file.Files.copy(file.getInputStream(), filePath, java.nio.file.StandardCopyOption.REPLACE_EXISTING);
+
+            com.youthtravel.entity.HomeImage img = new com.youthtravel.entity.HomeImage();
+            img.setImageUrl("/" + uploadDir + fileName);
+            img.setSection(section);
+            img.setCaption(caption);
+            homeImageRepository.save(img);
+
+            redirectAttributes.addFlashAttribute("message", "Image uploaded successfully!");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "Upload failed: " + e.getMessage());
+        }
+
+        return "redirect:/admin/home-images";
+    }
+
+    @PostMapping("/home-images/{id}/delete")
+    public String deleteHomeImage(@PathVariable Long id, jakarta.servlet.http.HttpSession session, org.springframework.web.servlet.mvc.support.RedirectAttributes redirectAttributes) {
+        if (session.getAttribute("adminLoggedIn") == null) return "redirect:/admin/login";
+        homeImageRepository.deleteById(id);
+        redirectAttributes.addFlashAttribute("message", "Image deleted successfully.");
+        return "redirect:/admin/home-images";
+    }
+
 }

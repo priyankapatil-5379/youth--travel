@@ -223,6 +223,7 @@
                 <a href="<c:url value='/admin/trips'/>" class="admin-nav-item active"><i class="fa fa-suitcase"></i> Manage Trips</a>
                 <a href="<c:url value='/admin/users'/>" class="admin-nav-item"><i class="fa fa-users"></i> User Accounts</a>
                 <a href="<c:url value='/admin/vendors'/>" class="admin-nav-item"><i class="fa fa-handshake-o"></i> Vendor Requests</a>
+                <a href="<c:url value='/admin/home-images'/>" class="admin-nav-item"><i class="fa fa-image"></i> Homepage Photos</a>
                 <a href="<c:url value='/admin/inquiries'/>" class="admin-nav-item"><i class="fa fa-envelope"></i> Inquiries</a>
                 <div style="margin-top: 50px; border-top: 1px solid #222; padding-top: 20px;">
                     <a href="<c:url value='/'/>" class="admin-nav-item"><i class="fa fa-sign-out"></i> Back to Site</a>

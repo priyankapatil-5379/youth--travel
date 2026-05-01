@@ -8,8 +8,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 public class HomeController {
 
+	@Autowired
+	private com.youthtravel.repository.HomeImageRepository homeImageRepository;
+
 	@RequestMapping("/")
-	public String Home() {
+	public String Home(org.springframework.ui.Model model) {
+		model.addAttribute("galleryImages", homeImageRepository.findBySection("GALLERY"));
+		model.addAttribute("momentImages", homeImageRepository.findBySection("MOMENTS"));
 		return "index";
 	}
 

@@ -281,6 +281,9 @@
                 <a href="<c:url value='/admin/vendors'/>" class="admin-nav-item">
                     <i class="fa fa-handshake-o"></i> Vendor Requests
                 </a>
+                <a href="<c:url value='/admin/home-images'/>" class="admin-nav-item">
+                    <i class="fa fa-image"></i> Homepage Photos
+                </a>
                 <a href="<c:url value='/admin/inquiries'/>" class="admin-nav-item">
                     <i class="fa fa-envelope"></i> Inquiries
                 </a>

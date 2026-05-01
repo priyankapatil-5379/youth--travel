@@ -562,8 +562,9 @@
 
         .hero-stats-footer {
             display: flex;
-            justify-content: space-between;
+            justify-content: center;
             align-items: center;
+            gap: 80px;
             padding: 25px 0 20px 0;
             max-width: 1140px;
             margin: 0 auto;
@@ -768,8 +769,9 @@
                         <a href="<c:url value='/about'/>">About Us</a>
                         <a href="<c:url value='/contact'/>">Contact Us</a>
                     </div>
-                    <div class="nav-right" style="display: flex; align-items: center; gap: 15px;">
+                    <div class="nav-right" style="display: flex; align-items: center; gap: 10px;">
                         <a href="<c:url value='/user/login'/>" class="login-btn">Login / Sign Up</a>
+                        <a href="<c:url value='/vendor/login'/>" class="login-btn" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); font-size: 14px; padding: 10px 18px;">Vendor Portal</a>
                         <div class="nav-mobile-toggle" onclick="document.querySelector('.nav-links').classList.toggle('active')">
                             <i class="fa fa-bars"></i>
                         </div>
@@ -1021,16 +1023,11 @@
                     <div class="card-nav right"><i class="fa fa-arrow-right"></i></div>
                     
                     <div class="hero-special-card">
-                        <h4>Plan with Friends</h4>
-                        <div class="avatars">
-                            <img src="https://ui-avatars.com/api/?name=User+A&background=random" alt="user">
-                            <img src="https://ui-avatars.com/api/?name=User+B&background=random" alt="user">
-                            <img src="https://ui-avatars.com/api/?name=User+C&background=random" alt="user">
-                            <img src="https://ui-avatars.com/api/?name=User+D&background=random" alt="user">
-                            <div class="avatar-add">+</div>
+                        <h4 style="font-family: 'Permanent Marker', cursive; font-size: 36px; line-height: 1.2; margin-bottom: 15px; color: #1a1a1a; transform: rotate(-2deg);">Adventure Awaits!</h4>
+                        <p style="font-size: 16px; color: #444; line-height: 1.6; font-weight: 500;">Ready to escape the ordinary? Dive into the extraordinary with our curated youth experiences.</p>
+                        <div style="margin-top: 20px; padding-top: 15px; border-top: 2px dashed rgba(0,0,0,0.1);">
+                            <span style="font-family: 'Caveat', cursive; font-size: 28px; color: #e63946; font-weight: 700;">#ChaseTheHorizon</span>
                         </div>
-                        <p>More people, more memories.</p>
-                        <button class="btn-red-sm">Create Group Trip <i class="fa fa-arrow-right"></i></button>
                     </div>
                 </div>
 
@@ -1075,13 +1072,7 @@
                                 <span>- Unknown</span>
                             </div>
                             
-                            <div class="newsletter-box">
-                                <p>Get Travel Inspiration</p>
-                                <div class="input-group-custom">
-                                    <input type="email" placeholder="Enter your email">
-                                    <button><i class="fa fa-paper-plane"></i></button>
-                                </div>
-                            </div>
+
                         </div>
                     </div>
                 </div>
@@ -1152,46 +1143,40 @@
                 <span class="yt-line"></span>
             </div>
             <div class="row yt-mini-gallery">
-                <div class="col-xs-6 col-sm-3 col-md-3">
-                    <a class="yt-mini-thumb" href="<c:url value='/views/assets/images/new-gallery-1.jpg'/>" data-fancybox="home-strip" data-caption="Youth Adventure 1">
-                        <img src="<c:url value='/views/assets/images/new-gallery-1.jpg'/>" alt="Youth Adventure 1">
-                    </a>
-                </div>
-                <div class="col-xs-6 col-sm-3 col-md-3">
-                    <a class="yt-mini-thumb" href="<c:url value='/views/assets/images/new-gallery-2.jpg'/>" data-fancybox="home-strip" data-caption="Youth Adventure 2">
-                        <img src="<c:url value='/views/assets/images/new-gallery-2.jpg'/>" alt="Youth Adventure 2">
-                    </a>
-                </div>
-                <div class="col-xs-6 col-sm-3 col-md-3">
-                    <a class="yt-mini-thumb" href="<c:url value='/views/assets/images/new-gallery-3.jpg'/>" data-fancybox="home-strip" data-caption="Youth Adventure 3">
-                        <img src="<c:url value='/views/assets/images/new-gallery-3.jpg'/>" alt="Youth Adventure 3">
-                    </a>
-                </div>
-                <div class="col-xs-6 col-sm-3 col-md-3">
-                    <a class="yt-mini-thumb" href="<c:url value='/views/assets/images/new-gallery-4.jpg'/>" data-fancybox="home-strip" data-caption="Youth Adventure 4">
-                        <img src="<c:url value='/views/assets/images/new-gallery-4.jpg'/>" alt="Youth Adventure 4">
-                    </a>
-                </div>
-                <div class="col-xs-6 col-sm-3 col-md-3">
-                    <a class="yt-mini-thumb" href="<c:url value='/views/assets/images/new-gallery-5.jpg'/>" data-fancybox="home-strip" data-caption="Youth Adventure 5">
-                        <img src="<c:url value='/views/assets/images/new-gallery-5.jpg'/>" alt="Youth Adventure 5">
-                    </a>
-                </div>
-                <div class="col-xs-6 col-sm-3 col-md-3">
-                    <a class="yt-mini-thumb" href="<c:url value='/views/assets/images/new-gallery-6.jpg'/>" data-fancybox="home-strip" data-caption="Youth Adventure 6">
-                        <img src="<c:url value='/views/assets/images/new-gallery-6.jpg'/>" alt="Youth Adventure 6">
-                    </a>
-                </div>
-                <div class="col-xs-6 col-sm-3 col-md-3">
-                    <a class="yt-mini-thumb" href="<c:url value='/views/assets/images/new-gallery-7.jpg'/>" data-fancybox="home-strip" data-caption="Youth Adventure 7">
-                        <img src="<c:url value='/views/assets/images/new-gallery-7.jpg'/>" alt="Youth Adventure 7">
-                    </a>
-                </div>
-                <div class="col-xs-6 col-sm-3 col-md-3">
-                    <a class="yt-mini-thumb" href="<c:url value='/views/assets/images/gallery-van-camp.png'/>" data-fancybox="home-strip" data-caption="Van camping">
-                        <img src="<c:url value='/views/assets/images/gallery-van-camp.png'/>" alt="Van camping">
-                    </a>
-                </div>
+                <c:choose>
+                    <c:when test="${not empty galleryImages}">
+                        <c:forEach var="img" items="${galleryImages}">
+                            <div class="col-xs-6 col-sm-3 col-md-3">
+                                <a class="yt-mini-thumb" href="<c:url value='${img.imageUrl}'/>" data-fancybox="home-strip" data-caption="${img.caption}">
+                                    <img src="<c:url value='${img.imageUrl}'/>" alt="${img.caption}">
+                                </a>
+                            </div>
+                        </c:forEach>
+                    </c:when>
+                    <c:otherwise>
+                        <!-- Fallback static images if none uploaded -->
+                        <div class="col-xs-6 col-sm-3 col-md-3">
+                            <a class="yt-mini-thumb" href="<c:url value='/views/assets/images/new-gallery-1.jpg'/>" data-fancybox="home-strip" data-caption="Youth Adventure 1">
+                                <img src="<c:url value='/views/assets/images/new-gallery-1.jpg'/>" alt="Youth Adventure 1">
+                            </a>
+                        </div>
+                        <div class="col-xs-6 col-sm-3 col-md-3">
+                            <a class="yt-mini-thumb" href="<c:url value='/views/assets/images/new-gallery-2.jpg'/>" data-fancybox="home-strip" data-caption="Youth Adventure 2">
+                                <img src="<c:url value='/views/assets/images/new-gallery-2.jpg'/>" alt="Youth Adventure 2">
+                            </a>
+                        </div>
+                        <div class="col-xs-6 col-sm-3 col-md-3">
+                            <a class="yt-mini-thumb" href="<c:url value='/views/assets/images/new-gallery-3.jpg'/>" data-fancybox="home-strip" data-caption="Youth Adventure 3">
+                                <img src="<c:url value='/views/assets/images/new-gallery-3.jpg'/>" alt="Youth Adventure 3">
+                            </a>
+                        </div>
+                        <div class="col-xs-6 col-sm-3 col-md-3">
+                            <a class="yt-mini-thumb" href="<c:url value='/views/assets/images/new-gallery-4.jpg'/>" data-fancybox="home-strip" data-caption="Youth Adventure 4">
+                                <img src="<c:url value='/views/assets/images/new-gallery-4.jpg'/>" alt="Youth Adventure 4">
+                            </a>
+                        </div>
+                    </c:otherwise>
+                </c:choose>
             </div>
         </div>
     </section>
@@ -1358,68 +1343,31 @@
             <p class="yt-muted">More photos to make the homepage feel complete and premium.</p>
 
             <div class="row yt-photo-grid">
-                <div class="col-xs-6 col-sm-4 col-md-3">
-                    <a class="yt-mini-thumb" href="<c:url value='/views/assets/images/more-waterpark.png'/>" data-fancybox="more-moments" data-caption="Waterpark fun">
-                        <img src="<c:url value='/views/assets/images/more-waterpark.png'/>" alt="Waterpark fun">
-                    </a>
-                </div>
-                <div class="col-xs-6 col-sm-4 col-md-3">
-                    <a class="yt-mini-thumb" href="<c:url value='/views/assets/images/more-scuba.png'/>" data-fancybox="more-moments" data-caption="Scuba diving">
-                        <img src="<c:url value='/views/assets/images/more-scuba.png'/>" alt="Scuba diving">
-                    </a>
-                </div>
-                <div class="col-xs-6 col-sm-4 col-md-3">
-                    <a class="yt-mini-thumb" href="<c:url value='/views/assets/images/more-slide-kid.png'/>" data-fancybox="more-moments" data-caption="Water slide">
-                        <img src="<c:url value='/views/assets/images/more-slide-kid.png'/>" alt="Water slide">
-                    </a>
-                </div>
-                <div class="col-xs-6 col-sm-4 col-md-3">
-                    <a class="yt-mini-thumb" href="<c:url value='/views/assets/images/more-wipeout.png'/>" data-fancybox="more-moments" data-caption="Theme park ride">
-                        <img src="<c:url value='/views/assets/images/more-wipeout.png'/>" alt="Theme park ride">
-                    </a>
-                </div>
-
-                <div class="col-xs-6 col-sm-4 col-md-3">
-                    <a class="yt-mini-thumb" href="<c:url value='/views/assets/images/more-ktm-road.png'/>" data-fancybox="more-moments" data-caption="Bike ride">
-                        <img src="<c:url value='/views/assets/images/more-ktm-road.png'/>" alt="Bike ride">
-                    </a>
-                </div>
-                <div class="col-xs-6 col-sm-4 col-md-3">
-                    <a class="yt-mini-thumb" href="<c:url value='/views/assets/images/more-stingray.png'/>" data-fancybox="more-moments" data-caption="Underwater">
-                        <img src="<c:url value='/views/assets/images/more-stingray.png'/>" alt="Underwater">
-                    </a>
-                </div>
-                <div class="col-xs-6 col-sm-4 col-md-3">
-                    <a class="yt-mini-thumb" href="<c:url value='/views/assets/images/more-dirt-jump.png'/>" data-fancybox="more-moments" data-caption="Dirt jump">
-                        <img src="<c:url value='/views/assets/images/more-dirt-jump.png'/>" alt="Dirt jump">
-                    </a>
-                </div>
-                <div class="col-xs-6 col-sm-4 col-md-3">
-                    <a class="yt-mini-thumb" href="<c:url value='/views/assets/images/more-fun-ride.png'/>" data-fancybox="more-moments" data-caption="Fun ride">
-                        <img src="<c:url value='/views/assets/images/more-fun-ride.png'/>" alt="Fun ride">
-                    </a>
-                </div>
-
-                <div class="col-xs-6 col-sm-4 col-md-3">
-                    <a class="yt-mini-thumb" href="<c:url value='/views/assets/images/more-bike-man.png'/>" data-fancybox="more-moments" data-caption="Solo ride">
-                        <img src="<c:url value='/views/assets/images/more-bike-man.png'/>" alt="Solo ride">
-                    </a>
-                </div>
-                <div class="col-xs-6 col-sm-4 col-md-3">
-                    <a class="yt-mini-thumb" href="<c:url value='/views/assets/images/more-scuba-black.png'/>" data-fancybox="more-moments" data-caption="Deep dive">
-                        <img src="<c:url value='/views/assets/images/more-scuba-black.png'/>" alt="Deep dive">
-                    </a>
-                </div>
-                <div class="col-xs-6 col-sm-4 col-md-3">
-                    <a class="yt-mini-thumb" href="<c:url value='/views/assets/images/more-bikers-group.png'/>" data-fancybox="more-moments" data-caption="Bikers group">
-                        <img src="<c:url value='/views/assets/images/more-bikers-group.png'/>" alt="Bikers group">
-                    </a>
-                </div>
-                <div class="col-xs-6 col-sm-4 col-md-3">
-                    <a class="yt-mini-thumb" href="<c:url value='/views/assets/images/more-camp-sunset2.png'/>" data-fancybox="more-moments" data-caption="Sunset camp">
-                        <img src="<c:url value='/views/assets/images/more-camp-sunset2.png'/>" alt="Sunset camp">
-                    </a>
-                </div>
+                <c:choose>
+                    <c:when test="${not empty momentImages}">
+                        <c:forEach var="img" items="${momentImages}">
+                            <div class="col-xs-6 col-sm-4 col-md-3">
+                                <a class="yt-mini-thumb" href="<c:url value='${img.imageUrl}'/>" data-fancybox="more-moments" data-caption="${img.caption}">
+                                    <img src="<c:url value='${img.imageUrl}'/>" alt="${img.caption}">
+                                </a>
+                            </div>
+                        </c:forEach>
+                    </c:when>
+                    <c:otherwise>
+                        <!-- Fallback static images -->
+                        <div class="col-xs-6 col-sm-4 col-md-3">
+                            <a class="yt-mini-thumb" href="<c:url value='/views/assets/images/more-waterpark.png'/>" data-fancybox="more-moments" data-caption="Waterpark fun">
+                                <img src="<c:url value='/views/assets/images/more-waterpark.png'/>" alt="Waterpark fun">
+                            </a>
+                        </div>
+                        <div class="col-xs-6 col-sm-4 col-md-3">
+                            <a class="yt-mini-thumb" href="<c:url value='/views/assets/images/more-scuba.png'/>" data-fancybox="more-moments" data-caption="Scuba diving">
+                                <img src="<c:url value='/views/assets/images/more-scuba.png'/>" alt="Scuba diving">
+                            </a>
+                        </div>
+                    </c:otherwise>
+                </c:choose>
+            </div>
             </div>
         </div>
     </section>
