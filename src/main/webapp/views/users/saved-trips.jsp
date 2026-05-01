@@ -23,6 +23,27 @@
         .package-content { padding: 20px; }
         .package-title { font-size: 18px; font-weight: 700; margin-bottom: 10px; color: #fff; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
         .package-price { font-size: 20px; font-weight: 800; color: #fff; text-shadow: 0 2px 4px rgba(0,0,0,0.3); }
+
+        @media (max-width: 991px) {
+            .main-content { margin-left: 0; padding: 90px 20px 40px; }
+            .header { padding: 0 15px; }
+            .header-logo img { height: 30px !important; }
+        }
+
+        @media (max-width: 576px) {
+            .package-grid { grid-template-columns: 1fr; }
+            h2 { font-size: 24px !important; }
+        }
+
+        /* Prevent infinite horizontal stretch on ultra-wide screens */
+        @media (min-width: 2000px) {
+            .header, .main-content {
+                max-width: 1920px;
+                margin-left: auto;
+                margin-right: auto;
+            }
+            .wrapper { justify-content: center; }
+        }
     </style>
 </head>
 <body class="premium-theme">

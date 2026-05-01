@@ -27,6 +27,21 @@
             font-family: 'Dosis', sans-serif;
         }
 
+        /* Ensure all main sections are above the fish */
+        section, footer, header {
+            position: relative;
+            z-index: 1;
+        }
+
+        .yt-new-nav {
+            position: relative;
+            z-index: 999999 !important; /* Critical fix for mobile overlap */
+        }
+
+        #fish-container {
+            z-index: -1;
+        }
+
         /* === SUNLIGHT RAYS === */
         .sun-rays-container {
             position: fixed;
@@ -71,8 +86,6 @@
         }
 
         .yt-new-nav {
-            position: relative;
-            z-index: 1000;
             padding: 20px 0;
             background: rgba(0,0,0,0.2);
             backdrop-filter: blur(10px);
@@ -83,6 +96,11 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
+            position: relative;
+        }
+
+        .nav-flex .logo {
+            flex: 1;
         }
 
         .nav-flex .logo img {
@@ -93,6 +111,8 @@
             display: flex;
             gap: 35px;
             align-items: center;
+            justify-content: center;
+            flex: 2;
         }
 
         .nav-links a {
@@ -107,6 +127,14 @@
             color: #e63946;
         }
 
+        .nav-right {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 10px;
+            flex: 1;
+        }
+
         .nav-right .login-btn {
             background: #e63946;
             color: #fff;
@@ -115,6 +143,7 @@
             font-weight: 600;
             text-decoration: none;
             transition: 0.3s;
+            display: inline-block;
         }
 
         .nav-right .login-btn:hover {
@@ -124,37 +153,117 @@
         .nav-mobile-toggle {
             display: none;
             color: #fff;
-            font-size: 26px;
+            font-size: 28px;
             cursor: pointer;
-            padding: 5px;
+            z-index: 2000;
+            transition: 0.3s;
+        }
+
+        /* Visibility Utilities */
+        @media (min-width: 992px) {
+            .d-lg-none { display: none !important; }
+            .d-lg-inline-block { display: inline-block !important; }
+        }
+        @media (max-width: 991px) {
+            .d-none { display: none !important; }
         }
 
         @media (max-width: 991px) {
-            .nav-mobile-toggle { display: block; }
+            .nav-mobile-toggle { 
+                display: flex !important; 
+                position: fixed !important;
+                top: 20px;
+                right: 20px;
+                z-index: 99999 !important; 
+                background: rgba(255, 255, 255, 0.1);
+                backdrop-filter: blur(10px);
+                -webkit-backdrop-filter: blur(10px);
+                width: 50px;
+                height: 50px;
+                align-items: center;
+                justify-content: center;
+                border-radius: 50%;
+                border: 1px solid rgba(255, 255, 255, 0.2);
+                box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+                color: #fff;
+                cursor: pointer;
+                transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            }
+            .nav-mobile-toggle:hover {
+                background: rgba(255, 255, 255, 0.2);
+                transform: scale(1.05);
+            }
             .nav-links {
-                display: none;
-                position: absolute;
-                top: 70px;
-                left: 0;
-                right: 0;
-                background: #111111;
+                display: flex !important;
+                position: fixed !important;
+                top: 0;
+                right: -100%;
+                width: 100%;
+                height: 100vh;
+                background: rgba(8, 12, 20, 1);
+                backdrop-filter: blur(35px);
+                -webkit-backdrop-filter: blur(35px);
                 flex-direction: column;
-                padding: 15px 0;
-                border-radius: 8px;
-                z-index: 1050;
-                border: 1px solid rgba(255,255,255,0.1);
-                box-shadow: 0 20px 40px rgba(0,0,0,0.8);
-                gap: 0;
+                align-items: center;
+                justify-content: center;
+                padding: 40px;
+                z-index: 999999 !important; 
+                transition: 0.6s cubic-bezier(0.77, 0, 0.175, 1);
+                gap: 20px;
+                visibility: hidden;
             }
             .nav-links.active {
-                display: flex;
+                right: 0;
+                visibility: visible;
             }
             .nav-links a {
-                padding: 12px 25px;
-                width: 100%;
-                text-align: left;
-                border-bottom: 1px solid rgba(255,255,255,0.05);
+                padding: 15px 30px;
+                width: 80%;
+                text-align: center;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+                font-size: 24px;
+                font-weight: 700;
+                letter-spacing: 3px;
+                text-transform: uppercase;
+                color: rgba(255, 255, 255, 0.9);
+                opacity: 0;
+                transform: translateY(30px);
+                transition: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+                text-decoration: none;
             }
+            .nav-links a:last-of-type { border-bottom: none; }
+            .nav-links.active a {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            /* Stagger delays for links */
+            .nav-links.active a:nth-child(1) { transition-delay: 0.2s; }
+            .nav-links.active a:nth-child(2) { transition-delay: 0.3s; }
+            .nav-links.active a:nth-child(3) { transition-delay: 0.4s; }
+            .nav-links.active a:nth-child(4) { transition-delay: 0.5s; }
+            .nav-links.active a:nth-child(5) { transition-delay: 0.6s; }
+            .nav-links.active .mobile-btn-wrap { opacity: 1; transform: translateY(0); transition-delay: 0.7s; }
+
+            .nav-links .mobile-btn-wrap {
+                margin-top: 30px;
+                display: flex !important;
+                flex-direction: column;
+                align-items: center;
+                gap: 15px;
+                width: 100%;
+                opacity: 0;
+                transform: translateY(30px);
+                transition: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            }
+            .nav-links a:hover, .nav-links a.active {
+                color: #e63946;
+                transform: scale(1.05);
+            }
+            .mobile-btn-wrap .login-btn {
+                width: 220px;
+                text-align: center;
+            }
+            .yt-gallery-hero { z-index: 1 !important; }
         }
 
         /* Gallery specific styles */
@@ -164,9 +273,10 @@
 
         .banner-heading h2 {
             font-family: 'Permanent Marker', cursive;
-            font-size: 56px;
+            font-size: clamp(32px, 6vw, 56px);
             color: #e63946;
             margin-bottom: 15px;
+            text-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
         }
 
         .yt-gallery-grid {
@@ -206,6 +316,33 @@
         .yt-gallery-thumb:hover img {
             transform: scale(1.08);
         }
+
+        @media (max-width: 768px) {
+            .gallery { padding: 40px 0; }
+            .yt-gallery-header h2 { font-size: clamp(36px, 10vw, 64px) !important; }
+            .yt-gallery-thumb img { height: 180px; }
+        }
+
+        @media (max-width: 576px) {
+            .yt-gallery-header { margin-bottom: 30px; }
+            .yt-gallery-card { width: 50%; padding: 0 8px; }
+            .input-group-custom { flex-direction: column; background: transparent !important; border: none !important; gap: 10px; }
+            .input-group-custom input { border: 1px solid rgba(255,255,255,0.2) !important; border-radius: 8px !important; width: 100%; }
+            .input-group-custom button { padding: 12px !important; border-radius: 8px !important; width: 100%; }
+            .social-icons { justify-content: center; margin-top: 20px; }
+        }
+
+        /* Prevent infinite horizontal stretch on ultra-wide screens */
+        @media (min-width: 2000px) {
+            .yt-new-nav .container, .gallery .container, .footer .container {
+                max-width: 1400px;
+            }
+            .gallery, .footer {
+                max-width: 1920px;
+                margin-left: auto;
+                margin-right: auto;
+            }
+        }
     </style>
 </head>
 
@@ -227,6 +364,21 @@
         <div class="ray ray-6"></div>
     </div>
 
+    <!-- Underwater Animation (Global Fish and Divers) -->
+    <div class="fish-container">
+        <div class="fish fish-1 fish-orange"><div class="fish-body"></div></div>
+        <div class="fish fish-2 fish-cyan"><div class="fish-body"></div></div>
+        <div class="fish fish-3 fish-golden"><div class="fish-body"></div></div>
+        <div class="diver diver-1">
+            <div class="diver-body"></div>
+            <div class="bubble-stream"><span></span><span></span><span></span></div>
+        </div>
+        <div class="diver diver-2">
+            <div class="diver-body"></div>
+            <div class="bubble-stream"><span></span><span></span><span></span></div>
+        </div>
+    </div>
+
     <div class="yt-new-nav">
         <div class="container">
             <div class="nav-flex">
@@ -238,9 +390,15 @@
                     <a href="<c:url value='/gallery'/>" class="active">Gallery</a>
                     <a href="<c:url value='/about'/>">About Us</a>
                     <a href="<c:url value='/contact'/>">Contact Us</a>
+                    
+                    <div class="mobile-btn-wrap d-lg-none">
+                        <a href="<c:url value='/user/login'/>" class="login-btn">Login / Sign Up</a>
+                        <a href="<c:url value='/vendor/login'/>" class="login-btn" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2);">Vendor Portal</a>
+                    </div>
                 </div>
-                <div class="nav-right" style="display: flex; align-items: center; gap: 15px;">
-                    <a href="<c:url value='/user/login'/>" class="login-btn">Login / Sign Up</a>
+                <div class="nav-right">
+                    <a href="<c:url value='/user/login'/>" class="login-btn d-none d-lg-inline-block">Login / Sign Up</a>
+                    <a href="<c:url value='/vendor/login'/>" class="login-btn d-none d-lg-inline-block" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); font-size: 14px; padding: 10px 18px;">Vendor Portal</a>
                     <div class="nav-mobile-toggle" onclick="document.querySelector('.nav-links').classList.toggle('active')">
                         <i class="fa fa-bars"></i>
                     </div>
@@ -251,9 +409,10 @@
 
     <section class="gallery" style="background: transparent;">
         <div class="container">
-            <div class="banner-heading text-center" style="margin-bottom: 50px;">
-                <h2>Gallery</h2>
-                <p class="font-18" style="color: #ddd;">Biking, trekking, camping, and road-trip moments — made for youth travel.</p>
+            <div class="yt-gallery-header text-center" style="margin-bottom: 60px; padding-top: 40px;">
+                <h2 style="font-family: 'Permanent Marker', cursive; font-size: 64px; color: #e63946; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 2px;">Gallery</h2>
+                <div class="yt-line" style="margin: 0 auto 25px; width: 80px; height: 3px; background: #e63946;"></div>
+                <p class="font-18" style="color: #ddd; max-width: 700px; margin: 0 auto; line-height: 1.6;">Biking, trekking, camping, and road-trip moments — made for youth travel.</p>
             </div>
 
             <div class="yt-gallery-grid">
@@ -313,21 +472,50 @@
                     <div class="footer-logo" style="margin-bottom: 20px;">
                         <img src="<c:url value='/views/assets/images/footer-logo.png'/>" alt="" style="height: 40px;"/>
                     </div>
-                    <p style="color: #bbb; margin-bottom: 30px;">Not just places, but moments that stay with you forever. Explore the unexplored with Youth Travel.</p>
-                    <div class="footer-address" style="color: #999;">
-                        <p><i class="fa fa-map-marker" style="color: #e63946; margin-right: 10px;"></i> king Street, Huntavilla, Ontario Canada</p>
-                        <p><i class="fa fa-phone" style="color: #e63946; margin-right: 10px;"></i> +(000)-865-5842</p>
-                        <p><i class="fa fa-envelope" style="color: #e63946; margin-right: 10px;"></i> demo@gmail.com</p>
+                    <p style="color: #fff; margin-bottom: 30px;">Not just places, but moments that stay with you forever. Explore the unexplored with Youth Travel.</p>
+                    <div class="footer-address" style="color: #fff;">
+                        <p><i class="fa fa-map-marker" style="color: #e63946; margin-right: 10px;"></i> Youth Travel, MG Road, Bengaluru, Karnataka, India</p>
+                        <p><i class="fa fa-phone" style="color: #e63946; margin-right: 10px;"></i> +91 98765 43210</p>
+                        <p><i class="fa fa-envelope" style="color: #e63946; margin-right: 10px;"></i> support@youthtravel.in</p>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="news">
-                        <p style="font-weight: 700; text-transform: uppercase; margin-bottom: 15px;">Newsletter Subscribe</p>
+                        <p style="font-weight: 700; text-transform: uppercase; margin-bottom: 15px; color: #fff;">Newsletter Subscribe</p>
                     </div>
-                    <div class="input-group-custom" style="margin-bottom: 30px;">
-                        <input type="email" placeholder="Enter E-mail" style="flex: 1; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); padding: 12px; color: #fff; border-radius: 6px 0 0 6px;">
-                        <button style="background: #e63946; border: none; padding: 0 25px; border-radius: 0 6px 6px 0; font-weight: 600;">Subscribe</button>
-                    </div>
+                    <form id="newsFormGallery" onsubmit="subscribeNewsGallery(event)">
+                        <div class="input-group-custom" style="margin-bottom: 30px; display: flex; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; overflow: hidden;">
+                            <input type="email" id="emailGallery" placeholder="Enter E-mail" style="flex: 1; background: transparent; border: none; padding: 12px; color: #fff; outline: none;" required>
+                            <button type="submit" id="btnGallery" style="background: #e63946; border: none; padding: 0 25px; color: #fff; font-weight: 600; cursor: pointer;">Subscribe</button>
+                        </div>
+                    </form>
+                    <script>
+                        function subscribeNewsGallery(e) {
+                            e.preventDefault();
+                            const email = document.getElementById('emailGallery').value;
+                            const btn = document.getElementById('btnGallery');
+                            const formData = new FormData();
+                            formData.append("name", "Newsletter Subscriber");
+                            formData.append("email", email);
+                            formData.append("message", "Subscribed to newsletter.");
+                            fetch('/enquiry/submit', { method: 'POST', body: formData })
+                            .then(res => {
+                                if(res.ok) {
+                                    const originalText = btn.innerHTML;
+                                    const originalBg = btn.style.background;
+                                    btn.innerHTML = "Subscribed";
+                                    btn.style.background = "#4caf50";
+                                    btn.disabled = true;
+                                    document.getElementById('emailGallery').value = "";
+                                    setTimeout(() => {
+                                        btn.innerHTML = originalText;
+                                        btn.style.background = originalBg;
+                                        btn.disabled = false;
+                                    }, 3000);
+                                }
+                            });
+                        }
+                    </script>
                     <div class="social-icons" style="display: flex; gap: 20px;">
                         <a href="#" style="color: #fff; font-size: 20px;"><i class="fa fa-facebook"></i></a>
                         <a href="#" style="color: #fff; font-size: 20px;"><i class="fa fa-twitter"></i></a>

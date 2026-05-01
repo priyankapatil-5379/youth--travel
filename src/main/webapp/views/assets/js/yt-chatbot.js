@@ -63,16 +63,22 @@
     }
  
     async function sendToApi(message) {
-      const res = await fetch("/api/chat", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message }),
-      });
-      if (!res.ok) {
-        throw new Error(`HTTP ${res.status}`);
+      try {
+        const formData = new FormData();
+        formData.append("name", "Chat User");
+        formData.append("email", "chat@youthtravel.in");
+        formData.append("message", message);
+
+        const res = await fetch("/enquiry/submit", {
+          method: "POST",
+          body: formData,
+        });
+
+        if (!res.ok) throw new Error("Failed to send");
+        return "Thanks! Your message has been sent to our team. We will get back to you shortly.";
+      } catch (err) {
+        throw err;
       }
-      const data = await res.json();
-      return data.reply || "Sorry, I could not understand. Please try again.";
     }
  
     openBtn?.addEventListener("click", () => setOpen(true));

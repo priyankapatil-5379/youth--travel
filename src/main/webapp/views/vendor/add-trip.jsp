@@ -590,22 +590,122 @@
                 </div>
 
                 <!-- Wizard Progress -->
-                <div class="step-indicator">
-                    <div class="step-item active" id="stepIndicator1">
-                        <div class="step-dot">1</div>
-                        <div class="step-label">Basic Info</div>
-                    </div>
-                    <div class="step-item" id="stepIndicator2">
-                        <div class="step-dot">2</div>
-                        <div class="step-label">Journey</div>
-                    </div>
-                    <div class="step-item" id="stepIndicator3">
-                        <div class="step-dot">3</div>
-                        <div class="step-label">Logistics</div>
-                    </div>
-                    <div class="step-item" id="stepIndicator4">
-                        <div class="step-dot">4</div>
-                        <div class="step-label">Policies</div>
+                <style>
+                    .step-item { cursor: pointer; transition: all 0.3s ease; opacity: 0.7; }
+                    .step-item:hover { opacity: 1; transform: translateY(-2px); }
+                    .step-item.active { opacity: 1; }
+                    .step-label { 
+                        color: #ffffff !important; 
+                        font-weight: 600; 
+                        text-shadow: 0 2px 4px rgba(0,0,0,0.8); 
+                        font-size: 11px;
+                        margin-top: 5px;
+                    }
+                    .step-dot {
+                        background: rgba(30, 39, 46, 0.9);
+                        border: 2px solid rgba(255,255,255,0.2);
+                        color: white;
+                        transition: all 0.3s ease;
+                    }
+                    .step-item.active .step-dot {
+                        background: #f04c26;
+                        border-color: #f04c26;
+                        box-shadow: 0 0 15px rgba(240, 76, 38, 0.5);
+                    }
+                    .step-item.completed .step-dot {
+                        background: #2ed573;
+                        border-color: #2ed573;
+                    }
+                    .day-image-upload {
+                        border: 2px dashed rgba(255,255,255,0.1);
+                        border-radius: 12px;
+                        height: 100px;
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+                        justify-content: center;
+                        cursor: pointer;
+                        transition: 0.3s;
+                        background: rgba(255,255,255,0.02);
+                        color: rgba(255,255,255,0.5);
+                    }
+                    .day-image-upload:hover {
+                        border-color: #f04c26;
+                        background: rgba(240, 76, 38, 0.05);
+                        color: #f04c26;
+                    }
+                    .day-image-preview img {
+                        width: 80px;
+                        height: 80px;
+                        border-radius: 8px;
+                        object-fit: cover;
+                        border: 2px solid rgba(255,255,255,0.1);
+                    }
+                    .occ-card {
+                        background: rgba(255,255,255,0.03);
+                        border: 1px solid rgba(255,255,255,0.1);
+                        border-radius: 16px;
+                        padding: 20px;
+                        margin-bottom: 15px;
+                        transition: 0.3s;
+                    }
+                    .occ-card:hover {
+                        border-color: rgba(240, 76, 38, 0.4);
+                        background: rgba(255,255,255,0.05);
+                        transform: translateX(5px);
+                    }
+                    .day-chip-group {
+                        display: flex;
+                        gap: 10px;
+                        flex-wrap: wrap;
+                    }
+                    .day-chip {
+                        cursor: pointer;
+                        user-select: none;
+                    }
+                    .day-chip input { display: none; }
+                    .chip-label {
+                        display: block;
+                        padding: 10px 18px;
+                        background: rgba(255,255,255,0.05);
+                        border: 1px solid rgba(255,255,255,0.1);
+                        border-radius: 12px;
+                        color: white;
+                        font-weight: 600;
+                        transition: 0.3s;
+                        font-size: 13px;
+                    }
+                    .day-chip input:checked + .chip-label {
+                        background: #f04c26;
+                        border-color: #f04c26;
+                        box-shadow: 0 4px 12px rgba(240, 76, 38, 0.3);
+                    }
+                    .occ-icon {
+                        width: 35px;
+                        height: 35px;
+                        background: rgba(240, 76, 38, 0.1);
+                        color: #f04c26;
+                        border-radius: 10px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        margin-bottom: 10px;
+                    }
+                </style>
+                <div class="step-indicator-container" style="overflow-x: auto; padding-bottom: 20px; margin-bottom: 30px; background: rgba(0,0,0,0.2); border-radius: 15px; padding-top: 15px;">
+                    <div class="step-indicator" style="min-width: 900px; display: flex; justify-content: space-between; padding: 0 20px;">
+                        <div class="step-item active" id="stepIndicator1" onclick="jumpToStep(0)"><div class="step-dot">1</div><div class="step-label">Basic</div></div>
+                        <div class="step-item" id="stepIndicator2" onclick="jumpToStep(1)"><div class="step-dot">2</div><div class="step-label">Dest</div></div>
+                        <div class="step-item" id="stepIndicator3" onclick="jumpToStep(2)"><div class="step-dot">3</div><div class="step-label">Time</div></div>
+                        <div class="step-item" id="stepIndicator4" onclick="jumpToStep(3)"><div class="step-dot">4</div><div class="step-label">Price</div></div>
+                        <div class="step-item" id="stepIndicator5" onclick="jumpToStep(4)"><div class="step-dot">5</div><div class="step-label">Stay</div></div>
+                        <div class="step-item" id="stepIndicator6" onclick="jumpToStep(5)"><div class="step-dot">6</div><div class="step-label">Trans</div></div>
+                        <div class="step-item" id="stepIndicator7" onclick="jumpToStep(6)"><div class="step-dot">7</div><div class="step-label">Meals</div></div>
+                        <div class="step-item" id="stepIndicator8" onclick="jumpToStep(7)"><div class="step-dot">8</div><div class="step-label">Plan</div></div>
+                        <div class="step-item" id="stepIndicator9" onclick="jumpToStep(8)"><div class="step-dot">9</div><div class="step-label">Media</div></div>
+                        <div class="step-item" id="stepIndicator10" onclick="jumpToStep(9)"><div class="step-dot">10</div><div class="step-label">Dates</div></div>
+                        <div class="step-item" id="stepIndicator11" onclick="jumpToStep(10)"><div class="step-dot">11</div><div class="step-label">Terms</div></div>
+                        <div class="step-item" id="stepIndicator12" onclick="jumpToStep(11)"><div class="step-dot">12</div><div class="step-label">Review</div></div>
                     </div>
                 </div>
 
@@ -626,13 +726,6 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label>Destination <span class="text-danger">*</span></label>
-                                        <input type="text" name="destination" class="form-control"
-                                            placeholder="e.g. Uttarakhand, India" required>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
                                         <label>Traveler Type (Audience)</label>
                                         <div class="dropdown">
                                             <button id="audienceBtn" class="form-control text-start select-custom"
@@ -642,329 +735,262 @@
                                             </button>
                                             <div class="dropdown-menu p-3 bg-dark border-secondary w-100"
                                                 style="background: #1a1f2b; min-width: 250px; max-height: 300px; overflow-y: auto;">
-                                                <label class="custom-checkbox mb-2 d-flex"><input type="checkbox"
-                                                        name="travelerCategories" value="Solo"
-                                                        onchange="updateSubCategories()"><span class="checkmark"></span>
-                                                    Solo Travelers</label>
-                                                <label class="custom-checkbox mb-2 d-flex"><input type="checkbox"
-                                                        name="travelerCategories" value="Group"
-                                                        onchange="updateSubCategories()"><span class="checkmark"></span>
-                                                    Group / Friends</label>
-                                                <label class="custom-checkbox mb-2 d-flex"><input type="checkbox"
-                                                        name="travelerCategories" value="Corporate"
-                                                        onchange="updateSubCategories()"><span class="checkmark"></span>
-                                                    Corporate / Team</label>
-                                                <label class="custom-checkbox mb-2 d-flex"><input type="checkbox"
-                                                        name="travelerCategories" value="Adventure"
-                                                        onchange="updateSubCategories()"><span class="checkmark"></span>
-                                                    Adventure</label>
-                                                <label class="custom-checkbox mb-2 d-flex"><input type="checkbox"
-                                                        name="travelerCategories" value="Bike Riding"
-                                                        onchange="updateSubCategories()"><span class="checkmark"></span>
-                                                    Bike Riding</label>
-                                                <label class="custom-checkbox mb-2 d-flex"><input type="checkbox"
-                                                        name="travelerCategories" value="Nature Exploration"
-                                                        onchange="updateSubCategories()"><span class="checkmark"></span>
-                                                    Nature Exploration</label>
-                                                <label class="custom-checkbox mb-2 d-flex"><input type="checkbox"
-                                                        name="travelerCategories" value="Water Activities"
-                                                        onchange="updateSubCategories()"><span class="checkmark"></span>
-                                                    Water Activities</label>
-                                                <label class="custom-checkbox mb-2 d-flex"><input type="checkbox"
-                                                        name="travelerCategories" value="Workation"
-                                                        onchange="updateSubCategories()"><span class="checkmark"></span>
-                                                    Workation / Digital Nomad</label>
-                                                <label class="custom-checkbox mb-2 d-flex"><input type="checkbox"
-                                                        name="travelerCategories" value="Festivals"
-                                                        onchange="updateSubCategories()"><span class="checkmark"></span>
-                                                    Festivals & Events</label>
-                                                <label class="custom-checkbox mb-2 d-flex"><input type="checkbox"
-                                                        name="travelerCategories" value="Volunteering"
-                                                        onchange="updateSubCategories()"><span class="checkmark"></span>
-                                                    Volunteering</label>
-                                                <label class="custom-checkbox mb-2 d-flex"><input type="checkbox"
-                                                        name="travelerCategories" value="Nightlife"
-                                                        onchange="updateSubCategories()"><span class="checkmark"></span>
-                                                    Nightlife & Social</label>
-                                                <label class="custom-checkbox mb-2 d-flex"><input type="checkbox"
-                                                        name="travelerCategories" value="Content Creation"
-                                                        onchange="updateSubCategories()"><span class="checkmark"></span>
-                                                    Content Creation</label>
-                                                <label class="custom-checkbox mb-2 d-flex"><input type="checkbox"
-                                                        name="travelerCategories" value="Wellness"
-                                                        onchange="updateSubCategories()"><span class="checkmark"></span>
-                                                    Wellness & Detox</label>
-                                                <label class="custom-checkbox mb-2 d-flex"><input type="checkbox"
-                                                        name="travelerCategories" value="Budget Backpacking"
-                                                        onchange="updateSubCategories()"><span class="checkmark"></span>
-                                                    Budget Backpacking</label>
-                                                <label class="custom-checkbox mb-2 d-flex"><input type="checkbox"
-                                                        id="catOthersCheck" name="travelerCategories" value="Others"
-                                                        onchange="toggleOtherInput('catOthersCheck', 'catOtherInputCont'); updateSubCategories();"><span
-                                                        class="checkmark"></span> Others</label>
+                                                <label class="custom-checkbox mb-2 d-flex"><input type="checkbox" name="travelerCategories" value="Solo" onchange="updateSubCategories()"><span class="checkmark"></span> Solo Travelers</label>
+                                                <label class="custom-checkbox mb-2 d-flex"><input type="checkbox" name="travelerCategories" value="Group" onchange="updateSubCategories()"><span class="checkmark"></span> Group / Friends</label>
+                                                <label class="custom-checkbox mb-2 d-flex"><input type="checkbox" name="travelerCategories" value="Corporate" onchange="updateSubCategories()"><span class="checkmark"></span> Corporate / Team</label>
+                                                <label class="custom-checkbox mb-2 d-flex"><input type="checkbox" name="travelerCategories" value="Adventure" onchange="updateSubCategories()"><span class="checkmark"></span> Adventure</label>
+                                                <label class="custom-checkbox mb-2 d-flex"><input type="checkbox" name="travelerCategories" value="Bike Riding" onchange="updateSubCategories()"><span class="checkmark"></span> Bike Riding</label>
+                                                <label class="custom-checkbox mb-2 d-flex"><input type="checkbox" name="travelerCategories" value="Nature Exploration" onchange="updateSubCategories()"><span class="checkmark"></span> Nature Exploration</label>
+                                                <label class="custom-checkbox mb-2 d-flex"><input type="checkbox" name="travelerCategories" value="Water Activities" onchange="updateSubCategories()"><span class="checkmark"></span> Water Activities</label>
+                                                <label class="custom-checkbox mb-2 d-flex"><input type="checkbox" name="travelerCategories" value="Workation" onchange="updateSubCategories()"><span class="checkmark"></span> Workation / Nomad</label>
+                                                <label class="custom-checkbox mb-2 d-flex"><input type="checkbox" name="travelerCategories" value="Festivals" onchange="updateSubCategories()"><span class="checkmark"></span> Festivals & Events</label>
+                                                <label class="custom-checkbox mb-2 d-flex"><input type="checkbox" name="travelerCategories" value="Volunteering" onchange="updateSubCategories()"><span class="checkmark"></span> Volunteering</label>
+                                                <label class="custom-checkbox mb-2 d-flex"><input type="checkbox" name="travelerCategories" value="Nightlife" onchange="updateSubCategories()"><span class="checkmark"></span> Nightlife & Social</label>
+                                                <label class="custom-checkbox mb-2 d-flex"><input type="checkbox" name="travelerCategories" value="Content Creation" onchange="updateSubCategories()"><span class="checkmark"></span> Content Creation</label>
+                                                <label class="custom-checkbox mb-2 d-flex"><input type="checkbox" name="travelerCategories" value="Wellness" onchange="updateSubCategories()"><span class="checkmark"></span> Wellness & Detox</label>
+                                                <label class="custom-checkbox mb-2 d-flex"><input type="checkbox" name="travelerCategories" value="Budget Backpacking" onchange="updateSubCategories()"><span class="checkmark"></span> Budget Backpacking</label>
+                                                <label class="custom-checkbox mb-2 d-flex"><input type="checkbox" id="catOthersCheck" name="travelerCategories" value="Others" onchange="toggleOtherInput('catOthersCheck', 'catOtherInputCont'); updateSubCategories();"><span class="checkmark"></span> Others</label>
                                             </div>
                                         </div>
                                         <div id="catOtherInputCont" style="display:none;" class="mt-2">
-                                            <label class="small text-orange">Specify Other Audience</label>
-                                            <input type="text" name="travelerCategoryOther" class="form-control"
-                                                placeholder="e.g., Senior Citizens, Solo Women...">
+                                            <label class="small text-orange mb-1">Custom Audience Type</label>
+                                            <input type="text" name="travelerCategoryOther" class="form-control" placeholder="e.g. Senior Citizens, School Groups...">
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-
-                            <div class="row mt-4">
-                                <div class="col-md-12">
+                                <div class="col-md-6">
                                     <div class="form-group">
-                                        <label>Sub-Categories (Specific Interest)</label>
+                                        <label>Sub-Categories</label>
                                         <div class="dropdown">
-                                            <button id="subCategoryBtn" class="form-control text-start select-custom"
-                                                type="button" data-toggle="dropdown"
-                                                style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
-                                                Select Interests / Categories
-                                            </button>
-                                            <div id="subCategoryList">
+                                            <button id="subCategoryBtn" class="form-control text-start select-custom" type="button" data-toggle="dropdown">Select Interests</button>
+                                            <div id="subCategoryList" class="dropdown-menu p-3 bg-dark border-secondary w-100" style="background: #1a1f2b; max-height: 250px; overflow-y: auto;">
                                                 <p class="text-white-50 small mb-0">Select Audience first...</p>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div id="subOtherInputCont" style="display:none;" class="mt-2">
-                                        <label class="small text-orange">Sub-Categories</label>
-                                        <input type="text" name="travelerSubCategoryOther" class="form-control"
-                                            placeholder="e.g., Photography, Yoga, Stargazing...">
+                                        <div id="subOtherInputCont" style="display:none;" class="mt-2">
+                                            <label class="small text-orange mb-1">Custom Interest / Sub-Category</label>
+                                            <input type="text" name="travelerSubCategoryOther" class="form-control" placeholder="e.g. Photography, Yoga, Stargazing...">
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-
-                            <div class="row mt-4">
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label>Short Summary</label>
-                                        <textarea name="description" class="form-control" rows="3"
-                                            placeholder="A brief, engaging overview..."></textarea>
+                                        <textarea name="description" class="form-control" rows="3" placeholder="A brief, engaging overview..."></textarea>
                                     </div>
-                                </div>
-                            </div>
-
-                            <div class="section-title mt-4"><span class="badge">02</span> MEDIA GALLERY</div>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <label>Add Trip Photos</label>
-                                    <div onclick="document.getElementById('photoFiles').click()"
-                                        class="p-4 border-2 border-dashed border-secondary rounded text-center cursor-pointer mb-2"
-                                        style="border: 2px dashed rgba(240, 76, 38, 0.3); background: rgba(240, 76, 38, 0.05);">
-                                        <i class="fa fa-picture-o fa-2x text-orange mb-2"></i>
-                                        <div class="small">Upload Photos (Multiple)</div>
-                                        <input type="file" id="photoFiles" name="photoFiles" accept="image/*" multiple
-                                            class="d-none" onchange="previewMedia(this, 'photoPreview')">
-                                    </div>
-                                    <div id="photoPreview" class="d-flex flex-wrap gap-2"></div>
-                                </div>
-                                <div class="col-md-6">
-                                    <label>Add Video Clips</label>
-                                    <div onclick="document.getElementById('videoFiles').click()"
-                                        class="p-4 border-2 border-dashed border-secondary rounded text-center cursor-pointer mb-2"
-                                        style="border: 2px dashed rgba(59, 130, 246, 0.3); background: rgba(59, 130, 246, 0.05);">
-                                        <i class="fa fa-video-camera fa-2x text-primary mb-2"></i>
-                                        <div class="small">Upload Highlights (Multiple)</div>
-                                        <input type="file" id="videoFiles" name="videoFiles" accept="video/*" multiple
-                                            class="d-none" onchange="previewMedia(this, 'videoPreview')">
-                                    </div>
-                                    <div id="videoPreview" class="d-flex flex-wrap gap-2"></div>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- STEP 2: ITINERARY & PRICING -->
+                        <!-- STEP 2: DESTINATION -->
                         <div class="form-step" id="step2">
-                            <div class="section-title"><span class="badge">03</span> JOURNEY TIMELINE</div>
+                            <div class="section-title"><span class="badge">02</span> DESTINATION DETAILS</div>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Destination City <span class="text-danger">*</span></label>
+                                        <input type="text" name="destination" class="form-control" placeholder="e.g., Manali" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>State <span class="text-danger">*</span></label>
+                                        <input type="text" name="state" class="form-control" placeholder="e.g., Himachal Pradesh" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Country</label>
+                                        <input type="text" name="country" class="form-control" value="India">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Origin City</label>
+                                        <input type="text" name="originCity" class="form-control" placeholder="e.g., Delhi">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Origin State</label>
+                                        <input type="text" name="originState" class="form-control" placeholder="e.g., Delhi">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Region</label>
+                                        <select name="region" class="form-control select-custom">
+                                            <option value="">Select region</option>
+                                            <optgroup label="Domestic (India)">
+                                                <option value="North India">North India</option>
+                                                <option value="South India">South India</option>
+                                                <option value="East India">East India</option>
+                                                <option value="West India">West India</option>
+                                                <option value="Central India">Central India</option>
+                                                <option value="Northeast India">Northeast India</option>
+                                            </optgroup>
+                                            <optgroup label="International">
+                                                <option value="Southeast Asia">Southeast Asia</option>
+                                                <option value="Middle East">Middle East</option>
+                                                <option value="Europe">Europe</option>
+                                                <option value="North America">North America</option>
+                                                <option value="South America">South America</option>
+                                                <option value="Africa">Africa</option>
+                                                <option value="Australia / Oceania">Australia / Oceania</option>
+                                                <option value="Central Asia">Central Asia</option>
+                                                <option value="East Asia">East Asia</option>
+                                            </optgroup>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label>Covering Places (comma-separated)</label>
+                                        <input type="text" name="coveringPlaces" class="form-control" placeholder="e.g., Delhi, Agra, Jaipur, Varanasi">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="p-4 bg-dark-subtle rounded-4 mb-4 mt-4 border border-secondary border-opacity-10">
+                                <label class="small text-white-50 mb-3 d-block uppercase tracking-wider">Pickup & Drop Points</label>
+                                <div id="selectedPickupTimes" class="mb-3"></div>
+                                <button type="button" onclick="addCustomPickup()" class="btn btn-outline-orange btn-sm" style="border-style: dashed;"><i class="fa fa-plus-circle"></i> Add Point</button>
+                            </div>
+                        </div>
+
+                        <!-- STEP 3: DURATION -->
+                        <div class="form-step" id="step3">
+                            <div class="section-title"><span class="badge">03</span> TRIP DURATION</div>
+                            
+                            <!-- Duration Presets -->
+                            <div class="mb-4">
+                                <label class="small text-white-50 d-block mb-2">Quick Select Presets</label>
+                                <div class="d-flex flex-wrap gap-2">
+                                    <style>
+                                        .duration-preset {
+                                            background: rgba(255,255,255,0.1);
+                                            border: 1px solid rgba(255,255,255,0.2);
+                                            color: white !important;
+                                            font-weight: 500;
+                                            transition: all 0.2s ease;
+                                        }
+                                        .duration-preset:hover {
+                                            background: #f04c26;
+                                            border-color: #f04c26;
+                                            transform: translateY(-2px);
+                                        }
+                                    </style>
+                                    <button type="button" class="btn btn-sm duration-preset px-3" onclick="setDuration(1, 0)">1 Day (Day Trip)</button>
+                                    <button type="button" class="btn btn-sm duration-preset px-3" onclick="setDuration(2, 1)">2D/1N (Weekend)</button>
+                                    <button type="button" class="btn btn-sm duration-preset px-3" onclick="setDuration(3, 2)">3D/2N</button>
+                                    <button type="button" class="btn btn-sm duration-preset px-3" onclick="setDuration(5, 4)">5D/4N</button>
+                                    <button type="button" class="btn btn-sm duration-preset px-3" onclick="setDuration(7, 6)">1 Week</button>
+                                    <button type="button" class="btn btn-sm duration-preset px-3" onclick="setDuration(10, 9)">10 Days</button>
+                                </div>
+                            </div>
+
                             <div class="row">
                                 <div class="col-md-4">
                                     <div class="form-group">
-                                        <label>Number of Days <span class="text-danger">*</span></label>
-                                        <input type="number" name="days" id="tripDays" class="form-control" value="1"
-                                            min="1" required>
+                                        <label>Days <span class="text-danger">*</span></label>
+                                        <input type="number" name="days" id="tripDays" class="form-control" value="1" min="1" required oninput="if(this.value < 1) this.value = 1; syncNights(this.value)">
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
-                                        <label>Number of Nights</label>
-                                        <input type="number" name="nights" class="form-control" value="0">
+                                        <label>Nights</label>
+                                        <input type="number" name="nights" id="tripNights" class="form-control" value="0" min="0" oninput="if(this.value < 0) this.value = 0; updateDurationLabel()">
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label>Duration Label</label>
-                                        <input type="text" name="duration" class="form-control"
-                                            placeholder="e.g. 3D / 2N">
+                                        <input type="text" name="duration" id="durationLabel" class="form-control" placeholder="e.g. 3D / 2N">
+                                        <small class="text-white-50 mt-1 d-block">Auto-generated, but you can edit.</small>
                                     </div>
-                                </div>
-                            </div>
-
-                            <div id="itineraryContainer" class="mb-3">
-                                <div class="itinerary-day" data-day="1">
-                                    <span class="day-number">Day 01</span>
-                                    <div class="row">
-                                        <div class="col-12 mb-3"><input type="text" class="form-control day-title"
-                                                placeholder="Day Title (e.g. Arrival) *" required></div>
-                                        <div class="col-12 mb-3"><textarea class="form-control day-activities" rows="2"
-                                                placeholder="Activities..."></textarea></div>
-                                        <div class="col-6"><input type="text" class="form-control day-stay"
-                                                placeholder="Stay (e.g Tents)"></div>
-                                        <div class="col-6"><input type="text" class="form-control day-meals"
-                                                placeholder="Meals (e.g BK, L, D)"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <button type="button" id="addDayBtn" class="btn btn-outline-orange w-100 mb-4"
-                                style="border-style: dashed;"><i class="fa fa-plus-circle"></i> Add Next Day</button>
-                            <input type="hidden" name="itinerary" id="itineraryJson">
-
-                            <div class="section-title mt-4"><span class="badge">04</span> PRICING CONFIG</div>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <label>Price Model</label>
-                                    <div class="d-flex gap-2 mb-3">
-                                        <div class="pricing-toggle active w-100 text-center"
-                                            onclick="setPricingType('perPerson', this)"><i class="fa fa-user"></i> Per
-                                            Person</div>
-                                        <div class="pricing-toggle w-100 text-center"
-                                            onclick="setPricingType('perGroup', this)"><i class="fa fa-users"></i> Per
-                                            Group</div>
-                                        <input type="hidden" name="pricingType" id="pricingTypeInput" value="perPerson">
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label id="mainPriceLabel">Adult Price (₹) <span
-                                                class="text-danger">*</span></label>
-                                        <input type="number" name="price" class="form-control" required>
-                                        <input type="hidden" name="adultPrice" id="hiddenAdultPrice">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <div class="form-group"><label>Weekend Price (₹)</label><input type="number"
-                                            name="weekendPrice" class="form-control"></div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-group"><label>Group Discount (%)</label><input type="number"
-                                            name="groupDiscount" class="form-control"></div>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- STEP 3: SCHEDULING & LOGISTICS -->
-                        <div class="form-step" id="step3">
-                            <div class="section-title mt-4"><span class="badge">05</span> AVAILABILITY WINDOW <span class="text-danger">*</span></div>
-                            <p class="small text-white-50 mb-3">Choose how you want to schedule this trip. One mode is required.</p>
-                            <div class="d-flex gap-2 mb-4">
-                                <div class="pricing-toggle active w-100 text-center"
-                                    onclick="setScheduleMode('specific', this)"><i class="fa fa-calendar"></i> Specific
-                                    Dates</div>
-                                <div class="pricing-toggle w-100 text-center"
-                                    onclick="setScheduleMode('recurring', this)">
-                                    <i class="fa fa-refresh"></i> Weekly
-                                    Recurring
-                                </div>
-                                <input type="hidden" name="scheduleMode" id="scheduleModeInput" value="specific">
-                            </div>
-
-                            <div id="specificDatesCont">
-                                <div id="occurrenceContainer"></div>
-                                <button type="button" onclick="addOccurrence()"
-                                    class="btn btn-outline-orange w-100 mb-3"
-                                    style="border-style: dashed; background: rgba(240, 76, 38, 0.05);"><i
-                                        class="fa fa-plus-circle"></i> Add Departure Date</button>
-                            </div>
-
-                            <div id="recurringCont" style="display:none;"
-                                class="p-4 bg-dark-subtle rounded-4 mb-4 border border-secondary border-opacity-10">
-                                <label class="small text-white-50 mb-3 d-block uppercase tracking-wider">Select
-                                    Departure
-                                    Days</label>
-                                <div class="day-chip-group mb-4">
-                                    <label class="day-chip"><input type="checkbox" name="recurringDays"
-                                            value="MONDAY"><span class="chip-label">Mon</span></label>
-                                    <label class="day-chip"><input type="checkbox" name="recurringDays"
-                                            value="TUESDAY"><span class="chip-label">Tue</span></label>
-                                    <label class="day-chip"><input type="checkbox" name="recurringDays"
-                                            value="WEDNESDAY"><span class="chip-label">Wed</span></label>
-                                    <label class="day-chip"><input type="checkbox" name="recurringDays"
-                                            value="THURSDAY"><span class="chip-label">Thu</span></label>
-                                    <label class="day-chip"><input type="checkbox" name="recurringDays"
-                                            value="FRIDAY"><span class="chip-label">Fri</span></label>
-                                    <label class="day-chip"><input type="checkbox" name="recurringDays"
-                                            value="SATURDAY"><span class="chip-label">Sat</span></label>
-                                    <label class="day-chip"><input type="checkbox" name="recurringDays"
-                                            value="SUNDAY"><span class="chip-label">Sun</span></label>
-                                </div>
-                                <div class="row g-3">
-                                    <div class="col-md-4">
-                                        <label class="small text-white-50 mb-1">Valid Until</label>
-                                        <input type="date" name="recEndDate" id="recEndDate" class="form-control">
-                                    </div>
-                                    <div class="col-md-4">
-                                        <label class="small text-white-50 mb-1">Start Time</label>
-                                        <input type="time" name="recStartTime" class="form-control">
-                                    </div>
-                                    <div class="col-md-4">
-                                        <label class="small text-white-50 mb-1">Batch Size</label>
-                                        <input type="number" name="recTotalSeats" class="form-control"
-                                            placeholder="Seats (e.g. 20)">
+                        <!-- STEP 4: PRICING -->
+                        <div class="form-step" id="step4">
+                            <div class="section-title"><span class="badge">04</span> PRICING & BOOKING OPTIONS</div>
+                            <div class="row g-3">
+                                <div class="col-md-12">
+                                    <label class="small text-white-50 mb-2">Price Model</label>
+                                    <div class="d-flex gap-2 mb-3">
+                                        <div class="pricing-toggle active w-100 text-center" onclick="setPricingType('perPerson', this)"><i class="fa fa-user"></i> Per Person</div>
+                                        <div class="pricing-toggle w-100 text-center" onclick="setPricingType('perGroup', this)"><i class="fa fa-users"></i> Per Group</div>
+                                        <input type="hidden" name="pricingType" id="pricingTypeInput" value="perPerson">
                                     </div>
                                 </div>
-                            </div>
-
-                            <div class="section-title mt-4"><span class="badge">06</span> PICKUP & LOGISTICS</div>
-                            <div class="p-4 bg-dark-subtle rounded-4 mb-4 border border-secondary border-opacity-10">
-                                <label class="small text-white-50 mb-3 d-block uppercase tracking-wider">Dynamic Pickup
-                                    &
-                                    Drop Points</label>
-
-                                <div id="selectedPickupTimes" class="mb-3">
-                                    <!-- Dynamic rows go here -->
-                                </div>
-
-                                <button type="button" onclick="addCustomPickup()" class="btn btn-outline-orange btn-sm"
-                                    style="border-style: dashed; background: rgba(240, 76, 38, 0.05);">
-                                    <i class="fa fa-plus-circle"></i> Add New Point
-                                </button>
-                                <input type="hidden" name="pickupPoints" id="pickupPointsJson">
-                            </div>
-
-                            <div class="row mt-4">
-                                <div class="col-md-6">
-                                    <label>Transport Category</label>
-                                    <select name="transportCategory" id="transportCategory"
-                                        class="form-control select-custom" onchange="updateTransportTypes()">
-                                        <option value="">Select Category</option>
-                                        <option value="Road">Road Transport 🛣️</option>
-                                        <option value="Rail">Rail Transport 🚆</option>
-                                        <option value="Air">Air Transport ✈️</option>
-                                        <option value="Water">Water Transport 🚢</option>
-                                        <option value="Adventure">Adventure & Terrain 🏔️</option>
-                                        <option value="Cable">Cable & Lift 🚠</option>
-                                        <option value="Eco">Eco-Friendly 🌱</option>
-                                        <option value="Tourist">Tourist-Specific 🏝️</option>
-                                        <option value="Group">Corporate / Group 🏢</option>
-                                        <option value="Special">Special Services 🎯</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-6">
-                                    <label>Transport Type</label>
-                                    <select name="transportType" id="transportType" class="form-control select-custom">
-                                        <option value="">Select Type</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="row mt-4">
                                 <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label id="mainPriceLabel">Base Price (₹) <span class="text-danger">*</span></label>
+                                        <input type="number" name="price" class="form-control" placeholder="e.g. 5000" required>
+                                        <input type="hidden" name="adultPrice" id="hiddenAdultPrice">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group" id="childPriceCont">
+                                        <label>Child Price (₹)</label>
+                                        <input type="number" name="childPrice" class="form-control" placeholder="Optional">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Booking Amount (₹)</label>
+                                        <input type="number" name="bookingAmount" class="form-control" placeholder="Token to block seat">
+                                        <small class="text-white-50">Set 0 for full payment</small>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Weekend Surcharge (Extra ₹)</label>
+                                        <input type="number" name="weekendPrice" class="form-control" placeholder="e.g. 500 (Add-on)">
+                                        <small class="text-white-50">Extra amount added to base price for weekend dates.</small>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Discount (%)</label>
+                                        <input type="number" name="discount" class="form-control" placeholder="e.g. 10">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>GST / Taxes</label>
+                                        <select name="taxStatus" class="form-control select-custom">
+                                            <option value="Inclusive">Inclusive of GST</option>
+                                            <option value="Exclusive">Exclusive of GST</option>
+                                            <option value="NotApplicable">No GST Applicable</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="p-3 border border-secondary border-opacity-10 rounded-4 mt-2">
+                                        <label class="custom-checkbox small mb-0 d-flex align-items-center">
+                                            <input type="checkbox" name="studentDiscountAvailable" value="true">
+                                            <span class="checkmark"></span> 
+                                            <span class="ms-2">Extra Student Discount Available (Requires Valid ID)</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- STEP 5: ACCOMMODATION -->
+                        <div class="form-step" id="step5">
+                            <div class="section-title"><span class="badge">05</span> STAY DETAILS</div>
+                            <div class="row g-3">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label>Stay / Hotel Name</label>
+                                        <input type="text" name="stayName" class="form-control" placeholder="e.g. Grand Orchid Resort / Multiple Stays">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
                                     <label>Stay Category</label>
-                                    <select name="stayCategory" id="stayCategory" class="form-control select-custom"
-                                        onchange="updateStayTypes()">
+                                    <select name="stayCategory" id="stayCategory" class="form-control select-custom" onchange="updateStayTypes()">
                                         <option value="">Select Category</option>
                                         <option value="Hotels">🏢 Hotels</option>
                                         <option value="Resorts">🏝️ Resorts</option>
@@ -973,160 +999,343 @@
                                         <option value="Unique">💎 Unique Stays</option>
                                     </select>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-6">
                                     <label>Stay Type</label>
-                                    <select name="stayType" id="stayType" class="form-control select-custom">
-                                        <option value="">Select Type</option>
-                                    </select>
+                                    <select name="stayType" id="stayType" class="form-control select-custom"><option value="">Select Type</option></select>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-6">
                                     <label>Stay Variant</label>
-                                    <select name="stayVariant" id="stayVariant" class="form-control select-custom">
-                                        <option value="Standard">Standard Room</option>
-                                        <option value="Premium">Premium / Deluxe</option>
-                                        <option value="Luxury">Luxury / Suite</option>
-                                        <option value="Private">Private / Entire Place</option>
-                                        <option value="Shared">Shared / Dormitory</option>
-                                        <option value="Tent">Tent (Single/Double)</option>
+                                    <select name="stayVariant" class="form-control select-custom">
+                                        <option value="Budget">Budget</option>
+                                        <option value="Standard" selected>Standard</option>
+                                        <option value="Premium">Premium</option>
+                                        <option value="Luxury">Luxury</option>
                                     </select>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-6">
                                     <label>Room Sharing</label>
                                     <select name="roomSharing" class="form-control select-custom">
-                                        <option value="Not Applicable">N/A</option>
-                                        <option value="2 sharing">2 sharing</option>
-                                        <option value="3 sharing">3 sharing</option>
+                                        <option value="N/A">N/A</option>
+                                        <option value="Single Occupancy">Single Occupancy</option>
+                                        <option value="2 sharing (Double)">2 sharing (Double)</option>
+                                        <option value="3 sharing (Triple)">3 sharing (Triple)</option>
+                                        <option value="4 sharing (Quad)">4 sharing (Quad)</option>
                                         <option value="Dormitory">Dormitory</option>
+                                        <option value="Tent Sharing">Tent Sharing</option>
                                     </select>
+                                </div>
+                                <div class="col-md-12 mt-3">
+                                    <label class="small text-white-50 mb-3 d-block uppercase tracking-wider">Stay Amenities</label>
+                                    <div class="p-4 bg-dark-subtle rounded-4 border border-secondary border-opacity-10">
+                                        <div class="row g-3">
+                                            <div class="col-md-3"><label class="custom-checkbox"><input type="checkbox" class="stay-amenity" value="WiFi"><span class="checkmark"></span> WiFi</label></div>
+                                            <div class="col-md-3"><label class="custom-checkbox"><input type="checkbox" class="stay-amenity" value="Air Conditioning"><span class="checkmark"></span> AC</label></div>
+                                            <div class="col-md-3"><label class="custom-checkbox"><input type="checkbox" class="stay-amenity" value="Heater"><span class="checkmark"></span> Heater</label></div>
+                                            <div class="col-md-3"><label class="custom-checkbox"><input type="checkbox" class="stay-amenity" value="Attached Washroom"><span class="checkmark"></span> Attached Washroom</label></div>
+                                            <div class="col-md-3"><label class="custom-checkbox"><input type="checkbox" class="stay-amenity" value="Geyser / Hot Water"><span class="checkmark"></span> Geyser</label></div>
+                                            <div class="col-md-3"><label class="custom-checkbox"><input type="checkbox" class="stay-amenity" value="Swimming Pool"><span class="checkmark"></span> Pool</label></div>
+                                            <div class="col-md-3"><label class="custom-checkbox"><input type="checkbox" class="stay-amenity" value="Parking"><span class="checkmark"></span> Parking</label></div>
+                                            <div class="col-md-3"><label class="custom-checkbox"><input type="checkbox" class="stay-amenity" value="CCTV Security"><span class="checkmark"></span> Security</label></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label>Hotel Link (Website / Google Maps)</label>
+                                        <input type="url" name="stayLink" class="form-control" placeholder="https://example.com or Google Maps link">
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label>Additional Stay Details</label>
+                                        <textarea name="stayDescription" class="form-control" rows="3" placeholder="Describe the property, view, location, or any specific rules..."></textarea>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 mt-3">
+                                    <label class="small text-white-50 mb-3 d-block uppercase tracking-wider">Stay Photos (Multiple)</label>
+                                    <div onclick="document.getElementById('stayPhotos').click()" class="p-4 border-2 border-dashed rounded text-center cursor-pointer" style="border: 2px dashed rgba(240, 76, 38, 0.3); background: rgba(240, 76, 38, 0.02);">
+                                        <i class="fa fa-university fa-2x text-orange mb-2"></i>
+                                        <div class="small">Upload Stay/Hotel Photos</div>
+                                        <input type="file" id="stayPhotos" name="stayPhotos" accept="image/*" multiple class="d-none" onchange="previewStayImage(this)">
+                                    </div>
+                                    <div id="stayPhotoPreview" class="d-flex flex-wrap gap-2 mt-2"></div>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- STEP 4: POLICIES & FINAL -->
-                        <div class="form-step" id="step4">
-                            <div class="section-title"><span class="badge">07</span> SAFETY & AMENITIES</div>
-
-                            <div class="row g-4 mb-4">
-                                <!-- CORE SAFETY -->
+                        <!-- STEP 6: TRANSPORT -->
+                        <div class="form-step" id="step6">
+                            <div class="section-title"><span class="badge">06</span> TRANSPORTATION</div>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label>Transport Category</label>
+                                    <select name="transportCategory" id="transportCategory" class="form-control select-custom" onchange="updateTransportTypes()">
+                                        <option value="">Select Category</option>
+                                        <option value="Road">Road 🛣️</option>
+                                        <option value="Rail">Rail 🚆</option>
+                                        <option value="Air">Air ✈️</option>
+                                        <option value="Water">Water 🚢</option>
+                                        <option value="Adventure">Adventure 🚙</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label>Transport Type</label>
+                                    <select name="transportType" id="transportType" class="form-control select-custom"><option value="">Select Type</option></select>
+                                </div>
                                 <div class="col-md-12">
-                                    <div
-                                        class="p-4 bg-dark-subtle rounded-4 border border-secondary border-opacity-10 h-100">
-                                        <h6 class="text-orange mb-3"><i class="fa fa-shield"></i> Core Safety</h6>
-                                        <div class="row g-2">
-                                            <div class="col-6">
-                                                <label class="custom-checkbox small mb-2"><input type="checkbox"
-                                                        class="stay-amenity" value="24/7 Security"><span
-                                                        class="checkmark"></span> 24/7 Security</label>
-                                                <label class="custom-checkbox small mb-2"><input type="checkbox"
-                                                        class="stay-amenity" value="CCTV Surveillance"><span
-                                                        class="checkmark"></span> CCTV</label>
-                                                <label class="custom-checkbox small mb-2"><input type="checkbox"
-                                                        class="stay-amenity" value="First Aid Kit"><span
-                                                        class="checkmark"></span> First Aid Kit</label>
+                                    <div class="form-group">
+                                        <label>Vehicle Name / Model</label>
+                                        <input type="text" name="vehicleName" class="form-control" placeholder="e.g. Urbania / Tempo Traveller / Force Traveler">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label>Comfort Level</label>
+                                    <div class="d-flex gap-2">
+                                        <label class="custom-checkbox"><input type="radio" name="acType" value="AC" checked><span class="checkmark"></span> AC</label>
+                                        <label class="custom-checkbox"><input type="radio" name="acType" value="Non-AC"><span class="checkmark"></span> Non-AC</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label>Transfer Type</label>
+                                    <div class="d-flex gap-2">
+                                        <label class="custom-checkbox"><input type="radio" name="transferType" value="Shared" checked><span class="checkmark"></span> Shared</label>
+                                        <label class="custom-checkbox"><input type="radio" name="transferType" value="Private"><span class="checkmark"></span> Private</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 mt-3">
+                                    <label class="small text-white-50 mb-3 d-block uppercase tracking-wider">Transport Inclusions</label>
+                                    <div class="p-4 bg-dark-subtle rounded-4 border border-secondary border-opacity-10">
+                                        <div class="row g-3">
+                                            <div class="col-md-4"><label class="custom-checkbox"><input type="checkbox" name="transportInclusions" value="Fuel Charges"><span class="checkmark"></span> Fuel Charges</label></div>
+                                            <div class="col-md-4"><label class="custom-checkbox"><input type="checkbox" name="transportInclusions" value="Driver Allowance"><span class="checkmark"></span> Driver Allowance</label></div>
+                                            <div class="col-md-4"><label class="custom-checkbox"><input type="checkbox" name="transportInclusions" value="Tolls & Parking"><span class="checkmark"></span> Tolls & Parking</label></div>
+                                            <div class="col-md-4"><label class="custom-checkbox"><input type="checkbox" name="transportInclusions" value="State Tax"><span class="checkmark"></span> State Tax</label></div>
+                                            <div class="col-md-4"><label class="custom-checkbox"><input type="checkbox" name="transportInclusions" value="Airport Pickup"><span class="checkmark"></span> Airport Pickup</label></div>
+                                            <div class="col-md-4"><label class="custom-checkbox"><input type="checkbox" name="transportInclusions" value="Local Sightseeing"><span class="checkmark"></span> Local Sightseeing</label></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- STEP 7: MEALS & DIETARY -->
+                        <div class="form-step" id="step7">
+                            <div class="section-title"><span class="badge">07</span> MEALS & DIETARY</div>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label>Standard Meal Plan</label>
+                                    <select name="mealPlan" class="form-control select-custom">
+                                        <option value="EP">EP (Room Only - No Meals)</option>
+                                        <option value="CP" selected>CP (Continental Plan - Breakfast Only)</option>
+                                        <option value="MAP">MAP (Modified American Plan - Breakfast + Dinner)</option>
+                                        <option value="AP">AP (American Plan - All Meals)</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label>Dietary Availability</label>
+                                    <div class="d-flex gap-3 mt-2">
+                                        <label class="custom-checkbox"><input type="checkbox" name="dietType" value="Veg" checked><span class="checkmark"></span> Veg</label>
+                                        <label class="custom-checkbox"><input type="checkbox" name="dietType" value="Non-Veg"><span class="checkmark"></span> Non-Veg</label>
+                                        <label class="custom-checkbox"><input type="checkbox" name="dietType" value="Jain"><span class="checkmark"></span> Jain</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 mt-3">
+                                    <label class="small text-white-50 mb-3 d-block uppercase tracking-wider">Inclusions & Refreshments</label>
+                                    <div class="p-4 bg-dark-subtle rounded-4 border border-secondary border-opacity-10">
+                                        <div class="row g-3">
+                                            <div class="col-md-4"><label class="custom-checkbox"><input type="checkbox" class="meal-check" value="Breakfast" checked><span class="checkmark"></span> Breakfast</label></div>
+                                            <div class="col-md-4"><label class="custom-checkbox"><input type="checkbox" class="meal-check" value="Lunch"><span class="checkmark"></span> Lunch</label></div>
+                                            <div class="col-md-4"><label class="custom-checkbox"><input type="checkbox" class="meal-check" value="Dinner"><span class="checkmark"></span> Dinner</label></div>
+                                            <div class="col-md-4"><label class="custom-checkbox"><input type="checkbox" class="meal-check" value="Welcome Drink"><span class="checkmark"></span> Welcome Drink</label></div>
+                                            <div class="col-md-4"><label class="custom-checkbox"><input type="checkbox" class="meal-check" value="Evening Snacks"><span class="checkmark"></span> Evening Snacks</label></div>
+                                            <div class="col-md-4"><label class="custom-checkbox"><input type="checkbox" class="meal-check" value="Tea / Coffee"><span class="checkmark"></span> Tea / Coffee</label></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label>Specific Meal Notes</label>
+                                        <input type="text" name="mealNotes" class="form-control" placeholder="e.g. Local Himachali cuisine included, Buffet style...">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- STEP 8: ITINERARY -->
+                        <div class="form-step" id="step8">
+                            <div class="section-title"><span class="badge">08</span> ITINERARY PLAN</div>
+                            <div id="itineraryContainer" class="mb-3">
+                                <div class="itinerary-day" data-day="1">
+                                    <span class="day-number">Day 01</span>
+                                    <div class="row">
+                                        <div class="col-md-8">
+                                            <div class="row">
+                                                <div class="col-12 mb-3"><input type="text" class="form-control day-title" placeholder="Day Title (e.g. Arrival at Manali) *" required></div>
+                                                <div class="col-12 mb-3"><textarea class="form-control day-activities" rows="2" placeholder="Describe activities, sightseeing, etc."></textarea></div>
+                                                <div class="col-6"><div class="form-group"><label class="small text-white-50">Day Stay</label><input type="text" class="form-control day-stay" placeholder="e.g. Hotel / Camp"></div></div>
+                                                <div class="col-6"><div class="form-group"><label class="small text-white-50">Day Meals</label><input type="text" class="form-control day-meals" placeholder="e.g. B + D"></div></div>
                                             </div>
-                                            <div class="col-6">
-                                                <label class="custom-checkbox small mb-2"><input type="checkbox"
-                                                        class="stay-amenity" value="Fire Safety"><span
-                                                        class="checkmark"></span> Fire Safety</label>
-                                                <label class="custom-checkbox small mb-2"><input type="checkbox"
-                                                        class="stay-amenity" value="Women-Friendly"><span
-                                                        class="checkmark"></span> Women-Friendly</label>
-                                                <label class="custom-checkbox small mb-2"><input type="checkbox"
-                                                        class="stay-amenity" value="Family-Friendly"><span
-                                                        class="checkmark"></span> Family-Friendly</label>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="small text-white-50">Day Photos (Multiple)</label>
+                                            <div class="day-image-upload" onclick="this.querySelector('input').click()">
+                                                <i class="fa fa-camera"></i>
+                                                <span>Add Photos</span>
+                                                <input type="file" class="day-photo-input d-none" accept="image/*" multiple onchange="previewDayImage(this)">
+                                            </div>
+                                            <div class="day-image-preview mt-2 d-flex flex-wrap gap-2"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="button" id="addDayBtn" class="btn btn-outline-orange w-100 mb-4" style="border-style: dashed;"><i class="fa fa-plus-circle"></i> Add Next Day</button>
+                        </div>
+
+                        <!-- STEP 9: MEDIA -->
+                        <div class="form-step" id="step9">
+                            <div class="section-title"><span class="badge">09</span> MEDIA GALLERY</div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>Add Photos</label>
+                                    <div onclick="document.getElementById('photoFiles').click()" class="p-4 border-2 border-dashed rounded text-center cursor-pointer" style="border: 2px dashed rgba(240, 76, 38, 0.3);">
+                                        <i class="fa fa-picture-o fa-2x text-orange mb-2"></i>
+                                        <div class="small">Upload Photos</div>
+                                        <input type="file" id="photoFiles" name="photoFiles" accept="image/*" multiple class="d-none" onchange="previewMedia(this, 'photoPreview')">
+                                    </div>
+                                    <div id="photoPreview" class="d-flex flex-wrap gap-2 mt-2"></div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label>Add Videos</label>
+                                    <div onclick="document.getElementById('videoFiles').click()" class="p-4 border-2 border-dashed rounded text-center cursor-pointer" style="border: 2px dashed rgba(59, 130, 246, 0.3);">
+                                        <i class="fa fa-video-camera fa-2x text-primary mb-2"></i>
+                                        <div class="small">Upload Videos</div>
+                                        <input type="file" id="videoFiles" name="videoFiles" accept="video/*" multiple class="d-none" onchange="previewMedia(this, 'videoPreview')">
+                                    </div>
+                                    <div id="videoPreview" class="d-flex flex-wrap gap-2 mt-2"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- STEP 10: DEPARTURES -->
+                        <div class="form-step" id="step10">
+                            <div class="section-title"><span class="badge">10</span> DEPARTURE DATES</div>
+                            <div class="d-flex gap-2 mb-4">
+                                <div class="pricing-toggle active w-100 text-center" onclick="setScheduleMode('specific', this)"><i class="fa fa-calendar"></i> Specific</div>
+                                <div class="pricing-toggle w-100 text-center" onclick="setScheduleMode('recurring', this)"><i class="fa fa-refresh"></i> Weekly</div>
+                                <input type="hidden" name="scheduleMode" id="scheduleModeInput" value="specific">
+                            </div>
+                            <div id="specificDatesCont">
+                                <div id="occurrenceContainer"></div>
+                                <button type="button" onclick="addOccurrence()" class="btn btn-outline-orange w-100 mb-3" style="border-style: dashed;"><i class="fa fa-plus-circle"></i> Add Date</button>
+                            </div>
+                            <div id="recurringCont" style="display:none;" class="p-4 bg-dark-subtle rounded-4 mb-4 border border-secondary border-opacity-10">
+                                <div class="day-chip-group mb-4">
+                                    <label class="day-chip"><input type="checkbox" name="recurringDays" value="MONDAY"><span class="chip-label">Mon</span></label>
+                                    <label class="day-chip"><input type="checkbox" name="recurringDays" value="TUESDAY"><span class="chip-label">Tue</span></label>
+                                    <label class="day-chip"><input type="checkbox" name="recurringDays" value="WEDNESDAY"><span class="chip-label">Wed</span></label>
+                                    <label class="day-chip"><input type="checkbox" name="recurringDays" value="THURSDAY"><span class="chip-label">Thu</span></label>
+                                    <label class="day-chip"><input type="checkbox" name="recurringDays" value="FRIDAY"><span class="chip-label">Fri</span></label>
+                                    <label class="day-chip"><input type="checkbox" name="recurringDays" value="SATURDAY"><span class="chip-label">Sat</span></label>
+                                    <label class="day-chip"><input type="checkbox" name="recurringDays" value="SUNDAY"><span class="chip-label">Sun</span></label>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6"><label>Until</label><input type="date" name="recEndDate" id="recEndDate" class="form-control"></div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Booking Cut-off (Hrs)</label>
+                                            <input type="number" name="bookingCutoff" class="form-control" placeholder="e.g. 24" value="24">
+                                            <small class="text-white-50">Stop bookings X hours before trip.</small>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Min Batch Size</label>
+                                            <input type="number" name="minBatchSize" class="form-control" placeholder="e.g. 5" value="1">
+                                            <small class="text-white-50">Minimum people to run the trip.</small>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6"><label>Capacity</label><input type="number" name="recTotalSeats" class="form-control" placeholder="Seats"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- STEP 11: POLICIES & PREPARATION -->
+                        <div class="form-step" id="step11">
+                            <div class="section-title"><span class="badge">11</span> POLICIES & PREPARATION</div>
+                            <div class="row g-3">
+                                <div class="col-md-12">
+                                    <label>Cancellation Policy <span class="text-danger">*</span></label>
+                                    <textarea name="cancellationPolicy" class="form-control" rows="4" placeholder="Describe your cancellation tiers (e.g., 100% refund before 10 days, 50% refund before 5 days...)" required></textarea>
+                                </div>
+                                <div class="col-md-6">
+                                    <label>Batch Capacity (Max travelers)</label>
+                                    <input type="number" name="maxTravelers" class="form-control" value="20" required>
+                                </div>
+                                
+                                <div class="col-md-6 mt-3">
+                                    <label class="small text-white-50 mb-3 d-block uppercase tracking-wider">What's Included</label>
+                                    <div class="p-3 bg-dark-subtle rounded-4 border border-secondary border-opacity-10">
+                                        <div class="row g-2">
+                                            <div class="col-12"><label class="custom-checkbox"><input type="checkbox" name="inclusions" value="Entry Fees" checked><span class="checkmark"></span> Entry Fees / Permits</label></div>
+                                            <div class="col-12"><label class="custom-checkbox"><input type="checkbox" name="inclusions" value="Tour Guide" checked><span class="checkmark"></span> Certified Tour Guide</label></div>
+                                            <div class="col-12"><label class="custom-checkbox"><input type="checkbox" name="inclusions" value="Equipment"><span class="checkmark"></span> Trekking Equipment</label></div>
+                                            <div class="col-12"><label class="custom-checkbox"><input type="checkbox" name="inclusions" value="Insurance"><span class="checkmark"></span> Travel Insurance</label></div>
+                                            <div class="col-12"><label class="custom-checkbox"><input type="checkbox" id="inclOthers" onchange="toggleOtherInput('inclOthers', 'inclOtherInput')"><span class="checkmark"></span> Others</label></div>
+                                            <div class="col-12 mt-2" id="inclOtherInput" style="display:none;">
+                                                <input type="text" name="inclusionsOther" class="form-control form-control-sm" placeholder="Specify other inclusions...">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mt-3">
+                                    <label class="small text-white-50 mb-3 d-block uppercase tracking-wider">Things to Carry</label>
+                                    <div class="p-3 bg-dark-subtle rounded-4 border border-secondary border-opacity-10">
+                                        <div class="row g-2">
+                                            <div class="col-12"><label class="custom-checkbox"><input type="checkbox" name="essentials" value="Powerbank"><span class="checkmark"></span> Powerbank & Charger</label></div>
+                                            <div class="col-12"><label class="custom-checkbox"><input type="checkbox" name="essentials" value="Shoes"><span class="checkmark"></span> Trekking Shoes</label></div>
+                                            <div class="col-12"><label class="custom-checkbox"><input type="checkbox" name="essentials" value="Raincoat"><span class="checkmark"></span> Raincoat / Poncho</label></div>
+                                            <div class="col-12"><label class="custom-checkbox"><input type="checkbox" name="essentials" value="ID Proof"><span class="checkmark"></span> Original ID Proof</label></div>
+                                            <div class="col-12"><label class="custom-checkbox"><input type="checkbox" id="essOthers" onchange="toggleOtherInput('essOthers', 'essOtherInput')"><span class="checkmark"></span> Others</label></div>
+                                            <div class="col-12 mt-2" id="essOtherInput" style="display:none;">
+                                                <input type="text" name="essentialsOther" class="form-control form-control-sm" placeholder="Specify other essentials...">
                                             </div>
                                         </div>
                                     </div>
                                 </div>
 
-                            </div>
-                            <input type="hidden" name="stayAmenities" id="stayAmenitiesJson">
-
-                            <div class="row mt-4">
-                                <div class="col-md-6">
-                                    <label>Difficulty</label>
-                                    <select name="difficulty" class="form-control select-custom">
-                                        <option value="Easy">Easy</option>
-                                        <option value="Moderate">Moderate</option>
-                                        <option value="Hard">Hard</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-6">
-                                    <label>Age/Fitness Limit</label>
-                                    <input type="text" name="safetyRequirements" class="form-control"
-                                        placeholder="e.g. basic fitness">
+                                <div class="col-md-12 mt-3">
+                                    <label>Trip Rules & Instructions</label>
+                                    <textarea name="tripRules" class="form-control" rows="3" placeholder="e.g. No smoking during trek, respect local culture..."></textarea>
                                 </div>
                             </div>
+                        </div>
 
-                            <div class="row mt-4">
-                                <div class="col-md-6">
-                                    <label>Target Age Group</label>
-                                    <select name="ageGroup" class="form-control select-custom">
-                                        <option value="All Youths">All Youths (18-35)</option>
-                                        <option value="18-24">Early Youth (18-24)</option>
-                                        <option value="25-35">Mid Youth (25-35)</option>
-                                        <option value="30+">Mature Youth (30+)</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-6">
-                                    <label>Student Benefits</label>
-                                    <div class="form-group p-2 border border-secondary border-opacity-10 rounded">
-                                        <label class="custom-checkbox small mb-0">
-                                            <input type="checkbox" name="studentDiscountAvailable" value="true">
-                                            <span class="checkmark"></span> Extra Student Discount Available
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="section-title mt-4"><span class="badge">08</span> TERMS & POLICIES</div>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <label>Cancellation Policy</label>
-                                    <select name="cancellationPolicy" class="form-control select-custom"
-                                        onchange="toggleCustomPolicy(this.value)">
-                                        <option value="Flexible">Flexible (24h before)</option>
-                                        <option value="Moderate">Moderate (5d before)</option>
-                                        <option value="Strict">Strict (7d before)</option>
-                                        <option value="Custom">Custom Policy</option>
-                                    </select>
-                                    <div id="customPolicyCont" style="display:none;" class="mt-2">
-                                        <textarea name="customCancellation" class="form-control" rows="2"></textarea>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label>Booking Cut-off (Hours)</label>
-                                        <input type="number" name="bookingCutoffHours" class="form-control" value="24">
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row mt-4">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label>Min Travelers <span class="text-danger">*</span></label>
-                                        <input type="number" name="minTravelers" class="form-control" value="1"
-                                            required>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label>Batch Capacity <span class="text-danger">*</span></label>
-                                        <input type="number" name="maxTravelers" class="form-control" value="20"
-                                            required>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row mt-4">
-                                <div class="col-md-12">
-                                    <div class="p-3 border border-warning rounded"
-                                        style="background: rgba(255,193,7,0.05);">
-                                        <label class="custom-checkbox"><input type="checkbox" name="customizable"
-                                                value="true"><span class="checkmark"></span> Allow travelers to request
-                                            customization for this trip.</label>
-                                    </div>
+                        <!-- STEP 12: REVIEW -->
+                        <div class="form-step" id="step12">
+                            <div class="section-title"><span class="badge">12</span> FINAL REVIEW</div>
+                            <div class="p-4 bg-dark rounded-4 border border-secondary border-opacity-20" id="reviewSummary">
+                                <p class="text-white-50 mb-4">Please review all your details before launching.</p>
+                                <div class="review-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 25px;">
+                                    <div class="rev-item"><small class="text-orange d-block">Trip Title</small><span id="rev_title" class="fw-bold">-</span></div>
+                                    <div class="rev-item"><small class="text-orange d-block">Price</small><span id="rev_price" class="fw-bold">-</span></div>
+                                    <div class="rev-item"><small class="text-orange d-block">Destination</small><span id="rev_dest" class="fw-bold">-</span></div>
+                                    <div class="rev-item"><small class="text-orange d-block">Duration</small><span id="rev_duration" class="fw-bold">-</span></div>
+                                    
+                                    <div class="rev-item"><small class="text-orange d-block">Audience</small><span id="rev_audience" class="fw-bold">-</span></div>
+                                    <div class="rev-item"><small class="text-orange d-block">Categories</small><span id="rev_subs" class="fw-bold">-</span></div>
+                                    
+                                    <div class="rev-item"><small class="text-orange d-block">Stay</small><span id="rev_stay" class="fw-bold">-</span></div>
+                                    <div class="rev-item"><small class="text-orange d-block">Transport</small><span id="rev_trans" class="fw-bold">-</span></div>
+                                    <div class="rev-item"><small class="text-orange d-block">Meal Plan</small><span id="rev_meals" class="fw-bold">-</span></div>
+                                    
+                                    <div class="rev-item"><small class="text-orange d-block">Departure Mode</small><span id="rev_mode" class="fw-bold">-</span></div>
+                                    <div class="rev-item"><small class="text-orange d-block">Min Batch</small><span id="rev_batch" class="fw-bold">-</span></div>
+                                    
+                                    <div class="rev-item" style="grid-column: 1 / -1;"><small class="text-orange d-block">Inclusions</small><span id="rev_inclusions" class="small text-white-50">-</span></div>
+                                    <div class="rev-item" style="grid-column: 1 / -1;"><small class="text-orange d-block">Stay Photos Preview</small><div id="rev_stayPhotos" class="d-flex flex-wrap gap-2 mt-1"></div></div>
+                                    <div class="rev-item" style="grid-column: 1 / -1;"><small class="text-orange d-block">Itinerary Photos Preview</small><div id="rev_itinPhotos" class="d-flex flex-wrap gap-2 mt-1"></div></div>
+                                    <div class="rev-item" style="grid-column: 1 / -1;"><small class="text-orange d-block">Things to Carry</small><span id="rev_carry" class="small text-white-50">-</span></div>
+                                    <div class="rev-item" style="grid-column: 1 / -1;"><small class="text-orange d-block">Cancellation Policy</small><span id="rev_policy" class="small text-white-50">-</span></div>
                                 </div>
                             </div>
                         </div>
@@ -1164,13 +1373,17 @@
 
                 function showStep(n) {
                     const steps = document.getElementsByClassName("form-step");
+                    if (!steps[n]) return;
+                    
                     steps[n].classList.add("active");
 
                     // Buttons
                     document.getElementById("prevBtn").style.display = (n == 0) ? "none" : "inline";
+                    
                     if (n == (steps.length - 1)) {
                         document.getElementById("nextBtn").classList.add("d-none");
                         document.getElementById("launchBtn").classList.remove("d-none");
+                        populateReview();
                     } else {
                         document.getElementById("nextBtn").classList.remove("d-none");
                         document.getElementById("launchBtn").classList.add("d-none");
@@ -1178,17 +1391,37 @@
 
                     // Indicators
                     updateIndicators(n);
+                    
+                    // Scroll indicator into view on mobile
+                    const activeIndicator = document.getElementById("stepIndicator" + (n + 1));
+                    if (activeIndicator) {
+                        activeIndicator.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+                    }
                 }
 
                 function nextPrev(n) {
                     const steps = document.getElementsByClassName("form-step");
 
-                    // Validation (Basic)
+                    // Validation
                     if (n == 1 && !validateStep()) return false;
 
                     steps[currentStep].classList.remove("active");
                     currentStep += n;
 
+                    showStep(currentStep);
+                    window.scrollTo(0, 0);
+                }
+
+                function jumpToStep(n) {
+                    const steps = document.getElementsByClassName("form-step");
+                    
+                    // Allow jumping back freely. Jumping forward requires validation of current step.
+                    if (n > currentStep) {
+                        if (!validateStep()) return;
+                    }
+
+                    steps[currentStep].classList.remove("active");
+                    currentStep = n;
                     showStep(currentStep);
                     window.scrollTo(0, 0);
                 }
@@ -1202,43 +1435,82 @@
                     }
                 }
 
+                // Duration Helpers
+                function setDuration(d, n) {
+                    document.getElementById('tripDays').value = d;
+                    document.getElementById('tripNights').value = n;
+                    updateDurationLabel();
+                }
+                function syncNights(d) {
+                    const n = Math.max(0, d - 1);
+                    document.getElementById('tripNights').value = n;
+                    updateDurationLabel();
+                }
+                function updateDurationLabel() {
+                    const d = document.getElementById('tripDays').value;
+                    const n = document.getElementById('tripNights').value;
+                    document.getElementById('durationLabel').value = d + 'D / ' + n + 'N';
+                }
+
+                function toggleCustomPolicy(val) {
+                    const cont = document.getElementById('customPolicyCont');
+                    if (val === 'Custom') {
+                        cont.style.display = 'block';
+                    } else {
+                        cont.style.display = 'none';
+                    }
+                }
+
+                function populateReview() {
+                    const getVal = (name) => document.querySelector(`[name="\${name}"]`)?.value || 'N/A';
+                    const getChecked = (name) => Array.from(document.querySelectorAll(`input[name="\${name}"]:checked`)).map(cb => cb.value).join(', ') || 'None';
+
+                    document.getElementById('rev_title').innerText = getVal('title');
+                    document.getElementById('rev_price').innerText = '₹' + getVal('price');
+                    document.getElementById('rev_dest').innerText = getVal('destination');
+                    document.getElementById('rev_duration').innerText = getVal('days') + ' Days / ' + getVal('nights') + ' Nights';
+                    
+                    document.getElementById('rev_audience').innerText = getChecked('travelerType');
+                    document.getElementById('rev_subs').innerText = getChecked('travelerSubCategories');
+                    
+                    document.getElementById('rev_stay').innerText = getVal('stayName') + ' (' + getVal('stayCategory') + ')';
+                    document.getElementById('rev_trans').innerText = getVal('vehicleName') + ' (' + getVal('transportCategory') + ')';
+                    document.getElementById('rev_meals').innerText = getVal('mealPlan');
+                    
+                    document.getElementById('rev_mode').innerText = getVal('scheduleMode');
+                    document.getElementById('rev_batch').innerText = getVal('minBatchSize') + ' People';
+                    
+                    document.getElementById('rev_inclusions').innerText = getChecked('inclusions') + (getVal('inclusionsOther') !== 'N/A' ? ', ' + getVal('inclusionsOther') : '');
+                    document.getElementById('rev_carry').innerText = getChecked('essentials') + (getVal('essentialsOther') !== 'N/A' ? ', ' + getVal('essentialsOther') : '');
+                    document.getElementById('rev_policy').innerText = getVal('cancellationPolicy');
+
+                    // Populate Stay Photos Preview in Review
+                    const stayRev = document.getElementById('rev_stayPhotos');
+                    stayRev.innerHTML = '';
+                    const stayOriginals = document.querySelectorAll('#stayPhotoPreview img');
+                    stayOriginals.forEach(img => {
+                        const clone = img.cloneNode(true);
+                        clone.style.width = '50px';
+                        clone.style.height = '50px';
+                        stayRev.appendChild(clone);
+                    });
+
+                    // Populate Itinerary Photos Preview in Review
+                    const itinRev = document.getElementById('rev_itinPhotos');
+                    itinRev.innerHTML = '';
+                    const itinOriginals = document.querySelectorAll('.day-image-preview img');
+                    itinOriginals.forEach(img => {
+                        const clone = img.cloneNode(true);
+                        clone.style.width = '50px';
+                        clone.style.height = '50px';
+                        clone.style.marginRight = '5px';
+                        itinRev.appendChild(clone);
+                    });
+                }
+
                 function validateStep() {
                     const activeStep = document.getElementsByClassName("form-step")[currentStep];
-                    
-                    // Specific validation for Availability Window (Step 3, Index 2)
-                    if (currentStep === 2) {
-                        const mode = document.getElementById('scheduleModeInput').value;
-                        if (mode === 'specific') {
-                            const occCards = document.querySelectorAll('.occ-card');
-                            if (occCards.length === 0) {
-                                alert('Please add at least one departure date in "Specific Dates" mode.');
-                                return false;
-                            }
-                            // Validate that all added dates have a value
-                            const dateInputs = document.querySelectorAll('.occ-date');
-                            for(let d of dateInputs) {
-                                if(!d.value) {
-                                    d.classList.add("is-invalid");
-                                    alert("Please fill in all departure dates.");
-                                    return false;
-                                }
-                                d.classList.remove("is-invalid");
-                            }
-                        } else if (mode === 'recurring') {
-                            const recurringDays = document.querySelectorAll('input[name="recurringDays"]:checked');
-                            if (recurringDays.length === 0) {
-                                alert('Please select at least one departure day for "Weekly Recurring" mode.');
-                                return false;
-                            }
-                            const endDate = document.getElementById('recEndDate');
-                            if (!endDate.value) {
-                                endDate.classList.add("is-invalid");
-                                alert('Please select a "Valid Until" date for recurring schedules.');
-                                return false;
-                            }
-                            endDate.classList.remove("is-invalid");
-                        }
-                    }
+                    if (!activeStep) return true;
 
                     const inputs = activeStep.querySelectorAll("input[required], select[required], textarea[required]");
                     for (let input of inputs) {
@@ -1249,26 +1521,36 @@
                         }
                         input.classList.remove("is-invalid");
                     }
+                    
+                    // Specific logic for scheduling if on that step
+                    if (activeStep.id === 'step10') {
+                        const mode = document.getElementById('scheduleModeInput').value;
+                        if (mode === 'specific' && document.querySelectorAll('.occ-card').length === 0) {
+                            alert("Please add at least one departure date.");
+                            return false;
+                        }
+                    }
+                    
                     return true;
                 }
 
                 // Sub-categories Mapping
                 const subCategories = {
-                    'Solo': ['Backpacker', 'Digital Nomad', 'Spiritual Search', 'Other'],
-                    'Group': ['Friends Trip', 'College Group', 'Bikers Club', 'Other'],
-                    'Corporate': ['Team Building', 'Leadership Retreat', 'Other'],
-                    'Adventure': ['Trekking', 'Hiking', 'Camping', 'Rock climbing', 'Other'],
-                    'Bike Riding': ['Road Trips', 'Off-road', 'Weekend Rides', 'Other'],
-                    'Nature Exploration': ['Wildlife Safari', 'Forest Walk / Jungle Trek', 'Bird Watching', 'Nature Trails / Hiking', 'Waterfall Exploration', 'National Park Visit', 'Botanical Garden Visit', 'River / Lake Exploration'],
-                    'Water Activities': ['Scuba Diving', 'Snorkeling', 'Jet Ski', 'Parasailing', 'Banana Boat Ride', 'Kayaking', 'River Rafting', 'Surfing', 'Other'],
-                    'Workation': ['Co-working Friendly', 'High-Speed WiFi', 'Networking Events', 'Monthly Stays', 'Other'],
-                    'Festivals': ['Music Festivals', 'Comic-con / Pop Culture', 'Sporting Events', 'Cultural Carnivals', 'Other'],
-                    'Volunteering': ['Animal Rescue', 'Rural Teaching', 'Beach Cleanup', 'Environmental Projects', 'Other'],
-                    'Nightlife': ['Pub Crawls', 'Clubbing Destinations', 'Social Hostel Hopping', 'Beach Parties', 'Other'],
-                    'Content Creation': ['Drone Photography Spots', 'Aesthetic Stays', 'Portrait Tours', 'Hidden Gems', 'Other'],
-                    'Wellness': ['Yoga Retreats', 'Digital Detox', 'Meditation Camps', 'Spa & Healing', 'Other'],
-                    'Budget Backpacking': ['Hitchhiking Tours', 'Shared Dorm Stays', 'Street Food Crawls', 'Other'],
-                    'Others': ['Other']
+                    'Solo': ['Backpacker', 'Digital Nomad', 'Spiritual Search', 'Solo Women Trips', 'Solo Men Trips', 'Quiet Retreats', 'Other'],
+                    'Group': ['Friends Trip', 'College Group', 'Bikers Club', 'Bachelor/Bachelorette', 'Family Reunion', 'Other'],
+                    'Corporate': ['Team Building', 'Leadership Retreat', 'Conference/MICE', 'Incentive Tours', 'Other'],
+                    'Adventure': ['Trekking', 'Hiking', 'Camping', 'Rock climbing', 'Paragliding', 'Bungee Jumping', 'Skiing / Snowboarding', 'Scuba Diving', 'Rafting', 'Other'],
+                    'Bike Riding': ['Road Trips', 'Off-road', 'Weekend Rides', 'Cross-Country', 'Mountain Biking', 'Other'],
+                    'Nature Exploration': ['Wildlife Safari', 'Forest Walk', 'Bird Watching', 'Waterfall Exploration', 'National Park Visit', 'Botanical Tours', 'Star Gazing', 'Eco-Tours'],
+                    'Water Activities': ['Scuba Diving', 'Snorkeling', 'Jet Ski', 'Parasailing', 'Kayaking', 'River Rafting', 'Surfing', 'Cruise Highlights', 'Other'],
+                    'Workation': ['Co-working Friendly', 'High-Speed WiFi', 'Networking Events', 'Monthly Stays', 'Hillside Workation', 'Beachside Office', 'Other'],
+                    'Festivals': ['Music Festivals', 'Comic-con / Pop Culture', 'Sporting Events', 'Cultural Carnivals', 'Food & Wine Festivals', 'Other'],
+                    'Volunteering': ['Animal Rescue', 'Rural Teaching', 'Beach Cleanup', 'Environmental Projects', 'Social Service', 'Other'],
+                    'Nightlife': ['Pub Crawls', 'Clubbing Destinations', 'Social Hostel Hopping', 'Beach Parties', 'Casino Tours', 'Other'],
+                    'Content Creation': ['Drone Photography Spots', 'Aesthetic Stays', 'Portrait Tours', 'Hidden Gems', 'Vlogging Trails', 'Instagrammable Spots', 'Other'],
+                    'Wellness': ['Yoga Retreats', 'Digital Detox', 'Meditation Camps', 'Spa & Healing', 'Ayurveda Centers', 'Mental Health Retreats', 'Other'],
+                    'Budget Backpacking': ['Hitchhiking Tours', 'Shared Dorm Stays', 'Street Food Crawls', 'Free Walking Tours', 'Other'],
+                    'Others': ['Specify in "Other" box']
                 };
 
                 const transportData = {
@@ -1410,16 +1692,134 @@
                     div.className = 'itinerary-day';
                     div.innerHTML = `
                         <span class="day-number">Day \${dayCount < 10 ? '0' + dayCount : dayCount}</span>
-                        <div class="remove-day" onclick="this.parentElement.remove(); updateDayNumbers();"><i class="fa fa-trash"></i></div>
+                        <div class="remove-day" onclick="this.parentElement.remove(); updateDayNumbers();" style="position: absolute; right: 10px; top: 10px; cursor: pointer; color: #ff4757;"><i class="fa fa-trash"></i></div>
                         <div class="row">
-                            <div class="col-12 mb-3"><input type="text" class="form-control day-title" placeholder="Day Title" required></div>
-                            <div class="col-12 mb-3"><textarea class="form-control day-activities" rows="2" placeholder="Activities..."></textarea></div>
-                            <div class="col-6"><input type="text" class="form-control day-stay"></div>
-                            <div class="col-6"><input type="text" class="form-control day-meals"></div>
+                            <div class="col-md-8">
+                                <div class="row">
+                                    <div class="col-12 mb-3"><input type="text" class="form-control day-title" placeholder="Day Title" required></div>
+                                    <div class="col-12 mb-3"><textarea class="form-control day-activities" rows="2" placeholder="Activities..."></textarea></div>
+                                    <div class="col-6"><input type="text" class="form-control day-stay" placeholder="Stay"></div>
+                                    <div class="col-6"><input type="text" class="form-control day-meals" placeholder="Meals"></div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="small text-white-50">Day Photos (Multiple)</label>
+                                <div class="day-image-upload" onclick="this.querySelector('input').click()">
+                                    <i class="fa fa-camera"></i>
+                                    <span>Add Photos</span>
+                                    <input type="file" class="day-photo-input d-none" accept="image/*" multiple onchange="previewDayImage(this)">
+                                </div>
+                                <div class="day-image-preview mt-2 d-flex flex-wrap gap-2"></div>
+                            </div>
                         </div>
                     `;
                     document.getElementById('itineraryContainer').appendChild(div);
                 });
+
+                function previewStayImage(input) {
+                    const preview = document.getElementById('stayPhotoPreview');
+                    const files = input.files;
+                    
+                    if (!input.dataset.dt) {
+                        input.dataset.dtId = 'dt_stay_' + Math.random().toString(36).substr(2, 9);
+                        window[input.dataset.dtId] = new DataTransfer();
+                    }
+                    const dt = window[input.dataset.dtId];
+
+                    for (let i = 0; i < files.length; i++) {
+                        dt.items.add(files[i]);
+                    }
+                    
+                    input.files = dt.files;
+                    renderStayPreviews(input, preview, dt);
+                }
+
+                function renderStayPreviews(input, preview, dt) {
+                    preview.innerHTML = '';
+                    Array.from(dt.files).forEach((file, index) => {
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                            const container = document.createElement('div');
+                            container.style.position = 'relative';
+                            
+                            const img = document.createElement('img');
+                            img.src = e.target.result;
+                            img.style = "width:80px; height:80px; object-fit:cover; border-radius:10px; border:1px solid rgba(255,255,255,0.1);";
+                            
+                            const removeBtn = document.createElement('div');
+                            removeBtn.innerHTML = '×';
+                            removeBtn.style = "position:absolute; top:-5px; right:-5px; background:#ff4757; color:white; width:20px; height:20px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:12px; cursor:pointer; border:1px solid white; z-index:10;";
+                            removeBtn.onclick = (event) => {
+                                event.stopPropagation();
+                                dt.items.remove(index);
+                                input.files = dt.files;
+                                renderStayPreviews(input, preview, dt);
+                            };
+                            
+                            container.appendChild(img);
+                            container.appendChild(removeBtn);
+                            preview.appendChild(container);
+                        }
+                        reader.readAsDataURL(file);
+                    });
+                }
+
+                function previewDayImage(input) {
+                    const preview = input.parentElement.nextElementSibling;
+                    const files = input.files;
+                    
+                    // Initialize or get the DataTransfer object for this specific input
+                    if (!input.dataset.dt) {
+                        input.dataset.dtId = 'dt_' + Math.random().toString(36).substr(2, 9);
+                        window[input.dataset.dtId] = new DataTransfer();
+                    }
+                    const dt = window[input.dataset.dtId];
+
+                    // Add new files to the DataTransfer object
+                    for (let i = 0; i < files.length; i++) {
+                        dt.items.add(files[i]);
+                    }
+                    
+                    // Sync the input files with our accumulated DataTransfer
+                    input.files = dt.files;
+                    
+                    renderDayPreviews(input, preview, dt);
+                }
+
+                function renderDayPreviews(input, preview, dt) {
+                    preview.innerHTML = '';
+                    Array.from(dt.files).forEach((file, index) => {
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                            const container = document.createElement('div');
+                            container.style.position = 'relative';
+                            
+                            const img = document.createElement('img');
+                            img.src = e.target.result;
+                            img.className = 'day-preview-item';
+                            img.style.width = '60px';
+                            img.style.height = '60px';
+                            img.style.objectFit = 'cover';
+                            img.style.borderRadius = '8px';
+                            img.style.border = '1px solid rgba(255,255,255,0.1)';
+                            
+                            const removeBtn = document.createElement('div');
+                            removeBtn.innerHTML = '×';
+                            removeBtn.style = "position:absolute; top:-5px; right:-5px; background:#ff4757; color:white; width:18px; height:18px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:12px; cursor:pointer; border:1px solid white;";
+                            removeBtn.onclick = (event) => {
+                                event.stopPropagation();
+                                dt.items.remove(index);
+                                input.files = dt.files;
+                                renderDayPreviews(input, preview, dt);
+                            };
+                            
+                            container.appendChild(img);
+                            container.appendChild(removeBtn);
+                            preview.appendChild(container);
+                        }
+                        reader.readAsDataURL(file);
+                    });
+                }
 
                 function updateDayNumbers() {
                     const days = document.querySelectorAll('.itinerary-day');
@@ -1493,30 +1893,30 @@
                     const today = new Date().toISOString().split('T')[0];
                     const id = Date.now();
                     const html = `<div class="occ-card animate__animated animate__fadeInUp" id="occ_\${id}">
-                                    <div class="row g-3 align-items-end">
+                                    <div class="row g-3 align-items-center">
                                         <div class="col-md-4">
-                                            <label class="small text-white-50 mb-1">Departure Date <span class="text-danger">*</span></label>
+                                            <div class="occ-icon"><i class="fa fa-calendar-check-o"></i></div>
+                                            <label class="small text-white-50 mb-1 d-block">Departure Date <span class="text-danger">*</span></label>
                                             <div class="input-group input-group-sm">
-                                                <span class="input-group-text bg-dark border-secondary border-opacity-10 text-white-50"><i class="fa fa-calendar"></i></span>
-                                                <input type="date" class="form-control occ-date" min="\${today}" required>
+                                                <input type="date" class="form-control occ-date" min="\${today}" required style="background: rgba(0,0,0,0.2); border-color: rgba(255,255,255,0.1); color: white;">
                                             </div>
                                         </div>
                                         <div class="col-md-3">
-                                            <label class="small text-white-50 mb-1">Time</label>
+                                            <div class="occ-icon" style="background: rgba(59, 130, 246, 0.1); color: #3b82f6;"><i class="fa fa-clock-o"></i></div>
+                                            <label class="small text-white-50 mb-1 d-block">Time</label>
                                             <div class="input-group input-group-sm">
-                                                <span class="input-group-text bg-dark border-secondary border-opacity-10 text-white-50"><i class="fa fa-clock-o"></i></span>
-                                                <input type="time" class="form-control occ-time">
+                                                <input type="time" class="form-control occ-time" style="background: rgba(0,0,0,0.2); border-color: rgba(255,255,255,0.1); color: white;">
                                             </div>
                                         </div>
                                         <div class="col-md-3">
-                                            <label class="small text-white-50 mb-1">Capacity</label>
+                                            <div class="occ-icon" style="background: rgba(46, 213, 115, 0.1); color: #2ed573;"><i class="fa fa-users"></i></div>
+                                            <label class="small text-white-50 mb-1 d-block">Batch Size</label>
                                             <div class="input-group input-group-sm">
-                                                <span class="input-group-text bg-dark border-secondary border-opacity-10 text-white-50"><i class="fa fa-users"></i></span>
-                                                <input type="number" class="form-control occ-seats" placeholder="Seats" value="20">
+                                                <input type="number" class="form-control occ-seats" placeholder="Seats" value="20" style="background: rgba(0,0,0,0.2); border-color: rgba(255,255,255,0.1); color: white;">
                                             </div>
                                         </div>
                                         <div class="col-md-2 text-end">
-                                            <button type="button" class="btn btn-sm btn-outline-danger border-0" onclick="$('#occ_\${id}').remove()">
+                                            <button type="button" class="btn btn-sm btn-outline-danger border-0 mt-4" onclick="$('#occ_\${id}').remove()">
                                                 <i class="fa fa-trash-o fa-lg"></i>
                                             </button>
                                         </div>

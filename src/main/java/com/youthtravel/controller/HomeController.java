@@ -11,6 +11,9 @@ public class HomeController {
 	@Autowired
 	private com.youthtravel.repository.HomeImageRepository homeImageRepository;
 
+	@Autowired
+	private com.youthtravel.repository.EnquiryRepository enquiryRepository;
+
 	@RequestMapping("/")
 	public String Home(org.springframework.ui.Model model) {
 		model.addAttribute("galleryImages", homeImageRepository.findBySection("GALLERY"));
@@ -26,6 +29,17 @@ public class HomeController {
 	@RequestMapping("/contact")
 	public String contact() {
 		return "contact";
+	}
+
+	@org.springframework.web.bind.annotation.PostMapping("/enquiry/submit")
+	@ResponseBody
+	public String submitEnquiry(@org.springframework.web.bind.annotation.RequestParam String name, 
+								@org.springframework.web.bind.annotation.RequestParam String email,
+								@org.springframework.web.bind.annotation.RequestParam(required = false) String phone,
+								@org.springframework.web.bind.annotation.RequestParam String message) {
+		com.youthtravel.entity.Enquiry enquiry = new com.youthtravel.entity.Enquiry(name, email, phone, message);
+		enquiryRepository.save(enquiry);
+		return "success";
 	}
 
 	@RequestMapping("/gallery")

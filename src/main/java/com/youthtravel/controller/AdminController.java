@@ -33,6 +33,9 @@ public class AdminController {
     @Autowired
     private com.youthtravel.repository.HomeImageRepository homeImageRepository;
 
+    @Autowired
+    private com.youthtravel.repository.EnquiryRepository enquiryRepository;
+
     @GetMapping("/login")
     public String showLoginForm(jakarta.servlet.http.HttpSession session) {
         if (session.getAttribute("adminLoggedIn") != null) {
@@ -161,10 +164,17 @@ public class AdminController {
     }
 
     @RequestMapping("/inquiries")
-    public String inquiries(Model model) {
-        model.addAttribute("userInquiries", new java.util.ArrayList<>());
-        model.addAttribute("vendorInquiries", new java.util.ArrayList<>());
-        return "Admin/inquiries";
+    public String inquiries(Model model, jakarta.servlet.http.HttpSession session) {
+        if (session.getAttribute("adminLoggedIn") == null) return "redirect:/admin/login";
+        model.addAttribute("enquiries", enquiryRepository.findAllByOrderByCreatedAtDesc());
+        return "Admin/enquiries";
+    }
+
+    @PostMapping("/inquiries/{id}/delete")
+    public String deleteEnquiry(@PathVariable Long id, jakarta.servlet.http.HttpSession session) {
+        if (session.getAttribute("adminLoggedIn") == null) return "redirect:/admin/login";
+        enquiryRepository.deleteById(id);
+        return "redirect:/admin/inquiries";
     }
 
     @GetMapping("/home-images")

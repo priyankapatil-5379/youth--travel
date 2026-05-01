@@ -156,6 +156,11 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
+            position: relative;
+        }
+
+        .nav-flex .logo {
+            flex: 1;
         }
 
         .nav-flex .logo img {
@@ -166,6 +171,8 @@
             display: flex;
             gap: 35px;
             align-items: center;
+            justify-content: center;
+            flex: 2;
         }
 
         .nav-links a {
@@ -180,6 +187,14 @@
             color: #e63946;
         }
 
+        .nav-right {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 10px;
+            flex: 1;
+        }
+
         .nav-right .login-btn {
             background: #e63946;
             color: #fff;
@@ -188,10 +203,29 @@
             font-weight: 600;
             text-decoration: none;
             transition: 0.3s;
+            display: inline-block;
         }
 
         .nav-right .login-btn:hover {
             background: #c1121f;
+        }
+        
+        .nav-mobile-toggle {
+            display: none;
+            color: #fff;
+            font-size: 28px;
+            cursor: pointer;
+            z-index: 2000;
+            transition: 0.3s;
+        }
+
+        /* Visibility Utilities */
+        @media (min-width: 992px) {
+            .d-lg-none { display: none !important; }
+            .d-lg-inline-block { display: inline-block !important; }
+        }
+        @media (max-width: 991px) {
+            .d-none { display: none !important; }
         }
 
         .hero-main-container {
@@ -211,7 +245,7 @@
 
         .hero-title {
             font-family: 'Permanent Marker', cursive;
-            font-size: 78px;
+            font-size: clamp(36px, 6vw, 78px);
             line-height: 1.1;
             text-transform: uppercase;
             margin: 0 0 25px 0;
@@ -532,9 +566,14 @@
         }
         
         /* Ensure all main sections are above the fish */
-        section, footer, header, .yt-new-nav {
+        section, footer, header {
             position: relative;
             z-index: 1;
+        }
+
+        .yt-new-nav {
+            position: relative;
+            z-index: 999999 !important; /* Critical fix for mobile overlap */
         }
 
         #fish-container {
@@ -584,9 +623,9 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 80px;
+            gap: 40px;
             padding: 25px 0 20px 0;
-            max-width: 1140px;
+            max-width: 1200px;
             margin: 0 auto;
         }
 
@@ -701,164 +740,191 @@
         @media (max-width: 1200px) {
             .hero-play-btn { right: 5%; }
             .hero-special-card { width: 250px; }
-            .stats-box { gap: 20px; }
+            .stats-box { gap: 15px; }
+            .hero-stats-footer { gap: 30px; }
         }
 
         @media (max-width: 991px) {
-            .nav-mobile-toggle { display: block; }
-            .hero-title { font-size: 50px; }
-            .hero-cards-wrapper { flex-direction: column; gap: 20px; }
+            .nav-mobile-toggle { 
+                display: flex !important; 
+                position: fixed !important;
+                top: 20px;
+                right: 20px;
+                z-index: 99999 !important; 
+                background: rgba(255, 255, 255, 0.1);
+                backdrop-filter: blur(10px);
+                -webkit-backdrop-filter: blur(10px);
+                width: 50px;
+                height: 50px;
+                align-items: center;
+                justify-content: center;
+                border-radius: 50%;
+                border: 1px solid rgba(255, 255, 255, 0.2);
+                box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+                color: #fff;
+                cursor: pointer;
+                transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            }
+            .nav-mobile-toggle:hover {
+                background: rgba(255, 255, 255, 0.2);
+                transform: scale(1.05);
+            }
+            .nav-links {
+                display: flex !important;
+                position: fixed !important;
+                top: 0;
+                right: -100%;
+                width: 100%;
+                height: 100vh;
+                background: rgba(8, 12, 20, 1);
+                backdrop-filter: blur(35px);
+                -webkit-backdrop-filter: blur(35px);
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                padding: 40px;
+                z-index: 999999 !important; 
+                transition: 0.6s cubic-bezier(0.77, 0, 0.175, 1);
+                gap: 20px;
+                visibility: hidden;
+            }
+            .nav-links.active {
+                right: 0;
+                visibility: visible;
+            }
+            .nav-links a {
+                padding: 15px 30px;
+                width: 80%;
+                text-align: center;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+                font-size: 24px;
+                font-weight: 700;
+                letter-spacing: 3px;
+                text-transform: uppercase;
+                color: rgba(255, 255, 255, 0.9);
+                opacity: 0;
+                transform: translateY(30px);
+                transition: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+                text-decoration: none;
+            }
+            .nav-links a:last-of-type { border-bottom: none; }
+            .nav-links.active a {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            /* Stagger delays for links */
+            .nav-links.active a:nth-child(1) { transition-delay: 0.2s; }
+            .nav-links.active a:nth-child(2) { transition-delay: 0.3s; }
+            .nav-links.active a:nth-child(3) { transition-delay: 0.4s; }
+            .nav-links.active a:nth-child(4) { transition-delay: 0.5s; }
+            .nav-links.active a:nth-child(5) { transition-delay: 0.6s; }
+            .nav-links.active .mobile-btn-wrap { opacity: 1; transform: translateY(0); transition-delay: 0.7s; }
+
+            .nav-links .mobile-btn-wrap {
+                margin-top: 30px;
+                display: flex !important;
+                flex-direction: column;
+                align-items: center;
+                gap: 15px;
+                width: 100%;
+                opacity: 0;
+                transform: translateY(20px);
+                transition: 0.4s;
+            }
+            .nav-links a:hover, .nav-links a.active {
+                color: #e63946;
+                transform: scale(1.05);
+            }
+            .mobile-btn-wrap .login-btn {
+                width: 220px;
+                text-align: center;
+            }
+            .nav-right .login-btn { display: none; }
+            
+            .hero-title { font-size: 42px; text-align: left; }
+            .hero-subtitle { font-size: 16px; text-align: left; }
+
+            .hero-cards-wrapper { flex-direction: column; gap: 25px; }
             .card-nav { display: none; }
             .hero-cards-grid { 
-                flex-wrap: nowrap; 
-                overflow-x: auto; 
-                -webkit-overflow-scrolling: touch;
-                padding-bottom: 15px;
-                scroll-snap-type: x mandatory;
+                flex-wrap: wrap; 
+                justify-content: center;
+                gap: 12px;
+                overflow-x: visible; 
+                padding-bottom: 0;
             }
             .hero-card { 
-                min-width: 220px; 
-                scroll-snap-align: start;
-                flex: 0 0 auto;
+                flex: 0 0 calc(50% - 10px);
+                min-width: 140px; 
+                padding: 20px 10px;
+                border-radius: 12px;
             }
-            .hero-special-card { width: 100%; }
+            .hero-card i { font-size: 24px; margin-bottom: 10px; }
+            .hero-card h4 { font-size: 13px; margin-bottom: 6px; }
+            .hero-card p { display: none; } /* Hide description on mobile for neatness */
+            
+            .hero-special-card { width: 100%; margin-top: 10px; }
             .hero-stats-footer { flex-direction: column; gap: 30px; text-align: center; }
             .hero-play-btn, .hero-social { display: none; }
             .stats-box { flex-wrap: wrap; justify-content: center; gap: 20px; }
-            
-            .nav-links {
-                display: none;
-                position: absolute;
-                top: 70px;
-                left: 0;
-                right: 0;
-                background: #111111;
-                flex-direction: column;
-                padding: 15px 0;
-                border-radius: 8px;
-                z-index: 1050;
-                border: 1px solid rgba(255,255,255,0.1);
-                box-shadow: 0 20px 40px rgba(0,0,0,0.8);
-                gap: 0;
-            }
-            .nav-links.active {
-                display: flex;
-            }
-            .nav-links a {
-                padding: 12px 25px;
-                width: 100%;
-                text-align: left;
-                border-bottom: 1px solid rgba(255,255,255,0.05);
-                font-size: 18px;
-            }
-            .nav-links a:last-child {
-                border-bottom: none;
-            }
-            .nav-links a:hover {
-                background: rgba(255,255,255,0.05);
-                padding-left: 30px;
-            }
+            .hero-main-container { z-index: 1 !important; }
         }
 
         @media (max-width: 576px) {
-            .hero-title { font-size: 36px; }
-            .hero-subtitle { font-size: 16px; margin-bottom: 30px; }
-            .hero-action-btns { flex-direction: column; width: 100%; }
-            .hero-action-btns a { width: 100%; justify-content: center; }
-            .nav-right .login-btn { padding: 8px 16px; font-size: 14px; }
-            .stats-box { flex-direction: row; flex-wrap: wrap; justify-content: space-between; }
-            .stat-item { flex-direction: column; text-align: center; gap: 5px; width: 45%; margin-bottom: 15px; }
-            .stat-item i { font-size: 24px; }
+            .hero-title { font-size: 32px; }
+            .hero-subtitle { font-size: 14px; margin-bottom: 25px; }
+            .hero-action-btns { flex-direction: column; width: 100%; gap: 10px; }
+            .hero-action-btns a { width: 100%; justify-content: center; padding: 12px 20px; }
+            .nav-right .login-btn { padding: 6px 12px; font-size: 13px; }
+            .stats-box { flex-direction: row; flex-wrap: wrap; justify-content: center; gap: 15px; }
+            .stat-item { flex-direction: column; text-align: center; gap: 4px; width: 42%; margin-bottom: 10px; }
+            .stat-item i { font-size: 20px; }
+            .stat-item strong { font-size: 16px; }
             .input-group-custom { flex-direction: column; background: transparent; border: none; gap: 10px; }
             .input-group-custom input { border: 1px solid rgba(255,255,255,0.2); border-radius: 6px; width: 100%; }
             .input-group-custom button { padding: 12px; border-radius: 6px; width: 100%; }
+            
+            .hero-main-container { padding-top: 30px; }
+            .hero-cards-wrapper { margin-top: 20px; }
+        }
+
+        /* Prevent infinite horizontal stretch on ultra-wide screens */
+        @media (min-width: 2000px) {
+            .yt-new-hero, .yt-home-section {
+                max-width: 1920px;
+                margin-left: auto;
+                margin-right: auto;
+            }
         }
 
         /* Underwater Fish Animation */
-        .fish-container {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            pointer-events: none;
-            z-index: -1; /* Strictly behind all content */
-            overflow: hidden;
-        }
-
-        .fish {
-            position: absolute;
-            width: 130px;
-            height: 90px;
-            opacity: 1;
-            animation-iteration-count: infinite;
-            animation-timing-function: linear;
-            filter: drop-shadow(0 8px 25px rgba(0,0,0,0.5));
-            -webkit-mask-repeat: no-repeat;
-            mask-repeat: no-repeat;
-            -webkit-mask-size: contain;
-            mask-size: contain;
-            background-size: cover;
-            background-position: center;
-        }
-
-        /* Shape 1: Realistic Fish with Tail (Clownfish style) */
-        .shape-oval {
-            -webkit-mask-image: url('data:image/svg+xml;utf8,<svg viewBox="0 0 100 60" xmlns="http://www.w3.org/2000/svg"><path d="M5,30 C15,10 50,5 75,30 C50,55 15,50 5,30 M75,30 L95,10 L95,50 Z" fill="black"/></svg>');
-            mask-image: url('data:image/svg+xml;utf8,<svg viewBox="0 0 100 60" xmlns="http://www.w3.org/2000/svg"><path d="M5,30 C15,10 50,5 75,30 C50,55 15,50 5,30 M75,30 L95,10 L95,50 Z" fill="black"/></svg>');
-        }
-
-        /* Shape 2: Deep Bodied Realistic Fish (Angelfish style) */
-        .shape-tall {
-            width: 110px; height: 110px;
-            -webkit-mask-image: url('data:image/svg+xml;utf8,<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M10,50 C20,10 60,5 80,50 C60,95 20,90 10,50 M80,50 L98,20 L98,80 Z" fill="black"/></svg>');
-            mask-image: url('data:image/svg+xml;utf8,<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M10,50 C20,10 60,5 80,50 C60,95 20,90 10,50 M80,50 L98,20 L98,80 Z" fill="black"/></svg>');
-        }
-
-        /* Shape 3: Slender Realistic Fish (Shark/Tuna style) */
-        .shape-long {
-            width: 170px; height: 80px;
-            -webkit-mask-image: url('data:image/svg+xml;utf8,<svg viewBox="0 0 120 50" xmlns="http://www.w3.org/2000/svg"><path d="M5,25 C15,5 70,5 90,25 C70,45 15,45 5,25 M90,25 L115,5 L115,45 Z" fill="black"/></svg>');
-            mask-image: url('data:image/svg+xml;utf8,<svg viewBox="0 0 120 50" xmlns="http://www.w3.org/2000/svg"><path d="M5,25 C15,5 70,5 90,25 C70,45 15,45 5,25 M90,25 L115,5 L115,45 Z" fill="black"/></svg>');
-        }
-
-
-        .fish-1 { top: 15%; animation: swim-right 28s linear infinite; }
-        .fish-2 { top: 35%; animation: swim-left 34s linear infinite; animation-delay: 4s; }
-        .fish-3 { top: 55%; animation: swim-right 22s linear infinite; animation-delay: 10s; }
-        .fish-4 { top: 75%; animation: swim-left 31s linear infinite; animation-delay: 2s; }
-        .fish-5 { top: 25%; animation: swim-left 25s linear infinite; animation-delay: 15s; }
-        .fish-6 { top: 85%; animation: swim-right 38s linear infinite; animation-delay: 8s; }
-
-
-        @keyframes swim-right {
-            0% { transform: translateX(-150px) scaleX(-1); }
-            100% { transform: translateX(calc(100vw + 150px)) scaleX(-1); }
-        }
-
-        @keyframes swim-left {
-            0% { transform: translateX(calc(100vw + 150px)) scaleX(1); }
-            100% { transform: translateX(-150px) scaleX(1); }
-        }
-
-
     </style>
 
     <div class="fish-container">
-        <!-- 1. Clownfish (Oval) -->
-        <div class="fish fish-1 shape-oval" style="background-image: url('https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=400&q=80');"></div>
+        <!-- 1. Clownfish -->
+        <div class="fish fish-1 fish-orange">
+            <div class="fish-body"></div>
+        </div>
         
-        <!-- 2. Blue Tang (Tall) -->
-        <div class="fish fish-2 shape-tall" style="background-image: url('https://images.unsplash.com/photo-1524704659690-3f8037bd0223?w=400&q=80');"></div>
+        <!-- 2. Blue Tang -->
+        <div class="fish fish-2 fish-cyan">
+            <div class="fish-body"></div>
+        </div>
         
-        <!-- 3. Yellow Tang (Oval) -->
-        <div class="fish fish-3 shape-oval" style="background-image: url('https://images.unsplash.com/photo-1535591273668-578e31182c4f?w=400&q=80');"></div>
-        
-        <!-- 4. Silver Reef Fish (Long) -->
-        <div class="fish fish-4 shape-long" style="background-image: url('https://images.unsplash.com/photo-1522069169874-c58ec4b76be5?w=400&q=80');"></div>
-        
-        <!-- 5. Exotic Purple Fish (Tall) -->
-        <div class="fish fish-5 shape-tall" style="background-image: url('https://images.unsplash.com/photo-1534685033190-0948958cc0e7?w=400&q=80');"></div>
-        
-        <!-- 6. Golden Butterfly Fish (Oval) -->
-        <div class="fish fish-6 shape-oval" style="background-image: url('https://images.unsplash.com/photo-1524704659690-3f8037bd0223?w=400&q=80');"></div>
+        <!-- 3. Yellow Tang -->
+        <div class="fish fish-3 fish-golden">
+            <div class="fish-body"></div>
+        </div>
+
+        <!-- Scuba Divers -->
+        <div class="diver diver-1">
+            <div class="diver-body"></div>
+            <div class="bubble-stream"><span></span><span></span><span></span></div>
+        </div>
+        <div class="diver diver-2">
+            <div class="diver-body"></div>
+            <div class="bubble-stream"><span></span><span></span><span></span></div>
+        </div>
     </div>
 
     <section class="yt-new-hero">
@@ -868,18 +934,25 @@
                     <div class="logo">
                         <a href="<c:url value='/'/>"><img src="<c:url value='/views/assets/images/logo.png'/>" alt="Youth Travel" /></a>
                     </div>
+                    
                     <div class="nav-links">
                         <a href="<c:url value='/'/>" class="active">Home</a>
-                        <a href="#choose-adventure">Explore <i class="fa fa-caret-down"></i></a>
+                        <a href="#choose-adventure">Explore</a>
                         <a href="<c:url value='/gallery'/>">Gallery</a>
                         <a href="<c:url value='/about'/>">About Us</a>
                         <a href="<c:url value='/contact'/>">Contact Us</a>
+                        
+                        <div class="mobile-btn-wrap d-lg-none">
+                            <a href="<c:url value='/user/login'/>" class="login-btn">Login / Sign Up</a>
+                            <a href="<c:url value='/vendor/login'/>" class="login-btn" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2);">Vendor Portal</a>
+                        </div>
                     </div>
-                    <div class="nav-right" style="display: flex; align-items: center; gap: 10px;">
-                        <a href="<c:url value='/user/login'/>" class="login-btn">Login / Sign Up</a>
-                        <a href="<c:url value='/vendor/login'/>" class="login-btn" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); font-size: 14px; padding: 10px 18px;">Vendor Portal</a>
-                        <div class="nav-mobile-toggle" onclick="document.querySelector('.nav-links').classList.toggle('active')">
-                            <i class="fa fa-bars"></i>
+
+                    <div class="nav-right">
+                        <a href="<c:url value='/user/login'/>" class="login-btn d-none d-lg-inline-block">Login / Sign Up</a>
+                        <a href="<c:url value='/vendor/login'/>" class="login-btn d-none d-lg-inline-block" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); font-size: 14px; padding: 10px 18px;">Vendor Portal</a>
+                        <div class="nav-mobile-toggle" onclick="toggleMobileMenu()">
+                            <i class="fa fa-bars" id="menuIcon"></i>
                         </div>
                     </div>
                 </div>
@@ -903,7 +976,7 @@
                 /* Outer wrap — absolute positioned in hero */
                 .hero-vss-wrap {
                     position: absolute;
-                    right: 85px;
+                    right: 4%;
                     top: 50%;
                     transform: translateY(-50%);
                     display: flex;
@@ -1639,15 +1712,42 @@
                                 </p>
                             </div>
                             <div class="subscribe">
-                                <form>
+                                <form id="newsletterForm" onsubmit="subscribeNewsletter(event)">
                                     <div class="input-group">
-                                        <input type="email" class="form-control" size="50" placeholder="Enter E-mail" required>
+                                        <input type="email" id="newsletterEmail" class="form-control" size="50" placeholder="Enter E-mail" required>
                                         <div class="input-group-btn">
-                                            <button type="button" class="btn btn-danger">Subscribe</button>
+                                            <button type="submit" id="subscribeBtn" class="btn btn-danger">Subscribe</button>
                                         </div>
                                     </div>
                                 </form>
                             </div>
+                            <script>
+                                function subscribeNewsletter(e) {
+                                    e.preventDefault();
+                                    const email = document.getElementById('newsletterEmail').value;
+                                    const btn = document.getElementById('subscribeBtn');
+                                    const formData = new FormData();
+                                    formData.append("name", "Newsletter Subscriber");
+                                    formData.append("email", email);
+                                    formData.append("message", "Subscribed to newsletter.");
+                                    fetch('/enquiry/submit', { method: 'POST', body: formData })
+                                    .then(res => {
+                                        if(res.ok) {
+                                            const originalText = btn.innerHTML;
+                                            const originalBg = btn.style.background;
+                                            btn.innerHTML = "Subscribed";
+                                            btn.style.background = "#4caf50";
+                                            btn.disabled = true;
+                                            document.getElementById('newsletterEmail').value = "";
+                                            setTimeout(() => {
+                                                btn.innerHTML = originalText;
+                                                btn.style.background = originalBg;
+                                                btn.disabled = false;
+                                            }, 3000);
+                                        }
+                                    });
+                                }
+                            </script>
                             <div class="social-icons">
                                 <ul>
                                     <li><a href="#"><i class="fa fa-facebook" aria-hidden="true"></i>
@@ -1765,6 +1865,22 @@
         jQuery(function() {
             jQuery("a#video").YouTubePopUp();
         })
+    </script>
+    <script>
+        function toggleMobileMenu() {
+            const menu = document.querySelector('.nav-links');
+            const icon = document.getElementById('menuIcon');
+            if(menu && icon) {
+                menu.classList.toggle('active');
+                if (menu.classList.contains('active')) {
+                    icon.classList.remove('fa-bars');
+                    icon.classList.add('fa-times');
+                } else {
+                    icon.classList.remove('fa-times');
+                    icon.classList.add('fa-bars');
+                }
+            }
+        }
     </script>
 </body>
 

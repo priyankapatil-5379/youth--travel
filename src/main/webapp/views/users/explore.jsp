@@ -53,6 +53,33 @@
         .advice-author { display: flex; align-items: center; gap: 12px; margin-top: 18px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 18px; }
         .advice-author img { width: 35px; height: 35px; border-radius: 50%; object-fit: cover; border: 2px solid rgba(255,255,255,0.2); }
         .advice-author span { font-size: 14px; color: #fff; font-weight: 700; text-shadow: 0 1px 3px rgba(0,0,0,0.5); }
+
+        @media (max-width: 991px) {
+            .main-content { margin-left: 0; padding: 90px 20px 40px; }
+            .explore-header { flex-direction: column; align-items: flex-start; gap: 20px; padding: 20px; }
+            .search-container { width: 100% !important; }
+            .nav-tabs { overflow-x: auto; padding-bottom: 5px; gap: 20px; }
+            .nav-tabs button { white-space: nowrap; }
+        }
+
+        @media (max-width: 576px) {
+            .users-grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 15px; }
+            .user-card { padding: 20px; }
+            .user-avatar { width: 80px; height: 80px; }
+            .user-name { font-size: 16px; }
+            .posts-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 10px; }
+            .advices-grid { grid-template-columns: 1fr; }
+        }
+
+        /* Prevent infinite horizontal stretch on ultra-wide screens */
+        @media (min-width: 2000px) {
+            .header, .main-content {
+                max-width: 1920px;
+                margin-left: auto;
+                margin-right: auto;
+            }
+            .wrapper { justify-content: center; }
+        }
     </style>
 </head>
 <body class="premium-theme">
