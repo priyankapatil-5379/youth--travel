@@ -327,6 +327,14 @@
         }
         .action-card:hover .arrow-btn { gap: 15px; }
 
+        @media (max-width: 991px) {
+            .grid-layout { grid-template-columns: 1fr; }
+            .hero-section { height: auto; padding: 100px 20px 60px; text-align: center; }
+            .hero-content h1 { font-size: 38px; }
+            .dashboard-container { padding: 0 20px 40px; margin-top: -30px; }
+            .action-cards { grid-template-columns: 1fr; }
+            .stats-grid { grid-template-columns: 1fr; gap: 15px; }
+        }
     </style>
 </head>
 

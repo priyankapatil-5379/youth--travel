@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+﻿<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -393,12 +393,10 @@
                     
                     <div class="mobile-btn-wrap d-lg-none">
                         <a href="<c:url value='/user/login'/>" class="login-btn">Login / Sign Up</a>
-                        <a href="<c:url value='/vendor/login'/>" class="login-btn" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2);">Vendor Portal</a>
                     </div>
                 </div>
                 <div class="nav-right">
                     <a href="<c:url value='/user/login'/>" class="login-btn d-none d-lg-inline-block">Login / Sign Up</a>
-                    <a href="<c:url value='/vendor/login'/>" class="login-btn d-none d-lg-inline-block" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); font-size: 14px; padding: 10px 18px;">Vendor Portal</a>
                     <div class="nav-mobile-toggle" onclick="document.querySelector('.nav-links').classList.toggle('active')">
                         <i class="fa fa-bars"></i>
                     </div>
@@ -412,7 +410,7 @@
             <div class="yt-gallery-header text-center" style="margin-bottom: 60px; padding-top: 40px;">
                 <h2 style="font-family: 'Permanent Marker', cursive; font-size: 64px; color: #e63946; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 2px;">Gallery</h2>
                 <div class="yt-line" style="margin: 0 auto 25px; width: 80px; height: 3px; background: #e63946;"></div>
-                <p class="font-18" style="color: #ddd; max-width: 700px; margin: 0 auto; line-height: 1.6;">Biking, trekking, camping, and road-trip moments — made for youth travel.</p>
+                <p class="font-18" style="color: #ddd; max-width: 700px; margin: 0 auto; line-height: 1.6;">Biking, trekking, camping, and road-trip moments â€” made for youth travel.</p>
             </div>
 
             <div class="yt-gallery-grid">
@@ -536,3 +534,4 @@
 </body>
 
 </html>
+

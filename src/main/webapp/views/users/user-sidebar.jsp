@@ -81,10 +81,65 @@
 
     @media (max-width: 991px) {
         .sidebar {
-            width: 70px;
+            transform: translateX(-100%);
+            width: 260px;
+            box-shadow: 10px 0 30px rgba(0,0,0,0.5);
         }
-        .sidebar .nav-item a .nav-text { display: none; }
-        .sidebar .nav-item a { padding: 12px; justify-content: center; margin: 4px 10px; }
-        .sidebar .nav-item a i { margin: 0; font-size: 18px; }
+        .sidebar.active {
+            transform: translateX(0);
+        }
     }
 </style>
+
+<div class="mobile-sidebar-toggle d-lg-none" onclick="toggleMainSidebar()">
+    <i class="fa fa-bars"></i>
+</div>
+
+<div class="sidebar-overlay" onclick="toggleMainSidebar()"></div>
+<style>
+    .mobile-sidebar-toggle {
+        display: none;
+    }
+    @media (max-width: 991px) {
+        .mobile-sidebar-toggle {
+            display: flex;
+            position: fixed;
+            top: 15px;
+            left: 15px;
+            width: 40px;
+            height: 40px;
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 8px;
+            border: 1px solid rgba(255,255,255,0.2);
+            color: #fff;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            cursor: pointer;
+            z-index: 9999;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+    }
+    .sidebar-overlay {
+        position: fixed;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background: rgba(0,0,0,0.6);
+        backdrop-filter: blur(4px);
+        z-index: 899;
+        display: none;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+    .sidebar-overlay.active {
+        display: block;
+        opacity: 1;
+    }
+</style>
+<script>
+    function toggleMainSidebar() {
+        document.querySelector('.sidebar').classList.toggle('active');
+        document.querySelector('.sidebar-overlay').classList.toggle('active');
+    }
+</script>

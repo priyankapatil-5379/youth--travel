@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+﻿<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -944,13 +944,11 @@
                         
                         <div class="mobile-btn-wrap d-lg-none">
                             <a href="<c:url value='/user/login'/>" class="login-btn">Login / Sign Up</a>
-                            <a href="<c:url value='/vendor/login'/>" class="login-btn" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2);">Vendor Portal</a>
                         </div>
                     </div>
 
                     <div class="nav-right">
                         <a href="<c:url value='/user/login'/>" class="login-btn d-none d-lg-inline-block">Login / Sign Up</a>
-                        <a href="<c:url value='/vendor/login'/>" class="login-btn d-none d-lg-inline-block" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); font-size: 14px; padding: 10px 18px;">Vendor Portal</a>
                         <div class="nav-mobile-toggle" onclick="toggleMobileMenu()">
                             <i class="fa fa-bars" id="menuIcon"></i>
                         </div>
@@ -973,7 +971,7 @@
 
             <!-- ===== VERTICAL HERO SLIDESHOW ===== -->
             <style>
-                /* Outer wrap — absolute positioned in hero */
+                /* Outer wrap â€” absolute positioned in hero */
                 .hero-vss-wrap {
                     position: absolute;
                     right: 4%;
@@ -1015,7 +1013,7 @@
                     font-size: 9px;
                 }
 
-                /* Torn-paper rough-edge FRAME — same style as Plan with Friends card */
+                /* Torn-paper rough-edge FRAME â€” same style as Plan with Friends card */
                 .yt-vss-frame {
                     position: relative;
                     padding: 12px;
@@ -1034,7 +1032,7 @@
                     box-shadow: 0 20px 55px rgba(0,0,0,0.55), inset 0 0 18px rgba(0,0,0,0.06);
                 }
 
-                /* Inner slideshow box — photos clip inside here */
+                /* Inner slideshow box â€” photos clip inside here */
                 .yt-vss-box {
                     width: 220px;
                     height: 300px;
@@ -1371,17 +1369,17 @@
             <div class="row">
                 <div class="col-sm-6 col-md-3" style="margin-bottom:18px;">
                     <div class="yt-trip-card">
-                        <div class="yt-trip-price">₹2999</div>
+                        <div class="yt-trip-price">â‚¹2999</div>
                         <img src="https://images.unsplash.com/photo-1598209279122-8541213a0387?w=600&auto=format&fit=crop&q=60" alt="Ride" />
                         <div class="yt-trip-body">
                             <h4>KTM Bengaluru Ride</h4>
-                            <p>2 Days / 1 Night<br>Bengaluru → Nandi Hills</p>
+                            <p>2 Days / 1 Night<br>Bengaluru â†’ Nandi Hills</p>
                         </div>
                     </div>
                 </div>
                 <div class="col-sm-6 col-md-3" style="margin-bottom:18px;">
                     <div class="yt-trip-card">
-                        <div class="yt-trip-price">₹4499</div>
+                        <div class="yt-trip-price">â‚¹4499</div>
                         <img src="https://images.unsplash.com/photo-1551632811-561732d1e306?w=600&auto=format&fit=crop&q=60" alt="Trek" />
                         <div class="yt-trip-body">
                             <h4>Kudremukh Trek</h4>
@@ -1391,7 +1389,7 @@
                 </div>
                 <div class="col-sm-6 col-md-3" style="margin-bottom:18px;">
                     <div class="yt-trip-card">
-                        <div class="yt-trip-price">₹1999</div>
+                        <div class="yt-trip-price">â‚¹1999</div>
                         <img src="https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?w=600&auto=format&fit=crop&q=60" alt="Camping" />
                         <div class="yt-trip-body">
                             <h4>Camping at Saklespur</h4>
@@ -1401,7 +1399,7 @@
                 </div>
                 <div class="col-sm-6 col-md-3" style="margin-bottom:18px;">
                     <div class="yt-trip-card">
-                        <div class="yt-trip-price">₹999</div>
+                        <div class="yt-trip-price">â‚¹999</div>
                         <img src="https://images.unsplash.com/photo-1432405972618-c60b0225b8f9?w=600&auto=format&fit=crop&q=60" alt="Day out" />
                         <div class="yt-trip-body">
                             <h4>Coorg Day Out</h4>
@@ -1465,7 +1463,7 @@
                     <div class="yt-why-card">
                         <div class="yt-why-icon"><i class="fa fa-check-circle"></i></div>
                         <h4>Real prices. No surprises.</h4>
-                        <p>Clear inclusions, transparent budgets, and youth-friendly packages—so you don’t get last-minute shocks.</p>
+                        <p>Clear inclusions, transparent budgets, and youth-friendly packagesâ€”so you donâ€™t get last-minute shocks.</p>
                     </div>
                 </div>
                 <div class="col-sm-6 col-md-4">
@@ -1493,7 +1491,7 @@
                     <div class="yt-why-card">
                         <div class="yt-why-icon"><i class="fa fa-map-marker"></i></div>
                         <h4>Local, Indian travel focus</h4>
-                        <p>Routes, timings, and tips built for Indian conditions—weather, weekends, and real travel time.</p>
+                        <p>Routes, timings, and tips built for Indian conditionsâ€”weather, weekends, and real travel time.</p>
                     </div>
                 </div>
                 <div class="col-sm-6 col-md-4">
@@ -1554,7 +1552,7 @@
     <section id="explorer-reviews" class="yt-testimonials">
         <div class="container">
             <h2 class="yt-testimonials-heading">Why Explorers Love Youth Travel</h2>
-            <p class="yt-testimonials-lead">Hear from real adventurers who have travelled with us — from serene treks and camping nights to bold group rides across India.</p>
+            <p class="yt-testimonials-lead">Hear from real adventurers who have travelled with us â€” from serene treks and camping nights to bold group rides across India.</p>
             <div class="row yt-testimonials-row">
                 <div class="col-md-4 col-sm-6">
                     <article class="yt-review-card">
@@ -1585,7 +1583,7 @@
                                 <span>5.0</span>
                             </div>
                         </header>
-                        <p class="yt-review-text">We were a group of six planning a short trek, and Youth Travel helped us shortlist a safe route with clear inclusions. Communication on WhatsApp was prompt, and there were no hidden charges — which matters a lot when you are budgeting as students. <em>The experience felt organised yet relaxed,</em> exactly how a holiday should be. Full marks from our side.</p>
+                        <p class="yt-review-text">We were a group of six planning a short trek, and Youth Travel helped us shortlist a safe route with clear inclusions. Communication on WhatsApp was prompt, and there were no hidden charges â€” which matters a lot when you are budgeting as students. <em>The experience felt organised yet relaxed,</em> exactly how a holiday should be. Full marks from our side.</p>
                     </article>
                 </div>
                 <div class="col-md-4 col-sm-6">
@@ -1601,7 +1599,7 @@
                                 <span>5.0</span>
                             </div>
                         </header>
-                        <p class="yt-review-text">Excellent initiative for youth who love road trips and outdoor plans but do not want to chase ten different vendors. The website is easy to use, trip details are properly listed, and the support team answers queries politely. <em>Our camping outing was memorable — good coordination and a very positive vibe throughout.</em> Keep up the good work.</p>
+                        <p class="yt-review-text">Excellent initiative for youth who love road trips and outdoor plans but do not want to chase ten different vendors. The website is easy to use, trip details are properly listed, and the support team answers queries politely. <em>Our camping outing was memorable â€” good coordination and a very positive vibe throughout.</em> Keep up the good work.</p>
                     </article>
                 </div>
             </div>
