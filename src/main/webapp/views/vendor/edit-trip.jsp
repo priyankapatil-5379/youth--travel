@@ -1243,21 +1243,21 @@
                 <script>
                     // Sub-categories Data
                     const subCategories = {
-                        'Solo': ['Backpacker', 'Digital Nomad', 'Spiritual Search', 'Other'],
-                        'Group': ['Friends Trip', 'College Group', 'Bikers Club', 'Other'],
-                        'Corporate': ['Team Building', 'Leadership Retreat', 'Other'],
-                        'Adventure': ['Trekking', 'Hiking', 'Camping', 'Rock climbing', 'Other'],
-                        'Bike Riding': ['Road Trips', 'Off-road', 'Weekend Rides', 'Other'],
-                        'Nature Exploration': ['Wildlife Safari', 'Forest Walk / Jungle Trek', 'Bird Watching', 'Nature Trails / Hiking', 'Waterfall Exploration', 'National Park Visit', 'Botanical Garden Visit', 'River / Lake Exploration'],
-                        'Water Activities': ['Scuba Diving', 'Snorkeling', 'Jet Ski', 'Parasailing', 'Banana Boat Ride', 'Kayaking', 'River Rafting', 'Surfing', 'Other'],
-                        'Workation': ['Co-working Friendly', 'High-Speed WiFi', 'Networking Events', 'Monthly Stays', 'Other'],
-                        'Festivals': ['Music Festivals', 'Comic-con / Pop Culture', 'Sporting Events', 'Cultural Carnivals', 'Other'],
-                        'Volunteering': ['Animal Rescue', 'Rural Teaching', 'Beach Cleanup', 'Environmental Projects', 'Other'],
-                        'Nightlife': ['Pub Crawls', 'Clubbing Destinations', 'Social Hostel Hopping', 'Beach Parties', 'Other'],
-                        'Content Creation': ['Drone Photography Spots', 'Aesthetic Stays', 'Portrait Tours', 'Hidden Gems', 'Other'],
-                        'Wellness': ['Yoga Retreats', 'Digital Detox', 'Meditation Camps', 'Spa & Healing', 'Other'],
-                        'Budget Backpacking': ['Hitchhiking Tours', 'Shared Dorm Stays', 'Street Food Crawls', 'Other'],
-                        'Others': ['Other']
+                        'Solo': ['Backpacker', 'Digital Nomad', 'Spiritual Search', 'Solo Women Trips', 'Solo Men Trips', 'Quiet Retreats', 'Day Outs', 'Other'],
+                        'Group': ['Friends Trip', 'College Group', 'Bikers Club', 'Bachelor/Bachelorette', 'Family Reunion', 'Day Outs', 'Other'],
+                        'Corporate': ['Team Building', 'Leadership Retreat', 'Conference/MICE', 'Incentive Tours', 'Day Outs', 'Other'],
+                        'Adventure': ['Trekking', 'Hiking', 'Camping', 'Rock climbing', 'Paragliding', 'Bungee Jumping', 'Skiing', 'Scuba Diving', 'Rafting', 'Mountain Biking', 'Other'],
+                        'Bike Riding': ['Group Rides', 'Road Trips', 'Off-road', 'Weekend Rides', 'Cross-Country', 'Mountain Biking', 'Other'],
+                        'Nature Exploration': ['Wildlife Safari', 'Forest Walk', 'Bird Watching', 'Waterfall Exploration', 'National Park Visit', 'Star Gazing', 'Eco-Tours', 'Nature Exploration'],
+                        'Water Activities': ['Scuba Diving', 'Snorkeling', 'Jet Ski', 'Parasailing', 'Kayaking', 'River Rafting', 'Surfing', 'Other'],
+                        'Workation': ['Co-working Friendly', 'High-Speed WiFi', 'Networking Events', 'Monthly Stays', 'Hillside Workation', 'Beachside Office', 'Other'],
+                        'Festivals': ['Music Festivals', 'Comic-con / Pop Culture', 'Sporting Events', 'Cultural Carnivals', 'Food & Wine Festivals', 'Other'],
+                        'Volunteering': ['Animal Rescue', 'Rural Teaching', 'Beach Cleanup', 'Environmental Projects', 'Social Service', 'Other'],
+                        'Nightlife': ['Pub Crawls', 'Clubbing Destinations', 'Social Hostel Hopping', 'Beach Parties', 'Casino Tours', 'Other'],
+                        'Content Creation': ['Drone Photography Spots', 'Aesthetic Stays', 'Portrait Tours', 'Hidden Gems', 'Vlogging Trails', 'Instagrammable Spots', 'Other'],
+                        'Wellness': ['Yoga Retreats', 'Digital Detox', 'Meditation Camps', 'Healing', 'Rejuvenation', 'Spa & Wellness', 'Ayurveda Centers', 'Mental Health Retreats', 'Other'],
+                        'Budget Backpacking': ['Hitchhiking Tours', 'Shared Dorm Stays', 'Street Food Crawls', 'Free Walking Tours', 'Other'],
+                        'Others': ['Specify in "Other" box']
                     };
 
                     // Multi-step Logic

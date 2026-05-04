@@ -32,6 +32,7 @@ package com.youthtravel.entity;
     private String website;
     private String profession;
     private int profileViews = 0;
+    private long travelPoints = 0;
  
      @Column(name = "created_at", updatable = false)
      private java.time.LocalDateTime createdAt;
@@ -148,6 +149,14 @@ package com.youthtravel.entity;
 
     public void setProfileViews(int profileViews) {
         this.profileViews = profileViews;
+    }
+
+    public long getTravelPoints() {
+        return travelPoints;
+    }
+
+    public void setTravelPoints(long travelPoints) {
+        this.travelPoints = travelPoints;
     }
  
      // Helper methods for JSP EL compatibility

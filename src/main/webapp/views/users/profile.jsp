@@ -108,6 +108,18 @@
         .icon-metrics { display: flex; gap: 20px; color: var(--text-dim); font-size: 18px; }
         .metric-item { display: flex; align-items: center; gap: 8px; background: var(--glass-bg); padding: 5px 15px; border-radius: 20px; border: 1px solid var(--glass-border); }
 
+        .reputation-badge {
+            background: linear-gradient(135deg, rgba(255, 159, 67, 0.2), rgba(255, 159, 67, 0.05));
+            border: 1px solid rgba(255, 159, 67, 0.3);
+            padding: 10px 20px;
+            border-radius: 15px;
+            text-align: center;
+            min-width: 100px;
+            box-shadow: 0 4px 15px rgba(255, 159, 67, 0.1);
+        }
+        .reputation-value { font-size: 24px; font-weight: 800; color: #ff9f43; line-height: 1; }
+        .reputation-label { font-size: 10px; color: #ff9f43; text-transform: uppercase; letter-spacing: 1px; font-weight: 700; margin-top: 4px; }
+
         /* Content Divider */
         .content-divider { border-top: 1px solid var(--glass-border); margin: 40px 0; display: flex; justify-content: center; position: relative; }
         .tabs-header { position: absolute; top: -15px; display: flex; gap: 100px; background: transparent; padding: 0 40px; }
@@ -194,13 +206,21 @@
         /* Fix Select Visibility */
         select.form-control { 
             background-color: #243b3b !important; 
-            color: white !important; 
-            appearance: auto !important;
+            color: #ffffff !important; 
+            border: 1px solid rgba(255,255,255,0.2) !important;
+            cursor: pointer;
+            height: 45px !important;
+            line-height: 1.5 !important;
         }
         select.form-control option {
             background-color: #1a2a2a !important;
-            color: white !important;
-            padding: 10px !important;
+            color: #ffffff !important;
+            padding: 15px !important;
+        }
+        /* Ensure the selected value is visible */
+        select.form-control:focus {
+            outline: none !important;
+            border-color: #ff9f43 !important;
         }
 
         @media (max-width: 992px) {
@@ -226,10 +246,10 @@
     <header class="header" style="position: fixed; top: 0; left: 0; right: 0; height: 70px; background: rgba(0,0,0,0.4); backdrop-filter: blur(10px); display: flex; align-items: center; justify-content: space-between; padding: 0 30px; z-index: 1000; border-bottom: 1px solid rgba(255,255,255,0.05);">
         <div class="header-logo"><a href="<c:url value='/'/>"><img src="<c:url value='/views/assets/images/logo.png'/>" style="height: 35px;"></a></div>
         <div style="display: flex; align-items: center; gap: 20px;">
-            <div style="display: flex; align-items: center; gap: 15px;">
+            <div style="display: flex; align-items: center; gap: 15px; cursor: pointer;" onclick="showMyPoints()">
                 <span style="font-weight: 700;">Hi, ${user.name}</span>
                 <c:set var="defaultAvatar" value="https://ui-avatars.com/api/?name=${user.name}&background=f04c26&color=fff" />
-                <img src="${not empty user.profilePhoto ? user.profilePhoto : defaultAvatar}" style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover;">
+                <img src="${not empty user.profilePhoto ? user.profilePhoto : defaultAvatar}" style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover; border: 2px solid rgba(255,255,255,0.2);">
             </div>
         </div>
     </header>
@@ -246,8 +266,9 @@
     <div id="adviceModal" class="unbreakable-modal">
         <div class="unbreakable-modal-content">
             <span class="modal-close-btn" onclick="closeModal('adviceModal')">&times;</span>
-            <h3 style="margin-top: 0; margin-bottom: 25px; font-weight: 700;">Share Travel Wisdom</h3>
+            <h3 id="adviceModalTitle" style="margin-top: 0; margin-bottom: 25px; font-weight: 700;">Share Travel Wisdom</h3>
             <form id="uploadAdviceForm">
+                <input type="hidden" name="adviceId" id="adviceId">
                 <div class="form-group">
                     <label class="form-label">Trip Title</label>
                     <input type="text" name="title" class="form-control" placeholder="e.g., Hiking in Manali" required>
@@ -259,7 +280,6 @@
                         <option value="Adventure Trip">Adventure Trip</option>
                         <option value="Budget Travel">Budget Travel</option>
                         <option value="Luxury Escape">Luxury Escape</option>
-                        <option value="Family Vacation">Family Vacation</option>
                         <option value="Food & Culture">Food & Culture</option>
                         <option value="Road Trip">Road Trip</option>
                     </select>
@@ -268,16 +288,101 @@
                     <label class="form-label">Your Review / Experience</label>
                     <textarea name="content" class="form-control" rows="4" placeholder="Share your experience and tips..." required></textarea>
                 </div>
-                <button type="submit" class="btn btn-primary" style="margin-top: 25px; width: 100%; font-weight: 700; background: #ff9f43; border: none; padding: 12px; border-radius: 12px;">Post Advice</button>
+                
+                <div class="form-group" style="margin-top: 15px;">
+                    <label class="form-label">Best Time to Visit</label>
+                    <textarea name="bestTimeToVisit" class="form-control" rows="2" placeholder="When should people visit?"></textarea>
+                </div>
+                <div class="form-group" style="margin-top: 15px;">
+                    <label class="form-label">What to Pack</label>
+                    <textarea name="whatToPack" class="form-control" rows="2" placeholder="Essential items to carry..."></textarea>
+                </div>
+                <div class="form-group" style="margin-top: 15px;">
+                    <label class="form-label">Safety Tips</label>
+                    <textarea name="safetyTips" class="form-control" rows="2" placeholder="How to stay safe..."></textarea>
+                </div>
+                <div class="form-group" style="margin-top: 15px;">
+                    <label class="form-label">Money & Budget Tips</label>
+                    <textarea name="budgetTips" class="form-control" rows="2" placeholder="Cost estimates and saving tips..."></textarea>
+                </div>
+                <div class="form-group" style="margin-top: 15px;">
+                    <label class="form-label">Stay & Food Advice</label>
+                    <textarea name="stayFoodAdvice" class="form-control" rows="2" placeholder="Recommended places to stay and eat..."></textarea>
+                </div>
+                <div class="form-group" style="margin-top: 15px;">
+                    <label class="form-label">Transport Tips</label>
+                    <textarea name="transportTips" class="form-control" rows="2" placeholder="How to get around?"></textarea>
+                </div>
+                <div class="form-group" style="margin-top: 15px;">
+                    <label class="form-label">Network & Connectivity</label>
+                    <textarea name="connectivityTips" class="form-control" rows="2" placeholder="SIM cards, WiFi availability..."></textarea>
+                </div>
+                <div class="form-group" style="margin-top: 15px;">
+                    <label class="form-label">Local Rules / Permissions</label>
+                    <textarea name="localRules" class="form-control" rows="2" placeholder="Permits, cultural etiquette..."></textarea>
+                </div>
+                <div class="form-group" style="margin-top: 15px;">
+                    <label class="form-label">Environmental / Responsible Travel Tips</label>
+                    <textarea name="environmentalTips" class="form-control" rows="2" placeholder="How to travel sustainably..."></textarea>
+                </div>
+                <div class="form-group" style="margin-top: 15px;">
+                    <label class="form-label">Pro Tips</label>
+                    <textarea name="proTips" class="form-control" rows="2" placeholder="Hidden gems and expert advice..."></textarea>
+                </div>
+                
+                <button type="submit" id="adviceSubmitBtn" class="btn btn-primary" style="margin-top: 25px; width: 100%; font-weight: 700; background: #ff9f43; border: none; padding: 12px; border-radius: 12px;">Post Advice</button>
             </form>
+        </div>
+    </div>
+
+    <div id="adviceDetailModal" class="unbreakable-modal">
+        <div class="unbreakable-modal-content" style="max-width: 600px;">
+            <span class="modal-close-btn" onclick="closeModal('adviceDetailModal')">&times;</span>
+            <div id="adviceDetailContent">
+                <!-- Populated by JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Points Detail Modal -->
+    <div id="pointsDetailModal" class="unbreakable-modal">
+        <div class="unbreakable-modal-content" style="max-width: 350px; text-align: center;">
+            <span class="modal-close-btn" onclick="closeModal('pointsDetailModal')">&times;</span>
+            <div style="padding: 10px;">
+                <div style="position: relative; width: 100px; height: 100px; margin: 0 auto 20px;">
+                    <img id="modalHeaderAvatar" src="${not empty user.profilePhoto ? user.profilePhoto : defaultAvatar}" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 3px solid #ff9f43; box-shadow: 0 0 25px rgba(255,159,67,0.3);">
+                    <div style="position: absolute; bottom: -5px; right: -5px; width: 40px; height: 40px; background: #ff9f43; border: 3px solid #1a2a2a; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(0,0,0,0.5);">
+                        <span id="headerPointsValue" style="font-size: 16px; font-weight: 800; color: #fff;">0</span>
+                    </div>
+                </div>
+                <h3 style="font-weight: 700; margin-bottom: 5px; color: #fff; font-size: 18px;">Total Points Earned</h3>
+                <h2 id="modalTotalPointsLabel" style="font-size: 32px; font-weight: 800; color: #ff9f43; margin-bottom: 10px;">0</h2>
+                <p style="color: var(--text-dim); font-size: 13px; margin-bottom: 25px;">Sharing is earning! Your points reflect your impact on the community.</p>
+                
+                <div style="text-align: left; background: rgba(255,255,255,0.03); padding: 15px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05);">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 12px;">
+                        <span><i class="fa fa-heart" style="color: #ff9f43; width: 18px;"></i> Engagement</span>
+                        <span style="font-weight: 700; color: #28a745;">+10 pts</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 12px;">
+                        <span><i class="fa fa-eye" style="color: #ff9f43; width: 18px;"></i> Content reach</span>
+                        <span style="font-weight: 700; color: #28a745;">+2 pts</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; font-size: 12px;">
+                        <span><i class="fa fa-user" style="color: #ff9f43; width: 18px;"></i> Platform presence</span>
+                        <span style="font-weight: 700; color: #28a745;">+1 pt</span>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
     <div id="postModal" class="unbreakable-modal">
         <div class="unbreakable-modal-content">
             <span class="modal-close-btn" onclick="closeModal('postModal')">&times;</span>
-            <h3 style="margin-top: 0; margin-bottom: 25px; font-weight: 700;">New Travel Memory</h3>
+            <h3 id="postModalTitle" style="margin-top: 0; margin-bottom: 25px; font-weight: 700;">New Travel Memory</h3>
             <form id="uploadPostForm">
+                <input type="hidden" name="postId" id="postId">
                 <div class="form-group">
                     <div id="mediaPreview" style="display:none; width: 100%; aspect-ratio: 1; border-radius: 10px; overflow: hidden; margin-bottom: 15px; background: #000;"></div>
                     <input type="file" name="media" id="mediaInput" class="form-control" accept="image/*,video/*" required>
@@ -286,7 +391,7 @@
                     <label class="form-label">Where did this happen?</label>
                     <textarea name="caption" class="form-control" rows="3" placeholder="Describe your memory..."></textarea>
                 </div>
-                <button type="submit" class="btn btn-primary" style="margin-top: 25px; width: 100%; font-weight: 700; background: #ff9f43; border: none; padding: 12px; border-radius: 12px;">Post to Journey</button>
+                <button type="submit" id="postSubmitBtn" class="btn btn-primary" style="margin-top: 25px; width: 100%; font-weight: 700; background: #ff9f43; border: none; padding: 12px; border-radius: 12px;">Post to Journey</button>
             </form>
         </div>
     </div>
@@ -299,10 +404,6 @@
                 <div class="form-group" style="margin-bottom: 15px;">
                     <label class="form-label">Profile Photo (Optional)</label>
                     <input type="file" name="profilePhoto" class="form-control" accept="image/*">
-                </div>
-                <div class="form-group" style="margin-bottom: 15px;">
-                    <label class="form-label">Cover Photo (Optional)</label>
-                    <input type="file" name="coverPhoto" class="form-control" accept="image/*">
                 </div>
                 <div class="form-group">
                     <label class="form-label">Full Name</label>
@@ -317,6 +418,24 @@
                     <input type="text" name="profession" class="form-control" value="${user.profession}">
                 </div>
                 <button type="submit" class="btn btn-primary" style="margin-top: 25px; width: 100%; font-weight: 700; background: #ff9f43; border: none; padding: 12px; border-radius: 12px;">Save Profile</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Profile Photo Upload Modal -->
+    <div id="profilePhotoModal" class="unbreakable-modal">
+        <div class="unbreakable-modal-content" style="max-width: 400px;">
+            <span class="modal-close-btn" onclick="closeModal('profilePhotoModal')">&times;</span>
+            <h3 style="margin-bottom: 20px; font-weight: 800; color: #ff9f43; text-align: center;">Update Profile Photo</h3>
+            <form id="profilePhotoForm" onsubmit="handleProfilePhotoUpload(event)">
+                <div class="mb-4">
+                    <label class="form-label">Select Image</label>
+                    <input type="file" name="photo" id="profilePhotoInput" class="form-control" accept="image/*" required onchange="previewPhoto(this)">
+                </div>
+                <div id="photoPreview" style="width: 150px; height: 150px; border-radius: 50%; overflow: hidden; margin: 0 auto 20px; border: 3px solid #ff9f43; display: none;">
+                    <img id="photoPreviewImg" src="" style="width: 100%; height: 100%; object-fit: cover;">
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%; font-weight: 700;">Upload & Save</button>
             </form>
         </div>
     </div>
@@ -343,7 +462,7 @@
                             </div>
                         </c:otherwise>
                     </c:choose>
-                    <div class="plus-btn" onclick="openModal('postModal')"><i class="fa fa-camera"></i></div>
+                    <div class="plus-btn" onclick="openModal('profilePhotoModal')"><i class="fa fa-camera"></i></div>
                 </div>
                 <div class="user-meta-below">
                     <div class="display-name">${user.fullName}</div>
@@ -361,13 +480,9 @@
                         <span class="stat-num" id="countPosts">0</span>
                         <span class="stat-label">Posts</span>
                     </div>
-                    <div class="stat-item">
-                        <span class="stat-num" id="countFollowers">0</span>
-                        <span class="stat-label">Followers</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-num" id="countFollowing">0</span>
-                        <span class="stat-label">Following</span>
+                    <div class="reputation-badge">
+                        <div class="reputation-value" id="countPoints">0</div>
+                        <div class="reputation-label">Traveler Points</div>
                     </div>
                 </div>
             </div>
@@ -385,6 +500,12 @@
         <section class="content-grid">
             <!-- Left: Media Posts -->
             <div id="postsSection">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h5 class="mb-0" style="color: var(--text-dim); text-transform: uppercase; font-size: 14px; letter-spacing: 1px;">My Memories</h5>
+                    <button class="btn btn-sm" style="background: #ff9f43; color: white; border-radius: 10px; font-weight: 600; font-size: 12px; padding: 6px 15px; border: none;" onclick="prepareNewPost()">
+                        <i class="fa fa-plus"></i> New Memory
+                    </button>
+                </div>
                 <div class="posts-side-grid" id="postsGrid">
                     <!-- Posts dynamic -->
                 </div>
@@ -394,7 +515,7 @@
             <div id="adviceSection">
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <h5 class="mb-0" style="color: var(--text-dim); text-transform: uppercase; font-size: 14px; letter-spacing: 1px;">My Advices</h5>
-                    <button class="btn btn-sm" style="background: white; color: black; border-radius: 10px; font-weight: 600; font-size: 12px; padding: 6px 12px; border: none;" onclick="openModal('adviceModal')">
+                    <button class="btn btn-sm" style="background: white; color: black; border-radius: 10px; font-weight: 600; font-size: 12px; padding: 6px 12px; border: none;" onclick="prepareNewAdvice()">
                         <i class="fa fa-plus"></i> New Advice
                     </button>
                 </div>
@@ -445,9 +566,12 @@
 
             $('#uploadPostForm').on('submit', function(e) {
                 e.preventDefault();
+                const postId = $('#postId').val();
+                const url = postId ? ('/user/profile/api/posts/' + postId + '/update') : '/user/profile/api/posts/upload';
+                
                 let fd = new FormData(this);
                 $.ajax({
-                    url: '/user/profile/api/posts/upload',
+                    url: url,
                     type: 'POST',
                     data: fd,
                     processData: false,
@@ -455,29 +579,44 @@
                     success: function() { 
                         closeModal('postModal'); 
                         $('#uploadPostForm')[0].reset();
+                        $('#postId').val('');
                         $('#mediaPreview').hide();
                         loadProfileData(); 
                     },
                     error: function(err) {
-                        alert('Upload failed: ' + err.responseText);
+                        alert('Operation failed: ' + err.responseText);
                     }
                 });
             });
 
             $('#uploadAdviceForm').on('submit', function(e) {
                 e.preventDefault();
+                const adviceId = $('#adviceId').val();
+                const url = adviceId ? ('/user/profile/api/advices/' + adviceId + '/update') : '/user/profile/api/advices/post';
+                
                 $.ajax({
-                    url: '/user/profile/api/advices/post',
+                    url: url,
                     type: 'POST',
                     contentType: 'application/json',
                     data: JSON.stringify({
                         title: $('#uploadAdviceForm input[name="title"]').val(),
                         categories: $('#uploadAdviceForm select[name="categories"]').val(),
-                        content: $('#uploadAdviceForm textarea[name="content"]').val()
+                        content: $('#uploadAdviceForm textarea[name="content"]').val(),
+                        bestTimeToVisit: $('#uploadAdviceForm textarea[name="bestTimeToVisit"]').val(),
+                        whatToPack: $('#uploadAdviceForm textarea[name="whatToPack"]').val(),
+                        safetyTips: $('#uploadAdviceForm textarea[name="safetyTips"]').val(),
+                        budgetTips: $('#uploadAdviceForm textarea[name="budgetTips"]').val(),
+                        stayFoodAdvice: $('#uploadAdviceForm textarea[name="stayFoodAdvice"]').val(),
+                        transportTips: $('#uploadAdviceForm textarea[name="transportTips"]').val(),
+                        connectivityTips: $('#uploadAdviceForm textarea[name="connectivityTips"]').val(),
+                        localRules: $('#uploadAdviceForm textarea[name="localRules"]').val(),
+                        environmentalTips: $('#uploadAdviceForm textarea[name="environmentalTips"]').val(),
+                        proTips: $('#uploadAdviceForm textarea[name="proTips"]').val()
                     }),
                     success: function() { 
                         closeModal('adviceModal'); 
                         $('#uploadAdviceForm')[0].reset();
+                        $('#adviceId').val('');
                         loadProfileData(); 
                     }
                 });
@@ -510,21 +649,185 @@
         const urlParams = new URLSearchParams(window.location.search);
         const profileUsername = urlParams.get('username') || '${user.username}';
 
+        function toggleAdviceLike(adviceId, element, event) {
+            event.stopPropagation();
+            const icon = $(element);
+            const countSpan = icon.closest('.advice-premium-card').find('.advice-likes-count');
+            let currentCount = parseInt(countSpan.text().trim()) || 0;
+            
+            if (icon.hasClass('liked')) {
+                icon.removeClass('liked');
+                countSpan.html('<i class="fa fa-heart"></i> ' + (currentCount - 1) + ' likes');
+            } else {
+                icon.addClass('liked');
+                countSpan.html('<i class="fa fa-heart"></i> ' + (currentCount + 1) + ' likes');
+            }
+            $.post('/user/profile/api/advices/' + adviceId + '/like');
+        }
+
+        function prepareNewAdvice() {
+            $('#adviceId').val('');
+            $('#adviceModalTitle').text('Share Travel Wisdom');
+            $('#adviceSubmitBtn').text('Post Advice');
+            $('#uploadAdviceForm')[0].reset();
+            openModal('adviceModal');
+        }
+
+        function editAdvice(adv) {
+            $('#adviceId').val(adv.id);
+            $('#adviceModalTitle').text('Refine Travel Wisdom');
+            $('#adviceSubmitBtn').text('Update Advice');
+            
+            const form = $('#uploadAdviceForm');
+            form.find('input[name="title"]').val(adv.title);
+            form.find('select[name="categories"]').val(adv.categories);
+            form.find('textarea[name="content"]').val(adv.content);
+            form.find('textarea[name="bestTimeToVisit"]').val(adv.bestTimeToVisit);
+            form.find('textarea[name="whatToPack"]').val(adv.whatToPack);
+            form.find('textarea[name="safetyTips"]').val(adv.safetyTips);
+            form.find('textarea[name="budgetTips"]').val(adv.budgetTips);
+            form.find('textarea[name="stayFoodAdvice"]').val(adv.stayFoodAdvice);
+            form.find('textarea[name="transportTips"]').val(adv.transportTips);
+            form.find('textarea[name="connectivityTips"]').val(adv.connectivityTips);
+            form.find('textarea[name="localRules"]').val(adv.localRules);
+            form.find('textarea[name="environmentalTips"]').val(adv.environmentalTips);
+            form.find('textarea[name="proTips"]').val(adv.proTips);
+            
+            openModal('adviceModal');
+        }
+
+        function showAdviceDetail(adv) {
+            const detail = $('#adviceDetailContent');
+            detail.empty();
+            
+            let iconClass = 'fa-lightbulb-o';
+            if (adv.categories === 'Solo Travel') iconClass = 'fa-user';
+            else if (adv.categories === 'Adventure Trip') iconClass = 'fa-mountain';
+            else if (adv.categories === 'Budget Travel') iconClass = 'fa-money';
+            else if (adv.categories === 'Luxury Escape') iconClass = 'fa-diamond';
+            else if (adv.categories === 'Food & Culture') iconClass = 'fa-cutlery';
+            else if (adv.categories === 'Road Trip') iconClass = 'fa-car';
+
+            let html = '<div style="text-align:center; margin-bottom: 25px;">' +
+                       '<div class="advice-icon-box" style="width: 60px; height: 60px; font-size: 30px; margin: 0 auto 15px;"><i class="fa ' + iconClass + '"></i></div>' +
+                       '<h2 style="margin:0; font-weight:800; color:#ff9f43;">' + adv.title + '</h2>' +
+                       '<span style="color:var(--text-dim); text-transform:uppercase; font-size:12px; letter-spacing:1px;">' + (adv.categories || 'General') + '</span>' +
+                       '</div>' +
+                       '<div style="background: rgba(255,255,255,0.03); padding: 20px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.05); margin-bottom: 20px;">' +
+                       '<p style="font-size:15px; line-height:1.7; color:#eee; margin:0;">' + adv.content + '</p>' +
+                       '</div>' +
+                       '<div class="row g-3">';
+            
+            const tips = [
+                { label: 'Best Time to Visit', val: adv.bestTimeToVisit, icon: 'fa-calendar' },
+                { label: 'What to Pack', val: adv.whatToPack, icon: 'fa-suitcase' },
+                { label: 'Safety Tips', val: adv.safetyTips, icon: 'fa-shield' },
+                { label: 'Money & Budget', val: adv.budgetTips, icon: 'fa-money' },
+                { label: 'Stay & Food', val: adv.stayFoodAdvice, icon: 'fa-bed' },
+                { label: 'Transport', val: adv.transportTips, icon: 'fa-car' },
+                { label: 'Network', val: adv.connectivityTips, icon: 'fa-wifi' },
+                { label: 'Rules', val: adv.localRules, icon: 'fa-gavel' },
+                { label: 'Eco Tips', val: adv.environmentalTips, icon: 'fa-leaf' },
+                { label: 'Pro Tips', val: adv.proTips, icon: 'fa-star' }
+            ];
+            
+            tips.forEach(t => {
+                if (t.val && t.val.trim() !== '') {
+                    html += '<div class="col-md-6">' +
+                            '<div style="padding: 12px; background: rgba(255,159,67,0.05); border: 1px solid rgba(255,159,67,0.1); border-radius: 12px; height: 100%;">' +
+                            '<div style="color: #ff9f43; font-weight: 700; font-size: 11px; text-transform: uppercase; margin-bottom: 5px; display: flex; align-items: center; gap: 8px;">' +
+                            '<i class="fa ' + t.icon + '"></i> ' + t.label + '</div>' +
+                            '<div style="font-size: 13px; color: #fff;">' + t.val + '</div>' +
+                            '</div></div>';
+                }
+            });
+
+            html += '</div>';
+            detail.append(html);
+            openModal('adviceDetailModal');
+        }
+
+        function showMyPoints() {
+            // Use existing data if available, or fetch
+            if (dataCache && dataCache.user) {
+                const pts = dataCache.user.travelPoints || 0;
+                $('#headerPointsValue').text(pts);
+                $('#modalTotalPointsLabel').text(pts);
+            } else {
+                $.get('/user/profile/api/data?username=' + profileUsername, function(data) {
+                    const pts = data.user.travelPoints || 0;
+                    $('#headerPointsValue').text(pts);
+                    $('#modalTotalPointsLabel').text(pts);
+                });
+            }
+            openModal('pointsDetailModal');
+        }
+
+        function deleteAdvice(adviceId) {
+            if (confirm('Are you sure you want to delete this advice?')) {
+                $.ajax({
+                    url: '/user/profile/api/advices/' + adviceId,
+                    type: 'DELETE',
+                    success: function() {
+                        loadProfileData();
+                    }
+                });
+            }
+        }
+        
+        let dataCache = null;
         function loadProfileData() {
             $.get('/user/profile/api/data?username=' + profileUsername, function(data) {
+                dataCache = data;
                 $('#countPosts').text(data.postsCount || 0);
-                $('#countFollowers').text(data.followersCount || 0);
-                $('#countFollowing').text(data.followingCount || 0);
+                $('#countPoints').text(data.user.travelPoints || 0);
                 $('#displayUsername').text(data.user.username || 'user');
                 
                 if(!data.isOwnProfile) {
                     $('.btn-edit-premium').hide();
                     $('.plus-btn').hide();
                     $('#adviceSection button').hide();
+                    $('#postsSection button').hide();
                 }
                 
                 renderPosts(data.posts, data.likedPostIds || []);
                 renderAdvices(data.advices, data.likedAdviceIds || []);
+            });
+        }
+
+        function previewPhoto(input) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    $('#photoPreviewImg').attr('src', e.target.result);
+                    $('#photoPreview').show();
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        function handleProfilePhotoUpload(event) {
+            event.preventDefault();
+            const formData = new FormData(event.target);
+            
+            $.ajax({
+                url: '/user/profile/api/upload-photo',
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                    closeModal('profilePhotoModal');
+                    loadProfileData();
+                    // Update header avatar too
+                    if (response.profilePhoto) {
+                        $('header.header img').attr('src', response.profilePhoto);
+                        $('#mainAvatar').replaceWith('<img src="' + response.profilePhoto + '" class="avatar-img" id="mainAvatar">');
+                    }
+                },
+                error: function() {
+                    alert('Failed to upload photo');
+                }
             });
         }
 
@@ -543,6 +846,14 @@
                     html += '<video src="' + post.mediaUrl + '" muted loop onmouseover="this.play()" onmouseout="this.pause()"></video>';
                 } else {
                     html += '<img src="' + post.mediaUrl + '" loading="lazy">';
+                }
+                
+                // Action Buttons for own profile
+                if (dataCache && dataCache.isOwnProfile) {
+                    html += '<div style="position: absolute; top: 10px; left: 10px; display: flex; gap: 8px; z-index: 20;">' +
+                            '<i class="fa fa-pencil" style="cursor: pointer; background: rgba(0,0,0,0.6); color: #ff9f43; padding: 6px; border-radius: 50%; font-size: 14px;" onclick="editPost(' + JSON.stringify(post).replace(/"/g, '&quot;') + ', event)"></i>' +
+                            '<i class="fa fa-trash" style="cursor: pointer; background: rgba(0,0,0,0.6); color: #e63946; padding: 6px; border-radius: 50%; font-size: 14px;" onclick="deleteMemory(' + post.id + ', event)"></i>' +
+                            '</div>';
                 }
                 
                 let isLiked = likedPostIds.includes(post.id);
@@ -572,7 +883,7 @@
             event.stopPropagation();
             const icon = $(element);
             const countSpan = icon.closest('.post-card').find('.post-likes-count');
-            let currentCount = parseInt(countSpan.text().trim());
+            let currentCount = parseInt(countSpan.text().trim()) || 0;
             
             if (icon.hasClass('liked')) {
                 icon.removeClass('liked');
@@ -582,6 +893,51 @@
                 countSpan.html('<i class="fa fa-heart"></i> ' + (currentCount + 1));
             }
             $.post('/user/profile/api/posts/' + postId + '/like');
+        }
+
+        function prepareNewPost() {
+            $('#postId').val('');
+            $('#postModalTitle').text('New Travel Memory');
+            $('#postSubmitBtn').text('Post to Journey');
+            $('#uploadPostForm')[0].reset();
+            $('#mediaPreview').hide();
+            openModal('postModal');
+        }
+
+        function editPost(post, event) {
+            event.stopPropagation();
+            $('#postId').val(post.id);
+            $('#postModalTitle').text('Refine Travel Memory');
+            $('#postSubmitBtn').text('Update Memory');
+            
+            const form = $('#uploadPostForm');
+            form.find('textarea[name="caption"]').val(post.caption);
+            
+            const preview = $('#mediaPreview');
+            preview.empty().show();
+            if (post.mediaType === 'video') {
+                preview.append('<video src="' + post.mediaUrl + '" style="width:100%;height:100%;object-fit:cover;" autoplay muted loop></video>');
+            } else {
+                preview.append('<img src="' + post.mediaUrl + '" style="width:100%;height:100%;object-fit:cover;">');
+            }
+            
+            // File input is not required for update
+            $('#mediaInput').prop('required', false);
+            
+            openModal('postModal');
+        }
+
+        function deleteMemory(postId, event) {
+            event.stopPropagation();
+            if (confirm('Are you sure you want to delete this memory?')) {
+                $.ajax({
+                    url: '/user/profile/api/posts/' + postId,
+                    type: 'DELETE',
+                    success: function() {
+                        loadProfileData();
+                    }
+                });
+            }
         }
 
         function renderAdvices(advices, likedAdviceIds) {
@@ -599,15 +955,23 @@
                 else if (adv.categories === 'Adventure Trip') iconClass = 'fa-mountain';
                 else if (adv.categories === 'Budget Travel') iconClass = 'fa-money';
                 else if (adv.categories === 'Luxury Escape') iconClass = 'fa-diamond';
-                else if (adv.categories === 'Family Vacation') iconClass = 'fa-users';
                 else if (adv.categories === 'Food & Culture') iconClass = 'fa-cutlery';
                 else if (adv.categories === 'Road Trip') iconClass = 'fa-car';
 
                 let isLiked = likedAdviceIds.includes(adv.id);
                 let heartClass = isLiked ? 'fa-heart liked' : 'fa-heart';
 
-                let html = '<div class="advice-premium-card" style="position: relative;">' +
-                    '<i class="fa ' + heartClass + ' post-like-btn" style="bottom: auto; top: 15px; right: 15px; font-size: 18px;" onclick="toggleAdviceLike(' + adv.id + ', this, event)"></i>' +
+                let html = '<div class="advice-premium-card" style="position: relative; cursor: pointer;" onclick="showAdviceDetail(' + JSON.stringify(adv).replace(/"/g, '&quot;') + ')">';
+                
+                // Show Edit/Delete only on own profile
+                if (dataCache && dataCache.isOwnProfile) {
+                    html += '<div style="position: absolute; top: 15px; right: 45px; display: flex; gap: 10px; z-index: 10;">' +
+                            '<i class="fa fa-pencil" style="cursor: pointer; color: #ff9f43;" onclick="event.stopPropagation(); editAdvice(' + JSON.stringify(adv).replace(/"/g, '&quot;') + ')"></i>' +
+                            '<i class="fa fa-trash" style="cursor: pointer; color: #e63946;" onclick="event.stopPropagation(); deleteAdvice(' + adv.id + ')"></i>' +
+                            '</div>';
+                }
+
+                html += '<i class="fa ' + heartClass + ' post-like-btn" style="bottom: auto; top: 15px; right: 15px; font-size: 18px;" onclick="toggleAdviceLike(' + adv.id + ', this, event)"></i>' +
                     '<div class="advice-header">' +
                     '<div class="advice-icon-box"><i class="fa ' + iconClass + '"></i></div>' +
                     '<div class="ms-3">' +
@@ -615,8 +979,30 @@
                     '<span style="font-size: 10px; color: #ff9f43; text-transform: uppercase;">' + (adv.categories || 'General') + '</span>' +
                     '</div>' +
                     '</div>' +
-                    '<p class="advice-body">' + adv.content + '</p>' +
-                    '<div style="margin-top: 10px; font-size: 12px; color: var(--text-muted);">' +
+                    '<p class="advice-body">' + adv.content + '</p>';
+                
+                // Add conditional fields
+                const tips = [
+                    { label: 'Best Time', val: adv.bestTimeToVisit },
+                    { label: 'Packing', val: adv.whatToPack },
+                    { label: 'Safety', val: adv.safetyTips },
+                    { label: 'Budget', val: adv.budgetTips },
+                    { label: 'Food & Stay', val: adv.stayFoodAdvice },
+                    { label: 'Transport', val: adv.transportTips },
+                    { label: 'Network', val: adv.connectivityTips },
+                    { label: 'Local Rules', val: adv.localRules },
+                    { label: 'Eco Tips', val: adv.environmentalTips },
+                    { label: 'Pro Tips', val: adv.proTips }
+                ];
+                
+                tips.forEach(t => {
+                    if (t.val && t.val.trim() !== '') {
+                        html += '<div style="margin-top: 10px; font-size: 11px; border-left: 2px solid #ff9f43; padding-left: 8px;">' +
+                                '<strong style="color: #ff9f43;">' + t.label + ':</strong> ' + t.val + '</div>';
+                    }
+                });
+
+                html += '<div style="margin-top: 15px; font-size: 12px; color: var(--text-muted);">' +
                     '<span class="advice-likes-count"><i class="fa fa-heart"></i> ' + adv.likes + ' likes</span>' +
                     '</div>' +
                     '</div>';
@@ -627,7 +1013,7 @@
         function toggleAdviceLike(adviceId, element, event) {
             event.stopPropagation();
             const icon = $(element);
-            const countSpan = icon.closest('.advice-card').find('.advice-likes-count');
+            const countSpan = icon.closest('.advice-premium-card').find('.advice-likes-count');
             let currentCount = parseInt(countSpan.text().trim());
             
             if (icon.hasClass('liked')) {

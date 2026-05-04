@@ -28,6 +28,36 @@ public class Advice {
     @Column(nullable = false, length = 2000)
     private String content;
 
+    @Column(columnDefinition = "TEXT")
+    private String bestTimeToVisit;
+
+    @Column(columnDefinition = "TEXT")
+    private String whatToPack;
+
+    @Column(columnDefinition = "TEXT")
+    private String safetyTips;
+
+    @Column(columnDefinition = "TEXT")
+    private String budgetTips;
+
+    @Column(columnDefinition = "TEXT")
+    private String stayFoodAdvice;
+
+    @Column(columnDefinition = "TEXT")
+    private String transportTips;
+
+    @Column(columnDefinition = "TEXT")
+    private String connectivityTips;
+
+    @Column(columnDefinition = "TEXT")
+    private String localRules;
+
+    @Column(columnDefinition = "TEXT")
+    private String environmentalTips;
+
+    @Column(columnDefinition = "TEXT")
+    private String proTips;
+
     private int likes = 0;
 
     @ElementCollection
@@ -60,6 +90,36 @@ public class Advice {
 
     public String getContent() { return content; }
     public void setContent(String content) { this.content = content; }
+
+    public String getBestTimeToVisit() { return bestTimeToVisit; }
+    public void setBestTimeToVisit(String bestTimeToVisit) { this.bestTimeToVisit = bestTimeToVisit; }
+
+    public String getWhatToPack() { return whatToPack; }
+    public void setWhatToPack(String whatToPack) { this.whatToPack = whatToPack; }
+
+    public String getSafetyTips() { return safetyTips; }
+    public void setSafetyTips(String safetyTips) { this.safetyTips = safetyTips; }
+
+    public String getBudgetTips() { return budgetTips; }
+    public void setBudgetTips(String budgetTips) { this.budgetTips = budgetTips; }
+
+    public String getStayFoodAdvice() { return stayFoodAdvice; }
+    public void setStayFoodAdvice(String stayFoodAdvice) { this.stayFoodAdvice = stayFoodAdvice; }
+
+    public String getTransportTips() { return transportTips; }
+    public void setTransportTips(String transportTips) { this.transportTips = transportTips; }
+
+    public String getConnectivityTips() { return connectivityTips; }
+    public void setConnectivityTips(String connectivityTips) { this.connectivityTips = connectivityTips; }
+
+    public String getLocalRules() { return localRules; }
+    public void setLocalRules(String localRules) { this.localRules = localRules; }
+
+    public String getEnvironmentalTips() { return environmentalTips; }
+    public void setEnvironmentalTips(String environmentalTips) { this.environmentalTips = environmentalTips; }
+
+    public String getProTips() { return proTips; }
+    public void setProTips(String proTips) { this.proTips = proTips; }
 
     public int getLikes() { return likes; }
     public void setLikes(int likes) { this.likes = likes; }

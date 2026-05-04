@@ -26,7 +26,7 @@
         </li>
         <li style="margin: 20px 0; border-top: 1px solid rgba(255,255,255,0.1);"></li>
         <li class="nav-item ${param.activePage == 'profile' ? 'active' : ''}">
-            <a href="<c:url value='/profile'/>"><i class="fa fa-cog"></i> Profile Settings</a>
+            <a href="<c:url value='/profile'/>"><i class="fa fa-user-circle-o"></i> Profile</a>
         </li>
         <li class="nav-item">
             <a href="<c:url value='/user/logout'/>"><i class="fa fa-sign-out"></i> Logout</a>

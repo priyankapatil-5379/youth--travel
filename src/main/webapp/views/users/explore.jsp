@@ -53,7 +53,19 @@
         .advice-author { display: flex; align-items: center; gap: 12px; margin-top: 18px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 18px; }
         .advice-author img { width: 35px; height: 35px; border-radius: 50%; object-fit: cover; border: 2px solid rgba(255,255,255,0.2); }
         .advice-author span { font-size: 14px; color: #fff; font-weight: 700; text-shadow: 0 1px 3px rgba(0,0,0,0.5); }
+        .btn-view-profile { background: var(--primary-blue); color: white; padding: 8px 16px; border-radius: 10px; font-weight: 700; font-size: 12px; text-decoration: none; transition: 0.3s; }
+        .btn-view-profile:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(230, 57, 70, 0.3); color: white; }
 
+        /* Advice Details in Modal */
+        .modal-advice-detail { background: rgba(0,0,0,0.4); border-radius: 15px; padding: 20px; border: 1px solid rgba(255,255,255,0.1); }
+        .modal-tip-box { background: rgba(230, 57, 70, 0.05); border: 1px solid rgba(230, 57, 70, 0.1); border-radius: 12px; padding: 12px; height: 100%; }
+        .modal-tip-label { color: var(--primary-blue); font-weight: 700; font-size: 11px; text-transform: uppercase; margin-bottom: 5px; display: flex; align-items: center; gap: 8px; }
+        
+        /* Modal Fixes */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 2000; backdrop-filter: blur(8px); }
+        .modal-content-custom { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 90%; max-width: 600px; max-height: 90vh; overflow-y: auto; background: #0b0f18; border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; padding: 25px; color: white; }
+        .modal-close { position: absolute; top: 15px; right: 20px; font-size: 24px; cursor: pointer; color: #7e8c9a; }
+        
         @media (max-width: 991px) {
             .main-content { margin-left: 0; padding: 90px 20px 40px; }
             .explore-header { flex-direction: column; align-items: flex-start; gap: 20px; padding: 20px; }
@@ -93,13 +105,45 @@
     <header class="header">
         <div class="header-logo"><a href="<c:url value='/'/>"><img src="<c:url value='/views/assets/images/logo.png'/>" style="height: 35px;"></a></div>
         <div style="display: flex; align-items: center; gap: 20px;">
-            <div style="display: flex; align-items: center; gap: 15px;">
-                <span style="font-weight: 700;">Hi, ${user.name}</span>
-                <c:set var="defaultAvatar" value="https://ui-avatars.com/api/?name=${user.name}&background=f04c26&color=fff" />
-                <img src="${not empty user.profilePhoto ? user.profilePhoto : defaultAvatar}" style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover;">
-            </div>
+                <div style="display: flex; align-items: center; gap: 15px; cursor: pointer;" onclick="showMyPoints()">
+                    <span style="font-weight: 700;">Hi, ${user.name}</span>
+                    <c:set var="defaultAvatar" value="https://ui-avatars.com/api/?name=${user.name}&background=f04c26&color=fff" />
+                    <img src="${not empty user.profilePhoto ? user.profilePhoto : defaultAvatar}" style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover; border: 2px solid rgba(255,255,255,0.2);">
+                </div>
         </div>
     </header>
+    <div id="pointsModal" class="modal" style="display: none; z-index: 3000;">
+        <div class="modal-content-custom" style="max-width: 350px; text-align: center;">
+            <span class="modal-close" onclick="hidePoints()">&times;</span>
+            <div style="padding: 20px;">
+                <div style="position: relative; width: 100px; height: 100px; margin: 0 auto 20px;">
+                    <img id="modalUserAvatar" src="${not empty user.profilePhoto ? user.profilePhoto : defaultAvatar}" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 3px solid var(--primary-blue); box-shadow: 0 0 25px rgba(230,57,70,0.3);">
+                    <div style="position: absolute; bottom: -5px; right: -5px; width: 40px; height: 40px; background: var(--primary-blue); border: 3px solid #0b0f18; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(0,0,0,0.5);">
+                        <span id="modalPointsValue" style="font-size: 16px; font-weight: 800; color: #fff;">0</span>
+                    </div>
+                </div>
+                <h3 style="font-weight: 700; margin-bottom: 5px; color: #fff; font-size: 18px;">Total Points Earned</h3>
+                <h2 id="modalTotalPointsLabel" style="font-size: 32px; font-weight: 800; color: var(--primary-blue); margin-bottom: 10px;">0</h2>
+                <p style="color: var(--text-muted); font-size: 13px; margin-bottom: 25px;">Track your traveler influence across the platform!</p>
+                
+                <div style="text-align: left; background: rgba(255,255,255,0.03); padding: 15px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05);">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 12px;">
+                        <span><i class="fa fa-heart" style="color: var(--primary-blue); width: 18px;"></i> Like received</span>
+                        <span style="font-weight: 700; color: #4caf50;">+10 pts</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 12px;">
+                        <span><i class="fa fa-eye" style="color: var(--primary-blue); width: 18px;"></i> Memory view</span>
+                        <span style="font-weight: 700; color: #4caf50;">+2 pts</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; font-size: 12px;">
+                        <span><i class="fa fa-user" style="color: var(--primary-blue); width: 18px;"></i> Profile visit</span>
+                        <span style="font-weight: 700; color: #4caf50;">+1 pt</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="wrapper">
         <jsp:include page="user-sidebar.jsp">
             <jsp:param name="activePage" value="explore" />
@@ -133,6 +177,9 @@
                                     <img src="${not empty u.profilePhoto ? u.profilePhoto : 'https://ui-avatars.com/api/?name='.concat(u.fullName).concat('&background=random')}" class="user-avatar">
                                     <h3 class="user-name">${u.fullName}</h3>
                                     <p class="user-username">@${not empty u.username ? u.username : 'traveler'}</p>
+                                    <div style="margin: 10px 0; font-size: 13px; font-weight: 700; color: #ff9f43; background: rgba(255,159,67,0.1); padding: 5px 15px; border-radius: 20px; display: inline-block; border: 1px solid rgba(255,159,67,0.2);">
+                                        <i class="fa fa-star"></i> ${u.travelPoints} Points
+                                    </div>
                                     <a href="<c:url value='/profile?username=${not empty u.username ? u.username : u.fullName}'/>" class="btn-view-profile">View Profile</a>
                                 </div>
                             </c:forEach>
@@ -190,15 +237,48 @@
                     <c:choose>
                         <c:when test="${not empty advices}">
                             <c:forEach var="a" items="${advices}">
-                                <div class="advice-card" onclick="window.location.href='<c:url value='/profile?username=${not empty a.user.username ? a.user.username : a.user.fullName}'/>'" style="cursor: pointer;">
+                                <div class="advice-card" 
+                                     data-title="${a.title}"
+                                     data-content="${a.content}"
+                                     data-categories="${a.categories}"
+                                     data-best="${a.bestTimeToVisit}"
+                                     data-pack="${a.whatToPack}"
+                                     data-safety="${a.safetyTips}"
+                                     data-budget="${a.budgetTips}"
+                                     data-stay="${a.stayFoodAdvice}"
+                                     data-transport="${a.transportTips}"
+                                     data-network="${a.connectivityTips}"
+                                     data-rules="${a.localRules}"
+                                     data-eco="${a.environmentalTips}"
+                                     data-pro="${a.proTips}"
+                                     data-author-name="${a.user.fullName}"
+                                     data-author-username="${not empty a.user.username ? a.user.username : a.user.fullName}"
+                                     data-author-photo="${not empty a.user.profilePhoto ? a.user.profilePhoto : ''}"
+                                     onclick="handleAdviceClick(this)"
+                                     style="cursor: pointer;">
                                     <h4>${a.title}</h4>
                                     <p>${a.content}</p>
-                                    <div style="margin-top: 10px; font-size: 12px; color: var(--text-muted);">
+                                    
+                                    <div class="advice-details" style="margin-top: 15px;">
+                                        <c:if test="${not empty a.bestTimeToVisit}"><div style="font-size: 11px; margin-top: 5px; border-left: 2px solid var(--primary-blue); padding-left: 8px;"><strong style="color: var(--primary-blue);">Best Time:</strong> ${a.bestTimeToVisit}</div></c:if>
+                                        <c:if test="${not empty a.whatToPack}"><div style="font-size: 11px; margin-top: 5px; border-left: 2px solid var(--primary-blue); padding-left: 8px;"><strong style="color: var(--primary-blue);">Packing:</strong> ${a.whatToPack}</div></c:if>
+                                        <c:if test="${not empty a.safetyTips}"><div style="font-size: 11px; margin-top: 5px; border-left: 2px solid var(--primary-blue); padding-left: 8px;"><strong style="color: var(--primary-blue);">Safety:</strong> ${a.safetyTips}</div></c:if>
+                                        <c:if test="${not empty a.budgetTips}"><div style="font-size: 11px; margin-top: 5px; border-left: 2px solid var(--primary-blue); padding-left: 8px;"><strong style="color: var(--primary-blue);">Budget:</strong> ${a.budgetTips}</div></c:if>
+                                        <c:if test="${not empty a.stayFoodAdvice}"><div style="font-size: 11px; margin-top: 5px; border-left: 2px solid var(--primary-blue); padding-left: 8px;"><strong style="color: var(--primary-blue);">Stay & Food:</strong> ${a.stayFoodAdvice}</div></c:if>
+                                        <c:if test="${not empty a.transportTips}"><div style="font-size: 11px; margin-top: 5px; border-left: 2px solid var(--primary-blue); padding-left: 8px;"><strong style="color: var(--primary-blue);">Transport:</strong> ${a.transportTips}</div></c:if>
+                                        <c:if test="${not empty a.connectivityTips}"><div style="font-size: 11px; margin-top: 5px; border-left: 2px solid var(--primary-blue); padding-left: 8px;"><strong style="color: var(--primary-blue);">Network:</strong> ${a.connectivityTips}</div></c:if>
+                                        <c:if test="${not empty a.localRules}"><div style="font-size: 11px; margin-top: 5px; border-left: 2px solid var(--primary-blue); padding-left: 8px;"><strong style="color: var(--primary-blue);">Rules:</strong> ${a.localRules}</div></c:if>
+                                        <c:if test="${not empty a.environmentalTips}"><div style="font-size: 11px; margin-top: 5px; border-left: 2px solid var(--primary-blue); padding-left: 8px;"><strong style="color: var(--primary-blue);">Eco Tips:</strong> ${a.environmentalTips}</div></c:if>
+                                        <c:if test="${not empty a.proTips}"><div style="font-size: 11px; margin-top: 5px; border-left: 2px solid var(--primary-blue); padding-left: 8px;"><strong style="color: var(--primary-blue);">Pro Tips:</strong> ${a.proTips}</div></c:if>
+                                    </div>
+
+                                    <div style="margin-top: 15px; font-size: 12px; color: rgba(255,255,255,0.6);">
                                         <span><i class="fa fa-heart"></i> ${a.likes} likes</span>
                                     </div>
                                     <div class="advice-author">
-                                        <img src="${not empty a.user.profilePhoto ? a.user.profilePhoto : 'https://ui-avatars.com/api/?name='.concat(a.user.fullName).concat('&background=random')}">
-                                        <span>Shared by <strong>${a.user.fullName}</strong></span>
+                                        <c:set var="authorAvatar" value="https://ui-avatars.com/api/?name=${a.user.fullName}&background=random" />
+                                        <img src="${not empty a.user.profilePhoto ? a.user.profilePhoto : authorAvatar}">
+                                        <span>Shared by ${not empty a.user.username ? a.user.username : a.user.fullName}</span>
                                     </div>
                                 </div>
                             </c:forEach>
@@ -215,6 +295,16 @@
         </main>
     </div>
     
+    <!-- Advice Detail Modal -->
+    <div id="adviceModal" class="modal">
+        <div class="modal-content-custom">
+            <span class="modal-close" onclick="closeModal()">&times;</span>
+            <div id="adviceDetailContent">
+                <!-- Populated by JS -->
+            </div>
+        </div>
+    </div>
+    
     <script>
         function switchTab(tabId) {
             document.querySelectorAll('.nav-tabs button').forEach(b => b.classList.remove('active'));
@@ -222,6 +312,115 @@
             
             event.target.classList.add('active');
             document.getElementById('tab-' + tabId).classList.add('active');
+        }
+
+        function showMyPoints() {
+            const modal = document.getElementById('pointsModal');
+            
+            // Fetch latest points
+            fetch('/user/profile/api/data')
+                .then(res => res.json())
+                .then(data => {
+                    const pts = data.user.travelPoints || 0;
+                    document.getElementById('modalPointsValue').innerText = pts;
+                    document.getElementById('modalTotalPointsLabel').innerText = pts;
+                });
+
+            modal.style.display = 'block';
+        }
+
+        function hidePoints() {
+            document.getElementById('pointsModal').style.display = 'none';
+        }
+
+        function handleAdviceClick(el) {
+            const adv = {
+                title: el.getAttribute('data-title'),
+                content: el.getAttribute('data-content'),
+                categories: el.getAttribute('data-categories'),
+                bestTimeToVisit: el.getAttribute('data-best'),
+                whatToPack: el.getAttribute('data-pack'),
+                safetyTips: el.getAttribute('data-safety'),
+                budgetTips: el.getAttribute('data-budget'),
+                stayFoodAdvice: el.getAttribute('data-stay'),
+                transportTips: el.getAttribute('data-transport'),
+                connectivityTips: el.getAttribute('data-network'),
+                localRules: el.getAttribute('data-rules'),
+                environmentalTips: el.getAttribute('data-eco'),
+                proTips: el.getAttribute('data-pro'),
+                authorName: el.getAttribute('data-author-name'),
+                authorUsername: el.getAttribute('data-author-username'),
+                authorPhoto: el.getAttribute('data-author-photo')
+            };
+            showAdviceDetail(adv);
+        }
+
+        function showAdviceDetail(adv) {
+            const detail = document.getElementById('adviceDetailContent');
+            let tipsHtml = '';
+            
+            const tips = [
+                { label: 'Best Time', val: adv.bestTimeToVisit, icon: 'fa-calendar' },
+                { label: 'Packing', val: adv.whatToPack, icon: 'fa-suitcase' },
+                { label: 'Safety', val: adv.safetyTips, icon: 'fa-shield' },
+                { label: 'Budget', val: adv.budgetTips, icon: 'fa-money' },
+                { label: 'Stay & Food', val: adv.stayFoodAdvice, icon: 'fa-bed' },
+                { label: 'Transport', val: adv.transportTips, icon: 'fa-car' },
+                { label: 'Network', val: adv.connectivityTips, icon: 'fa-wifi' },
+                { label: 'Rules', val: adv.localRules, icon: 'fa-gavel' },
+                { label: 'Eco Tips', val: adv.environmentalTips, icon: 'fa-leaf' },
+                { label: 'Pro Tips', val: adv.proTips, icon: 'fa-star' }
+            ];
+
+            tips.forEach(t => {
+                if (t.val && t.val.trim() !== '' && t.val !== 'null') {
+                    tipsHtml += `
+                        <div style="margin-bottom: 15px;">
+                            <div class="modal-tip-box">
+                                <div class="modal-tip-label"><i class="fa \${t.icon}"></i> \${t.label}</div>
+                                <div style="font-size: 13px; color: #fff;">\${t.val}</div>
+                            </div>
+                        </div>
+                    `;
+                }
+            });
+
+            detail.innerHTML = `
+                <div style="text-align:center; margin-bottom: 25px;">
+                    <h2 style="margin:0; font-weight:800; color:var(--primary-blue);">\${adv.title}</h2>
+                    <span style="color:var(--text-dim); text-transform:uppercase; font-size:12px; letter-spacing:1px;">\${adv.categories || 'General'}</span>
+                </div>
+                <div style="background: rgba(255,255,255,0.03); padding: 20px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.05); margin-bottom: 20px;">
+                    <p style="font-size:15px; line-height:1.7; color:#eee; margin:0;">\${adv.content}</p>
+                </div>
+                <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px; margin-bottom: 25px;">
+                    \${tipsHtml}
+                </div>
+                <div style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px; display: flex; align-items: center; justify-content: space-between;">
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <img src="\${(adv.authorPhoto && adv.authorPhoto !== 'null' && adv.authorPhoto !== '') ? adv.authorPhoto : 'https://ui-avatars.com/api/?name=' + adv.authorName + '&background=random'}" style="width: 40px; height: 40px; border-radius: 50%; border: 2px solid var(--primary-blue);">
+                        <div>
+                            <div style="font-size: 14px; font-weight: 700; color: #fff;">\${adv.authorName}</div>
+                            <div style="font-size: 12px; color: var(--text-dim);">@\${adv.authorUsername}</div>
+                        </div>
+                    </div>
+                    <a href="/profile?username=\${adv.authorUsername}" class="btn-view-profile">View Profile</a>
+                </div>
+            `;
+            
+            document.getElementById('adviceModal').style.display = 'block';
+        }
+
+        function closeModal() {
+            document.getElementById('adviceModal').style.display = 'none';
+        }
+
+        // Close on click outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('adviceModal');
+            if (event.target == modal) {
+                closeModal();
+            }
         }
     </script>
 </body>

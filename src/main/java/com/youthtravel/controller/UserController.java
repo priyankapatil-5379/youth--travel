@@ -309,8 +309,10 @@ public class UserController {
                         match = match && t.getDestination().toLowerCase().contains(destination.toLowerCase());
                     }
                     if (tripType != null && !tripType.isEmpty() && !"All Types".equalsIgnoreCase(tripType)) {
-                        match = match && t.getTravelerCategory() != null
-                                && t.getTravelerCategory().toLowerCase().contains(tripType.toLowerCase());
+                        String tt = tripType.toLowerCase();
+                        boolean catMatch = t.getTravelerCategory() != null && t.getTravelerCategory().toLowerCase().contains(tt);
+                        boolean subMatch = t.getTravelerSubCategory() != null && t.getTravelerSubCategory().toLowerCase().contains(tt);
+                        match = match && (catMatch || subMatch);
                     }
                     if (departureCity != null && !departureCity.isEmpty() && !"Any".equalsIgnoreCase(departureCity) && !"Any City".equalsIgnoreCase(departureCity)) {
                         match = match && t.getPickupPoints() != null && t.getPickupPoints().toLowerCase().contains(departureCity.toLowerCase());
@@ -442,7 +444,7 @@ public class UserController {
         }
     }
 
-    @GetMapping("/package/{id}")
+    @GetMapping({"/package/{id}", "/package-details/{id}"})
     public String showPackageDetails(@PathVariable Long id, HttpSession session, Model model) {
         User user = (User) session.getAttribute("user");
         if (user == null) {
