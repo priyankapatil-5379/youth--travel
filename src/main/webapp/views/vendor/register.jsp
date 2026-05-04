@@ -12,7 +12,7 @@
             <link rel="stylesheet" href="<c:url value='/views/assets/css/style.css'/>">
             <link rel="stylesheet" href="<c:url value='/views/assets/css/font-awesome.min.css'/>">
             <link href="https://fonts.googleapis.com/css?family=Dosis:300,400,500,600,700,800" rel="stylesheet">
-            <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css" />
             <style>
                 #map {
                     height: 250px;
@@ -93,6 +93,10 @@
                     align-items: center;
                     gap: 12px;
                     flex: 1;
+                    cursor: pointer;
+                }
+                .step:hover .step-circle {
+                    border-color: rgba(255, 255, 255, 0.4);
                 }
 
                 .step-circle {
@@ -200,6 +204,10 @@
                     background: rgba(255, 255, 255, 0.08);
                     border-color: #f04c26;
                     box-shadow: 0 0 0 4px rgba(240, 76, 38, 0.15);
+                }
+
+                .form-control.is-invalid, .file-upload-wrapper.is-invalid, .custom-checkbox.is-invalid {
+                    border-color: #e11d48 !important;
                 }
 
                 textarea.form-control {
@@ -329,15 +337,15 @@
 
                     <!-- Stepper -->
                     <div class="stepper">
-                        <div class="step active" id="stepIndicator1">
+                        <div class="step active" id="stepIndicator1" onclick="nextStep(1)">
                             <div class="step-circle">1</div>
                             <div class="step-label">Business</div>
                         </div>
-                        <div class="step" id="stepIndicator2">
+                        <div class="step" id="stepIndicator2" onclick="nextStep(2)">
                             <div class="step-circle">2</div>
                             <div class="step-label">Brand & Profile</div>
                         </div>
-                        <div class="step" id="stepIndicator3">
+                        <div class="step" id="stepIndicator3" onclick="nextStep(3)">
                             <div class="step-circle">3</div>
                             <div class="step-label">Verification</div>
                         </div>
@@ -355,12 +363,12 @@
                             <div class="row">
                                 <div class="col-md-6 form-group">
                                     <label>Business Name</label>
-                                    <input type="text" name="businessName" class="form-control"
+                                    <input type="text" name="businessName" id="businessName" class="form-control"
                                         placeholder="Adventure Co. Ltd">
                                 </div>
                                 <div class="col-md-6 form-group">
                                     <label>Contact Person Name</label>
-                                    <input type="text" name="ownerName" class="form-control" placeholder="John Doe">
+                                    <input type="text" name="ownerName" id="ownerName" class="form-control" placeholder="John Doe" oninput="this.value = this.value.replace(/[^A-Za-z\s]/g, '')">
                                 </div>
                             </div>
                             <div class="row">
@@ -371,48 +379,60 @@
                                 </div>
                                 <div class="col-md-6 form-group">
                                     <label>Phone Number</label>
-                                    <input type="text" name="phoneNumber" class="form-control"
+                                    <input type="text" name="phoneNumber" id="phoneNumber" class="form-control"
                                         placeholder="10-digit Mobile Number" maxlength="10"
-                                        title="Please enter exactly 10 digits">
+                                        title="Please enter exactly 10 digits" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-6 form-group">
-                                    <label>Company Registration Number (Optional)</label>
-                                    <input type="text" name="registrationId" class="form-control"
-                                        placeholder="REG-12345678">
+                                    <label>Business Type & Registration Number</label>
+                                    <div class="d-flex" style="gap: 10px;">
+                                        <select id="companyType" class="form-control" style="width: 40%; background: rgba(255, 255, 255, 0.05); color: #fff;">
+                                            <option value="CIN" style="color: #000;">Company (CIN)</option>
+                                            <option value="LLPIN" style="color: #000;">LLP (LLPIN)</option>
+                                        </select>
+                                        <input type="text" name="registrationId" id="registrationId" class="form-control"
+                                            placeholder="L12345KA2020PLC123456" style="width: 60%;" oninput="this.value = this.value.toUpperCase()">
+                                    </div>
                                 </div>
                                 <div class="col-md-6 form-group">
                                     <label>GST Number (for India)</label>
-                                    <input type="text" name="gstNumber" class="form-control"
-                                        placeholder="22AAAAA0000A1Z5">
+                                    <input type="text" name="gstNumber" id="gstNumber" class="form-control"
+                                        placeholder="29ABCDE1234F1Z5" maxlength="15" oninput="this.value = this.value.toUpperCase().replace(/[^A-Z0-9]/g, '')">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label>Business Address</label>
-                                <textarea name="companyAddress" class="form-control" rows="2"
+                                <textarea name="companyAddress" id="companyAddress" class="form-control" rows="2"
                                     placeholder="Full registered office address"></textarea>
                             </div>
                             <div class="row">
                                 <div class="col-md-4 form-group">
                                     <label>Website Link</label>
-                                    <input type="url" name="websiteUrl" class="form-control"
+                                    <input type="url" name="websiteUrl" id="websiteUrl" class="form-control"
                                         placeholder="https://adventure.com">
                                 </div>
                                 <div class="col-md-4 form-group">
                                     <label>WhatsApp Number</label>
-                                    <input type="text" name="whatsappNumber" class="form-control"
-                                        placeholder="10-digit WhatsApp Number">
+                                    <input type="text" name="whatsappNumber" id="whatsappNumber" class="form-control"
+                                        placeholder="10-digit WhatsApp Number" maxlength="10" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
                                 </div>
                                 <div class="col-md-4 form-group">
                                     <label>Instagram/FB Link</label>
-                                    <input type="url" name="instagramUrl" class="form-control"
+                                    <input type="url" name="instagramUrl" id="instagramUrl" class="form-control"
                                         placeholder="https://instagram.com/profile">
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <label>Set Password</label>
-                                <input type="password" name="password" class="form-control" autocomplete="new-password">
+                            <div class="row">
+                                <div class="col-md-6 form-group">
+                                    <label>Set Password</label>
+                                    <input type="password" name="password" id="password" class="form-control" autocomplete="new-password">
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <label>Confirm Password</label>
+                                    <input type="password" name="confirmPassword" id="confirmPassword" class="form-control" autocomplete="new-password">
+                                </div>
                             </div>
                             <div class="d-flex justify-content-end mt-4">
                                 <button type="button" class="btn btn-nav btn-next" onclick="nextStep(2)">Next: Brand
@@ -457,18 +477,17 @@
                                 </div>
                                 <div class="col-md-8 form-group">
                                     <label>Languages Spoken</label>
-                                    <select name="languages" class="form-control" multiple
-                                        style="height: auto; background: #1a1f2b; color: #fff;">
-                                        <option value="English">English</option>
-                                        <option value="Hindi">Hindi</option>
-                                        <option value="Kannada">Kannada</option>
-                                        <option value="Tamil">Tamil</option>
-                                        <option value="Telugu">Telugu</option>
-                                        <option value="Malayalam">Malayalam</option>
-                                        <option value="French">French</option>
-                                        <option value="Spanish">Spanish</option>
-                                    </select>
-                                    <small class="text-white-50">Hold Ctrl/Cmd to select multiple</small>
+                                    <input type="hidden" name="languages" id="languagesInput">
+                                    <div class="audience-chips" id="languageChips">
+                                        <div class="audience-chip" onclick="toggleLanguage(this, 'English')">English</div>
+                                        <div class="audience-chip" onclick="toggleLanguage(this, 'Hindi')">Hindi</div>
+                                        <div class="audience-chip" onclick="toggleLanguage(this, 'Kannada')">Kannada</div>
+                                        <div class="audience-chip" onclick="toggleLanguage(this, 'Tamil')">Tamil</div>
+                                        <div class="audience-chip" onclick="toggleLanguage(this, 'Telugu')">Telugu</div>
+                                        <div class="audience-chip" onclick="toggleLanguage(this, 'Malayalam')">Malayalam</div>
+                                        <div class="audience-chip" onclick="toggleLanguage(this, 'French')">French</div>
+                                        <div class="audience-chip" onclick="toggleLanguage(this, 'Spanish')">Spanish</div>
+                                    </div>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -554,7 +573,7 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label>Insurance Details (if applicable)</label>
+                                <label>Insurance Details</label>
                                 <div class="file-upload-wrapper">
                                     <i class="fa fa-shield"></i>
                                     <p class="m-0 text-white-50">Upload Insurance Doc</p>
@@ -586,7 +605,7 @@
             </div>
 
             <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-            <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
             <script>
                 // Map Logic
                 let map = L.map('map').setView([12.9716, 77.5946], 10);
@@ -618,22 +637,214 @@
                             }
                         });
                 }
+                function showError($input, msg) {
+                    $input.addClass('is-invalid');
+                    if($input.next('.invalid-feedback').length === 0) {
+                        $input.after('<div class="invalid-feedback" style="color:#e11d48; font-size:12px; margin-top:5px; display:block;">' + msg + '</div>');
+                    } else {
+                        $input.next('.invalid-feedback').text(msg).show();
+                    }
+                }
+
+                function clearError($input) {
+                    $input.removeClass('is-invalid');
+                    $input.next('.invalid-feedback').hide();
+                }
+
                 function validateStep(step) {
-                    return true; // BYPASS ALL VALIDATION
+                    let isValid = true;
+                    // Reset previous validation
+                    $('#step' + step + ' .is-invalid').removeClass('is-invalid');
+                    $('#step' + step + ' .invalid-feedback').hide();
+
+                    if (step === 1) {
+                        const bName = $('[name="businessName"]');
+                        if (!/^[A-Za-z][A-Za-z0-9\s]*$/.test(bName.val().trim())) {
+                            isValid = false;
+                            showError(bName, 'Must start with alphabet, no numbers at start.');
+                        } else { clearError(bName); }
+
+                        const oName = $('[name="ownerName"]');
+                        if (!/^[A-Za-z\s]{2,}$/.test(oName.val().trim())) {
+                            isValid = false;
+                            showError(oName, 'Only alphabets and spaces allowed, min 2 chars.');
+                        } else { clearError(oName); }
+
+                        const email = $('[name="emailId"]');
+                        if (!email.val() || !email.val().trim()) {
+                            isValid = false;
+                            showError(email, 'Email is required.');
+                        } else { clearError(email); }
+
+                        const phone = $('[name="phoneNumber"]');
+                        if (!/^\d{10}$/.test(phone.val().trim())) {
+                            isValid = false;
+                            showError(phone, 'Must be exactly 10 digits.');
+                        } else { clearError(phone); }
+
+                        const cType = $('#companyType').val();
+                        const regId = $('[name="registrationId"]');
+                        if (cType === 'CIN' && !/^[A-Z]{1}[0-9]{5}[A-Z]{2}[0-9]{4}[A-Z]{3}[0-9]{6}$/.test(regId.val().trim())) {
+                            isValid = false;
+                            showError(regId, 'Invalid CIN format. Example: L12345KA2020PLC123456');
+                        } else if (cType === 'LLPIN' && !/^[A-Z]{3}-[0-9]{4}$/.test(regId.val().trim())) {
+                            isValid = false;
+                            showError(regId, 'Invalid LLPIN format. Example: AAA-1234');
+                        } else { clearError(regId); }
+
+                        const gst = $('[name="gstNumber"]');
+                        if (!/^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$/.test(gst.val().trim())) {
+                            isValid = false;
+                            showError(gst, 'Invalid GST format. Example: 29ABCDE1234F1Z5');
+                        } else { clearError(gst); }
+
+                        const addr = $('[name="companyAddress"]');
+                        if (!/^(?=.*[A-Za-z])[A-Za-z0-9,\s]{10,}$/.test(addr.val().trim())) {
+                            isValid = false;
+                            showError(addr, 'Required, min 10 chars. Must contain alphabets. No random symbols.');
+                        } else { clearError(addr); }
+
+                        const web = $('[name="websiteUrl"]');
+                        if (web.val() && !/^(https?:\/\/)/.test(web.val().trim())) {
+                            isValid = false;
+                            showError(web, 'Must start with http:// or https://');
+                        } else { clearError(web); }
+
+                        const wa = $('[name="whatsappNumber"]');
+                        if (wa.val() && !/^\d{10}$/.test(wa.val().trim())) {
+                            isValid = false;
+                            showError(wa, 'Must be exactly 10 digits.');
+                        } else { clearError(wa); }
+
+                        const insta = $('[name="instagramUrl"]');
+                        if (insta.val() && !/^(https?:\/\/)/.test(insta.val().trim())) {
+                            isValid = false;
+                            showError(insta, 'Must be a valid URL starting with http:// or https://');
+                        } else { clearError(insta); }
+
+                        const pass = $('[name="password"]');
+                        const passConf = $('[name="confirmPassword"]');
+                        const passRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+                        
+                        if (!passRegex.test(pass.val())) {
+                            isValid = false;
+                            showError(pass, 'Min 8 chars, 1 uppercase, 1 lowercase, 1 number, 1 special char.');
+                        } else { clearError(pass); }
+
+                        if (pass.val() !== passConf.val() || passConf.val() === '') {
+                            isValid = false;
+                            showError(passConf, 'Passwords do not match.');
+                        } else { clearError(passConf); }
+
+                    } else if (step === 2) {
+                        const about = $('[name="about"]');
+                        if (!about.val() || about.val().trim().length < 10) {
+                            isValid = false;
+                            showError(about, 'Required, min 10 chars.');
+                        } else { clearError(about); }
+
+                        const exp = $('[name="experienceYears"]');
+                        if (!exp.val() || exp.val() < 0) {
+                            isValid = false;
+                            showError(exp, 'Required field.');
+                        } else { clearError(exp); }
+
+                        const city = $('[name="city"]');
+                        if (!city.val()) {
+                            isValid = false;
+                            showError(city, 'Required field.');
+                        } else { clearError(city); }
+                        
+                        const langs = $('#languagesInput');
+                        if (!langs.val()) {
+                            isValid = false;
+                            const $chips = $('#languageChips');
+                            if($chips.next('.invalid-feedback').length === 0) {
+                                $chips.after('<div class="invalid-feedback" style="color:#e11d48; font-size:12px; margin-top:5px; display:block;">Please select at least one language</div>');
+                            } else {
+                                $chips.next('.invalid-feedback').show();
+                            }
+                        } else { $('#languageChips').next('.invalid-feedback').hide(); }
+
+                        if(!$('#mapsLink').val()) {
+                            isValid = false;
+                            const $mapDiv = $('#map');
+                            if($mapDiv.nextAll('.invalid-feedback').length === 0) {
+                                $mapDiv.after('<div class="invalid-feedback" style="color:#e11d48; font-size:12px; margin-top:5px; display:block;">Please select a location on the map</div>');
+                            } else {
+                                $mapDiv.nextAll('.invalid-feedback').show();
+                            }
+                        }
+
+                        if(!$('#targetAudienceInput').val()) {
+                            isValid = false;
+                            const $chips = $('.audience-chips').first();
+                            if($chips.next('.invalid-feedback').length === 0) {
+                                $chips.after('<div class="invalid-feedback" style="color:#e11d48; font-size:12px; margin-top:5px; display:block;">Please select at least one target audience</div>');
+                            } else {
+                                $chips.next('.invalid-feedback').show();
+                            }
+                        }
+                    } else if (step === 3) {
+                        const filesToCheck = ['idProofFile', 'licenseFile', 'insuranceFile'];
+                        filesToCheck.forEach(file => {
+                            const $fileInput = $('[name="' + file + '"]');
+                            if (!$fileInput.val()) {
+                                isValid = false;
+                                const $wrapper = $fileInput.closest('.file-upload-wrapper');
+                                $wrapper.addClass('is-invalid');
+                                if($wrapper.next('.invalid-feedback').length === 0) {
+                                    $wrapper.after('<div class="invalid-feedback" style="color:#e11d48; font-size:12px; margin-top:5px; display:block;">This document is required</div>');
+                                } else {
+                                    $wrapper.next('.invalid-feedback').show();
+                                }
+                            } else {
+                                const $wrapper = $fileInput.closest('.file-upload-wrapper');
+                                $wrapper.removeClass('is-invalid');
+                                $wrapper.next('.invalid-feedback').hide();
+                            }
+                        });
+
+                        const termsChecked = $('#termsCheck').is(':checked');
+                        if (!termsChecked) {
+                            isValid = false;
+                            const $checkbox = $('#termsCheck').closest('.custom-checkbox');
+                            $checkbox.addClass('is-invalid');
+                            if($checkbox.next('.invalid-feedback').length === 0) {
+                                $checkbox.after('<div class="invalid-feedback" style="color:#e11d48; font-size:12px; margin-top:5px; display:block;">You must accept the terms</div>');
+                            } else {
+                                $checkbox.next('.invalid-feedback').show();
+                            }
+                        } else {
+                            const $checkbox = $('#termsCheck').closest('.custom-checkbox');
+                            $checkbox.removeClass('is-invalid');
+                            $checkbox.next('.invalid-feedback').hide();
+                        }
+                    }
+                    
+                    return isValid;
                 }
 
                 function nextStep(step) {
-                    const currentStep = step > 1 ? step - 1 : 1;
+                    const activeStepElem = document.querySelector('.form-step.active');
+                    const currentStep = activeStepElem ? parseInt(activeStepElem.id.replace('step', '')) : 1;
 
                     // Only validate when going FORWARD
                     if (step > currentStep && !validateStep(currentStep)) {
-                        // Alert for user feedback if needed
+                        // Scroll to the first error so the user sees why the button is "not working"
+                        const $firstError = $('#step' + currentStep + ' .is-invalid, #step' + currentStep + ' .invalid-feedback').first();
+                        if ($firstError.length > 0 && $firstError.offset()) {
+                            $('html, body').animate({
+                                scrollTop: $firstError.offset().top - 100
+                            }, 500);
+                        }
                         return;
                     }
 
                     // Remove active class from all steps and indicators
                     $('.form-step').removeClass('active');
                     $('.step').removeClass('active');
+                    $('.step').removeClass('completed');
 
                     // Add active class to current step and indicator
                     $('#step' + step).addClass('active');
@@ -662,6 +873,17 @@
                     $('#targetAudienceInput').val(audiences.join(', '));
                 }
 
+                let selectedLanguages = [];
+                function toggleLanguage(element, value) {
+                    $(element).toggleClass('active');
+                    if ($(element).hasClass('active')) {
+                        selectedLanguages.push(value);
+                    } else {
+                        selectedLanguages = selectedLanguages.filter(a => a !== value);
+                    }
+                    $('#languagesInput').val(selectedLanguages.join(', '));
+                }
+
                 $(document).on('change', 'input[type="file"]', function () {
                     const fileName = this.files[0] ? this.files[0].name : "Select File";
                     const $wrapper = $(this).closest('.file-upload-wrapper');
@@ -674,6 +896,40 @@
                     if ($(this).val()) {
                         $(this).removeClass('is-invalid');
                         $(this).next('.invalid-feedback').remove();
+                    }
+                });
+                
+                $(document).ready(function() {
+                    $('#vendorRegForm input, #vendorRegForm textarea, #vendorRegForm select').on('blur input', function() {
+                        const stepElem = $(this).closest('.form-step');
+                        if(stepElem.length > 0) {
+                            const step = stepElem.attr('id').replace('step', '');
+                            if ($(this).hasClass('is-invalid') || $(this).val().length > 0) {
+                                validateStep(parseInt(step));
+                            }
+                        }
+                    });
+                });
+
+                // Prevent Enter key from auto-submitting the form
+                $(window).keydown(function(event){
+                    if(event.keyCode == 13 && event.target.nodeName !== 'TEXTAREA') {
+                        event.preventDefault();
+                        return false;
+                    }
+                });
+
+                // Validate step 3 on submit
+                $('#vendorRegForm').on('submit', function(e) {
+                    if (!validateStep(3)) {
+                        e.preventDefault();
+                        // Scroll to the first error so the user sees why submission is blocked
+                        const $firstError = $('#step3 .is-invalid, #step3 .invalid-feedback').first();
+                        if ($firstError.length > 0 && $firstError.offset()) {
+                            $('html, body').animate({
+                                scrollTop: $firstError.offset().top - 100
+                            }, 500);
+                        }
                     }
                 });
             </script>

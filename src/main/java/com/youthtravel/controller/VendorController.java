@@ -104,6 +104,7 @@ public class VendorController {
                 vendor.setAbout("Professional adventure travel provider.");
             }
             vendor.setTermsAccepted(true);
+            vendor.setStatus("PENDING"); // Reverted to PENDING so Admin must approve as requested
 
             // Save initial vendor to get ID for file naming
             Vendor savedVendor = vendorService.registerVendor(vendor);
