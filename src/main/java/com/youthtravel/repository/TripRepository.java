@@ -15,4 +15,6 @@ public interface TripRepository extends JpaRepository<Trip, Long> {
     long countByVendor(Vendor vendor);
 
     long countByVendorAndStatus(Vendor vendor, String status);
+    
+    List<Trip> findTop5ByStatusOrderByCreatedAtDesc(String status);
 }

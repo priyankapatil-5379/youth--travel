@@ -2,6 +2,7 @@ package com.youthtravel.entity;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "trips")
@@ -46,7 +47,7 @@ public class Trip {
     private LocalDateTime createdAt;
 
     @OneToMany(mappedBy = "trip", fetch = FetchType.LAZY)
-    private java.util.List<Review> reviews;
+    private List<Review> reviews;
 
     @Column(name = "local_vendor", nullable = false)
     private boolean localVendor = false;
@@ -193,10 +194,6 @@ public class Trip {
     @Transient
     private String travelerSubCategoryOther;
 
-    @PrePersist
-    protected void onCreate() {
-        createdAt = LocalDateTime.now();
-    }
 
     public Trip() {
     }
@@ -698,11 +695,11 @@ public class Trip {
         this.travelerSubCategoryOther = travelerSubCategoryOther;
     }
 
-    public java.util.List<Review> getReviews() {
+    public List<Review> getReviews() {
         return reviews;
     }
 
-    public void setReviews(java.util.List<Review> reviews) {
+    public void setReviews(List<Review> reviews) {
         this.reviews = reviews;
     }
 
@@ -713,5 +710,12 @@ public class Trip {
             sum += r.getRating() != null ? r.getRating() : 0;
         }
         return Math.round((sum / reviews.size()) * 10.0) / 10.0;
+    }
+
+    @PrePersist
+    protected void onCreate() {
+        if (this.createdAt == null) {
+            this.createdAt = LocalDateTime.now();
+        }
     }
 }

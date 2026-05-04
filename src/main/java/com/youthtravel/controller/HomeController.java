@@ -14,10 +14,14 @@ public class HomeController {
 	@Autowired
 	private com.youthtravel.repository.EnquiryRepository enquiryRepository;
 
+	@Autowired
+	private com.youthtravel.repository.TripRepository tripRepository;
+
 	@RequestMapping("/")
 	public String Home(org.springframework.ui.Model model) {
 		model.addAttribute("galleryImages", homeImageRepository.findBySection("GALLERY"));
 		model.addAttribute("momentImages", homeImageRepository.findBySection("MOMENTS"));
+		model.addAttribute("featuredTrips", tripRepository.findTop5ByStatusOrderByCreatedAtDesc("Active"));
 		return "index";
 	}
 

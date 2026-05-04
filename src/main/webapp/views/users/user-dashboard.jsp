@@ -599,11 +599,12 @@
                             src="<c:url value='/views/assets/images/logo.png'/>" style="height: 35px;"></a></div>
                 <div style="display: flex; align-items: center; gap: 20px;">
                     <div style="display: flex; align-items: center; gap: 15px;">
+
                         <span style="font-weight: 700;">Hi, ${user.name}</span>
                         <c:set var="defaultAvatar"
                             value="https://ui-avatars.com/api/?name=${user.name}&background=f04c26&color=fff" />
                         <img src="${not empty user.profilePhoto ? user.profilePhoto : defaultAvatar}"
-                            style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover;">
+                            style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover; border: 2px solid rgba(255,255,255,0.2);">
                     </div>
                 </div>
             </header>
@@ -861,6 +862,42 @@
                     </form>
                 </main>
             </div>
+
+            <!-- Points Detail Modal -->
+            <div id="pointsModal" class="offcanvas-filter" style="right: -400px; width: 350px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 25px; border-bottom: 1px solid rgba(255,255,255,0.05); background: var(--dark-card);">
+                    <h4 style="font-weight: 800; margin: 0; color: #ff9f43; font-size: 20px;">Your Reputation</h4>
+                    <button type="button" onclick="hidePoints()" style="background: none; border: none; color: #fff; font-size: 20px; cursor: pointer;">
+                        <i class="fa fa-times"></i>
+                    </button>
+                </div>
+                <div style="padding: 30px; text-align: center;">
+                    <div style="position: relative; width: 120px; height: 120px; margin: 0 auto 20px;">
+                        <img id="modalUserAvatar" src="${not empty user.profilePhoto ? user.profilePhoto : defaultAvatar}" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 3px solid #ff9f43; box-shadow: 0 0 30px rgba(255,159,67,0.3);">
+                        <div style="position: absolute; bottom: -5px; right: -5px; width: 45px; height: 45px; background: #ff9f43; border: 3px solid var(--dark-card); border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(0,0,0,0.5);">
+                            <span id="modalPointsValue" style="font-size: 18px; font-weight: 800; color: #fff;">0</span>
+                        </div>
+                    </div>
+                    <h3 style="font-weight: 700; margin-bottom: 5px;">Total Points Earned</h3>
+                    <h2 id="modalTotalPointsLabel" style="font-size: 32px; font-weight: 800; color: #ff9f43; margin-bottom: 10px;">0</h2>
+                    <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 30px;">Your traveler influence across the Youth Travel platform.</p>
+                    
+                    <div style="text-align: left; background: rgba(0,0,0,0.2); padding: 20px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.05);">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 12px; font-size: 13px;">
+                            <span><i class="fa fa-heart" style="color: #ff9f43; width: 20px;"></i> Like received</span>
+                            <span style="font-weight: 700; color: #28a745;">+10 pts</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 12px; font-size: 13px;">
+                            <span><i class="fa fa-eye" style="color: #ff9f43; width: 20px;"></i> Memory view</span>
+                            <span style="font-weight: 700; color: #28a745;">+2 pts</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; font-size: 13px;">
+                            <span><i class="fa fa-user" style="color: #ff9f43; width: 20px;"></i> Profile visit</span>
+                            <span style="font-weight: 700; color: #28a745;">+1 pt</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <script>
                 function updatePrice(val) {
                     document.getElementById('priceVal').innerText = 'â‚¹' + val + (val == 100000 ? '+' : '');
@@ -897,6 +934,34 @@
                         void overlay.offsetWidth;
                         overlay.style.opacity = '1';
                     }
+                }
+
+                function showMyPoints() {
+                    const modal = document.getElementById('pointsModal');
+                    const overlay = document.getElementById('filterOverlay');
+                    
+                    // Fetch latest points
+                    fetch('/user/profile/api/data')
+                        .then(res => res.json())
+                        .then(data => {
+                            const pts = data.user.travelPoints || 0;
+                            document.getElementById('modalPointsValue').innerText = pts;
+                            document.getElementById('modalTotalPointsLabel').innerText = pts;
+                        });
+
+                    modal.style.right = '0';
+                    overlay.classList.add('show');
+                    void overlay.offsetWidth;
+                    overlay.style.opacity = '1';
+                }
+
+                function hidePoints() {
+                    const modal = document.getElementById('pointsModal');
+                    const overlay = document.getElementById('filterOverlay');
+                    
+                    modal.style.right = '-400px';
+                    overlay.style.opacity = '0';
+                    setTimeout(() => overlay.classList.remove('show'), 300);
                 }
 
             </script>

@@ -41,6 +41,7 @@ public class ProfileController {
         if (user == null) return "redirect:/user/login";
         
         user.setProfileViews(user.getProfileViews() + 1);
+        user.setTravelPoints(user.getTravelPoints() + 1); // 1 point for profile view
         userRepository.save(user);
         session.setAttribute("user", user);
 
@@ -355,9 +356,17 @@ public class ProfileController {
             if (post.getLikedUserIds().contains(user.getId())) {
                 post.getLikedUserIds().remove(user.getId());
                 post.setLikes(Math.max(0, post.getLikes() - 1));
+                // Deduct points
+                User owner = post.getUser();
+                owner.setTravelPoints(Math.max(0, owner.getTravelPoints() - 10));
+                userRepository.save(owner);
             } else {
                 post.getLikedUserIds().add(user.getId());
                 post.setLikes(post.getLikes() + 1);
+                // Award points
+                User owner = post.getUser();
+                owner.setTravelPoints(owner.getTravelPoints() + 10);
+                userRepository.save(owner);
             }
             postRepository.save(post);
             return ResponseEntity.ok(post);
@@ -377,9 +386,17 @@ public class ProfileController {
             if (advice.getLikedUserIds().contains(user.getId())) {
                 advice.getLikedUserIds().remove(user.getId());
                 advice.setLikes(Math.max(0, advice.getLikes() - 1));
+                // Deduct points
+                User owner = advice.getUser();
+                owner.setTravelPoints(Math.max(0, owner.getTravelPoints() - 10));
+                userRepository.save(owner);
             } else {
                 advice.getLikedUserIds().add(user.getId());
                 advice.setLikes(advice.getLikes() + 1);
+                // Award points
+                User owner = advice.getUser();
+                owner.setTravelPoints(owner.getTravelPoints() + 10);
+                userRepository.save(owner);
             }
             adviceRepository.save(advice);
             return ResponseEntity.ok(advice);
@@ -394,6 +411,11 @@ public class ProfileController {
         if (postOpt.isPresent()) {
             Post post = postOpt.get();
             post.setViews(post.getViews() + 1);
+            // Award points
+            User owner = post.getUser();
+            owner.setTravelPoints(owner.getTravelPoints() + 2);
+            userRepository.save(owner);
+            
             postRepository.save(post);
             return ResponseEntity.ok(post);
         }
@@ -412,8 +434,51 @@ public class ProfileController {
         advice.setCategories(body.get("categories"));
         advice.setContent(body.get("content"));
         
+        // New Fields
+        advice.setBestTimeToVisit(body.get("bestTimeToVisit"));
+        advice.setWhatToPack(body.get("whatToPack"));
+        advice.setSafetyTips(body.get("safetyTips"));
+        advice.setBudgetTips(body.get("budgetTips"));
+        advice.setStayFoodAdvice(body.get("stayFoodAdvice"));
+        advice.setTransportTips(body.get("transportTips"));
+        advice.setConnectivityTips(body.get("connectivityTips"));
+        advice.setLocalRules(body.get("localRules"));
+        advice.setEnvironmentalTips(body.get("environmentalTips"));
+        advice.setProTips(body.get("proTips"));
+        
         adviceRepository.save(advice);
         return ResponseEntity.ok(advice);
+    }
+
+    @PostMapping("/api/advices/{id}/update")
+    @ResponseBody
+    public ResponseEntity<?> updateAdvice(@PathVariable Long id, @RequestBody Map<String, String> body, HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        if (user == null) return ResponseEntity.status(401).build();
+
+        Optional<Advice> adviceOpt = adviceRepository.findById(id);
+        if (adviceOpt.isPresent() && adviceOpt.get().getUser().getId().equals(user.getId())) {
+            Advice advice = adviceOpt.get();
+            advice.setTitle(body.get("title"));
+            advice.setCategories(body.get("categories"));
+            advice.setContent(body.get("content"));
+            
+            // New Fields
+            advice.setBestTimeToVisit(body.get("bestTimeToVisit"));
+            advice.setWhatToPack(body.get("whatToPack"));
+            advice.setSafetyTips(body.get("safetyTips"));
+            advice.setBudgetTips(body.get("budgetTips"));
+            advice.setStayFoodAdvice(body.get("stayFoodAdvice"));
+            advice.setTransportTips(body.get("transportTips"));
+            advice.setConnectivityTips(body.get("connectivityTips"));
+            advice.setLocalRules(body.get("localRules"));
+            advice.setEnvironmentalTips(body.get("environmentalTips"));
+            advice.setProTips(body.get("proTips"));
+            
+            adviceRepository.save(advice);
+            return ResponseEntity.ok(advice);
+        }
+        return ResponseEntity.status(403).build();
     }
 
     @DeleteMapping("/api/advices/{id}")

@@ -888,6 +888,49 @@
             .hero-cards-wrapper { margin-top: 20px; }
         }
 
+        /* 5-column grid for Featured Trips */
+        @media (min-width: 992px) {
+            .col-md-5-custom {
+                width: 20%;
+                float: left;
+                padding-left: 10px;
+                padding-right: 10px;
+            }
+        }
+        
+        .yt-trip-card {
+            display: flex;
+            flex-direction: column;
+            height: 300px; /* Fixed height for all cards */
+        }
+        
+        .yt-trip-card img {
+            height: 160px !important; /* Uniform image height */
+            object-fit: cover;
+        }
+        
+        .yt-trip-body {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 12px !important;
+        }
+        
+        .yt-trip-body h4 {
+            height: 40px; /* Fixed height for title to handle 2 lines */
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            margin-bottom: 5px !important;
+        }
+        
+        .yt-trip-body p {
+            font-size: 11px !important;
+            margin: 0 !important;
+        }
+
         /* Prevent infinite horizontal stretch on ultra-wide screens */
         @media (min-width: 2000px) {
             .yt-new-hero, .yt-home-section {
@@ -1265,46 +1308,140 @@
             </div>
             <div class="row yt-adventure-row">
                 <div class="col-sm-6 col-md-3">
-                    <div class="yt-adventure-card" style="background-image:url('<c:url value="/views/assets/images/gallery-bike.png"/>');">
+                    <div class="yt-adventure-card" style="background-image:url('<c:url value="/views/assets/images/gallery-bike.png"/>'); cursor: pointer;" onclick="window.location.href='<c:url value='/user/dashboard?tripType=Group+Rides'/>'">
                         <div class="yt-adventure-overlay"></div>
                         <div class="yt-adventure-content">
                             <div class="yt-adventure-icon"><i class="fa fa-motorcycle"></i></div>
                             <h4>GROUP RIDES</h4>
                             <p>KTM, Bullet & more. Join epic road trips.</p>
-                            <a href="#featured-trips">View Trips <i class="fa fa-arrow-right"></i></a>
+                            <a href="<c:url value='/user/dashboard?tripType=Group+Rides'/>">View Trips <i class="fa fa-arrow-right"></i></a>
                         </div>
                     </div>
                 </div>
                 <div class="col-sm-6 col-md-3">
-                    <div class="yt-adventure-card" style="background-image:url('<c:url value="/views/assets/images/gallery-trek.png"/>');">
+                    <div class="yt-adventure-card" style="background-image:url('<c:url value="/views/assets/images/gallery-trek.png"/>'); cursor: pointer;" onclick="window.location.href='<c:url value='/user/dashboard?tripType=Trekking'/>'">
                         <div class="yt-adventure-overlay"></div>
                         <div class="yt-adventure-content">
                             <div class="yt-adventure-icon"><i class="fa fa-map-signs"></i></div>
                             <h4>TREKKING</h4>
                             <p>Mountains are calling. Answer the adventure.</p>
-                            <a href="#featured-trips">View Trips <i class="fa fa-arrow-right"></i></a>
+                            <a href="<c:url value='/user/dashboard?tripType=Trekking'/>">View Trips <i class="fa fa-arrow-right"></i></a>
                         </div>
                     </div>
                 </div>
                 <div class="col-sm-6 col-md-3">
-                    <div class="yt-adventure-card" style="background-image:url('<c:url value="/views/assets/images/gallery-camp-sunset.png"/>');">
+                    <div class="yt-adventure-card" style="background-image:url('<c:url value="/views/assets/images/gallery-camp-sunset.png"/>'); cursor: pointer;" onclick="window.location.href='<c:url value='/user/dashboard?tripType=Camping'/>'">
                         <div class="yt-adventure-overlay"></div>
                         <div class="yt-adventure-content">
                             <div class="yt-adventure-icon"><i class="fa fa-fire"></i></div>
                             <h4>CAMPING</h4>
                             <p>Sleep under the stars. Stories around the fire.</p>
-                            <a href="#featured-trips">View Trips <i class="fa fa-arrow-right"></i></a>
+                            <a href="<c:url value='/user/dashboard?tripType=Camping'/>">View Trips <i class="fa fa-arrow-right"></i></a>
                         </div>
                     </div>
                 </div>
                 <div class="col-sm-6 col-md-3">
-                    <div class="yt-adventure-card" style="background-image:url('<c:url value="/views/assets/images/gallery-tent-view.png"/>');">
+                    <div class="yt-adventure-card" style="background-image:url('<c:url value="/views/assets/images/gallery-tent-view.png"/>'); cursor: pointer;" onclick="window.location.href='<c:url value='/user/dashboard?tripType=Day+Outs'/>'">
                         <div class="yt-adventure-overlay"></div>
                         <div class="yt-adventure-content">
                             <div class="yt-adventure-icon"><i class="fa fa-sun-o"></i></div>
                             <h4>DAY OUTS</h4>
                             <p>Short escapes. Big memories.</p>
-                            <a href="#featured-trips">View Trips <i class="fa fa-arrow-right"></i></a>
+                            <a href="<c:url value='/user/dashboard?tripType=Day+Outs'/>">View Trips <i class="fa fa-arrow-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row yt-adventure-row" style="margin-top: 30px;">
+                <div class="col-sm-6 col-md-3">
+                    <div class="yt-adventure-card" style="background-image:url('https://images.unsplash.com/photo-1522163182402-834f871fd851?auto=format&fit=crop&w=800&q=80'); cursor: pointer;" onclick="window.location.href='<c:url value='/user/dashboard?tripType=Rock+climbing'/>'">
+                        <div class="yt-adventure-overlay"></div>
+                        <div class="yt-adventure-content">
+                            <div class="yt-adventure-icon"><i class="fa fa-hand-rock-o"></i></div>
+                            <h4>ROCK CLIMBING</h4>
+                            <p>Reach new heights. Conquer the cliffs.</p>
+                            <a href="<c:url value='/user/dashboard?tripType=Rock+climbing'/>">View Trips <i class="fa fa-arrow-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-3">
+                    <div class="yt-adventure-card" style="background-image:url('https://images.unsplash.com/photo-1501555088652-021faa106b9b?auto=format&fit=crop&w=800&q=80'); cursor: pointer;" onclick="window.location.href='<c:url value='/user/dashboard?tripType=Hiking'/>'">
+                        <div class="yt-adventure-overlay"></div>
+                        <div class="yt-adventure-content">
+                            <div class="yt-adventure-icon"><i class="fa fa-tree"></i></div>
+                            <h4>HIKING</h4>
+                            <p>Walk the wild side. Every step is a story.</p>
+                            <a href="<c:url value='/user/dashboard?tripType=Hiking'/>">View Trips <i class="fa fa-arrow-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-3">
+                    <div class="yt-adventure-card" style="background-image:url('https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=800&q=80'); cursor: pointer;" onclick="window.location.href='<c:url value='/user/dashboard?tripType=Nature+Exploration'/>'">
+                        <div class="yt-adventure-overlay"></div>
+                        <div class="yt-adventure-content">
+                            <div class="yt-adventure-icon"><i class="fa fa-binoculars"></i></div>
+                            <h4>NATURE</h4>
+                            <p>Discover the unseen. Pure nature bliss.</p>
+                            <a href="<c:url value='/user/dashboard?tripType=Nature+Exploration'/>">View Trips <i class="fa fa-arrow-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-3">
+                    <div class="yt-adventure-card" style="background-image:url('<c:url value="/views/assets/images/skiing-custom.png"/>'); cursor: pointer;" onclick="window.location.href='<c:url value='/user/dashboard?tripType=Skiing'/>'">
+                        <div class="yt-adventure-overlay"></div>
+                        <div class="yt-adventure-content">
+                            <div class="yt-adventure-icon"><i class="fa fa-snowflake-o"></i></div>
+                            <h4>SKIING</h4>
+                            <p>Glide through powder. Winter at its best.</p>
+                            <a href="<c:url value='/user/dashboard?tripType=Skiing'/>">View Trips <i class="fa fa-arrow-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row yt-adventure-row" style="margin-top: 30px;">
+                <div class="col-sm-6 col-md-3">
+                    <div class="yt-adventure-card" style="background-image:url('<c:url value="/views/assets/images/paragliding-custom.png"/>'); cursor: pointer;" onclick="window.location.href='<c:url value='/user/dashboard?tripType=Paragliding'/>'">
+                        <div class="yt-adventure-overlay"></div>
+                        <div class="yt-adventure-content">
+                            <div class="yt-adventure-icon"><i class="fa fa-paper-plane-o"></i></div>
+                            <h4>PARAGLIDING</h4>
+                            <p>Fly like a bird. Soar above the clouds.</p>
+                            <a href="<c:url value='/user/dashboard?tripType=Paragliding'/>">View Trips <i class="fa fa-arrow-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-3">
+                    <div class="yt-adventure-card" style="background-image:url('https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=800&q=80'); cursor: pointer;" onclick="window.location.href='<c:url value='/user/dashboard?tripType=Scuba+Diving'/>'">
+                        <div class="yt-adventure-overlay"></div>
+                        <div class="yt-adventure-content">
+                            <div class="yt-adventure-icon"><i class="fa fa-tint"></i></div>
+                            <h4>SCUBA DIVING</h4>
+                            <p>Dive deep. Explore the silent world.</p>
+                            <a href="<c:url value='/user/dashboard?tripType=Scuba+Diving'/>">View Trips <i class="fa fa-arrow-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-3">
+                    <div class="yt-adventure-card" style="background-image:url('<c:url value="/views/assets/images/rejuvenation-custom.png"/>'); cursor: pointer;" onclick="window.location.href='<c:url value='/user/dashboard?tripType=Rejuvenation'/>'">
+                        <div class="yt-adventure-overlay"></div>
+                        <div class="yt-adventure-content">
+                            <div class="yt-adventure-icon"><i class="fa fa-refresh"></i></div>
+                            <h4>REJUVENATION</h4>
+                            <p>Refresh your spirit. A new you awaits.</p>
+                            <a href="<c:url value='/user/dashboard?tripType=Rejuvenation'/>">View Trips <i class="fa fa-arrow-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-3">
+                    <div class="yt-adventure-card" style="background-image:url('<c:url value="/views/assets/images/healing-custom.png"/>'); cursor: pointer;" onclick="window.location.href='<c:url value='/user/dashboard?tripType=Healing'/>'">
+                        <div class="yt-adventure-overlay"></div>
+                        <div class="yt-adventure-content">
+                            <div class="yt-adventure-icon"><i class="fa fa-heart"></i></div>
+                            <h4>HEALING</h4>
+                            <p>Restore your soul. Find your inner zen.</p>
+                            <a href="<c:url value='/user/dashboard?tripType=Healing'/>">View Trips <i class="fa fa-arrow-right"></i></a>
                         </div>
                     </div>
                 </div>
@@ -1365,21 +1502,20 @@
                 <h3>FEATURED TRIPS</h3>
                 <span class="yt-line"></span>
             </div>
-
             <div class="row">
                 <div class="col-sm-6 col-md-3" style="margin-bottom:18px;">
                     <div class="yt-trip-card">
-                        <div class="yt-trip-price">â‚¹2999</div>
+                        <div class="yt-trip-price">2999</div>
                         <img src="https://images.unsplash.com/photo-1598209279122-8541213a0387?w=600&auto=format&fit=crop&q=60" alt="Ride" />
                         <div class="yt-trip-body">
                             <h4>KTM Bengaluru Ride</h4>
-                            <p>2 Days / 1 Night<br>Bengaluru â†’ Nandi Hills</p>
+                            <p>2 Days / 1 Night<br>Bengaluru ’ Nandi Hills</p>
                         </div>
                     </div>
                 </div>
                 <div class="col-sm-6 col-md-3" style="margin-bottom:18px;">
                     <div class="yt-trip-card">
-                        <div class="yt-trip-price">â‚¹4499</div>
+                        <div class="yt-trip-price">4499</div>
                         <img src="https://images.unsplash.com/photo-1551632811-561732d1e306?w=600&auto=format&fit=crop&q=60" alt="Trek" />
                         <div class="yt-trip-body">
                             <h4>Kudremukh Trek</h4>
@@ -1389,7 +1525,7 @@
                 </div>
                 <div class="col-sm-6 col-md-3" style="margin-bottom:18px;">
                     <div class="yt-trip-card">
-                        <div class="yt-trip-price">â‚¹1999</div>
+                        <div class="yt-trip-price">1999</div>
                         <img src="https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?w=600&auto=format&fit=crop&q=60" alt="Camping" />
                         <div class="yt-trip-body">
                             <h4>Camping at Saklespur</h4>
@@ -1399,7 +1535,7 @@
                 </div>
                 <div class="col-sm-6 col-md-3" style="margin-bottom:18px;">
                     <div class="yt-trip-card">
-                        <div class="yt-trip-price">â‚¹999</div>
+                        <div class="yt-trip-price">999</div>
                         <img src="https://images.unsplash.com/photo-1432405972618-c60b0225b8f9?w=600&auto=format&fit=crop&q=60" alt="Day out" />
                         <div class="yt-trip-body">
                             <h4>Coorg Day Out</h4>

@@ -171,11 +171,217 @@
                     </div>
                 </div>
 
-                <div class="price-details">
-                    <div class="section-title" style="font-size: 15px; margin-bottom: 15px;">Price Details</div>
-                    <div class="price-row">
-                        <span id="priceBreakupLabel">₹0 x 1 Adult</span>
-                        <span id="basicCost">₹0</span>
+                    <!-- Main Layout -->
+                    <div class="content-container">
+
+                        <!-- Left Column: Details -->
+                        <div class="left-col">
+
+                            <div class="section-box">
+                                <h2 class="section-title"><i class="fa fa-info-circle"></i> About This Trip</h2>
+                                <p style="color: rgba(255,255,255,0.7); line-height: 1.8; font-size: 16px;">
+                                    ${trip.description != null ? trip.description : 'Join us for an unforgettable
+                                    journey to ' += trip.destination += '. Experience the thrill of adventure and the
+                                    beauty of nature.'}
+                                </p>
+                                <div class="tag-cloud">
+                                    <c:if test="${not empty trip.category}"><span class="tag"><i class="fa fa-tag"></i>
+                                            ${trip.category}</span></c:if>
+                                    <c:if test="${not empty trip.difficulty}"><span class="tag"><i
+                                                class="fa fa-free-code-camp"></i> ${trip.difficulty}</span></c:if>
+                                    <c:if test="${not empty trip.transportCategory}"><span class="tag"><i
+                                                class="fa fa-bus"></i> ${trip.transportCategory}</span></c:if>
+                                    <c:if test="${not empty trip.stayCategory}"><span class="tag"><i
+                                                class="fa fa-bed"></i> ${trip.stayCategory}</span></c:if>
+                                    <c:if test="${not empty trip.ageGroup}"><span class="tag"><i
+                                                class="fa fa-users"></i> ${trip.ageGroup}</span></c:if>
+                                </div>
+                            </div>
+
+                            <div class="section-box">
+                                <h2 class="section-title"><i class="fa fa-bed"></i> Stay & Accommodation</h2>
+                                <div
+                                    class="d-flex align-items-center gap-3 mb-3 p-3 bg-dark rounded-4 border border-secondary border-opacity-10">
+                                    <div
+                                        style="background: rgba(240, 76, 38, 0.1); color: #f04c26; padding: 15px; border-radius: 12px; font-size: 20px;">
+                                        <i class="fa fa-university"></i>
+                                    </div>
+                                    <div>
+                                        <div class="fw-bold text-white">${not empty trip.stayName ? trip.stayName :
+                                            'Premium Accommodation'}</div>
+                                        <div class="small text-white-50">${trip.stayCategory} • ${trip.stayType} •
+                                            ${trip.roomSharing} Sharing</div>
+                                    </div>
+                                </div>
+                                <c:if test="${not empty trip.stayDescription}">
+                                    <p class="small text-white-50 mb-3">${trip.stayDescription}</p>
+                                </c:if>
+
+                                <!-- Stay Gallery (If backend maps stayPhotos to a gallery list) -->
+                                <div class="d-flex flex-wrap gap-2 mt-2">
+                                    <c:forEach var="photo" items="${stayGallery}" varStatus="status">
+                                        <img src="${photo}" class="rounded-3"
+                                            style="width: 100px; height: 100px; object-fit: cover; border: 1px solid rgba(255,255,255,0.1);">
+                                    </c:forEach>
+                                </div>
+                            </div>
+
+                            <!-- Pre-process Itinerary JSON in JS later if needed, for now just show a visual mock/raw -->
+                            <div class="section-box">
+                                <h2 class="section-title"><i class="fa fa-map"></i> Tour Itinerary</h2>
+                                <div class="timeline" id="itinerary-timeline">
+                                    <!-- We will render JS parsed itinerary here, but if empty show fallback -->
+                                    <c:if test="${empty trip.itinerary}">
+                                        <div class="day-node">
+                                            <div class="day-title">Day 1: Departure & Arrival</div>
+                                            <div class="day-desc">Assemble at the pickup point. Journey begins towards
+                                                the destination. Reach your stay, check-in, and relax.</div>
+                                        </div>
+                                        <div class="day-node">
+                                            <div class="day-title">Day 2: Exploration & Adventure</div>
+                                            <div class="day-desc">Full day of sightseeing, activities, and creating
+                                                memories. Evening campfire and group activities.</div>
+                                        </div>
+                                        <div class="day-node">
+                                            <div class="day-title">Day 3: Return Journey</div>
+                                            <div class="day-desc">Check out and begin the return journey. Drop-off at
+                                                the original pickup points.</div>
+                                        </div>
+                                    </c:if>
+                                </div>
+                                <c:if test="${not empty trip.itinerary}">
+                                    <!-- Hidden div to hold json string for JS parsing -->
+                                    <div id="raw-itinerary" style="display:none;">${trip.itinerary}</div>
+                                </c:if>
+                            </div>
+
+                            <div class="section-box" style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
+                                <div>
+                                    <h2 class="section-title"><i class="fa fa-check-circle" style="color: #28a745;"></i>
+                                        What's Included</h2>
+                                    <div
+                                        style="color: rgba(255,255,255,0.7); line-height: 1.8; font-size: 15px; white-space: pre-line;">
+                                        <c:choose>
+                                            <c:when test="${not empty trip.inclusions}">${trip.inclusions}</c:when>
+                                            <c:otherwise>✓ Transportation
+                                                ✓ Accommodation
+                                                ✓ Selected Meals
+                                                ✓ Guide/Trek Leader
+                                                ✓ First Aid</c:otherwise>
+                                        </c:choose>
+                                    </div>
+                                </div>
+                                <div>
+                                    <h2 class="section-title"><i class="fa fa-times-circle" style="color: #dc3545;"></i>
+                                        What's Excluded</h2>
+                                    <div
+                                        style="color: rgba(255,255,255,0.7); line-height: 1.8; font-size: 15px; white-space: pre-line;">
+                                        <c:choose>
+                                            <c:when test="${not empty trip.exclusions}">${trip.exclusions}</c:when>
+                                            <c:otherwise>✗ Personal Expenses
+                                                ✗ Optional Activities
+                                                ✗ Anything not mentioned in inclusions</c:otherwise>
+                                        </c:choose>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <c:if test="${not empty trip.reviews}">
+                                <div class="section-box">
+                                    <h2 class="section-title"><i class="fa fa-star"></i> Traveler Reviews</h2>
+                                    <c:forEach var="review" items="${trip.reviews}">
+                                        <div
+                                            style="border-bottom: 1px solid var(--border-color); padding-bottom: 15px; margin-bottom: 15px;">
+                                            <div
+                                                style="display: flex; justify-content: space-between; align-items: center;">
+                                                <div style="font-weight: 700; color: #fff;">${review.user.name}</div>
+                                                <div style="color: #f59e0b; font-size: 12px;">
+                                                    <c:forEach begin="1" end="${review.rating}"><i
+                                                            class="fa fa-star"></i></c:forEach>
+                                                </div>
+                                            </div>
+                                            <p
+                                                style="color: rgba(255,255,255,0.6); font-size: 14px; margin-top: 5px; margin-bottom: 0;">
+                                                "${review.reviewText}"</p>
+                                        </div>
+                                    </c:forEach>
+                                </div>
+                            </c:if>
+
+                        </div>
+
+                        <!-- Right Column: Booking Widget -->
+                        <div class="right-col">
+                            <div class="booking-widget">
+                                <div class="price-display">₹
+                                    <fmt:formatNumber value="${trip.price}" pattern="#,##0" /> <span>/ person</span>
+                                </div>
+
+                                <form action="<c:url value='/user/booking/submit'/>" method="POST">
+                                    <input type="hidden" name="tripId" value="${trip.id}">
+                                    <input type="hidden" name="tripType"
+                                        value="${not empty trip.category ? trip.category : 'Standard'}">
+                                    <input type="hidden" name="guestDetails" value="N/A">
+
+                                    <label class="form-label">Select Date & Schedule</label>
+                                    <select id="scheduleSelect" name="selectedDate" class="custom-select" onchange="handleScheduleChange()" required>
+                                        <option value="" data-seats="30" disabled selected>Choose an available date...</option>
+                                        <c:forEach var="schedule" items="${schedules}">
+                                            <option value="${schedule.startDate} to ${schedule.endDate}" data-seats="${schedule.availableSeats}">
+                                                ${schedule.startDate} to ${schedule.endDate}
+                                                (${schedule.availableSeats} seats left)
+                                            </option>
+                                        </c:forEach>
+                                        <c:if test="${empty schedules}">
+                                            <option value="" data-seats="0" disabled>No upcoming schedules available</option>
+                                        </c:if>
+                                    </select>
+
+                                    <style>
+                                        input[type="number"]::-webkit-inner-spin-button, 
+                                        input[type="number"]::-webkit-outer-spin-button { 
+                                            -webkit-appearance: none; 
+                                            margin: 0; 
+                                        }
+                                        input[type="number"] {
+                                            -moz-appearance: textfield;
+                                        }
+                                    </style>
+                                    <label class="form-label">Number of Travelers</label>
+                                    <div class="traveler-counter" style="display: flex; align-items: center; justify-content: space-between; background: rgba(0, 0, 0, 0.3); border: 1px solid var(--border-color); border-radius: 12px; padding: 8px 15px;">
+                                        <button type="button" class="btn-counter" onclick="updateTravelers(-1)" style="background: rgba(255,255,255,0.1); border: none; color: #fff; font-size: 18px; cursor: pointer; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: var(--transition);" onmouseover="this.style.background='var(--primary-blue)'" onmouseout="this.style.background='rgba(255,255,255,0.1)'"><i class="fa fa-minus" style="font-size: 12px;"></i></button>
+                                        <input type="number" id="travelers" name="travelers" value="1" min="1" max="30" readonly style="background: transparent; border: none; color: #fff; text-align: center; font-size: 18px; font-weight: 700; width: 60px; outline: none;">
+                                        <button type="button" class="btn-counter" onclick="updateTravelers(1)" style="background: rgba(255,255,255,0.1); border: none; color: #fff; font-size: 18px; cursor: pointer; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: var(--transition);" onmouseover="this.style.background='var(--primary-blue)'" onmouseout="this.style.background='rgba(255,255,255,0.1)'"><i class="fa fa-plus" style="font-size: 12px;"></i></button>
+                                    </div>
+
+                                    <button type="submit" class="btn-book" ${trip.soldOut
+                                        ? 'disabled style="background:gray;"' : '' }>
+                                        ${trip.soldOut ? 'Sold Out' : 'Book Now'}
+                                    </button>
+                                    <a href="<c:url value='/user/save-trip/${trip.id}'/>" class="btn-save"
+                                        style="display: block; text-align: center; margin-top: 12px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 15px; border-radius: 12px; font-weight: 700; text-decoration: none; transition: 0.3s;">
+                                        <i class="fa fa-heart-o"></i> Save to Wishlist
+                                    </a>
+
+                                    <div
+                                        style="text-align: center; margin-top: 15px; font-size: 13px; color: var(--text-muted);">
+                                        <i class="fa fa-shield"></i> Secure Booking • Instant Confirmation
+                                    </div>
+                                </form>
+
+                                <!-- Vendor Profile snippet -->
+                                <div class="vendor-info">
+                                    <img src="${not empty trip.vendor.logoPath ? trip.vendor.logoPath : 'https://ui-avatars.com/api/?name=' += trip.vendor.businessName}"
+                                        class="vendor-avatar">
+                                    <div>
+                                        <div style="font-weight: 700; font-size: 15px; color: #fff;">Operated by</div>
+                                        <div style="color: var(--primary-blue); font-weight: 800;">
+                                            ${trip.vendor.businessName}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                     <div class="price-row">
                         <span>Discount (0%)</span>
