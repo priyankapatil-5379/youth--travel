@@ -1017,7 +1017,7 @@
                 /* Outer wrap â€” absolute positioned in hero */
                 .hero-vss-wrap {
                     position: absolute;
-                    right: 4%;
+                    right: 14%;
                     top: 50%;
                     transform: translateY(-50%);
                     display: flex;
