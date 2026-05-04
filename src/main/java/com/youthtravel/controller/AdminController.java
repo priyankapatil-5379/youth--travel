@@ -231,4 +231,21 @@ public class AdminController {
         return "redirect:/admin/home-images";
     }
 
+    @PostMapping("/home-images/{id}/edit")
+    public String editHomeImage(@PathVariable Long id,
+                                @RequestParam("caption") String caption,
+                                @RequestParam("section") String section,
+                                jakarta.servlet.http.HttpSession session,
+                                org.springframework.web.servlet.mvc.support.RedirectAttributes redirectAttributes) {
+        if (session.getAttribute("adminLoggedIn") == null) return "redirect:/admin/login";
+
+        homeImageRepository.findById(id).ifPresent(img -> {
+            img.setCaption(caption);
+            img.setSection(section);
+            homeImageRepository.save(img);
+            redirectAttributes.addFlashAttribute("message", "Image updated successfully.");
+        });
+        return "redirect:/admin/home-images";
+    }
+
 }
