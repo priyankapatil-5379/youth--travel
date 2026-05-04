@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
     <%@ taglib prefix="c" uri="jakarta.tags.core" %>
+    <%@ taglib prefix="fmt" uri="jakarta.tags.fmt" %>
         <!DOCTYPE html>
         <html lang="en">
 
@@ -21,11 +22,13 @@
 
                 body {
                     font-family: 'Dosis', sans-serif;
-                    background-color: #0b0f18;
+                    background: url('<c:url value="/views/assets/images/sea_bg.png"/>') no-repeat center center fixed;
+                    background-size: cover;
                     color: rgba(255, 255, 255, 0.92);
                     margin: 0;
                     padding: 0;
                 }
+
 
                 .wrapper {
                     display: flex;
@@ -164,13 +167,15 @@
                     justify-content: space-between;
                     align-items: center;
                     margin-bottom: 40px;
-                    background: rgba(0, 0, 0, 0.3);
-                    backdrop-filter: blur(10px);
-                    padding: 30px;
-                    border-radius: 20px;
+                    background: rgba(255, 255, 255, 0.05);
+                    backdrop-filter: blur(15px);
+                    -webkit-backdrop-filter: blur(15px);
+                    padding: 40px 50px;
+                    border-radius: 24px;
                     border: 1px solid rgba(255, 255, 255, 0.1);
-                    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+                    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
                 }
+
 
                 .search-container {
                     position: relative;
@@ -360,21 +365,21 @@
                 }
 
                 .package-card {
-                    background: rgba(255, 255, 255, 0.03);
-                    backdrop-filter: blur(15px);
-                    -webkit-backdrop-filter: blur(15px);
-                    border-radius: 15px;
+                    background: rgba(20, 25, 35, 0.6);
+                    backdrop-filter: blur(20px);
+                    -webkit-backdrop-filter: blur(20px);
+                    border-radius: 20px;
                     overflow: hidden;
-                    border: 1px solid rgba(255, 255, 255, 0.1);
-                    transition: var(--transition);
+                    border: 1px solid rgba(255, 255, 255, 0.08);
+                    transition: all 0.3s ease;
                     position: relative;
-                    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
+                    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
                 }
 
                 .package-card:hover {
-                    transform: translateY(-10px);
-                    border-color: var(--primary-blue);
-                    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+                    transform: translateY(-8px);
+                    border-color: rgba(230, 57, 70, 0.5);
+                    box-shadow: 0 15px 40px rgba(230, 57, 70, 0.2), inset 0 0 20px rgba(230, 57, 70, 0.05);
                 }
 
                 .package-img-wrapper {
@@ -383,6 +388,16 @@
                     aspect-ratio: 16 / 10;
                     overflow: hidden;
                     background: #000;
+                }
+
+                .package-img-wrapper::after {
+                    content: '';
+                    position: absolute;
+                    bottom: 0; left: 0; right: 0;
+                    height: 60%;
+                    background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 100%);
+                    pointer-events: none;
+                    z-index: 1;
                 }
 
                 .package-img,
@@ -395,6 +410,7 @@
                     position: absolute;
                     top: 0;
                     left: 0;
+                    z-index: 0;
                 }
 
                 .package-video {
@@ -420,7 +436,7 @@
                     color: #fff;
                     font-size: 40px;
                     opacity: 0.6;
-                    z-index: 2;
+                    z-index: 3;
                     pointer-events: none;
                     display: none;
                 }
@@ -437,62 +453,102 @@
                     position: absolute;
                     top: 15px;
                     right: 15px;
-                    background: var(--primary-blue);
+                    background: linear-gradient(135deg, var(--primary-blue), #c1121f);
                     color: #fff;
-                    padding: 4px 12px;
-                    border-radius: 20px;
+                    padding: 6px 14px;
+                    border-radius: 25px;
                     font-size: 11px;
-                    font-weight: 700;
+                    font-weight: 800;
                     text-transform: uppercase;
+                    letter-spacing: 1px;
+                    z-index: 2;
+                    box-shadow: 0 4px 10px rgba(230, 57, 70, 0.4);
+                    transition: transform 0.3s ease;
+                }
+
+                .package-card:hover .package-tag {
+                    transform: scale(1.05);
                 }
 
                 .package-content {
-                    padding: 20px;
+                    padding: 25px 20px;
                 }
 
                 .package-title {
-                    font-size: 18px;
-                    font-weight: 700;
-                    margin-bottom: 10px;
+                    font-size: 20px;
+                    font-weight: 800;
+                    letter-spacing: 0.5px;
+                    margin-bottom: 15px;
                     color: #fff;
-                    height: 44px;
+                    height: 52px;
                     overflow: hidden;
                     display: -webkit-box;
                     -webkit-line-clamp: 2;
                     -webkit-box-orient: vertical;
-                    text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+                    text-shadow: 0 2px 6px rgba(0,0,0,0.8);
+                }
+
+                .package-meta {
+                    font-size: 14px;
+                    color: rgba(255,255,255,0.85);
+                    margin-bottom: 8px;
+                    display: flex;
+                    align-items: center;
+                }
+
+                .package-meta i {
+                    width: 20px;
+                    text-align: center;
+                    color: var(--primary-blue);
+                    margin-right: 8px;
+                    font-size: 16px;
                 }
 
                 .package-footer {
                     display: flex;
                     align-items: center;
                     justify-content: space-between;
-                    margin-top: 15px;
-                    padding-top: 15px;
-                    border-top: 1px solid rgba(255, 255, 255, 0.05);
+                    margin-top: 20px;
+                    padding-top: 20px;
+                    border-top: 1px solid rgba(255, 255, 255, 0.08);
                 }
 
                 .package-price {
-                    font-size: 20px;
-                    font-weight: 800;
+                    font-size: 24px;
+                    font-weight: 900;
                     color: #fff;
-                    text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+                    text-shadow: 0 0 15px rgba(255,255,255,0.4);
+                    display: flex;
+                    align-items: baseline;
+                    gap: 5px;
+                }
+
+                .package-price span {
+                    font-size: 13px;
+                    font-weight: 500;
+                    color: rgba(255,255,255,0.6);
+                    text-shadow: none;
                 }
 
                 .btn-view {
-                    background: rgba(255, 255, 255, 0.05);
+                    background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
+                    backdrop-filter: blur(5px);
                     color: #fff;
-                    border: 1px solid rgba(255, 255, 255, 0.1);
-                    padding: 8px 15px;
-                    border-radius: 8px;
+                    border: 1px solid rgba(255, 255, 255, 0.2);
+                    padding: 10px 18px;
+                    border-radius: 12px;
                     font-size: 13px;
-                    font-weight: 600;
-                    transition: var(--transition);
+                    font-weight: 700;
+                    text-transform: uppercase;
+                    letter-spacing: 0.5px;
+                    transition: all 0.3s ease;
                 }
 
                 .package-card:hover .btn-view {
-                    background: var(--primary-blue);
-                    border-color: var(--primary-blue);
+                    background: linear-gradient(135deg, var(--primary-blue), #c1121f);
+                    border-color: transparent;
+                    transform: scale(1.05);
+                    box-shadow: 0 5px 15px rgba(230, 57, 70, 0.4);
                 }
 
                 .empty-state {
@@ -542,7 +598,8 @@
                 <div class="header-logo"><a href="<c:url value='/'/>"><img
                             src="<c:url value='/views/assets/images/logo.png'/>" style="height: 35px;"></a></div>
                 <div style="display: flex; align-items: center; gap: 20px;">
-                    <div style="display: flex; align-items: center; gap: 15px; cursor: pointer;" onclick="showMyPoints()">
+                    <div style="display: flex; align-items: center; gap: 15px;">
+
                         <span style="font-weight: 700;">Hi, ${user.name}</span>
                         <c:set var="defaultAvatar"
                             value="https://ui-avatars.com/api/?name=${user.name}&background=f04c26&color=fff" />
@@ -557,22 +614,24 @@
                 </jsp:include>
                 <main class="main-content">
                     <form action="<c:url value='/user/dashboard'/>" method="GET" id="filterForm">
-                        <div class="dash-header d-flex flex-column flex-md-row text-center text-md-start">
-                            <div class="mb-3 mb-md-0">
-                                <h1 style="font-weight: 800; margin: 0; font-size: 32px; text-shadow: 0 4px 15px rgba(0,0,0,0.8); color: #fff;">Dashboard</h1>
-                                <p style="color: #fff; margin: 0; text-shadow: 0 2px 8px rgba(0,0,0,0.8); font-weight: 600; font-size: 15px;">Discover amazing travel packages and plan your next adventure.</p>
+                        <div class="dash-header">
+                            <div class="header-text">
+                                <h1 style="font-weight: 800; margin: 0; font-size: 38px; color: #fff; letter-spacing: -1px;">Dashboard</h1>
+                                <p style="color: rgba(255,255,255,0.8); margin: 5px 0 0; font-weight: 500; font-size: 16px;">Discover amazing travel packages and plan your next adventure.</p>
                             </div>
-                            <div class="d-flex flex-column flex-md-row gap-3 align-items-center w-100" style="max-width: fit-content;">
-                                <div class="search-container w-100" style="max-width: 300px;">
+                            <div style="display: flex; gap: 15px; align-items: center;">
+                                <div class="search-container" style="width: 350px;">
                                     <input type="text" name="search" value="${currentParams.search}"
                                         placeholder="Search trips, destinations...">
                                     <i class="fa fa-search"></i>
                                 </div>
-                                <button type="button" class="btn-filter-toggle w-100 w-md-auto justify-content-center" onclick="toggleFilter()">
+                                <button type="button" class="btn-filter-toggle" onclick="toggleFilter()" style="padding: 12px 25px; white-space: nowrap;">
                                     <i class="fa fa-sliders"></i> Filters
                                 </button>
                             </div>
+
                         </div>
+
 
                         <!-- Offcanvas Overlay -->
                         <div class="offcanvas-overlay" id="filterOverlay" onclick="toggleFilter()"></div>
@@ -664,8 +723,8 @@
                                         <div class="price-range-container">
                                             <input type="range" name="maxPrice" class="price-slider" min="0" max="100000" step="500" value="${currentParams.maxPrice}" oninput="updatePrice(this.value)">
                                             <div class="price-values">
-                                                <span>₹0</span>
-                                                <span id="priceVal">₹${currentParams.maxPrice}+</span>
+                                                <span>â‚¹0</span>
+                                                <span id="priceVal">â‚¹${currentParams.maxPrice}+</span>
                                             </div>
                                         </div>
                                     </div>
@@ -745,18 +804,17 @@
                                                 </div>
                                                 <div class="package-content">
                                                     <h4 class="package-title">${trip.title}</h4>
-                                                    <div style="font-size: 13px; color: var(--text-muted);"><i
+                                                    <div class="package-meta"><i
                                                             class="fa fa-map-marker"></i> ${trip.destination}</div>
-                                                    <div
-                                                        style="font-size: 12px; color: var(--text-muted); margin-top: 5px;">
+                                                    <div class="package-meta">
                                                         <i class="fa fa-calendar"></i> ${trip.days} Days /
                                                         ${trip.nights} Nights
                                                     </div>
                                                     <div
-                                                        style="font-size: 11px; margin-top: 8px; display: flex; gap: 8px; flex-wrap: wrap;">
+                                                        style="font-size: 11px; margin-top: 12px; display: flex; gap: 8px; flex-wrap: wrap;">
                                                         <c:if test="${not empty trip.ageGroup}">
                                                             <span
-                                                                style="background: rgba(255,255,255,0.05); padding: 2px 6px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.1);">
+                                                                style="background: rgba(255,255,255,0.05); padding: 4px 8px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.1);">
                                                                 <i class="fa fa-users"
                                                                     style="color: var(--primary-blue);"></i>
                                                                 ${trip.ageGroup}
@@ -764,14 +822,14 @@
                                                         </c:if>
                                                         <c:if test="${trip.studentDiscountAvailable}">
                                                             <span
-                                                                style="background: rgba(40,167,69,0.1); color: #28a745; padding: 2px 6px; border-radius: 4px; border: 1px solid rgba(40,167,69,0.2);">
+                                                                style="background: rgba(40,167,69,0.1); color: #28a745; padding: 4px 8px; border-radius: 6px; border: 1px solid rgba(40,167,69,0.2);">
                                                                 <i class="fa fa-id-card-o"></i> Student Discount
                                                             </span>
                                                         </c:if>
                                                     </div>
 
                                                     <div class="package-footer">
-                                                        <div class="package-price">₹${trip.price} <span>/ person</span>
+                                                        <div class="package-price">&#8377;<fmt:formatNumber value="${trip.price}" pattern="#,##0" /> <span>/ person</span>
                                                         </div>
                                                         <c:choose>
                                                             <c:when test="${trip.soldOut}">
@@ -842,7 +900,7 @@
             </div>
             <script>
                 function updatePrice(val) {
-                    document.getElementById('priceVal').innerText = '₹' + val + (val == 100000 ? '+' : '');
+                    document.getElementById('priceVal').innerText = 'â‚¹' + val + (val == 100000 ? '+' : '');
                 }
 
                 function playVideo(card) {

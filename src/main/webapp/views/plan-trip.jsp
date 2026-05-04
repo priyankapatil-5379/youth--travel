@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+﻿<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -14,44 +14,191 @@
 </head>
 
 <body class="yt-dark">
-<section class="header" id="header">
-    <div class="navbar-option">
+    <style>
+        .yt-new-nav {
+            position: relative;
+            z-index: 999999;
+            padding: 20px 0;
+            background: rgba(0,0,0,0.3);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        .nav-flex {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: relative;
+        }
+        .nav-flex .logo { flex: 1; }
+        .nav-flex .logo img { height: 40px; }
+        .nav-links {
+            display: flex;
+            gap: 35px;
+            align-items: center;
+            justify-content: center;
+            flex: 2;
+        }
+        .nav-links a {
+            color: #fff;
+            font-size: 16px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: 0.3s;
+        }
+        .nav-links a:hover, .nav-links a.active { color: #e63946; }
+        .nav-right {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 10px;
+            flex: 1;
+        }
+        .nav-right .login-btn {
+            background: #e63946;
+            color: #fff;
+            padding: 10px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: 0.3s;
+            display: inline-block;
+        }
+        .nav-right .login-btn:hover { background: #c1121f; }
+        .nav-mobile-toggle {
+            display: none;
+            color: #fff;
+            font-size: 28px;
+            cursor: pointer;
+            z-index: 2000;
+            transition: 0.3s;
+        }
+        @media (min-width: 992px) {
+            .d-lg-none { display: none !important; }
+            .d-lg-inline-block { display: inline-block !important; }
+        }
+        @media (max-width: 991px) {
+            .d-none { display: none !important; }
+            .nav-mobile-toggle { 
+                display: flex !important; 
+                position: fixed !important;
+                top: 20px;
+                right: 20px;
+                z-index: 99999 !important; 
+                background: rgba(255, 255, 255, 0.1);
+                backdrop-filter: blur(10px);
+                -webkit-backdrop-filter: blur(10px);
+                width: 50px;
+                height: 50px;
+                align-items: center;
+                justify-content: center;
+                border-radius: 50%;
+                border: 1px solid rgba(255, 255, 255, 0.2);
+                box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+                color: #fff;
+            }
+            .nav-links {
+                display: flex !important;
+                position: fixed !important;
+                top: 0;
+                right: -100%;
+                width: 100%;
+                height: 100vh;
+                background: rgba(8, 12, 20, 1);
+                backdrop-filter: blur(35px);
+                -webkit-backdrop-filter: blur(35px);
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                padding: 40px;
+                z-index: 999999 !important; 
+                transition: 0.6s cubic-bezier(0.77, 0, 0.175, 1);
+                gap: 20px;
+                visibility: hidden;
+            }
+            .nav-links.active {
+                right: 0;
+                visibility: visible;
+            }
+            .nav-links a {
+                padding: 15px 30px;
+                width: 80%;
+                text-align: center;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+                font-size: 24px;
+                font-weight: 700;
+                letter-spacing: 3px;
+                text-transform: uppercase;
+                color: rgba(255, 255, 255, 0.9);
+                opacity: 0;
+                transform: translateY(30px);
+                transition: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+                text-decoration: none;
+            }
+            .nav-links.active a {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            .nav-links.active a:nth-child(1) { transition-delay: 0.2s; }
+            .nav-links.active a:nth-child(2) { transition-delay: 0.3s; }
+            .nav-links.active a:nth-child(3) { transition-delay: 0.4s; }
+            .nav-links.active a:nth-child(4) { transition-delay: 0.5s; }
+            .nav-links.active a:nth-child(5) { transition-delay: 0.6s; }
+            .nav-links.active .mobile-btn-wrap { opacity: 1; transform: translateY(0); transition-delay: 0.7s; }
+            .nav-links .mobile-btn-wrap {
+                margin-top: 30px;
+                display: flex !important;
+                flex-direction: column;
+                align-items: center;
+                gap: 15px;
+                width: 100%;
+                opacity: 0;
+                transform: translateY(30px);
+                transition: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            }
+            .nav-right .login-btn { display: none; }
+        }
+    </style>
+
+    <div class="yt-new-nav">
         <div class="container">
-            <nav class="navbar navbar-default">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <a class="navbar-brand" href="<c:url value='/'/>"><img src="<c:url value='/views/assets/images/logo.png'/>" alt="" /></a>
+            <div class="nav-flex">
+                <div class="logo">
+                    <a href="<c:url value='/'/>"><img src="<c:url value='/views/assets/images/logo.png'/>" alt="Youth Travel" /></a>
                 </div>
-                <div class="collapse navbar-collapse" id="myNavbar">
-                    <ul class="nav navbar-nav navbar-left">
-                        <li><a href="<c:url value='/'/>">Home</a></li>
-                        <li><a href="<c:url value='/about'/>">About</a></li>
-                        <li><a href="<c:url value='/gallery'/>">Gallery</a></li>
-                        <li><a href="<c:url value='/contact'/>">Contact</a></li>
-                    </ul>
+                <div class="nav-links">
+                    <a href="<c:url value='/'/>">Home</a>
+                    <a href="<c:url value='/gallery'/>">Gallery</a>
+                    <a href="<c:url value='/about'/>">About Us</a>
+                    <a href="<c:url value='/contact'/>">Contact Us</a>
+                    
+                    <div class="mobile-btn-wrap d-lg-none">
+                        <a href="<c:url value='/user/login'/>" class="login-btn">Login / Sign Up</a>
+                    </div>
                 </div>
-            </nav>
+                <div class="nav-right">
+                    <a href="<c:url value='/user/login'/>" class="login-btn d-none d-lg-inline-block">Login / Sign Up</a>
+                    <div class="nav-mobile-toggle" onclick="document.querySelector('.nav-links').classList.toggle('active')">
+                        <i class="fa fa-bars"></i>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-</section>
 
 <main class="yt-plan-page" aria-label="Trip budget planner">
     <section class="yt-plan-hero">
         <div class="container">
             <div class="yt-plan-hero-inner">
                 <h1>Plan My Trip</h1>
-                <p>Tell your budget and vibe. We’ll suggest youth-friendly places that fit your pocket.</p>
+                <p>Tell your budget and vibe. Weâ€™ll suggest youth-friendly places that fit your pocket.</p>
             </div>
 
             <div class="yt-plan-card">
                 <form id="ytPlanForm" class="yt-plan-form" autocomplete="off">
                     <div class="yt-plan-grid">
                         <label class="yt-plan-field">
-                            <span>Budget (₹) per person</span>
+                            <span>Budget (â‚¹) per person</span>
                             <input id="ytBudget" type="number" min="0" step="100" placeholder="Eg: 3000" required>
                         </label>
                         <label class="yt-plan-field">
@@ -135,7 +282,7 @@
                     + '    <div class="yt-plan-result-body">'
                     + '      <div class="yt-plan-result-top">'
                     + '        <strong>' + name + '</strong>'
-                    + '        <span class="yt-plan-pill">₹' + minBudget + '–₹' + maxBudget + '</span>'
+                    + '        <span class="yt-plan-pill">â‚¹' + minBudget + 'â€“â‚¹' + maxBudget + '</span>'
                     + '      </div>'
                     + '      <div class="yt-plan-result-meta">'
                     + '        <span><i class="fa fa-map-marker"></i> ' + place + '</span>'
@@ -190,4 +337,5 @@
 </script>
 </body>
 </html>
+
 

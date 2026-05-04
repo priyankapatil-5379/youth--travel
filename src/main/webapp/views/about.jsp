@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+﻿<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -513,12 +513,10 @@
                     
                     <div class="mobile-btn-wrap d-lg-none">
                         <a href="<c:url value='/user/login'/>" class="login-btn">Login / Sign Up</a>
-                        <a href="<c:url value='/vendor/login'/>" class="login-btn" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2);">Vendor Portal</a>
                     </div>
                 </div>
                 <div class="nav-right">
                     <a href="<c:url value='/user/login'/>" class="login-btn d-none d-lg-inline-block">Login / Sign Up</a>
-                    <a href="<c:url value='/vendor/login'/>" class="login-btn d-none d-lg-inline-block" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); font-size: 14px; padding: 10px 18px;">Vendor Portal</a>
                     <div class="nav-mobile-toggle" onclick="document.querySelector('.nav-links').classList.toggle('active')">
                         <i class="fa fa-bars"></i>
                     </div>
@@ -582,13 +580,13 @@
                             We started Youth Travel because we were tired of "tour packages" that felt like school field trips. We wanted the freedom of the road with the security of a plan.
                         </p>
                         <p style="font-size: 18px; line-height: 1.8; color: #eee;">
-                            Whether you're planning with college mates or your office gang, we bridge the gap between "we should go" and "we are here." No hidden costs, no boring guides — just raw India.
+                            Whether you're planning with college mates or your office gang, we bridge the gap between "we should go" and "we are here." No hidden costs, no boring guides â€” just raw India.
                         </p>
                     </div>
                     <div class="col-md-5">
                         <div class="hero-special-card">
                             <h4>Built for Indian Weekends</h4>
-                            <p>Real travel time, real local knowledge, and support that speaks your language — ensuring your trip is legendary from start to finish.</p>
+                            <p>Real travel time, real local knowledge, and support that speaks your language â€” ensuring your trip is legendary from start to finish.</p>
                             <a class="btn-red" href="<c:url value='/contact'/>" style="width: 100%; justify-content: center;">Join the Movement <i class="fa fa-arrow-right"></i></a>
                         </div>
                     </div>
@@ -664,4 +662,5 @@
 </body>
 
 </html>
+
 
