@@ -368,7 +368,10 @@
     <div class="fish-container">
         <div class="fish fish-1 fish-orange"><div class="fish-body"></div></div>
         <div class="fish fish-2 fish-cyan"><div class="fish-body"></div></div>
-        <div class="fish fish-3 fish-golden"><div class="fish-body"></div></div>
+        <div class="fish fish-3 fish-purple"><div class="fish-body"></div></div>
+        <div class="fish fish-4 fish-gold"><div class="fish-body"></div></div>
+        <div class="fish fish-5 fish-red"><div class="fish-body"></div></div>
+        <div class="fish fish-6 fish-black"><div class="fish-body"></div></div>
         <div class="diver diver-1">
             <div class="diver-body"></div>
             <div class="bubble-stream"><span></span><span></span><span></span></div>
@@ -393,12 +396,10 @@
                     
                     <div class="mobile-btn-wrap d-lg-none">
                         <a href="<c:url value='/user/login'/>" class="login-btn">Login / Sign Up</a>
-                        <a href="<c:url value='/vendor/login'/>" class="login-btn" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2);">Vendor Portal</a>
                     </div>
                 </div>
                 <div class="nav-right">
                     <a href="<c:url value='/user/login'/>" class="login-btn d-none d-lg-inline-block">Login / Sign Up</a>
-                    <a href="<c:url value='/vendor/login'/>" class="login-btn d-none d-lg-inline-block" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); font-size: 14px; padding: 10px 18px;">Vendor Portal</a>
                     <div class="nav-mobile-toggle" onclick="document.querySelector('.nav-links').classList.toggle('active')">
                         <i class="fa fa-bars"></i>
                     </div>
@@ -412,7 +413,7 @@
             <div class="yt-gallery-header text-center" style="margin-bottom: 60px; padding-top: 40px;">
                 <h2 style="font-family: 'Permanent Marker', cursive; font-size: 64px; color: #e63946; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 2px;">Gallery</h2>
                 <div class="yt-line" style="margin: 0 auto 25px; width: 80px; height: 3px; background: #e63946;"></div>
-                <p class="font-18" style="color: #ddd; max-width: 700px; margin: 0 auto; line-height: 1.6;">Biking, trekking, camping, and road-trip moments — made for youth travel.</p>
+                <p class="font-18" style="color: #ddd; max-width: 700px; margin: 0 auto; line-height: 1.6;">Biking, trekking, camping, and road-trip moments â€” made for youth travel.</p>
             </div>
 
             <div class="yt-gallery-grid">
@@ -472,7 +473,7 @@
                     <div class="footer-logo" style="margin-bottom: 20px;">
                         <img src="<c:url value='/views/assets/images/footer-logo.png'/>" alt="" style="height: 40px;"/>
                     </div>
-                    <p style="color: #fff; margin-bottom: 30px;">Not just places, but moments that stay with you forever. Explore the unexplored with Youth Travel.</p>
+                    <p style="color: #fff; margin-bottom: 30px;">Travelling is more than just visiting places; it's about the vibes, the stories, and the memories that last a lifetime. Explore the unexplored with Youth Travel!</p>
                     <div class="footer-address" style="color: #fff;">
                         <p><i class="fa fa-map-marker" style="color: #e63946; margin-right: 10px;"></i> Youth Travel, MG Road, Bengaluru, Karnataka, India</p>
                         <p><i class="fa fa-phone" style="color: #e63946; margin-right: 10px;"></i> +91 98765 43210</p>
@@ -536,3 +537,4 @@
 </body>
 
 </html>
+

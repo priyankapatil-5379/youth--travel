@@ -14,7 +14,9 @@ public class TripSchedule {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "trip_id", nullable = false)
+    @com.fasterxml.jackson.annotation.JsonIgnore
     private Trip trip;
+
 
     @Column(name = "start_date", nullable = false)
     private LocalDate startDate;

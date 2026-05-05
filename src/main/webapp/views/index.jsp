@@ -125,6 +125,123 @@
             100% { transform: rotate(8deg)  scaleX(0.85); opacity: 0.25; }
         }
 
+        /* === WELCOME MODAL === */
+        #welcomeModal {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            z-index: 1000000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        #welcomeModal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .welcome-modal-content {
+            background: #fff;
+            width: 90%;
+            max-width: 480px;
+            padding: 60px 40px;
+            border-radius: 32px;
+            position: relative;
+            text-align: center;
+            box-shadow: 0 40px 100px rgba(0,0,0,0.6);
+            transform: scale(0.9) translateY(40px);
+            transition: all 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        #welcomeModal.active .welcome-modal-content {
+            transform: scale(1) translateY(0);
+        }
+
+        .welcome-modal-close {
+            position: absolute;
+            top: 25px; right: 25px;
+            width: 40px;
+            height: 40px;
+            line-height: 40px;
+            font-size: 28px;
+            color: #999;
+            cursor: pointer;
+            transition: 0.3s;
+            background: #f5f5f5;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .welcome-modal-close:hover { 
+            color: #e63946; 
+            background: #fee2e2;
+            transform: rotate(90deg); 
+        }
+
+        .welcome-modal-logo { 
+            height: 55px; 
+            margin-bottom: 35px; 
+            filter: drop-shadow(0 5px 15px rgba(0,0,0,0.1));
+        }
+
+        .welcome-modal-content h2 {
+            font-family: 'Oswald', sans-serif;
+            font-size: 36px;
+            color: #111;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 700;
+        }
+
+        .welcome-modal-content p {
+            font-size: 18px;
+            color: #555;
+            margin-bottom: 40px;
+            line-height: 1.7;
+        }
+
+        .welcome-btn {
+            display: block;
+            background: linear-gradient(135deg, #e63946 0%, #c1121f 100%);
+            color: #fff;
+            padding: 18px 40px;
+            border-radius: 16px;
+            font-weight: 700;
+            font-size: 20px;
+            text-decoration: none;
+            transition: 0.4s;
+            box-shadow: 0 15px 30px rgba(230,57,70,0.4);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .welcome-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(230,57,70,0.5);
+            color: #fff;
+            filter: brightness(1.1);
+        }
+
+        .guest-link {
+            display: inline-block;
+            margin-top: 25px;
+            color: #888;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 15px;
+            transition: 0.3s;
+        }
+        .guest-link:hover { color: #e63946; }
+
         .yt-new-hero {
             position: relative;
             width: 100%;
@@ -948,14 +1065,19 @@
         <div class="fish fish-1 fish-orange">
             <div class="fish-body"></div>
         </div>
-        
-        <!-- 2. Blue Tang -->
         <div class="fish fish-2 fish-cyan">
             <div class="fish-body"></div>
         </div>
-        
-        <!-- 3. Yellow Tang -->
-        <div class="fish fish-3 fish-golden">
+        <div class="fish fish-3 fish-purple">
+            <div class="fish-body"></div>
+        </div>
+        <div class="fish fish-4 fish-gold">
+            <div class="fish-body"></div>
+        </div>
+        <div class="fish fish-5 fish-red">
+            <div class="fish-body"></div>
+        </div>
+        <div class="fish fish-6 fish-black">
             <div class="fish-body"></div>
         </div>
 
@@ -987,13 +1109,11 @@
                         
                         <div class="mobile-btn-wrap d-lg-none">
                             <a href="<c:url value='/user/login'/>" class="login-btn">Login / Sign Up</a>
-                            <a href="<c:url value='/vendor/login'/>" class="login-btn" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2);">Vendor Portal</a>
                         </div>
                     </div>
 
                     <div class="nav-right">
                         <a href="<c:url value='/user/login'/>" class="login-btn d-none d-lg-inline-block">Login / Sign Up</a>
-                        <a href="<c:url value='/vendor/login'/>" class="login-btn d-none d-lg-inline-block" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); font-size: 14px; padding: 10px 18px;">Vendor Portal</a>
                         <div class="nav-mobile-toggle" onclick="toggleMobileMenu()">
                             <i class="fa fa-bars" id="menuIcon"></i>
                         </div>
@@ -1016,10 +1136,10 @@
 
             <!-- ===== VERTICAL HERO SLIDESHOW ===== -->
             <style>
-                /* Outer wrap — absolute positioned in hero */
+                /* Outer wrap â€” absolute positioned in hero */
                 .hero-vss-wrap {
                     position: absolute;
-                    right: 4%;
+                    right: 14%;
                     top: 50%;
                     transform: translateY(-50%);
                     display: flex;
@@ -1058,7 +1178,7 @@
                     font-size: 9px;
                 }
 
-                /* Torn-paper rough-edge FRAME — same style as Plan with Friends card */
+                /* Torn-paper rough-edge FRAME â€” same style as Plan with Friends card */
                 .yt-vss-frame {
                     position: relative;
                     padding: 12px;
@@ -1077,7 +1197,7 @@
                     box-shadow: 0 20px 55px rgba(0,0,0,0.55), inset 0 0 18px rgba(0,0,0,0.06);
                 }
 
-                /* Inner slideshow box — photos clip inside here */
+                /* Inner slideshow box â€” photos clip inside here */
                 .yt-vss-box {
                     width: 220px;
                     height: 300px;
@@ -1465,6 +1585,7 @@
                             <div class="col-xs-6 col-sm-3 col-md-3">
                                 <a class="yt-mini-thumb" href="<c:url value='${img.imageUrl}'/>" data-fancybox="home-strip" data-caption="${img.caption}">
                                     <img src="<c:url value='${img.imageUrl}'/>" alt="${img.caption}">
+                                    <div class="yt-thumb-caption">${img.caption}</div>
                                 </a>
                             </div>
                         </c:forEach>
@@ -1474,21 +1595,25 @@
                         <div class="col-xs-6 col-sm-3 col-md-3">
                             <a class="yt-mini-thumb" href="<c:url value='/views/assets/images/new-gallery-1.jpg'/>" data-fancybox="home-strip" data-caption="Youth Adventure 1">
                                 <img src="<c:url value='/views/assets/images/new-gallery-1.jpg'/>" alt="Youth Adventure 1">
+                                <div class="yt-thumb-caption">Youth Adventure 1</div>
                             </a>
                         </div>
                         <div class="col-xs-6 col-sm-3 col-md-3">
                             <a class="yt-mini-thumb" href="<c:url value='/views/assets/images/new-gallery-2.jpg'/>" data-fancybox="home-strip" data-caption="Youth Adventure 2">
                                 <img src="<c:url value='/views/assets/images/new-gallery-2.jpg'/>" alt="Youth Adventure 2">
+                                <div class="yt-thumb-caption">Youth Adventure 2</div>
                             </a>
                         </div>
                         <div class="col-xs-6 col-sm-3 col-md-3">
                             <a class="yt-mini-thumb" href="<c:url value='/views/assets/images/new-gallery-3.jpg'/>" data-fancybox="home-strip" data-caption="Youth Adventure 3">
                                 <img src="<c:url value='/views/assets/images/new-gallery-3.jpg'/>" alt="Youth Adventure 3">
+                                <div class="yt-thumb-caption">Youth Adventure 3</div>
                             </a>
                         </div>
                         <div class="col-xs-6 col-sm-3 col-md-3">
                             <a class="yt-mini-thumb" href="<c:url value='/views/assets/images/new-gallery-4.jpg'/>" data-fancybox="home-strip" data-caption="Youth Adventure 4">
                                 <img src="<c:url value='/views/assets/images/new-gallery-4.jpg'/>" alt="Youth Adventure 4">
+                                <div class="yt-thumb-caption">Youth Adventure 4</div>
                             </a>
                         </div>
                     </c:otherwise>
@@ -1504,28 +1629,47 @@
                 <h3>FEATURED TRIPS</h3>
                 <span class="yt-line"></span>
             </div>
-
-            <div class="row" style="margin-left:-10px; margin-right:-10px;">
-                <c:forEach var="trip" items="${featuredTrips}" varStatus="status">
-                    <div class="col-sm-4 col-md-5-custom" style="margin-bottom:18px; padding-left:10px; padding-right:10px;">
-                        <a href="<c:url value='/user/package-details/${trip.id}'/>" style="text-decoration:none; color:inherit; display:block;">
-                            <div class="yt-trip-card">
-                                <div class="yt-trip-price">₹${trip.price}</div>
-                                <img src="${not empty trip.imageUrl ? trip.imageUrl : 'https://images.unsplash.com/photo-1598209279122-8541213a0387?w=600&auto=format&fit=crop&q=60'}" alt="${trip.title}" />
-                                <div class="yt-trip-body">
-                                    <h4>${trip.title}</h4>
-                                    <p>${trip.days}D / ${trip.nights}N • ${trip.destination}</p>
-                                </div>
-                            </div>
-                        </a>
+            <div class="row">
+                <div class="col-sm-6 col-md-3" style="margin-bottom:18px;">
+                    <div class="yt-trip-card">
+                        <div class="yt-trip-price">2999</div>
+                        <img src="https://images.unsplash.com/photo-1598209279122-8541213a0387?w=600&auto=format&fit=crop&q=60" alt="Ride" />
+                        <div class="yt-trip-body">
+                            <h4>KTM Bengaluru Ride</h4>
+                            <p>2 Days / 1 Night<br>Bengaluru ’ Nandi Hills</p>
+                        </div>
                     </div>
-                </c:forEach>
-                
-                <c:if test="${empty featuredTrips}">
-                    <div class="col-12 text-center py-5">
-                        <p class="text-white-50">No featured trips available at the moment.</p>
+                </div>
+                <div class="col-sm-6 col-md-3" style="margin-bottom:18px;">
+                    <div class="yt-trip-card">
+                        <div class="yt-trip-price">4499</div>
+                        <img src="https://images.unsplash.com/photo-1551632811-561732d1e306?w=600&auto=format&fit=crop&q=60" alt="Trek" />
+                        <div class="yt-trip-body">
+                            <h4>Kudremukh Trek</h4>
+                            <p>3 Days / 2 Nights<br>Karnataka</p>
+                        </div>
                     </div>
-                </c:if>
+                </div>
+                <div class="col-sm-6 col-md-3" style="margin-bottom:18px;">
+                    <div class="yt-trip-card">
+                        <div class="yt-trip-price">1999</div>
+                        <img src="https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?w=600&auto=format&fit=crop&q=60" alt="Camping" />
+                        <div class="yt-trip-body">
+                            <h4>Camping at Saklespur</h4>
+                            <p>1 Day / 1 Night<br>Adventure & Campfire</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-3" style="margin-bottom:18px;">
+                    <div class="yt-trip-card">
+                        <div class="yt-trip-price">999</div>
+                        <img src="https://images.unsplash.com/photo-1432405972618-c60b0225b8f9?w=600&auto=format&fit=crop&q=60" alt="Day out" />
+                        <div class="yt-trip-body">
+                            <h4>Coorg Day Out</h4>
+                            <p>Day Trip<br>Waterfalls & Fun</p>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <div class="row yt-feature-icons">
@@ -1582,7 +1726,7 @@
                     <div class="yt-why-card">
                         <div class="yt-why-icon"><i class="fa fa-check-circle"></i></div>
                         <h4>Real prices. No surprises.</h4>
-                        <p>Clear inclusions, transparent budgets, and youth-friendly packages—so you don’t get last-minute shocks.</p>
+                        <p>Clear inclusions, transparent budgets, and youth-friendly packagesâ€”so you donâ€™t get last-minute shocks.</p>
                     </div>
                 </div>
                 <div class="col-sm-6 col-md-4">
@@ -1610,7 +1754,7 @@
                     <div class="yt-why-card">
                         <div class="yt-why-icon"><i class="fa fa-map-marker"></i></div>
                         <h4>Local, Indian travel focus</h4>
-                        <p>Routes, timings, and tips built for Indian conditions—weather, weekends, and real travel time.</p>
+                        <p>Routes, timings, and tips built for Indian conditionsâ€”weather, weekends, and real travel time.</p>
                     </div>
                 </div>
                 <div class="col-sm-6 col-md-4">
@@ -1645,6 +1789,7 @@
                             <div class="col-xs-6 col-sm-4 col-md-3">
                                 <a class="yt-mini-thumb" href="<c:url value='${img.imageUrl}'/>" data-fancybox="more-moments" data-caption="${img.caption}">
                                     <img src="<c:url value='${img.imageUrl}'/>" alt="${img.caption}">
+                                    <div class="yt-thumb-caption">${img.caption}</div>
                                 </a>
                             </div>
                         </c:forEach>
@@ -1654,11 +1799,13 @@
                         <div class="col-xs-6 col-sm-4 col-md-3">
                             <a class="yt-mini-thumb" href="<c:url value='/views/assets/images/more-waterpark.png'/>" data-fancybox="more-moments" data-caption="Waterpark fun">
                                 <img src="<c:url value='/views/assets/images/more-waterpark.png'/>" alt="Waterpark fun">
+                                <div class="yt-thumb-caption">Waterpark fun</div>
                             </a>
                         </div>
                         <div class="col-xs-6 col-sm-4 col-md-3">
                             <a class="yt-mini-thumb" href="<c:url value='/views/assets/images/more-scuba.png'/>" data-fancybox="more-moments" data-caption="Scuba diving">
                                 <img src="<c:url value='/views/assets/images/more-scuba.png'/>" alt="Scuba diving">
+                                <div class="yt-thumb-caption">Scuba diving</div>
                             </a>
                         </div>
                     </c:otherwise>
@@ -1671,7 +1818,7 @@
     <section id="explorer-reviews" class="yt-testimonials">
         <div class="container">
             <h2 class="yt-testimonials-heading">Why Explorers Love Youth Travel</h2>
-            <p class="yt-testimonials-lead">Hear from real adventurers who have travelled with us — from serene treks and camping nights to bold group rides across India.</p>
+            <p class="yt-testimonials-lead">Hear from real adventurers who have travelled with us â€” from serene treks and camping nights to bold group rides across India.</p>
             <div class="row yt-testimonials-row">
                 <div class="col-md-4 col-sm-6">
                     <article class="yt-review-card">
@@ -1702,7 +1849,7 @@
                                 <span>5.0</span>
                             </div>
                         </header>
-                        <p class="yt-review-text">We were a group of six planning a short trek, and Youth Travel helped us shortlist a safe route with clear inclusions. Communication on WhatsApp was prompt, and there were no hidden charges — which matters a lot when you are budgeting as students. <em>The experience felt organised yet relaxed,</em> exactly how a holiday should be. Full marks from our side.</p>
+                        <p class="yt-review-text">We were a group of six planning a short trek, and Youth Travel helped us shortlist a safe route with clear inclusions. Communication on WhatsApp was prompt, and there were no hidden charges â€” which matters a lot when you are budgeting as students. <em>The experience felt organised yet relaxed,</em> exactly how a holiday should be. Full marks from our side.</p>
                     </article>
                 </div>
                 <div class="col-md-4 col-sm-6">
@@ -1718,7 +1865,7 @@
                                 <span>5.0</span>
                             </div>
                         </header>
-                        <p class="yt-review-text">Excellent initiative for youth who love road trips and outdoor plans but do not want to chase ten different vendors. The website is easy to use, trip details are properly listed, and the support team answers queries politely. <em>Our camping outing was memorable — good coordination and a very positive vibe throughout.</em> Keep up the good work.</p>
+                        <p class="yt-review-text">Excellent initiative for youth who love road trips and outdoor plans but do not want to chase ten different vendors. The website is easy to use, trip details are properly listed, and the support team answers queries politely. <em>Our camping outing was memorable â€” good coordination and a very positive vibe throughout.</em> Keep up the good work.</p>
                     </article>
                 </div>
             </div>
@@ -1801,7 +1948,7 @@
                             </div>
                             <div class="footer-text">
                                 <p>
-                                    Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur
+                                    Travelling is more than just visiting places; it's about the vibes, the stories, and the memories that last a lifetime. Explore the unexplored with Youth Travel!
                                 </p>
                             </div>
                             <div class="footer-address">
@@ -1998,6 +2145,38 @@
                 }
             }
         }
+    </script>
+    <div id="welcomeModal">
+        <div class="welcome-modal-content">
+            <span class="welcome-modal-close" onclick="closeWelcomeModal()">&times;</span>
+            <img src="<c:url value='/views/assets/images/logo.png'/>" alt="Youth Travel" class="welcome-modal-logo">
+            <h2>Adventure Awaits!</h2>
+            <p>Join our tribe today! <strong>Sign in</strong> to unlock 10% off your first trip and get secret adventure deals.</p>
+            <a href="<c:url value='/user/login'/>" class="welcome-btn">Sign In or Register</a>
+            <a href="javascript:void(0)" onclick="closeWelcomeModal()" class="guest-link">Maybe Later, Continue as Guest</a>
+        </div>
+    </div>
+
+    <script>
+        function openWelcomeModal() {
+            document.getElementById('welcomeModal').classList.add('active');
+            document.body.style.overflow = 'hidden'; // Prevent scrolling
+        }
+
+        function closeWelcomeModal() {
+            document.getElementById('welcomeModal').classList.remove('active');
+            document.body.style.overflow = 'auto'; // Restore scrolling
+        }
+
+        window.addEventListener('DOMContentLoaded', (event) => {
+            // Show modal after 1.2 seconds for a premium feel
+            setTimeout(openWelcomeModal, 1200);
+        });
+
+        // Close on escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === "Escape") closeWelcomeModal();
+        });
     </script>
 </body>
 

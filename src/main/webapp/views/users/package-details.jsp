@@ -1,762 +1,727 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-    <%@ taglib prefix="c" uri="jakarta.tags.core" %>
-        <%@ taglib prefix="fmt" uri="jakarta.tags.fmt" %>
-            <%@ taglib prefix="fn" uri="jakarta.tags.functions" %>
-                <!DOCTYPE html>
-                <html lang="en">
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<%@ taglib prefix="fn" uri="jakarta.tags.functions" %>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>${trip.title} | Youth Travel</title>
+    <link rel="stylesheet" href="<c:url value='/views/assets/css/bootstrap.min.css'/>">
+    <link rel="stylesheet" href="<c:url value='/views/assets/css/font-awesome.min.css'/>">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/themes/dark.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Permanent+Marker&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-deep: #000a12;
+            --accent-red: #e63946;
+            --glass-card: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --text-light: #f8fafc;
+            --text-dim: #94a3b8;
+        }
 
-                <head>
-                    <meta charset="UTF-8">
-                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                    <title>${trip.title} | Youth Travel</title>
-                    <link rel="stylesheet" href="<c:url value='/views/assets/css/bootstrap.min.css'/>">
-                    <link rel="stylesheet" href="<c:url value='/views/assets/css/font-awesome.min.css'/>">
-                    <link href="https://fonts.googleapis.com/css?family=Dosis:300,400,500,600,700,800" rel="stylesheet">
-                    <style>
-                        :root {
-                            --primary-blue: #f04c26;
-                            --text-muted: #7e8c9a;
-                            --transition: all 0.3s ease;
-                            --dark-bg: #0b0f18;
-                            --dark-card: #161c28;
-                            --border-color: rgba(255, 255, 255, 0.08);
-                        }
+        body { font-family: 'Outfit', sans-serif; background-color: var(--bg-dark); color: var(--text-light); margin: 0; padding: 0; }
+        .container-main { max-width: 1200px; margin: 40px auto; padding: 0 20px; display: grid; grid-template-columns: 1.8fr 1fr; gap: 30px; }
+        .content-left { overflow: hidden; }
 
-                        body {
-                            font-family: 'Dosis', sans-serif;
-                            background-color: var(--dark-bg);
-                            color: rgba(255, 255, 255, 0.92);
-                            margin: 0;
-                            padding: 0;
-                            overflow-x: hidden;
-                        }
+        .breadcrumb-nav { display: flex; align-items: center; gap: 10px; margin-bottom: 25px; font-size: 13px; font-weight: 600; color: var(--text-muted); }
+        .breadcrumb-nav a { color: var(--text-muted); text-decoration: none; transition: 0.3s; }
+        .breadcrumb-nav a:hover { color: #fff; }
+        .breadcrumb-nav i { font-size: 10px; }
 
-                        /* Hero Banner */
-                        .hero-banner {
-                            position: relative;
-                            width: 100%;
-                            height: 60vh;
-                            min-height: 400px;
-                            overflow: hidden;
-                        }
+        .main-visual { position: relative; border-radius: 24px; overflow: hidden; margin-bottom: 30px; aspect-ratio: 16/7; background: #1e293b; box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
+        .main-visual img { width: 100%; height: 100%; object-fit: cover; }
+        .hero-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(2,6,23,0.8) 0%, transparent 60%); }
+        .hero-info { position: absolute; bottom: 30px; left: 30px; }
 
-                        .hero-bg {
-                            width: 100%;
-                            height: 100%;
-                            object-fit: cover;
-                            filter: brightness(0.6);
-                        }
+        .tag-cloud { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 15px; }
+        .tag-item { background: rgba(255,255,255,0.05); border: 1px solid var(--border); padding: 5px 12px; border-radius: 20px; font-size: 12px; font-weight: 700; color: var(--text-muted); }
 
-                        .hero-content {
-                            position: absolute;
-                            bottom: 0;
-                            left: 0;
-                            width: 100%;
-                            padding: 60px 40px;
-                            background: linear-gradient(to top, rgba(11, 15, 24, 1) 0%, rgba(11, 15, 24, 0.8) 40%, rgba(11, 15, 24, 0) 100%);
-                        }
+        .masonry-gallery { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-bottom: 50px; }
+        .masonry-item { border-radius: 16px; overflow: hidden; height: 180px; position: relative; cursor: pointer; }
+        .masonry-item img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; }
+        .masonry-item:hover img { transform: scale(1.1); }
+        .masonry-item.wide { grid-column: span 2; }
+        .view-all-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.6); display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 16px; }
 
-                        .hero-title {
-                            font-size: clamp(32px, 6vw, 48px);
-                            font-weight: 800;
-                            margin-bottom: 15px;
-                            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
-                        }
+        .map-section { background: var(--card-bg); border-radius: 24px; padding: 30px; border: 1px solid var(--border); margin-top: 40px; }
+        .map-placeholder { height: 300px; background: rgba(255,255,255,0.02); border-radius: 16px; display: flex; align-items: center; justify-content: center; border: 1px dashed var(--border); }
 
-                        .hero-meta {
-                            display: flex;
-                            gap: 20px;
-                            font-size: 16px;
-                            font-weight: 600;
-                            color: rgba(255, 255, 255, 0.8);
-                        }
+        .similar-section { margin-top: 60px; padding-top: 60px; border-top: 1px solid var(--border); }
+        .similar-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 25px; margin-top: 30px; }
+        .similar-card { background: var(--card-bg); border-radius: 20px; overflow: hidden; border: 1px solid var(--border); text-decoration: none; color: inherit; transition: 0.3s; }
+        .similar-card:hover { transform: translateY(-10px); }
+        .similar-img { height: 160px; width: 100%; object-fit: cover; }
+        .similar-body { padding: 20px; }
+        .similar-title { font-size: 16px; font-weight: 800; margin-bottom: 5px; }
 
-                        .hero-meta span {
-                            display: flex;
-                            align-items: center;
-                            gap: 8px;
-                        }
+        @media (max-width: 991px) { .container-main { grid-template-columns: 1fr; } .sidebar-card { position: static; } .trust-footer { gap: 20px; padding: 15px; } .footer-trust-item span { display: none; } .similar-grid { grid-template-columns: 1fr; } .masonry-gallery { grid-template-columns: repeat(2, 1fr); } }
 
-                        /* Main Content Layout */
-                        .content-container {
-                            max-width: 1200px;
-                            margin: 40px auto;
-                            padding: 0 20px;
-                            display: grid;
-                            grid-template-columns: 2fr 1fr;
-                            gap: 40px;
-                        }
+        /* Right Sidebar */
+        .sidebar-card { background: var(--card-bg); border-radius: 24px; padding: 30px; border: 1px solid var(--border); position: sticky; top: 40px; box-shadow: 0 10px 40px rgba(0,0,0,0.5); transition: 0.3s; }
+        .sidebar-card:hover { border-color: var(--accent-red); box-shadow: 0 0 20px rgba(225, 29, 72, 0.2); }
 
-                        @media (max-width: 991px) {
-                            .hero-banner {
-                                height: 45vh;
-                                min-height: 300px;
-                            }
+        .price-header { display: flex; align-items: baseline; gap: 8px; margin-bottom: 25px; }
+        .price-val { font-size: 32px; font-weight: 800; color: #fff; }
+        .price-label { color: var(--text-muted); font-size: 14px; font-weight: 600; }
 
-                            .hero-content {
-                                padding: 40px 20px;
-                            }
+        .field-group { margin-bottom: 25px; }
+        .field-label { display: block; font-size: 13px; font-weight: 700; color: var(--text-muted); margin-bottom: 10px; text-transform: uppercase; }
+        .date-input-wrapper { position: relative; }
+        .input-dark { background: rgba(0,0,0,0.2) !important; border: 1px solid var(--border) !important; border-radius: 12px !important; color: #fff !important; padding: 12px 40px 12px 15px !important; width: 100% !important; outline: none !important; font-weight: 600 !important; cursor: pointer; }
+        .date-input-wrapper i { position: absolute; right: 15px; top: 50%; transform: translateY(-50%); color: var(--text-muted); pointer-events: none; }
 
-                            .content-container {
-                                grid-template-columns: 1fr;
-                                gap: 30px;
-                                margin: 20px auto;
-                            }
+        .counter-box { display: flex; align-items: center; justify-content: space-between; background: rgba(0,0,0,0.2); border: 1px solid var(--border); border-radius: 12px; padding: 10px 20px; }
+        .counter-btn { width: 32px; height: 32px; background: rgba(255,255,255,0.1); border: none; border-radius: 8px; color: #fff; font-size: 18px; font-weight: 800; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.3s; }
+        .counter-btn:hover { background: var(--accent-red); }
 
-                            .booking-widget {
-                                position: relative;
-                                top: 0;
-                                padding: 25px;
-                            }
+        .price-details { margin-top: 30px; padding-top: 25px; border-top: 1px dashed var(--border); }
+        .price-row { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 14px; font-weight: 600; color: var(--text-muted); }
+        .total-row { border-top: 1px solid var(--border); margin-top: 15px; padding-top: 15px; font-size: 18px; font-weight: 800; color: #fff; }
 
-                            .top-nav {
-                                left: 20px;
-                                top: 15px;
-                            }
+        .btn-book { width: 100%; background: var(--accent-red); color: #fff; border: none; padding: 18px; border-radius: 16px; font-weight: 800; font-size: 16px; margin-top: 30px; cursor: pointer; transition: 0.3s; text-transform: uppercase; }
+        .btn-book:hover { transform: translateY(-3px); box-shadow: 0 10px 25px rgba(225, 29, 72, 0.4); }
 
-                            .btn-back {
-                                padding: 8px 15px;
-                                font-size: 14px;
-                            }
-                        }
+        .side-widget { background: var(--card-bg); border-radius: 24px; padding: 25px; border: 1px solid var(--border); margin-top: 20px; }
+        .widget-title { font-size: 16px; font-weight: 800; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; color: #fff; }
+        .trust-item { display: flex; gap: 15px; margin-bottom: 15px; }
+        .trust-icon { width: 32px; height: 32px; background: rgba(255,255,255,0.05); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 14px; color: var(--accent-red); flex-shrink: 0; }
+        .trust-name { font-weight: 700; display: block; font-size: 13px; color: #fff; }
+        .trust-desc { font-size: 11px; color: var(--text-muted); }
 
-                        @media (max-width: 576px) {
-                            .hero-meta {
-                                flex-direction: column;
-                                gap: 10px;
-                            }
+        .offer-box { background: rgba(0,0,0,0.2); border: 1px dashed var(--border); border-radius: 12px; padding: 15px; display: flex; justify-content: space-between; align-items: center; }
+        .offer-code { font-weight: 800; color: #fff; font-size: 14px; }
+        .btn-apply { color: var(--accent-red); font-size: 12px; font-weight: 800; text-decoration: none; }
 
-                            .section-box {
-                                padding: 20px;
-                            }
+        .contact-widget { background: linear-gradient(135deg, #1e293b 0%, #020617 100%); }
+        .contact-row { display: flex; align-items: center; gap: 15px; margin-top: 15px; font-size: 18px; font-weight: 800; color: #fff; }
 
-                            .section-box[style*="grid-template-columns: 1fr 1fr"] {
-                                grid-template-columns: 1fr !important;
-                            }
-                        }
+        .trust-footer { position: fixed; bottom: 0; left: 0; right: 0; background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(10px); border-top: 1px solid var(--border); padding: 15px 40px; display: flex; justify-content: center; gap: 50px; z-index: 999; }
+        .footer-trust-item { display: flex; align-items: center; gap: 10px; font-size: 12px; font-weight: 700; color: #fff; }
+        .footer-trust-item i { color: #22c55e; font-size: 16px; }
 
-                        /* Prevent infinite horizontal stretch on ultra-wide screens */
-                        @media (min-width: 2000px) {
+        /* Skeleton Loading */
+        .skeleton { background: linear-gradient(90deg, #1e293b 25%, #334155 50%, #1e293b 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; border-radius: 10px; }
+        @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
 
-                            .hero-banner,
-                            .content-container {
-                                max-width: 1600px;
-                                margin-left: auto;
-                                margin-right: auto;
-                            }
-                        }
+        @media (max-width: 991px) { .container-main { grid-template-columns: 1fr; } .sidebar-card { position: static; } .trust-footer { gap: 20px; padding: 15px; } .footer-trust-item span { display: none; } }
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--bg-deep);
+            color: var(--text-light);
+            margin: 0; padding: 0;
+            overflow-x: hidden;
+        }
 
-                        /* Left Column */
-                        .section-box {
-                            background: var(--dark-card);
-                            border: 1px solid var(--border-color);
-                            border-radius: 20px;
-                            padding: 30px;
-                            margin-bottom: 30px;
-                        }
+        /* Underwater Background System */
+        .ocean-bg { position: fixed; inset: 0; background: radial-gradient(circle at 50% 0%, #001f3f, #000a12); z-index: -2; }
+        .sun-rays { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; opacity: 0.4; }
+        .ray { position: absolute; top: -20%; width: 100px; height: 150%; background: linear-gradient(180deg, rgba(255,255,255,0.1) 0%, transparent 80%); filter: blur(40px); transform-origin: top center; animation: ray-swing 8s ease-in-out infinite alternate; }
+        @keyframes ray-swing { 0% { transform: rotate(-5deg) scaleX(1); } 100% { transform: rotate(5deg) scaleX(0.8); } }
 
-                        .section-title {
-                            font-size: 24px;
-                            font-weight: 800;
-                            margin-bottom: 25px;
-                            display: flex;
-                            align-items: center;
-                            gap: 12px;
-                            color: #fff;
-                            border-bottom: 1px solid var(--border-color);
-                            padding-bottom: 15px;
-                        }
+        /* MMT Style Sticky Nav with Glass Effect */
+        .glass-nav {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border-bottom: 1px solid var(--glass-border);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            padding: 0 60px;
+            display: flex;
+            gap: 40px;
+        }
+        .nav-link-mmt {
+            padding: 20px 0;
+            font-weight: 800;
+            font-size: 13px;
+            color: var(--text-dim);
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            border-bottom: 3px solid transparent;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .nav-link-mmt.active, .nav-link-mmt:hover { color: #fff; border-bottom-color: var(--accent-red); }
 
-                        .section-title i {
-                            color: var(--primary-blue);
-                        }
+        /* Hero Banner */
+        .hero-banner { height: 60vh; background: url('${trip.imageUrl}') center center/cover no-repeat; position: relative; }
+        .hero-overlay { position: absolute; inset: 0; background: linear-gradient(to top, var(--bg-deep) 0%, transparent 100%); }
+        .hero-info { position: absolute; bottom: 60px; left: 60px; z-index: 10; max-width: 800px; }
+        .hero-title { font-size: 4.5rem; font-weight: 900; letter-spacing: -3px; line-height: 0.9; margin-bottom: 15px; }
 
-                        .tag-cloud {
-                            display: flex;
-                            flex-wrap: wrap;
-                            gap: 10px;
-                            margin-top: 15px;
-                        }
+        .layout-container { max-width: 1400px; margin: 40px auto; padding: 0 60px; display: grid; grid-template-columns: 2fr 1fr; gap: 40px; }
 
-                        .tag {
-                            background: rgba(255, 255, 255, 0.05);
-                            border: 1px solid rgba(255, 255, 255, 0.1);
-                            padding: 6px 15px;
-                            border-radius: 20px;
-                            font-size: 13px;
-                            font-weight: 600;
-                            color: rgba(255, 255, 255, 0.8);
-                        }
+        /* MMT Content Cards with Super Glass Styling */
+        .glass-card { 
+            background: var(--glass-card); 
+            backdrop-filter: blur(30px); 
+            border: 1px solid var(--glass-border); 
+            border-radius: 24px; 
+            padding: 40px; 
+            margin-bottom: 30px; 
+            transition: 0.3s;
+        }
+        .section-title { font-size: 20px; font-weight: 900; margin-bottom: 25px; color: var(--accent-red); text-transform: uppercase; letter-spacing: 2px; }
 
-                        .tag i {
-                            color: var(--primary-blue);
-                            margin-right: 5px;
-                        }
+        /* Dynamic Chips */
+        .chip { background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border); border-radius: 100px; padding: 6px 16px; font-size: 12px; font-weight: 700; display: inline-flex; align-items: center; gap: 8px; margin-right: 10px; margin-bottom: 10px; color: var(--text-light); }
+        .chip i { color: var(--accent-red); }
 
-                        /* Itinerary Timeline */
-                        .timeline {
-                            position: relative;
-                            padding-left: 30px;
-                        }
+        /* Itinerary Timeline */
+        .day-box { position: relative; padding-left: 50px; border-left: 1px solid var(--glass-border); margin-left: 15px; margin-bottom: 40px; }
+        .day-indicator { position: absolute; left: -16px; top: 0; background: var(--accent-red); color: #fff; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 12px; box-shadow: 0 0 15px var(--accent-red); }
 
-                        .timeline::before {
-                            content: '';
-                            position: absolute;
-                            left: 0;
-                            top: 10px;
-                            bottom: 0;
-                            width: 2px;
-                            background: rgba(255, 255, 255, 0.1);
-                        }
+        /* Booking Instrument - Diamond Polish */
+        .sticky-booking { position: sticky; top: 110px; }
+        .booking-panel { 
+            background: rgba(230, 57, 70, 0.05); 
+            backdrop-filter: blur(50px); 
+            border: 1px solid rgba(230, 57, 70, 0.3); 
+            border-radius: 40px; 
+            padding: 45px; 
+            box-shadow: 0 40px 100px rgba(0,0,0,0.7), inset 0 0 20px rgba(230, 57, 70, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        .booking-panel::before {
+            content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+            background: conic-gradient(from 180deg at 50% 50%, transparent 0deg, rgba(230, 57, 70, 0.1) 180deg, transparent 360deg);
+            animation: rotate-glow 10s linear infinite;
+            z-index: -1;
+        }
+        @keyframes rotate-glow { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
-                        .day-node {
-                            position: relative;
-                            margin-bottom: 30px;
-                        }
+        .price-hero-luxe { margin-bottom: 40px; }
+        .price-big { font-size: 4rem; font-weight: 900; line-height: 1; color: #fff; text-shadow: 0 0 30px var(--accent-glow); }
+        .price-label { font-size: 11px; font-weight: 800; letter-spacing: 2px; color: var(--accent-red); margin-bottom: 8px; text-transform: uppercase; }
 
-                        .day-node::before {
-                            content: '';
-                            position: absolute;
-                            left: -35px;
-                            top: 5px;
-                            width: 12px;
-                            height: 12px;
-                            border-radius: 50%;
-                            background: var(--primary-blue);
-                            border: 2px solid var(--dark-card);
-                            box-shadow: 0 0 0 2px rgba(240, 76, 38, 0.3);
-                        }
+        .luxe-input {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--glass-border);
+            border-radius: 18px;
+            padding: 18px 20px;
+            color: #fff;
+            font-weight: 700;
+            font-size: 14px;
+            width: 100%;
+            transition: 0.4s;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='white' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 20px center;
+        }
+        .luxe-input:focus { outline: none; border-color: var(--accent-red); box-shadow: 0 0 15px var(--accent-glow); background: rgba(255,255,255,0.06); }
 
-                        .day-title {
-                            font-weight: 800;
-                            font-size: 18px;
-                            margin-bottom: 10px;
-                        }
+        .btn-royal-glow {
+            width: 100%;
+            background: linear-gradient(135deg, #e63946 0%, #c1121f 100%);
+            color: #fff;
+            border: none;
+            padding: 25px;
+            border-radius: 22px;
+            font-weight: 900;
+            font-size: 18px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            box-shadow: 0 15px 40px rgba(230, 57, 70, 0.4);
+            transition: 0.5s;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            animation: pulse-btn 2s infinite;
+        }
+        @keyframes pulse-btn {
+            0% { box-shadow: 0 15px 40px rgba(230, 57, 70, 0.4); }
+            50% { box-shadow: 0 15px 60px rgba(230, 57, 70, 0.6); }
+            100% { box-shadow: 0 15px 40px rgba(230, 57, 70, 0.4); }
+        }
+        .btn-royal-glow:hover { transform: translateY(-5px) scale(1.02); filter: brightness(1.1); }
 
-                        .day-desc {
-                            color: rgba(255, 255, 255, 0.6);
-                            font-size: 15px;
-                            line-height: 1.6;
-                        }
+        /* Hotel Card */
+        .mmt-hotel-card { display: grid; grid-template-columns: 220px 1fr; gap: 25px; background: rgba(255,255,255,0.02); border-radius: 20px; padding: 25px; border: 1px solid var(--glass-border); }
+        .hotel-img-luxe { width: 100%; height: 160px; object-fit: cover; border-radius: 15px; }
 
-                        /* Right Column - Booking Widget */
-                        .booking-widget {
-                            background: var(--dark-card);
-                            border: 1px solid var(--primary-blue);
-                            border-radius: 20px;
-                            padding: 30px;
-                            position: sticky;
-                            top: 100px;
-                            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
-                        }
+        @svg-filter: url(#water-rough);
+    </style>
+</head>
+<body>
 
-                        .price-display {
-                            font-size: 36px;
-                            font-weight: 800;
-                            color: #fff;
-                            margin-bottom: 5px;
-                        }
+    <div class="ocean-bg"></div>
+    <div class="sun-rays">
+        <div class="ray" style="left: 10%; animation-delay: 0s;"></div>
+        <div class="ray" style="left: 35%; animation-delay: 2s;"></div>
+        <div class="ray" style="left: 65%; animation-delay: 1s;"></div>
+        <div class="ray" style="left: 85%; animation-delay: 3s;"></div>
+    </div>
 
-                        .price-display span {
-                            font-size: 14px;
-                            color: rgba(255, 255, 255, 0.5);
-                            font-weight: 600;
-                        }
+    <div class="container-main">
+        <div class="content-left">
+            <div class="breadcrumb-nav">
+                <a href="/user/dashboard">Home</a>
+                <i class="fa fa-chevron-right"></i>
+                <a href="#" id="breadCategory">Packages</a>
+                <i class="fa fa-chevron-right"></i>
+                <span style="color: #fff;" id="breadTitle">Trip Details</span>
+            </div>
 
-                        .form-label {
-                            font-weight: 700;
-                            color: rgba(255, 255, 255, 0.8);
-                            margin-bottom: 8px;
-                            display: block;
-                            margin-top: 20px;
-                        }
+            <div id="skeletons">
+                <div class="skeleton" style="width: 100%; height: 400px; border-radius: 20px; margin-bottom: 30px;"></div>
+                <div class="skeleton" style="width: 80%; height: 40px; margin-bottom: 20px;"></div>
+            </div>
 
-                        .custom-select {
-                            width: 100%;
-                            background: rgba(0, 0, 0, 0.3);
-                            border: 1px solid var(--border-color);
-                            color: #fff;
-                            padding: 12px 15px;
-                            border-radius: 12px;
-                            font-family: inherit;
-                            font-size: 15px;
-                            font-weight: 600;
-                            outline: none;
-                            cursor: pointer;
-                        }
+            <div id="realContent" style="display: none;">
+                <div class="main-visual">
+                    <img id="mainImg" src="" alt="Trip Visual">
+                    <div class="hero-overlay"></div>
+                    <div class="play-btn"><i class="fa fa-play"></i></div>
+                    <div class="type-tag" id="tripCategory">GROUP</div>
+                </div>
 
-                        .custom-select option {
-                            background: var(--dark-card);
-                            color: #fff;
-                        }
+                <h1 class="trip-title" id="tripTitle">Loading...</h1>
+                <div class="trip-meta" id="tripMeta"></div>
+                
+                <div class="section-title">Overview</div>
+                <div class="desc-text" id="tripDesc"></div>
 
-                        .btn-book {
-                            width: 100%;
-                            background: var(--primary-blue);
-                            color: #fff;
-                            border: none;
-                            padding: 15px;
-                            border-radius: 12px;
-                            font-size: 18px;
-                            font-weight: 800;
-                            text-transform: uppercase;
-                            letter-spacing: 1px;
-                            margin-top: 30px;
-                            transition: var(--transition);
-                            cursor: pointer;
-                        }
+                <div class="section-title">Activities</div>
+                <div class="tag-cloud" id="activityTags"></div>
 
-                        .btn-book:hover {
-                            background: #d84422;
-                            transform: translateY(-2px);
-                            box-shadow: 0 10px 20px rgba(240, 76, 38, 0.3);
-                        }
+                <div style="margin-top: 40px;">
+                    <div class="section-title">Inclusions</div>
+                    <div class="inclusions-grid" id="inclusionsGrid"></div>
+                </div>
 
-                        .vendor-info {
-                            display: flex;
-                            align-items: center;
-                            gap: 15px;
-                            margin-top: 30px;
-                            padding-top: 20px;
-                            border-top: 1px solid var(--border-color);
-                        }
+                <div class="section-title">Itinerary</div>
+                <div class="itinerary-list" id="itineraryList"></div>
 
-                        .vendor-avatar {
-                            width: 50px;
-                            height: 50px;
-                            border-radius: 50%;
-                            object-fit: cover;
-                        }
+                <div class="section-title">Gallery</div>
+                <div class="masonry-gallery" id="masonryGallery"></div>
 
-                        /* Nav */
-                        .top-nav {
-                            position: absolute;
-                            top: 20px;
-                            left: 40px;
-                            z-index: 10;
-                        }
+                <div class="map-section">
+                    <div class="section-title"><i class="fa fa-map-marker"></i> Location on Map</div>
+                    <div class="map-placeholder">
+                        <i class="fa fa-map-o" style="font-size: 40px; margin-bottom: 10px; color: var(--border);"></i>
+                        <div style="font-weight: 700; color: var(--text-muted);">Map view coming soon</div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-                        .btn-back {
-                            background: rgba(0, 0, 0, 0.5);
-                            color: #fff;
-                            border: 1px solid rgba(255, 255, 255, 0.2);
-                            padding: 10px 20px;
-                            border-radius: 30px;
-                            text-decoration: none;
-                            font-weight: 700;
-                            backdrop-filter: blur(10px);
-                            transition: var(--transition);
-                        }
 
-                        .btn-back:hover {
-                            background: rgba(255, 255, 255, 0.1);
-                            color: #fff;
-                        }
-                    </style>
-                </head>
+        <div class="content-right">
+            <div class="sidebar-card">
+                <div class="price-header">
+                    <span class="price-val" id="priceDisplay">₹0</span>
+                    <span class="price-label">/ person</span>
+                </div>
 
-                <body>
+                <div class="field-group">
+                    <label class="field-label">Select Date</label>
+                    <div class="date-input-wrapper">
+                        <input type="text" id="datePicker" class="input-dark" placeholder="Select Date" readonly>
+                        <i class="fa fa-calendar"></i>
+                    </div>
+                </div>
 
-                    <div class="top-nav">
-                        <a href="<c:url value='/user/dashboard'/>" class="btn-back"><i class="fa fa-arrow-left"></i>
-                            Back to Dashboard</a>
+                <div class="field-group">
+                    <label class="field-label">Travelers</label>
+                    <div class="counter-box">
+                        <button class="counter-btn" onclick="changeTravelers(-1)">-</button>
+                        <div style="text-align: center;">
+                            <span id="travelerCount" style="font-weight: 800; font-size: 18px;">1</span>
+                            <div style="font-size: 11px; font-weight: 600; color: var(--text-muted);" id="travelerLabel">1 Adult</div>
+                        </div>
+                        <button class="counter-btn" onclick="changeTravelers(1)">+</button>
+                    </div>
+                </div>
+
+                <div class="price-details">
+                    <div class="price-row">
+                        <span id="priceBreakupLabel">₹0 x 1 Adult</span>
+                        <span id="basicCost">₹0</span>
+                    </div>
+                    <div class="price-row">
+                        <span>Discount (0%)</span>
+                        <span style="color: #22c55e;">- ₹0</span>
+                    </div>
+                    <div class="total-row">
+                        <span>Total Amount</span>
+                        <span id="finalTotal">₹0</span>
+                    </div>
+                </div>
+
+                <button class="btn-book" onclick="proceedToBooking()">BOOK NOW</button>
+                <div style="display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 12px; font-weight: 600; color: #22c55e; margin-top: 20px;">
+                    <i class="fa fa-shield"></i> 100% Secure & Safe Payments
+                </div>
+            </div>
+
+            <div class="side-widget">
+                <div class="widget-title"><i class="fa fa-question-circle"></i> Why Book With Us?</div>
+                <div class="trust-item">
+                    <div class="trust-icon"><i class="fa fa-tags"></i></div>
+                    <div class="trust-info">
+                        <span class="trust-name">Best Price Guarantee</span>
+                        <span class="trust-desc">Get the best price always</span>
+                    </div>
+                </div>
+                <div class="trust-item">
+                    <div class="trust-icon"><i class="fa fa-bolt"></i></div>
+                    <div class="trust-info">
+                        <span class="trust-name">Easy Booking</span>
+                        <span class="trust-desc">Hassle-free booking process</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="side-widget">
+                <div class="widget-title"><i class="fa fa-gift"></i> Available Offers</div>
+                <div class="offer-box">
+                    <div>
+                        <div class="offer-code">HOLIDAY10</div>
+                        <div style="font-size: 11px; color: var(--text-muted);">Get 10% off</div>
+                    </div>
+                    <a href="#" class="btn-apply">Apply</a>
+                </div>
+    <!-- Rough Edge Filter -->
+    <svg width="0" height="0" style="position:absolute;z-index:-1;"><filter id="water-rough"><feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="3" result="noise" /><feDisplacementMap in="SourceGraphic" in2="noise" scale="5" xChannelSelector="R" yChannelSelector="G" /></filter></svg>
+
+    <div class="hero-banner">
+        <div class="hero-overlay"></div>
+        <div class="hero-info">
+            <div class="hero-title">${trip.title}</div>
+            <div class="d-flex gap-4 align-items-center">
+                <span class="badge bg-danger rounded-pill px-4 py-2 fw-black text-uppercase small">${not empty trip.difficulty ? trip.difficulty : 'Expert Led'}</span>
+                <span class="fw-bold fs-5"><i class="fa fa-map-marker text-danger me-2"></i> ${trip.destination}</span>
+                <span class="fw-bold fs-5"><i class="fa fa-clock-o text-danger me-2"></i> ${trip.days}D / ${trip.nights}N</span>
+            </div>
+        </div>
+    </div>
+
+    </div>
+
+    <div class="container-main similar-section">
+        <div style="width: 100%;">
+            <h2 class="section-title">Similar Destinations</h2>
+            <div class="similar-grid" id="similarGrid"></div>
+        </div>
+    </div>
+
+    <div class="trust-footer">
+        <div class="footer-trust-item"><i class="fa fa-check-circle"></i> <span>Free Cancellation</span></div>
+        <div class="footer-trust-item"><i class="fa fa-calendar-check-o"></i> <span>Flexible Booking</span></div>
+        <div class="footer-trust-item"><i class="fa fa-lock"></i> <span>Secure Payment</span></div>
+    </div>
+
+    <div id="toast" style="position: fixed; bottom: 20px; right: 20px; background: #fff; color: #000; padding: 15px 25px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); transform: translateY(100px); transition: 0.3s; z-index: 10000; font-weight: 700;"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script>
+        const packageId = document.getElementById('packageIdValue').value;
+        let tripData = null;
+        let travelers = 1;
+        let picker = null;
+
+        async function fetchTripDetails() {
+            try {
+                const response = await fetch('/api/packages/' + packageId);
+                if (!response.ok) throw new Error("Failed to load");
+                tripData = await response.json();
+                renderUI();
+            } catch (err) {
+                console.error(err);
+                document.getElementById('skeletons').innerHTML = '<div style="text-align:center; padding: 50px;"><h2>Failed to load package.</h2><p>Please try again later.</p></div>';
+            }
+        }
+
+        function renderUI() {
+            if (!tripData || !tripData.trip) return;
+            const { trip, schedules } = tripData;
+            
+            document.getElementById('skeletons').style.display = 'none';
+            document.getElementById('realContent').style.display = 'block';
+
+            document.getElementById('tripTitle').innerText = trip.title || "Trip Package";
+            document.getElementById('breadTitle').innerText = trip.title;
+            document.getElementById('breadCategory').innerText = trip.category || "Packages";
+            document.getElementById('tripCategory').innerText = trip.category || "GROUP";
+            document.getElementById('priceDisplay').innerText = "₹" + (trip.price || 0).toLocaleString('en-IN');
+            
+            document.getElementById('tripMeta').innerHTML = `
+                <span><i class="fa fa-map-marker"></i> ` + (trip.destination || 'N/A') + `</span>
+                <span><i class="fa fa-calendar"></i> ` + (trip.days || 0) + ` Days / ` + (trip.nights || 0) + ` Nights</span>
+                <span><i class="fa fa-bolt"></i> ` + (trip.difficulty || 'Easy') + `</span>
+            `;
+
+            document.getElementById('tripDesc').innerText = trip.description || "No description available.";
+
+            // Activities
+            const activities = ["Sightseeing", "Adventure", "Photography", "Camping", "Trekking"];
+            document.getElementById('activityTags').innerHTML = activities.map(a => `<span class="tag-item">` + a + `</span>`).join('');
+
+            // Inclusions
+            const incs = [
+                {icon: 'hotel', label: 'Hotel Stay'},
+                {icon: 'cutlery', label: 'Meals'},
+                {icon: 'bus', label: 'Transport'},
+                {icon: 'user-secret', label: 'Guide'},
+                {icon: 'fire', label: 'Bonfire'},
+                {icon: 'camera', label: 'Sightseeing'}
+            ];
+            document.getElementById('inclusionsGrid').innerHTML = incs.map(i => `
+                <div class="inclusion-item"><div class="inclusion-icon"><i class="fa fa-`+i.icon+`"></i></div><div class="inclusion-label">`+i.label+`</div></div>
+            `).join('');
+
+            const media = trip.mediaUrls ? trip.mediaUrls.split(',') : [];
+            const mainImg = media.length > 0 ? media[0] : "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=1200";
+            document.getElementById('mainImg').src = mainImg;
+
+            // Masonry Gallery
+            const galleryMedia = media.length > 0 ? media : [mainImg, mainImg, mainImg, mainImg, mainImg];
+            const mGallery = document.getElementById('masonryGallery');
+            if (mGallery) {
+                mGallery.innerHTML = galleryMedia.slice(0, 5).map((url, i) => `
+                    <div class="masonry-item ` + (i === 0 ? 'wide' : '') + `">
+                        <img src="` + url + `" alt="Gallery">
+                        ` + (i === 4 ? '<div class="view-all-overlay">+' + (media.length > 5 ? media.length - 5 : 12) + ' Photos</div>' : '') + `
+    <div class="glass-nav">
+        <div class="nav-link-mmt active" onclick="scrollToId('overview')">Overview</div>
+        <div class="nav-link-mmt" onclick="scrollToId('itinerary')">Itinerary</div>
+        <div class="nav-link-mmt" onclick="scrollToId('stay')">Hotels</div>
+        <div class="nav-link-mmt" onclick="scrollToId('policies')">Policies</div>
+    </div>
+
+    <div class="layout-container">
+        <div class="main-content">
+            
+            <div id="overview" class="glass-card">
+                <h3 class="section-title">The Experience</h3>
+                <p class="text-white-50 lh-lg fs-6">${trip.description}</p>
+                <div class="mt-5">
+                    <h6 class="fw-bold small text-uppercase mb-3 opacity-50">What's Included</h6>
+                    <div class="d-flex flex-wrap">
+                        <c:set var="incs" value="${fn:split(trip.inclusions, ',')}" />
+                        <c:forEach var="inc" items="${incs}">
+                            <div class="chip"><i class="fa fa-check-circle"></i> ${fn:trim(inc)}</div>
+                        </c:forEach>
+                    </div>
+                </div>
+            </div>
+
+            // Similar Destinations (Mock)
+            const sGrid = document.getElementById('similarGrid');
+            if (sGrid) {
+                const similar = [
+                    {title: 'Spiti Valley Adventure', price: 12000, img: 'https://images.unsplash.com/photo-1544085311-12102736596e?w=400'},
+                    {title: 'Ladakh Bike Trip', price: 15000, img: 'https://images.unsplash.com/photo-1581791538302-03537b9c97bf?w=400'},
+                    {title: 'Kasol Riverside Stay', price: 5000, img: 'https://images.unsplash.com/photo-1510614002443-42e97036a5a2?w=400'}
+                ];
+                sGrid.innerHTML = similar.map(s => `
+                    <a href="#" class="similar-card">
+                        <img src="` + s.img + `" class="similar-img">
+                        <div class="similar-body">
+                            <div class="similar-title">` + s.title + `</div>
+                            <div style="font-weight: 800; color: var(--accent-red);">₹` + s.price + `</div>
+                        </div>
+                    </a>
+                `).join('');
+            }
+
+            if (trip.itinerary) {
+
+                try {
+                    const plan = JSON.parse(trip.itinerary);
+                    if (Array.isArray(plan)) {
+                        document.getElementById('itineraryList').innerHTML = plan.map(day => `
+                            <div class="itinerary-day">
+                                <div class="day-dot"></div>
+                                <div class="day-title">Day ` + day.day + `</div>
+                                <div class="day-subtitle">` + day.title + `</div>
+                                <div class="day-content">` + day.description + `</div>
+                            </div>
+                        `).join('');
+                    }
+                } catch(e) { console.error(e); }
+            }
+
+            const availableDates = Array.isArray(schedules) ? schedules.map(s => s.startDate) : [];
+            picker = flatpickr("#datePicker", {
+                enable: availableDates,
+                dateFormat: "d M Y",
+                disableMobile: true,
+                theme: "dark",
+                onChange: updatePricing
+            });
+            <div id="itinerary" class="glass-card">
+                <h3 class="section-title">Detailed Journey</h3>
+                <c:forEach var="i" begin="1" end="${trip.days}">
+                    <div class="day-box">
+                        <div class="day-indicator">${i}</div>
+                        <h4 class="fw-bold text-white mb-2 text-capitalize">${trip.destination} Discovery</h4>
+                        <div class="mb-3">
+                            <span class="chip"><i class="fa fa-car"></i> Private Transfer</span>
+                            <span class="chip"><i class="fa fa-hotel"></i> Check-in</span>
+                        </div>
+                        <p class="small text-white-50">Exploring the deep soul of ${trip.destination}. This day is curated for immersive local experiences and cinematic sights.</p>
+                    </div>
+                </c:forEach>
+            </div>
+
+            <div id="stay" class="glass-card">
+                <h3 class="section-title">Luxury Accommodation</h3>
+                <div class="mmt-hotel-card">
+                    <c:set var="galArr" value="${fn:split(trip.mediaUrls, ',')}" />
+                    <img src="${not empty galArr[1] ? galArr[1] : trip.imageUrl}" class="hotel-img-luxe">
+                    <div>
+                        <div class="fs-4 fw-black text-white mb-1">Premium ${trip.stayCategory} Experience</div>
+                        <div class="text-warning small mb-3"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i> (Verified)</div>
+                        <div class="d-flex flex-wrap">
+                            <c:set var="amens" value="${fn:split(trip.stayAmenities, ',')}" />
+                            <c:forEach var="amen" items="${amens}">
+                                <div class="chip">${fn:trim(amen)}</div>
+                            </c:forEach>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="policies" class="glass-card">
+                <h3 class="section-title">Policies & Essential Info</h3>
+                <div class="row g-4">
+                    <div class="col-md-12">
+                        <h6 class="fw-bold small text-danger text-uppercase mb-2">Cancellation Policy</h6>
+                        <p class="small text-white-50">${not empty trip.cancellationPolicy ? trip.cancellationPolicy : 'Flexible cancellation policy applies.'}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="sidebar-area">
+            <div class="sticky-booking">
+                <div class="booking-panel">
+                    <div class="price-hero-luxe text-center">
+                        <div class="price-label">Exclusive Explorer Rate</div>
+                        <div class="price-big">₹${trip.price}</div>
+                        <div class="small opacity-50 fw-bold mt-1">per adventurer • all inclusive</div>
                     </div>
 
-                    <!-- Hero Banner Carousel -->
-                    <div class="hero-banner">
-                        <div id="tripCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000">
-                            <!-- Carousel Indicators -->
-                            <div class="carousel-indicators" style="bottom: 80px; z-index: 20;">
-                                <button type="button" data-bs-target="#tripCarousel" data-bs-slide-to="0"
-                                    class="active"></button>
-                                <button type="button" data-bs-target="#tripCarousel" data-bs-slide-to="1"></button>
-                                <button type="button" data-bs-target="#tripCarousel" data-bs-slide-to="2"></button>
-                                <button type="button" data-bs-target="#tripCarousel" data-bs-slide-to="3"></button>
-                            </div>
+                    <form action="<c:url value='/user/booking/submit'/>" method="POST" id="luxeBookingForm">
+                        <input type="hidden" name="tripId" value="${trip.id}">
+                        <input type="hidden" name="tripType" value="Package">
 
-                            <div class="carousel-inner" style="height: 60vh;">
-                                <!-- Main Image (Always First) -->
-                                <div class="carousel-item active" style="height: 60vh;">
-                                    <img src="${not empty trip.imageUrl ? trip.imageUrl : 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1920&q=80'}"
-                                        class="d-block w-100 hero-bg" alt="Main Image">
-                                </div>
-
-                                <c:choose>
-                                    <c:when test="${not empty gallery && fn:length(gallery) > 1}">
-                                        <c:forEach var="url" items="${gallery}" varStatus="status">
-                                            <c:if test="${!status.first && status.index < 4}">
-                                                <div class="carousel-item" style="height: 60vh;">
-                                                    <img src="${url}" class="d-block w-100 hero-bg" alt="Gallery Image">
-                                                </div>
-                                            </c:if>
-                                        </c:forEach>
-                                        <!-- If gallery had less than 4, add fallbacks to reach 4 -->
-                                        <c:if test="${fn:length(gallery) < 4}">
-                                            <c:forEach begin="${fn:length(gallery)}" end="3" var="i">
-                                                <div class="carousel-item" style="height: 60vh;">
-                                                    <c:choose>
-                                                        <c:when test="${i == 1}"><img
-                                                                src="https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=1920&q=80"
-                                                                class="d-block w-100 hero-bg" alt="Fallback 1"></c:when>
-                                                        <c:when test="${i == 2}"><img
-                                                                src="https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?auto=format&fit=crop&w=1920&q=80"
-                                                                class="d-block w-100 hero-bg" alt="Fallback 2"></c:when>
-                                                        <c:otherwise><img
-                                                                src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1920&q=80"
-                                                                class="d-block w-100 hero-bg" alt="Fallback 3">
-                                                        </c:otherwise>
-                                                    </c:choose>
-                                                </div>
-                                            </c:forEach>
-                                        </c:if>
-                                    </c:when>
-                                    <c:otherwise>
-                                        <!-- Pure Fallbacks -->
-                                        <div class="carousel-item" style="height: 60vh;">
-                                            <img src="https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=1920&q=80"
-                                                class="d-block w-100 hero-bg" alt="Gallery 1">
-                                        </div>
-                                        <div class="carousel-item" style="height: 60vh;">
-                                            <img src="https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?auto=format&fit=crop&w=1920&q=80"
-                                                class="d-block w-100 hero-bg" alt="Gallery 2">
-                                        </div>
-                                        <div class="carousel-item" style="height: 60vh;">
-                                            <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1920&q=80"
-                                                class="d-block w-100 hero-bg" alt="Gallery 3">
-                                        </div>
-                                    </c:otherwise>
-                                </c:choose>
-                            </div>
-                            <button class="carousel-control-prev" type="button" data-bs-target="#tripCarousel"
-                                data-bs-slide="prev" style="z-index: 30; width: 10%;">
-                                <span class="carousel-control-prev-icon" aria-hidden="true"
-                                    style="background-color: rgba(0,0,0,0.5); border-radius: 50%; padding: 20px;"></span>
-                            </button>
-                            <button class="carousel-control-next" type="button" data-bs-target="#tripCarousel"
-                                data-bs-slide="next" style="z-index: 30; width: 10%;">
-                                <span class="carousel-control-next-icon" aria-hidden="true"
-                                    style="background-color: rgba(0,0,0,0.5); border-radius: 50%; padding: 20px;"></span>
-                            </button>
+                        <div class="mb-4">
+                            <label class="small fw-black text-white-50 text-uppercase mb-3 letter-spacing-1">1. Choose Your Departure</label>
+                            <select name="selectedDate" class="luxe-input" required>
+                                <c:forEach var="s" items="${schedules}">
+                                    <option value="${s.startDate}">${s.startDate} (${s.availableSeats} Spots Left)</option>
+                                </c:forEach>
+                            </select>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label class="small fw-black text-white-50 text-uppercase mb-3 letter-spacing-1">2. Traveling Explorers</label>
+                            <select name="travelers" class="luxe-input" onchange="updateLuxePrice()" id="paxSelect">
+                                <c:forEach var="p" begin="1" end="10"><option value="${p}">${p} Adults</option></c:forEach>
+                            </select>
                         </div>
 
-                        <div class="hero-content">
-                            <h1 class="hero-title">${trip.title}</h1>
-                            <div class="hero-meta">
-                                <span><i class="fa fa-map-marker" style="color: var(--primary-blue);"></i>
-                                    ${trip.destination}</span>
-                                <span><i class="fa fa-clock-o" style="color: var(--primary-blue);"></i> ${trip.days}
-                                    Days / ${trip.nights} Nights</span>
-                                <span><i class="fa fa-star" style="color: #f59e0b;"></i> ${trip.averageRating > 0 ?
-                                    trip.averageRating : 'New'} Rating</span>
+                        <div class="mb-4">
+                            <label class="small fw-black text-white-50 text-uppercase mb-3 letter-spacing-1">3. Special Requirements</label>
+                            <textarea name="guestDetails" class="luxe-input" style="height: 80px; resize: none;" placeholder="e.g. Dietary needs, wheelchair access..."></textarea>
+                        </div>
+
+                        <div class="py-4 border-top border-secondary mt-4">
+                            <div class="d-flex justify-content-between mb-2">
+                                <span class="text-white-50 fw-bold">Package Base x <span id="paxDisplay">1</span></span>
+                                <span id="baseTotal" class="fw-bold">₹${trip.price}</span>
+                            </div>
+                            <div class="d-flex justify-content-between mb-3">
+                                <span class="text-white-50 fw-bold">Taxes & Expert Fees</span>
+                                <span class="text-success fw-bold">INCLUDED</span>
+                            </div>
+                            <div class="d-flex justify-content-between fs-4 fw-black text-white pt-4 border-top border-secondary">
+                                <span style="letter-spacing: -1px;">TOTAL JOURNEY</span>
+                                <span id="finalTotal" class="text-danger">₹${trip.price}</span>
                             </div>
                         </div>
+
+                        <button type="submit" class="btn-royal-glow" ${trip.soldOut ? 'disabled' : ''}>
+                            ${trip.soldOut ? 'FULLY BOOKED' : 'SECURE MY JOURNEY'}
+                        </button>
+                    </form>
+                </div>
+
+                <div class="mt-4 glass-card p-4 d-flex align-items-center gap-3">
+                    <img src="https://ui-avatars.com/api/?name=${fn:replace(trip.vendor.businessName, ' ', '+')}&background=e63946&color=fff" class="rounded-circle" style="width: 45px; height: 45px; border: 2px solid var(--accent-red);">
+                    <div>
+                        <div class="small fw-bold">Verified Support by ${trip.vendor.businessName}</div>
+                        <div class="small text-white-50">Trusted Luxury Expert</div>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-                    <!-- Main Layout -->
-                    <div class="content-container">
+    <script>
+        const basePrice = ${trip.price};
+        function updateLuxePrice() {
+            const pax = document.getElementById('paxSelect').value;
+            const total = basePrice * pax;
+            document.getElementById('paxDisplay').innerText = pax;
+            document.getElementById('baseTotal').innerText = '₹' + total.toLocaleString('en-IN');
+            document.getElementById('finalTotal').innerText = '₹' + total.toLocaleString('en-IN');
+        }
 
-                        <!-- Left Column: Details -->
-                        <div class="left-col">
+        function setMainImage(url, el) {
+            document.getElementById('mainImg').src = url;
+            document.querySelectorAll('.thumb-item').forEach(i => i.classList.remove('active'));
+            el.classList.add('active');
+        }
 
-                            <div class="section-box">
-                                <h2 class="section-title"><i class="fa fa-info-circle"></i> About This Trip</h2>
-                                <p style="color: rgba(255,255,255,0.7); line-height: 1.8; font-size: 16px;">
-                                    ${trip.description != null ? trip.description : 'Join us for an unforgettable
-                                    journey to ' += trip.destination += '. Experience the thrill of adventure and the
-                                    beauty of nature.'}
-                                </p>
-                                <div class="tag-cloud">
-                                    <c:if test="${not empty trip.category}"><span class="tag"><i class="fa fa-tag"></i>
-                                            ${trip.category}</span></c:if>
-                                    <c:if test="${not empty trip.difficulty}"><span class="tag"><i
-                                                class="fa fa-free-code-camp"></i> ${trip.difficulty}</span></c:if>
-                                    <c:if test="${not empty trip.transportCategory}"><span class="tag"><i
-                                                class="fa fa-bus"></i> ${trip.transportCategory}</span></c:if>
-                                    <c:if test="${not empty trip.stayCategory}"><span class="tag"><i
-                                                class="fa fa-bed"></i> ${trip.stayCategory}</span></c:if>
-                                    <c:if test="${not empty trip.ageGroup}"><span class="tag"><i
-                                                class="fa fa-users"></i> ${trip.ageGroup}</span></c:if>
-                                </div>
-                            </div>
+        function changeTravelers(delta) {
+            travelers = Math.max(1, Math.min(10, travelers + delta));
+            document.getElementById('travelerCount').innerText = travelers;
+            document.getElementById('travelerLabel').innerText = travelers + (travelers === 1 ? " Adult" : " Adults");
+            updatePricing();
+        }
 
-                            <div class="section-box">
-                                <h2 class="section-title"><i class="fa fa-bed"></i> Stay & Accommodation</h2>
-                                <div
-                                    class="d-flex align-items-center gap-3 mb-3 p-3 bg-dark rounded-4 border border-secondary border-opacity-10">
-                                    <div
-                                        style="background: rgba(240, 76, 38, 0.1); color: #f04c26; padding: 15px; border-radius: 12px; font-size: 20px;">
-                                        <i class="fa fa-university"></i>
-                                    </div>
-                                    <div>
-                                        <div class="fw-bold text-white">${not empty trip.stayName ? trip.stayName :
-                                            'Premium Accommodation'}</div>
-                                        <div class="small text-white-50">${trip.stayCategory} • ${trip.stayType} •
-                                            ${trip.roomSharing} Sharing</div>
-                                    </div>
-                                </div>
-                                <c:if test="${not empty trip.stayDescription}">
-                                    <p class="small text-white-50 mb-3">${trip.stayDescription}</p>
-                                </c:if>
+        function updatePricing() {
+            if (!tripData || !tripData.trip) return;
+            const price = tripData.trip.price || 0;
+            const total = price * travelers;
+            document.getElementById('priceBreakupLabel').innerText = "₹" + price.toLocaleString('en-IN') + " x " + travelers + " Adult" + (travelers > 1 ? "s" : "");
+            document.getElementById('basicCost').innerText = "₹" + total.toLocaleString('en-IN');
+            document.getElementById('finalTotal').innerText = "₹" + total.toLocaleString('en-IN');
+        }
 
-                                <!-- Stay Gallery (If backend maps stayPhotos to a gallery list) -->
-                                <div class="d-flex flex-wrap gap-2 mt-2">
-                                    <c:forEach var="photo" items="${stayGallery}" varStatus="status">
-                                        <img src="${photo}" class="rounded-3"
-                                            style="width: 100px; height: 100px; object-fit: cover; border: 1px solid rgba(255,255,255,0.1);">
-                                    </c:forEach>
-                                </div>
-                            </div>
+        function proceedToBooking() {
+            const date = document.getElementById('datePicker').value;
+            if (!date) {
+                showToast("Please select a travel date.");
+                return;
+            }
+            window.location.href = `/user/booking/review?tripId=` + packageId + `&selectedDate=` + encodeURIComponent(date) + `&travelers=` + travelers;
+        }
 
-                            <!-- Pre-process Itinerary JSON in JS later if needed, for now just show a visual mock/raw -->
-                            <div class="section-box">
-                                <h2 class="section-title"><i class="fa fa-map"></i> Tour Itinerary</h2>
-                                <div class="timeline" id="itinerary-timeline">
-                                    <!-- We will render JS parsed itinerary here, but if empty show fallback -->
-                                    <c:if test="${empty trip.itinerary}">
-                                        <div class="day-node">
-                                            <div class="day-title">Day 1: Departure & Arrival</div>
-                                            <div class="day-desc">Assemble at the pickup point. Journey begins towards
-                                                the destination. Reach your stay, check-in, and relax.</div>
-                                        </div>
-                                        <div class="day-node">
-                                            <div class="day-title">Day 2: Exploration & Adventure</div>
-                                            <div class="day-desc">Full day of sightseeing, activities, and creating
-                                                memories. Evening campfire and group activities.</div>
-                                        </div>
-                                        <div class="day-node">
-                                            <div class="day-title">Day 3: Return Journey</div>
-                                            <div class="day-desc">Check out and begin the return journey. Drop-off at
-                                                the original pickup points.</div>
-                                        </div>
-                                    </c:if>
-                                </div>
-                                <c:if test="${not empty trip.itinerary}">
-                                    <!-- Hidden div to hold json string for JS parsing -->
-                                    <div id="raw-itinerary" style="display:none;">${trip.itinerary}</div>
-                                </c:if>
-                            </div>
+        function showToast(msg) {
+            const t = document.getElementById('toast');
+            t.innerText = msg;
+            t.style.transform = "translateY(0)";
+            setTimeout(() => t.style.transform = "translateY(100px)", 3000);
+        }
 
-                            <div class="section-box" style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
-                                <div>
-                                    <h2 class="section-title"><i class="fa fa-check-circle" style="color: #28a745;"></i>
-                                        What's Included</h2>
-                                    <div
-                                        style="color: rgba(255,255,255,0.7); line-height: 1.8; font-size: 15px; white-space: pre-line;">
-                                        <c:choose>
-                                            <c:when test="${not empty trip.inclusions}">${trip.inclusions}</c:when>
-                                            <c:otherwise>✓ Transportation
-                                                ✓ Accommodation
-                                                ✓ Selected Meals
-                                                ✓ Guide/Trek Leader
-                                                ✓ First Aid</c:otherwise>
-                                        </c:choose>
-                                    </div>
-                                </div>
-                                <div>
-                                    <h2 class="section-title"><i class="fa fa-times-circle" style="color: #dc3545;"></i>
-                                        What's Excluded</h2>
-                                    <div
-                                        style="color: rgba(255,255,255,0.7); line-height: 1.8; font-size: 15px; white-space: pre-line;">
-                                        <c:choose>
-                                            <c:when test="${not empty trip.exclusions}">${trip.exclusions}</c:when>
-                                            <c:otherwise>✗ Personal Expenses
-                                                ✗ Optional Activities
-                                                ✗ Anything not mentioned in inclusions</c:otherwise>
-                                        </c:choose>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <c:if test="${not empty trip.reviews}">
-                                <div class="section-box">
-                                    <h2 class="section-title"><i class="fa fa-star"></i> Traveler Reviews</h2>
-                                    <c:forEach var="review" items="${trip.reviews}">
-                                        <div
-                                            style="border-bottom: 1px solid var(--border-color); padding-bottom: 15px; margin-bottom: 15px;">
-                                            <div
-                                                style="display: flex; justify-content: space-between; align-items: center;">
-                                                <div style="font-weight: 700; color: #fff;">${review.user.name}</div>
-                                                <div style="color: #f59e0b; font-size: 12px;">
-                                                    <c:forEach begin="1" end="${review.rating}"><i
-                                                            class="fa fa-star"></i></c:forEach>
-                                                </div>
-                                            </div>
-                                            <p
-                                                style="color: rgba(255,255,255,0.6); font-size: 14px; margin-top: 5px; margin-bottom: 0;">
-                                                "${review.reviewText}"</p>
-                                        </div>
-                                    </c:forEach>
-                                </div>
-                            </c:if>
-
-                        </div>
-
-                        <!-- Right Column: Booking Widget -->
-                        <div class="right-col">
-                            <div class="booking-widget">
-                                <div class="price-display">₹
-                                    <fmt:formatNumber value="${trip.price}" pattern="#,##0" /> <span>/ person</span>
-                                </div>
-
-                                <form action="<c:url value='/user/booking/submit'/>" method="POST">
-                                    <input type="hidden" name="tripId" value="${trip.id}">
-                                    <input type="hidden" name="tripType"
-                                        value="${not empty trip.category ? trip.category : 'Standard'}">
-                                    <input type="hidden" name="guestDetails" value="N/A">
-
-                                    <label class="form-label">Select Date & Schedule</label>
-                                    <select id="scheduleSelect" name="selectedDate" class="custom-select" onchange="handleScheduleChange()" required>
-                                        <option value="" data-seats="30" disabled selected>Choose an available date...</option>
-                                        <c:forEach var="schedule" items="${schedules}">
-                                            <option value="${schedule.startDate} to ${schedule.endDate}" data-seats="${schedule.availableSeats}">
-                                                ${schedule.startDate} to ${schedule.endDate}
-                                                (${schedule.availableSeats} seats left)
-                                            </option>
-                                        </c:forEach>
-                                        <c:if test="${empty schedules}">
-                                            <option value="" data-seats="0" disabled>No upcoming schedules available</option>
-                                        </c:if>
-                                    </select>
-
-                                    <style>
-                                        input[type="number"]::-webkit-inner-spin-button, 
-                                        input[type="number"]::-webkit-outer-spin-button { 
-                                            -webkit-appearance: none; 
-                                            margin: 0; 
-                                        }
-                                        input[type="number"] {
-                                            -moz-appearance: textfield;
-                                        }
-                                    </style>
-                                    <label class="form-label">Number of Travelers</label>
-                                    <div class="traveler-counter" style="display: flex; align-items: center; justify-content: space-between; background: rgba(0, 0, 0, 0.3); border: 1px solid var(--border-color); border-radius: 12px; padding: 8px 15px;">
-                                        <button type="button" class="btn-counter" onclick="updateTravelers(-1)" style="background: rgba(255,255,255,0.1); border: none; color: #fff; font-size: 18px; cursor: pointer; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: var(--transition);" onmouseover="this.style.background='var(--primary-blue)'" onmouseout="this.style.background='rgba(255,255,255,0.1)'"><i class="fa fa-minus" style="font-size: 12px;"></i></button>
-                                        <input type="number" id="travelers" name="travelers" value="1" min="1" max="30" readonly style="background: transparent; border: none; color: #fff; text-align: center; font-size: 18px; font-weight: 700; width: 60px; outline: none;">
-                                        <button type="button" class="btn-counter" onclick="updateTravelers(1)" style="background: rgba(255,255,255,0.1); border: none; color: #fff; font-size: 18px; cursor: pointer; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: var(--transition);" onmouseover="this.style.background='var(--primary-blue)'" onmouseout="this.style.background='rgba(255,255,255,0.1)'"><i class="fa fa-plus" style="font-size: 12px;"></i></button>
-                                    </div>
-
-                                    <button type="submit" class="btn-book" ${trip.soldOut
-                                        ? 'disabled style="background:gray;"' : '' }>
-                                        ${trip.soldOut ? 'Sold Out' : 'Book Now'}
-                                    </button>
-                                    <a href="<c:url value='/user/save-trip/${trip.id}'/>" class="btn-save"
-                                        style="display: block; text-align: center; margin-top: 12px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 15px; border-radius: 12px; font-weight: 700; text-decoration: none; transition: 0.3s;">
-                                        <i class="fa fa-heart-o"></i> Save to Wishlist
-                                    </a>
-
-                                    <div
-                                        style="text-align: center; margin-top: 15px; font-size: 13px; color: var(--text-muted);">
-                                        <i class="fa fa-shield"></i> Secure Booking • Instant Confirmation
-                                    </div>
-                                </form>
-
-                                <!-- Vendor Profile snippet -->
-                                <div class="vendor-info">
-                                    <img src="${not empty trip.vendor.logoPath ? trip.vendor.logoPath : 'https://ui-avatars.com/api/?name=' += trip.vendor.businessName}"
-                                        class="vendor-avatar">
-                                    <div>
-                                        <div style="font-weight: 700; font-size: 15px; color: #fff;">Operated by</div>
-                                        <div style="color: var(--primary-blue); font-weight: 800;">
-                                            ${trip.vendor.businessName}</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-
-                    <script>
-                        document.addEventListener("DOMContentLoaded", function () {
-                            const rawEl = document.getElementById("raw-itinerary");
-                            if (rawEl) {
-                                const rawContent = rawEl.textContent.trim();
-                                try {
-                                    const data = JSON.parse(rawContent);
-                                    const timeline = document.getElementById("itinerary-timeline");
-                                    if (data && Array.isArray(data) && data.length > 0) {
-                                        timeline.innerHTML = '';
-                                        data.forEach((day, index) => {
-                                            const node = document.createElement("div");
-                                            node.className = "day-node";
-
-                                            let galleryHtml = '';
-                                            if (day.images && Array.isArray(day.images) && day.images.length > 0) {
-                                                galleryHtml = `<div class="day-gallery mt-3 d-flex flex-wrap gap-2">
-                                                    \${day.images.map(img => `< img src = "\${img}" class="rounded shadow-sm" style = "width: 120px; height: 120px; object-fit: cover; border: 2px solid rgba(255,255,255,0.1);" > `).join('')}
-                                                </div>`;
-                                            }
-
-                                            node.innerHTML = `
-                                                <div class="day-title">Day \${index + 1}: \${day.title || 'Adventure'}</div>
-                                                <div class="day-desc">\${day.activities || day.description || ''}</div>
-                                                \${galleryHtml}
-                                            `;
-                                            timeline.appendChild(node);
-                                        });
-                                    }
-                                } catch (e) {
-                                    console.error("Failed to parse itinerary JSON. Raw content:", rawContent);
-                                    console.error("Error details:", e);
-                                }
-                            }
-                        });
-                    </script>
-                    <script>
-                        function getMaxSeats() {
-                            const select = document.getElementById('scheduleSelect');
-                            if (!select || select.selectedIndex === -1) return 30;
-                            const option = select.options[select.selectedIndex];
-                            const seats = option.getAttribute('data-seats');
-                            return seats ? parseInt(seats) : 30;
-                        }
-
-                        function handleScheduleChange() {
-                            const input = document.getElementById('travelers');
-                            let currentVal = parseInt(input.value) || 1;
-                            const maxSeats = getMaxSeats();
-                            if (currentVal > maxSeats && maxSeats > 0) {
-                                input.value = maxSeats;
-                            } else if (maxSeats === 0) {
-                                input.value = 1;
-                            }
-                        }
-
-                        function updateTravelers(change) {
-                            const select = document.getElementById('scheduleSelect');
-                            if (select && select.value === "") {
-                                alert("Please select a date and schedule first.");
-                                return;
-                            }
-                            const input = document.getElementById('travelers');
-                            let currentVal = parseInt(input.value) || 1;
-                            const maxSeats = getMaxSeats();
-                            
-                            if (maxSeats <= 0) {
-                                alert("No seats available for this schedule.");
-                                return;
-                            }
-
-                            let newVal = currentVal + change;
-                            
-                            if(newVal >= 1 && newVal <= maxSeats) {
-                                input.value = newVal;
-                            } else if (newVal > maxSeats) {
-                                alert("Only " + maxSeats + " seats available for this schedule!");
-                            }
-                        }
-                    </script>
-                    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-                    <script>
-                        document.addEventListener("DOMContentLoaded", function () {
-                            var myCarousel = document.querySelector('#tripCarousel');
-                            if (myCarousel) {
-                                new bootstrap.Carousel(myCarousel, {
-                                    interval: 3000,
-                                    ride: 'carousel'
-                                });
-                            }
-                        });
-                    </script>
-                </body>
-
-                </html>
+        window.onload = fetchTripDetails;
+        function scrollToId(id) {
+            document.getElementById(id).scrollIntoView({ behavior: 'smooth', block: 'start' });
+            document.querySelectorAll('.nav-link-mmt').forEach(el => el.classList.remove('active'));
+            event.target.classList.add('active');
+        }
+    </script>
+</body>
+</html>

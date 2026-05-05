@@ -31,6 +31,12 @@
         .delete-btn { position: absolute; top: 10px; right: 10px; background: rgba(230,57,70,0.8); border: none; color: #fff; width: 30px; height: 30px; border-radius: 50%; cursor: pointer; transition: 0.3s; }
         .delete-btn:hover { background: #e63946; transform: scale(1.1); }
         .section-title { font-size: 20px; font-weight: 700; margin: 30px 0 20px; padding-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.1); color: #e63946; text-transform: uppercase; letter-spacing: 1px; }
+        .edit-btn { position: absolute; top: 10px; right: 45px; background: rgba(255,255,255,0.2); border: none; color: #fff; width: 30px; height: 30px; border-radius: 50%; cursor: pointer; transition: 0.3s; display: flex; align-items: center; justify-content: center; }
+        .edit-btn:hover { background: #007bff; transform: scale(1.1); }
+        .modal-content { background: #1a1a1a; border: 1px solid rgba(255,255,255,0.1); color: #fff; border-radius: 20px; }
+        .modal-header { border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .modal-footer { border-top: 1px solid rgba(255,255,255,0.1); }
+        .form-control:focus { background: #222; border-color: #e63946; color: #fff; box-shadow: none; }
     </style>
 </head>
 <body>
@@ -87,13 +93,19 @@
             <div class="image-grid">
                 <c:forEach var="img" items="${galleryImages}">
                     <div class="image-card">
-                        <form action="<c:url value='/admin/home-images/${img.id}/delete'/>" method="POST">
-                            <button type="submit" class="delete-btn" title="Delete Image" onclick="return confirm('Are you sure?')">
-                                <i class="fa fa-trash"></i>
+                        <div class="d-flex">
+                            <button type="button" class="edit-btn" title="Edit Info" onclick="openEditModal('${img.id}', '${img.caption}', '${img.section}')">
+                                <i class="fa fa-pencil"></i>
                             </button>
-                        </form>
+                            <form action="<c:url value='/admin/home-images/${img.id}/delete'/>" method="POST">
+                                <button type="submit" class="delete-btn" title="Delete Image" onclick="return confirm('Are you sure?')">
+                                    <i class="fa fa-trash"></i>
+                                </button>
+                            </form>
+                        </div>
                         <img src="<c:url value='${img.imageUrl}'/>" alt="Gallery">
                         <div class="info">
+                            <span style="color: #eee; font-weight: 600; display: block; margin-bottom: 2px;">${img.section}</span>
                             <span style="color: #888;">${img.caption != null ? img.caption : 'No caption'}</span>
                         </div>
                     </div>
@@ -107,13 +119,19 @@
             <div class="image-grid">
                 <c:forEach var="img" items="${momentImages}">
                     <div class="image-card">
-                        <form action="<c:url value='/admin/home-images/${img.id}/delete'/>" method="POST">
-                            <button type="submit" class="delete-btn" title="Delete Image" onclick="return confirm('Are you sure?')">
-                                <i class="fa fa-trash"></i>
+                        <div class="d-flex">
+                            <button type="button" class="edit-btn" title="Edit Info" onclick="openEditModal('${img.id}', '${img.caption}', '${img.section}')">
+                                <i class="fa fa-pencil"></i>
                             </button>
-                        </form>
+                            <form action="<c:url value='/admin/home-images/${img.id}/delete'/>" method="POST">
+                                <button type="submit" class="delete-btn" title="Delete Image" onclick="return confirm('Are you sure?')">
+                                    <i class="fa fa-trash"></i>
+                                </button>
+                            </form>
+                        </div>
                         <img src="<c:url value='${img.imageUrl}'/>" alt="Moment">
                         <div class="info">
+                            <span style="color: #eee; font-weight: 600; display: block; margin-bottom: 2px;">${img.section}</span>
                             <span style="color: #888;">${img.caption != null ? img.caption : 'No caption'}</span>
                         </div>
                     </div>
@@ -124,5 +142,48 @@
             </div>
         </main>
     </div>
+
+    <!-- Edit Modal -->
+    <div class="modal fade" id="editModal" tabindex="-1">
+        <div class="modal-dialog">
+            <form id="editForm" method="POST">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Edit Photo Info</h5>
+                        <button type="button" class="close text-white" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group mb-3">
+                            <label class="mb-1">Section</label>
+                            <select name="section" id="editSection" class="form-control" style="background: #222; color: #fff; border: 1px solid #444;">
+                                <option value="GALLERY">Gallery Section</option>
+                                <option value="MOMENTS">More Moments Section</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="mb-1">Caption</label>
+                            <input type="text" name="caption" id="editCaption" class="form-control" style="background: #222; color: #fff; border: 1px solid #444;">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-danger" style="background: #e63946; border: none;">Save Changes</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="<c:url value='/views/assets/js/jquery.min.js'/>"></script>
+    <script src="<c:url value='/views/assets/js/bootstrap.min.js'/>"></script>
+    <script>
+        function openEditModal(id, caption, section) {
+            const baseUrl = "<c:url value='/admin/home-images/'/>";
+            document.getElementById('editForm').action = baseUrl + id + "/edit";
+            document.getElementById('editCaption').value = caption;
+            document.getElementById('editSection').value = section;
+            $('#editModal').modal('show');
+        }
+    </script>
 </body>
 </html>

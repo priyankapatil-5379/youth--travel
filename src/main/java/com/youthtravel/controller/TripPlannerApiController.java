@@ -97,36 +97,55 @@ public class TripPlannerApiController {
             )
     );
 
+    @org.springframework.beans.factory.annotation.Autowired
+    private com.youthtravel.repository.TripRepository tripRepository;
+
     @PostMapping(value = "/api/plan-trip", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> plan(@RequestBody Map<String, Object> payload) {
         int budget = intVal(payload, "budget", 0);
         int days = intVal(payload, "days", 0);
         String type = strVal(payload, "type", "any").toLowerCase(Locale.ROOT);
 
-        List<Map<String, Object>> matches = new ArrayList<>();
-        for (Map<String, Object> s : SUGGESTIONS) {
-            int min = (int) s.get("minBudget");
-            int max = (int) s.get("maxBudget");
-            int sDays = (int) s.get("days");
-            String sType = String.valueOf(s.get("type"));
+        // Fetch from DB
+        List<com.youthtravel.entity.Trip> trips;
+        double maxPrice = budget > 0 ? (double) budget : 999999.0;
+        
+        // If type is "any", we pass empty string to match all categories
+        String categoryFilter = "any".equalsIgnoreCase(type) ? "" : type;
+        
+        trips = tripRepository.findByStatusAndPriceBetweenAndTravelerCategoryContainingIgnoreCase("Active", 0.0, maxPrice, categoryFilter);
 
-            boolean budgetOk = budget <= 0 || (budget >= min && budget <= max);
-            boolean typeOk = "any".equals(type) || type.equals(sType);
-            boolean daysOk = days <= 0 || Math.abs(days - sDays) <= 1;
-
-            if (budgetOk && typeOk && daysOk) {
-                matches.add(s);
-            }
+        // If no results for specific category, try finding ANY trip within budget to not show empty page
+        if (trips.isEmpty() && !categoryFilter.isEmpty()) {
+            trips = tripRepository.findByStatusAndPriceBetweenAndTravelerCategoryContainingIgnoreCase("Active", 0.0, maxPrice, "");
         }
 
-        matches.sort(Comparator.comparingInt(s -> score(s, budget, days)));
-        if (matches.size() > 6) {
-            matches = matches.subList(0, 6);
+        List<Map<String, Object>> results = new ArrayList<>();
+        for (com.youthtravel.entity.Trip t : trips) {
+            // Basic matching for days if days is provided
+            if (days > 0 && t.getDays() != null) {
+                if (Math.abs(t.getDays() - days) > 1) continue;
+            }
+
+            results.add(Map.of(
+                "id", t.getId(),
+                "name", t.getTitle(),
+                "price", t.getPrice(),
+                "place", t.getDestination() != null ? t.getDestination() : "Various",
+                "days", t.getDays() != null ? t.getDays() : 1,
+                "image", (t.getImageUrl() != null && !t.getImageUrl().isEmpty()) ? t.getImageUrl() : "/views/assets/images/gallery-van-camp.png",
+                "tag", t.getTravelerCategory() != null ? t.getTravelerCategory() : "Adventure"
+            ));
+        }
+
+        // Limit results
+        if (results.size() > 6) {
+            results = results.subList(0, 6);
         }
 
         return Map.of(
-                "count", matches.size(),
-                "results", matches
+                "count", results.size(),
+                "results", results
         );
     }
 

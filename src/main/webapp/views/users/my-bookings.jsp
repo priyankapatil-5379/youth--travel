@@ -8,99 +8,97 @@
     <title>My Bookings | Youth Travel</title>
     <link rel="stylesheet" href="<c:url value='/views/assets/css/bootstrap.min.css'/>">
     <link rel="stylesheet" href="<c:url value='/views/assets/css/font-awesome.min.css'/>">
-    <link rel="stylesheet" href="<c:url value='/views/assets/css/premium-dashboard.css'/>">
-    <link href="https://fonts.googleapis.com/css?family=Dosis:300,400,500,600,700,800" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
-        :root { --primary-blue: #e63946; --text-muted: #7e8c9a; --transition: all 0.3s ease; }
-        body { font-family: 'Dosis', sans-serif; background-color: #0b0f18; color: rgba(255, 255, 255, 0.92); margin: 0; padding: 0; }
+        :root {
+            --bg-dark: #020617;
+            --card-bg: #0f172a;
+            --accent-red: #e11d48;
+            --text-light: #f8fafc;
+            --text-muted: #94a3b8;
+            --border: rgba(255, 255, 255, 0.1);
+        }
+
+        body { font-family: 'Outfit', sans-serif; background-color: var(--bg-dark); color: var(--text-light); margin: 0; padding: 0; }
         .wrapper { display: flex; min-height: 100vh; }
-        .main-content { flex: 1; margin-left: 240px; padding: 100px 30px 40px; }
-        .header { position: fixed; top: 0; left: 0; right: 0; height: 70px; background: rgba(0,0,0,0.4); backdrop-filter: blur(10px); display: flex; align-items: center; justify-content: space-between; padding: 0 30px; z-index: 1000; border-bottom: 1px solid rgba(255,255,255,0.05); }
-        .booking-table { width: 100%; border-collapse: separate; border-spacing: 0 12px; }
-        .booking-table th { color: #fff; font-weight: 800; text-transform: uppercase; font-size: 13px; padding: 15px 20px; border: none; text-shadow: 0 2px 4px rgba(0,0,0,0.8); letter-spacing: 1px; }
-        .booking-table td { background: rgba(0,0,0,0.4); backdrop-filter: blur(10px); padding: 20px; border: 1px solid rgba(255,255,255,0.05); vertical-align: middle; color: #fff; text-shadow: 0 1px 3px rgba(0,0,0,0.5); }
-        .booking-table td:first-child { border-radius: 15px 0 0 15px; border-right: none; }
-        .booking-table td:last-child { border-radius: 0 15px 15px 0; border-left: none; }
-        .status-badge { padding: 6px 14px; border-radius: 20px; font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; border: 1px solid rgba(255,255,255,0.1); }
-        .status-pending { background: rgba(245, 124, 0, 0.2); color: #ffb74d; }
-        .status-confirmed { background: rgba(46, 125, 50, 0.2); color: #81c784; }
-        .status-completed { background: rgba(139, 92, 246, 0.2); color: #a78bfa; }
+        .main-content { flex: 1; margin-left: 240px; padding: 40px; }
+
+        .back-link { color: var(--text-muted); text-decoration: none; font-size: 14px; font-weight: 600; display: flex; align-items: center; gap: 8px; margin-bottom: 25px; }
+
+        .page-title { font-size: 28px; font-weight: 800; margin-bottom: 30px; }
+
+        .tabs-container { display: flex; gap: 40px; border-bottom: 1px solid var(--border); margin-bottom: 40px; }
+        .tab-item { padding-bottom: 15px; font-weight: 700; font-size: 15px; color: var(--text-muted); cursor: pointer; position: relative; }
+        .tab-item.active { color: #fff; }
+        .tab-item.active::after { content: ''; position: absolute; bottom: -1px; left: 0; right: 0; height: 3px; background: var(--accent-red); }
+
+        .booking-card { background: var(--card-bg); border-radius: 20px; overflow: hidden; border: 1px solid var(--border); margin-bottom: 30px; display: flex; max-width: 900px; }
+        .card-image { width: 300px; position: relative; }
+        .card-image img { width: 100%; height: 100%; object-fit: cover; }
+        .upcoming-badge { position: absolute; top: 15px; right: 15px; background: var(--accent-red); padding: 4px 10px; border-radius: 4px; font-size: 10px; font-weight: 800; letter-spacing: 0.5px; }
+
+        .card-body { padding: 30px; flex-grow: 1; display: flex; flex-direction: column; }
+        .card-title { font-size: 20px; font-weight: 800; margin-bottom: 15px; }
+        .card-info { display: flex; flex-wrap: wrap; gap: 20px; margin-bottom: 20px; }
+        .info-item { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 600; color: var(--text-muted); }
+        .info-item i { color: var(--accent-red); }
+
+        .card-footer { margin-top: auto; display: flex; justify-content: space-between; align-items: center; padding-top: 20px; border-top: 1px solid var(--border); }
+        .card-price { font-size: 20px; font-weight: 800; }
+        .btn-view { background: var(--accent-red); color: #fff; border: none; padding: 10px 25px; border-radius: 10px; font-weight: 800; font-size: 13px; cursor: pointer; text-transform: uppercase; }
+
+        @media (max-width: 768px) { .booking-card { flex-direction: column; } .card-image { width: 100%; height: 200px; } }
     </style>
 </head>
-<body class="premium-theme">
-    <!-- Sunlight Rays -->
-    <div class="sun-rays-container">
-        <div class="ray ray-1"></div>
-        <div class="ray ray-2"></div>
-        <div class="ray ray-3"></div>
-        <div class="ray ray-4"></div>
-    </div>
-    <header class="header">
-        <div class="header-logo"><a href="<c:url value='/'/>"><img src="<c:url value='/views/assets/images/logo.png'/>" style="height: 35px;"></a></div>
-        <div style="display: flex; align-items: center; gap: 20px;">
-            <div style="display: flex; align-items: center; gap: 15px;">
-                <span style="font-weight: 700;">Hi, ${user.name}</span>
-                <c:set var="defaultAvatar" value="https://ui-avatars.com/api/?name=${user.name}&background=f04c26&color=fff" />
-                <img src="${not empty user.profilePhoto ? user.profilePhoto : defaultAvatar}" style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover;">
-            </div>
-        </div>
-    </header>
+<body>
+
     <div class="wrapper">
         <jsp:include page="user-sidebar.jsp">
             <jsp:param name="activePage" value="bookings" />
         </jsp:include>
+
         <main class="main-content">
-            <div class="container-fluid">
-                <div class="mb-4">
-                    <h2 style="font-weight: 800; margin: 0; color: #fff; text-shadow: 0 4px 15px rgba(0,0,0,0.8); font-size: 32px;">My Bookings</h2>
-                    <p style="color: #fff; margin: 0; font-weight: 600; text-shadow: 0 2px 8px rgba(0,0,0,0.8);">View and manage your travel adventures</p>
-                </div>
-                <div class="card-white">
-                    <c:choose>
-                        <c:when test="${not empty bookings}">
-                            <table class="booking-table">
-                                <thead>
-                                    <tr>
-                                        <th>Package Name</th>
-                                        <th>Travel Date</th>
-                                        <th>Amount Paid</th>
-                                        <th>Status</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <c:forEach var="booking" items="${bookings}">
-                                        <tr>
-                                            <td style="font-weight: 700; font-size: 16px;">${booking.trip.title}</td>
-                                            <td style="font-weight: 600;">${booking.selectedDate}</td>
-                                            <td style="font-weight: 800; color: #ff4d4d; font-size: 18px;">₹${booking.totalPrice}</td>
-                                            <td><span class="status-badge ${booking.status == 'Confirmed' ? 'status-confirmed' : booking.status == 'Completed' ? 'status-completed' : 'status-pending'}">${booking.status}</span></td>
-                                            <td style="display: flex; gap: 10px;">
-                                                <a href="<c:url value='/user/booking/${booking.id}/chat'/>" class="btn btn-sm" style="border-radius: 8px; background: var(--primary-blue); color: #fff; border: none;">
-                                                    <i class="fa fa-comments"></i> Chat
-                                                </a>
-                                                <c:if test="${booking.status == 'Completed' && !booking.reviewed}">
-                                                    <a href="<c:url value='/user/booking/${booking.id}/review'/>" class="btn btn-sm" style="border-radius: 8px; background: #f59e0b; color: #fff; border: none;">
-                                                        <i class="fa fa-star"></i> Review
-                                                    </a>
-                                                </c:if>
-                                            </td>
-                                        </tr>
-                                    </c:forEach>
-                                </tbody>
-                            </table>
-                        </c:when>
-                        <c:otherwise>
-                            <div style="text-align: center; padding: 40px;">
-                                <i class="fa fa-calendar-times-o" style="font-size: 50px; color: rgba(255,255,255,0.1); margin-bottom: 20px;"></i>
-                                <h3 style="font-weight: 700;">No Bookings Found</h3>
-                                <p style="color: var(--text-muted);">You haven't booked any trips yet. Start exploring now!</p>
-                            </div>
-                        </c:otherwise>
-                    </c:choose>
-                </div>
+            <a href="/user/dashboard" class="back-link"><i class="fa fa-arrow-left"></i> Back</a>
+            <h1 class="page-title">My Bookings</h1>
+
+            <div class="tabs-container">
+                <div class="tab-item active">Upcoming</div>
+                <div class="tab-item">Completed</div>
             </div>
+
+            <c:choose>
+                <c:when test="${not empty bookings}">
+                    <c:forEach var="booking" items="${bookings}">
+                        <div class="booking-card">
+                            <div class="card-image">
+                                <img src="${not empty booking.trip.mediaUrls ? booking.trip.mediaUrls.split(',')[0] : 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=800'}" alt="Trip">
+                                <span class="upcoming-badge">${booking.status.toUpperCase()}</span>
+                            </div>
+                            <div class="card-body">
+                                <h2 class="card-title">${booking.trip.title}</h2>
+                                <div class="card-info">
+                                    <div class="info-item"><i class="fa fa-map-marker"></i> ${booking.trip.destination}</div>
+                                    <div class="info-item"><i class="fa fa-calendar"></i> ${booking.selectedDate}</div>
+                                    <div class="info-item"><i class="fa fa-users"></i> ${booking.numberOfTravelers} Adults</div>
+                                </div>
+                                <div style="font-size: 11px; color: var(--text-muted); font-weight: 600;">Booking ID: TRIP-2026-${booking.id}</div>
+                                <div class="card-footer">
+                                    <div class="card-price">₹${booking.totalPrice}</div>
+                                    <a href="/user/package/${booking.trip.id}" class="btn-view">View Details</a>
+                                </div>
+                            </div>
+                        </div>
+                    </c:forEach>
+                </c:when>
+                <c:otherwise>
+                    <div style="text-align: center; padding: 100px 0;">
+                        <i class="fa fa-calendar-times-o" style="font-size: 60px; color: var(--border); margin-bottom: 20px;"></i>
+                        <h3 style="font-weight: 700;">No Bookings Found</h3>
+                    </div>
+                </c:otherwise>
+            </c:choose>
         </main>
     </div>
+
 </body>
 </html>

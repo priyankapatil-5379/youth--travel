@@ -1,912 +1,436 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-    <%@ taglib prefix="c" uri="jakarta.tags.core" %>
-        <!DOCTYPE html>
-        <html lang="en">
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<%@ taglib prefix="fmt" uri="jakarta.tags.fmt" %>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Dashboard | Youth Travel</title>
+    <link rel="stylesheet" href="<c:url value='/views/assets/css/bootstrap.min.css'/>">
+    <link rel="stylesheet" href="<c:url value='/views/assets/css/font-awesome.min.css'/>">
+    <link rel="stylesheet" href="<c:url value='/views/assets/css/premium-dashboard.css'/>">
+    <link href="https://fonts.googleapis.com/css?family=Dosis:300,400,500,600,700,800" rel="stylesheet">
+    <style>
+        :root {
+            --primary-blue: #e63946;
+            --text-muted: #7e8c9a;
+            --transition: all 0.3s ease;
+            --dark-card: rgba(0, 34, 68, 0.6);
+            --accent-red: #e63946;
+        }
 
-        <head>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>User Dashboard | Youth Travel</title>
-            <link rel="stylesheet" href="<c:url value='/views/assets/css/bootstrap.min.css'/>">
-            <link rel="stylesheet" href="<c:url value='/views/assets/css/font-awesome.min.css'/>">
-            <link rel="stylesheet" href="<c:url value='/views/assets/css/premium-dashboard.css'/>">
-            <link href="https://fonts.googleapis.com/css?family=Dosis:300,400,500,600,700,800" rel="stylesheet">
-            <style>
-                :root {
-                    --primary-blue: #e63946;
-                    --text-muted: #7e8c9a;
-                    --transition: all 0.3s ease;
-                    --dark-card: rgba(22, 28, 40, 0.7);
-                }
+        body {
+            font-family: 'Dosis', sans-serif;
+            background-color: #002244;
+            color: rgba(255, 255, 255, 0.92);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+        }
 
-                body {
-                    font-family: 'Dosis', sans-serif;
-                    background-color: #0b0f18;
-                    color: rgba(255, 255, 255, 0.92);
-                    margin: 0;
-                    padding: 0;
-                }
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: url('<c:url value="/views/assets/images/underwater-theme-bg.png"/>') top center/cover no-repeat;
+            z-index: -2;
+        }
 
-                .wrapper {
-                    display: flex;
-                    min-height: 100vh;
-                }
+        /* Sunlight Rays Sync */
+        .sun-rays-container {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1;
+            pointer-events: none;
+            overflow: hidden;
+        }
 
-                .header {
-                    position: fixed;
-                    top: 0;
-                    left: 0;
-                    right: 0;
-                    height: 70px;
-                    background: #161c28;
-                    display: flex;
-                    align-items: center;
-                    justify-content: space-between;
-                    padding: 0 30px;
-                    z-index: 1000;
-                    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-                }
+        .ray {
+            position: absolute;
+            top: -10%;
+            width: 80px;
+            height: 150%;
+            background: linear-gradient(180deg, rgba(255, 230, 120, 0.15) 0%, rgba(255, 220, 80, 0.08) 40%, rgba(255, 255, 255, 0) 100%);
+            filter: blur(20px);
+            transform-origin: top center;
+            border-radius: 50%;
+            animation: ray-swing 6s ease-in-out infinite alternate;
+        }
 
+        .ray-1 { left: 5%; width: 60px; animation-duration: 7s; animation-delay: 0s; opacity: 0.6; }
+        .ray-2 { left: 18%; width: 100px; animation-duration: 9s; animation-delay: 1s; opacity: 0.4; }
+        .ray-3 { left: 33%; width: 70px; animation-duration: 6s; animation-delay: 2s; opacity: 0.7; }
+        .ray-4 { left: 52%; width: 90px; animation-duration: 8s; animation-delay: 0.5s; opacity: 0.5; }
+        .ray-5 { left: 68%; width: 65px; animation-duration: 7.5s; animation-delay: 1.5s; opacity: 0.65; }
+        .ray-6 { left: 82%; width: 110px; animation-duration: 10s; animation-delay: 3s; opacity: 0.4; }
 
-        /* Existing Package Styles */
+        @keyframes ray-swing {
+            0% { transform: rotate(-6deg) scaleX(0.9); opacity: 0.1; }
+            50% { opacity: 0.8; }
+            100% { transform: rotate(8deg) scaleX(0.85); opacity: 0.15; }
+        }
+
+        .wrapper { display: flex; min-height: 100vh; }
+        .header { position: fixed; top: 0; left: 0; right: 0; height: 70px; background: #161c28; display: flex; align-items: center; justify-content: space-between; padding: 0 30px; z-index: 1000; border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
+
+        .main-content { flex: 1; margin-left: 240px; padding: 100px 30px 40px; transition: margin-left 0.3s; }
+
+        /* Dashboard Components */
+        .dash-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(15px); padding: 40px 50px; border-radius: 24px; border: 1px solid rgba(255, 255, 255, 0.1); }
+
+        .search-container { position: relative; width: 350px; }
+        .search-container input { background: rgba(0, 0, 0, 0.4); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 12px; color: #fff; padding: 12px 40px 12px 20px; width: 100%; transition: var(--transition); }
+        .search-container i { position: absolute; right: 15px; top: 50%; transform: translateY(-50%); color: var(--text-muted); }
+
+        /* Grid & Cards */
         .category-section { margin-bottom: 50px; }
         .category-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 25px; border-left: 4px solid var(--primary-blue); padding-left: 15px; }
         .category-title { font-size: 24px; font-weight: 800; margin: 0; text-transform: uppercase; letter-spacing: 1px; }
-        .package-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px; }
-        .package-card { background: var(--dark-card); border-radius: 15px; overflow: hidden; border: 1px solid rgba(255,255,255,0.05); transition: var(--transition); position: relative; }
-        .package-card:hover { transform: translateY(-10px); border-color: var(--primary-blue); box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-        .package-img-wrapper { position: relative; width: 100%; aspect-ratio: 16 / 10; overflow: hidden; background: transparent; }
-        .package-img, .package-video { width: 100%; height: 100%; object-fit: cover; object-position: center; transition: opacity 0.4s ease, transform 0.4s ease; position: absolute; top: 0; left: 0; }
-        .package-video { opacity: 0; pointer-events: none; }
-        .package-card:hover .package-img { opacity: 1 !important; transform: scale(1.1) translateY(-10px) !important; }
-        .package-card:hover .package-video { opacity: 1 !important; transform: scale(1.1) !important; }
         
-        .play-overlay { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #fff; font-size: 40px; opacity: 0.6; z-index: 2; pointer-events: none; display: none; }
-        .has-video .play-overlay { display: block; }
-        .package-card:hover .play-overlay { opacity: 0; }
-        .package-tag { position: absolute; top: 15px; right: 15px; background: var(--primary-blue); color: #fff; padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 700; text-transform: uppercase; }
-        .package-content { padding: 20px; }
-        .package-title { font-size: 18px; font-weight: 700; margin-bottom: 10px; color: #fff; height: 44px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
-        .package-footer { display: flex; align-items: center; justify-content: space-between; margin-top: 15px; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.05); }
-        .package-price { font-size: 20px; font-weight: 800; color: #fff; }
-        .btn-view { background: rgba(255,255,255,0.05); color: #fff; border: 1px solid rgba(255,255,255,0.1); padding: 8px 15px; border-radius: 8px; font-size: 13px; font-weight: 600; transition: var(--transition); }
-        .package-card:hover .btn-view { background: var(--primary-blue); border-color: var(--primary-blue); }
-        .empty-state { text-align: center; padding: 80px 20px; background: var(--dark-card); border-radius: 20px; border: 1px dotted rgba(255,255,255,0.1); }
+        .package-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px; }
+        .package-card { background: var(--dark-card); backdrop-filter: blur(20px); border-radius: 20px; overflow: hidden; border: 1px solid rgba(255,255,255,0.08); transition: var(--transition); position: relative; display: flex; flex-direction: column; }
+        .package-card:hover { transform: translateY(-8px); border-color: rgba(230, 57, 70, 0.5); box-shadow: 0 15px 40px rgba(230, 57, 70, 0.2); }
 
-        /* Sold Out Styles */
-        .package-card.sold-out { opacity: 0.6; filter: grayscale(0.8); cursor: not-allowed; }
-        .package-card.sold-out:hover { transform: none; box-shadow: none; border-color: rgba(255,255,255,0.05); }
-        .sold-out-badge { position: absolute; top: 15px; left: 15px; background: #e11d48; color: #fff; padding: 5px 12px; border-radius: 6px; font-size: 11px; font-weight: 800; text-transform: uppercase; z-index: 10; box-shadow: 0 4px 10px rgba(225, 29, 72, 0.3); }
+        .package-img-wrapper { position: relative; width: 100%; aspect-ratio: 16 / 10; overflow: hidden; background: #000; }
+        .package-img, .package-video { width: 100%; height: 100%; object-fit: cover; transition: 0.5s ease; position: absolute; top: 0; left: 0; }
+        .package-video { opacity: 0; }
+        .package-card:hover .package-img { transform: scale(1.1); }
+        .package-card:hover .package-video { opacity: 1; transform: scale(1.1); }
 
+        .expert-badge-container { position: absolute; top: 15px; left: 15px; z-index: 5; display: flex; gap: 8px; }
+        .expert-badge { padding: 4px 12px; border-radius: 6px; font-size: 10px; font-weight: 800; text-transform: uppercase; box-shadow: 0 4px 12px rgba(0,0,0,0.3); }
+        .badge-sold-out { background: #e11d48; color: #fff; }
+        .badge-expert { background: #6366f1; color: #fff; }
 
-                .main-content {
-                    flex: 1;
-                    margin-left: 240px;
-                    padding: 100px 30px 40px;
-                    transition: margin-left 0.3s;
-                }
+        .quick-view-overlay { position: absolute; inset: 0; background: rgba(230, 57, 70, 0.4); backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center; opacity: 0; transition: 0.3s ease; z-index: 4; }
+        .package-card:hover .quick-view-overlay { opacity: 1; }
+        .btn-quick-view { background: #fff; color: #000; padding: 10px 20px; border-radius: 10px; font-weight: 800; font-size: 12px; transform: translateY(20px); transition: 0.4s; text-decoration: none; }
+        .package-card:hover .btn-quick-view { transform: translateY(0); }
 
-                @media (max-width: 991px) {
-                    .main-content {
-                        margin-left: 70px;
-                        padding: 90px 15px 40px;
-                    }
-                    .results-meta {
-                        flex-direction: column;
-                        gap: 15px;
-                        align-items: stretch !important;
-                    }
-                    .sort-container {
-                        flex-direction: column;
-                        align-items: stretch !important;
-                    }
-                    .search-container {
-                        width: 100% !important;
-                        max-width: none !important;
-                    }
-                }
+        .package-info { padding: 25px 20px; flex: 1; display: flex; flex-direction: column; }
+        .package-name { font-size: 20px; font-weight: 800; color: #fff; margin-bottom: 12px; height: 50px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+        .package-meta { font-size: 14px; color: rgba(255,255,255,0.7); margin-bottom: 8px; }
+        .package-meta i { color: var(--primary-blue); margin-right: 8px; }
 
-                /* Search & Filters */
-                .offcanvas-filter {
-                    position: fixed;
-                    top: 0;
-                    right: -350px;
-                    width: 320px;
-                    height: 100vh;
-                    background: var(--dark-card);
-                    box-shadow: -5px 0 25px rgba(0,0,0,0.8);
-                    z-index: 1050;
-                    transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-                    padding: 0;
-                    overflow-y: auto;
-                    border-left: 1px solid rgba(255,255,255,0.05);
-                }
-                .offcanvas-filter.show {
-                    right: 0;
-                }
-                .offcanvas-overlay {
-                    position: fixed;
-                    top: 0;
-                    left: 0;
-                    width: 100vw;
-                    height: 100vh;
-                    background: rgba(0,0,0,0.6);
-                    backdrop-filter: blur(4px);
-                    z-index: 1040;
-                    display: none;
-                    opacity: 0;
-                    transition: opacity 0.3s ease;
-                }
-                .offcanvas-overlay.show {
-                    display: block;
-                    opacity: 1;
-                }
-                .btn-filter-toggle {
-                    background: rgba(255,255,255,0.05);
-                    border: 1px solid rgba(255,255,255,0.1);
-                    color: #fff;
-                    padding: 12px 20px;
-                    border-radius: 12px;
-                    font-weight: 700;
-                    cursor: pointer;
-                    transition: var(--transition);
-                    display: flex;
-                    align-items: center;
-                    gap: 8px;
-                }
-                .btn-filter-toggle:hover {
-                    background: rgba(255,255,255,0.1);
-                    border-color: var(--primary-blue);
-                }
+        .package-footer { display: flex; align-items: center; justify-content: space-between; margin-top: auto; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.08); }
+        .package-price { font-size: 22px; font-weight: 900; color: #fff; }
+        .package-price span { font-size: 12px; font-weight: 400; opacity: 0.6; }
 
-                .dash-header {
-                    display: flex;
-                    justify-content: space-between;
-                    align-items: center;
-                    margin-bottom: 40px;
-                    background: rgba(0, 0, 0, 0.3);
-                    backdrop-filter: blur(10px);
-                    padding: 30px;
-                    border-radius: 20px;
-                    border: 1px solid rgba(255, 255, 255, 0.1);
-                    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
-                }
+        .btn-view { background: rgba(255,255,255,0.05); color: #fff; border: 1px solid rgba(255,255,255,0.2); padding: 8px 18px; border-radius: 10px; font-size: 12px; font-weight: 800; text-decoration: none; transition: 0.3s; }
+        .package-card:hover .btn-view { background: var(--primary-blue); border-color: var(--primary-blue); box-shadow: 0 5px 15px rgba(230, 57, 70, 0.3); }
+        .btn-view.disabled { opacity: 0.5; pointer-events: none; }
 
-                .search-container {
-                    position: relative;
-                    width: 350px;
-                }
+        /* Filter Sidebar (Luxe Style) */
+        .filter-sidebar { position: fixed; top: 0; right: -400px; width: 380px; height: 100vh; background: rgba(22, 28, 40, 0.95); backdrop-filter: blur(40px); z-index: 1050; transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1); padding: 40px; overflow-y: auto; border-left: 1px solid rgba(255,255,255,0.1); }
+        .filter-sidebar.show { right: 0; }
+        .filter-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(5px); z-index: 1040; display: none; }
+        .filter-overlay.show { display: block; }
 
-                .search-container input {
-                    background: rgba(0, 0, 0, 0.4);
-                    backdrop-filter: blur(10px);
-                    border: 1px solid rgba(255, 255, 255, 0.2);
-                    border-radius: 12px;
-                    color: #fff;
-                    padding: 12px 40px 12px 20px;
-                    width: 100%;
-                    transition: var(--transition);
-                    text-shadow: 0 1px 2px rgba(0,0,0,0.5);
-                }
+        .filter-label { font-size: 11px; font-weight: 800; color: rgba(255,255,255,0.5); letter-spacing: 2px; margin-bottom: 12px; display: block; }
+        .luxe-select { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; color: #fff; padding: 14px 20px; width: 100%; font-weight: 600; cursor: pointer; transition: 0.3s; appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='white' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 20px center; }
+        .luxe-select:hover { background-color: rgba(255,255,255,0.06); border-color: rgba(230, 57, 70, 0.5); }
+        .luxe-select option { background: #161c28; color: #fff; padding: 10px; }
 
-                .search-container input:focus {
-                    border-color: var(--primary-blue);
-                    background: rgba(255, 255, 255, 0.08);
-                    outline: none;
-                    box-shadow: 0 0 15px rgba(230, 57, 70, 0.2);
-                }
+        .luxe-range { width: 100%; height: 6px; background: rgba(255,255,255,0.1); border-radius: 10px; appearance: none; outline: none; }
+        .luxe-range::-webkit-slider-thumb { appearance: none; width: 22px; height: 22px; background: var(--accent-red); border: 4px solid #fff; border-radius: 50%; cursor: pointer; box-shadow: 0 0 15px rgba(230, 57, 70, 0.5); }
 
-                .search-container i {
-                    position: absolute;
-                    right: 15px;
-                    top: 50%;
-                    transform: translateY(-50%);
-                    color: var(--text-muted);
-                }
+        .btn-apply-filters { width: 100%; background: var(--accent-red); color: #fff; border: none; padding: 18px; border-radius: 14px; font-weight: 900; font-size: 15px; text-transform: uppercase; letter-spacing: 2px; transition: 0.3s; }
+        .btn-apply-filters:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(230, 57, 70, 0.4); }
+        .btn-reset-filters { width: 100%; background: rgba(255,255,255,0.05); color: #fff; border: 1px solid rgba(255,255,255,0.1); padding: 15px; border-radius: 14px; font-weight: 700; font-size: 14px; transition: 0.3s; }
+        .btn-reset-filters:hover { background: rgba(255,255,255,0.1); }
 
-                .filter-card {
-                    background: rgba(255, 255, 255, 0.03);
-                    backdrop-filter: blur(15px);
-                    -webkit-backdrop-filter: blur(15px);
-                    border-radius: 20px;
-                    padding: 25px;
-                    border: 1px solid rgba(255, 255, 255, 0.1);
-                    margin-bottom: 35px;
-                    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
-                }
+        /* Results Meta */
+        .results-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; padding-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .sort-select { background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 8px 15px; border-radius: 10px; font-weight: 700; cursor: pointer; }
 
-                .filter-label {
-                    display: block;
-                    font-size: 13px;
-                    font-weight: 700;
-                    color: var(--text-muted);
-                    margin-bottom: 10px;
-                    text-transform: uppercase;
-                }
+        @media (max-width: 991px) {
+            .main-content { margin-left: 0; padding: 90px 20px 40px; }
+            .dash-header { flex-direction: column; align-items: flex-start; gap: 20px; padding: 30px; }
+            .search-container { width: 100%; }
+        }
+    </style>
+</head>
 
-                .form-select-custom {
-                    background: rgba(0, 0, 0, 0.4);
-                    backdrop-filter: blur(10px);
-                    border: 1px solid rgba(255, 255, 255, 0.2);
-                    border-radius: 10px;
-                    color: #fff !important;
-                    padding: 8px 15px;
-                    width: auto;
-                    cursor: pointer;
-                    font-weight: 600;
-                    text-shadow: 0 1px 2px rgba(0,0,0,0.5);
-                }
+<body class="premium-theme">
+    <!-- Sunlight Rays Sync -->
+    <div class="sun-rays-container">
+        <div class="ray ray-1"></div>
+        <div class="ray ray-2"></div>
+        <div class="ray ray-3"></div>
+        <div class="ray ray-4"></div>
+        <div class="ray ray-5"></div>
+        <div class="ray ray-6"></div>
+    </div>
 
-                .form-select-custom option {
-                    background: #ffffff !important;
-                    color: #000000 !important;
-                }
+    <!-- Rough Edge Filter -->
+    <svg width="0" height="0" style="position:absolute;z-index:-1;">
+        <filter id="rough-edge">
+            <feTurbulence type="fractalNoise" baseFrequency="0.05" numOctaves="3" result="noise" />
+            <feDisplacementMap in="SourceGraphic" in2="noise" scale="8" xChannelSelector="R" yChannelSelector="G" />
+        </filter>
+    </svg>
+    <header class="header">
+        <div class="header-logo">
+            <a href="<c:url value='/'/>"><img src="<c:url value='/views/assets/images/logo.png'/>" style="height: 35px;"></a>
+        </div>
+        <div class="d-flex align-items-center gap-3">
+            <span class="fw-bold">Hi, ${user.name}</span>
+            <c:set var="defaultAvatar" value="https://ui-avatars.com/api/?name=${user.name}&background=e63946&color=fff" />
+            <img src="${not empty user.profilePhoto ? user.profilePhoto : defaultAvatar}" style="width: 32px; height: 32px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.2);">
+        </div>
+    </header>
 
-                .form-select-custom:focus {
-                    outline: none;
-                    border-color: var(--primary-blue);
-                }
-
-                .price-range-container {
-                    position: relative;
-                    padding: 0 10px;
-                }
-
-                .price-slider {
-                    -webkit-appearance: none;
-                    width: 100%;
-                    height: 6px;
-                    background: rgba(255, 255, 255, 0.1);
-                    border-radius: 5px;
-                    outline: none;
-                    margin: 15px 0;
-                }
-
-                .price-slider::-webkit-slider-thumb {
-                    -webkit-appearance: none;
-                    appearance: none;
-                    width: 18px;
-                    height: 18px;
-                    background: var(--primary-blue);
-                    border-radius: 50%;
-                    cursor: pointer;
-                    border: 3px solid #fff;
-                }
-
-                .price-values {
-                    display: flex;
-                    justify-content: space-between;
-                    font-size: 13px;
-                    font-weight: 700;
-                    color: #fff;
-                }
-
-                .filter-actions {
-                    display: flex;
-                    justify-content: flex-end;
-                    gap: 15px;
-                    margin-top: 20px;
-                }
-
-                .btn-reset {
-                    background: transparent;
-                    border: 1px solid rgba(255, 255, 255, 0.2);
-                    color: #fff;
-                    font-weight: 700;
-                    border-radius: 10px;
-                    padding: 10px 25px;
-                    transition: var(--transition);
-                }
-
-                .btn-reset:hover {
-                    background: rgba(255, 255, 255, 0.1);
-                }
-
-                .btn-apply {
-                    background: var(--primary-blue);
-                    border: none;
-                    color: #fff;
-                    font-weight: 700;
-                    border-radius: 10px;
-                    padding: 10px 25px;
-                    transition: var(--transition);
-                }
-
-                .btn-apply:hover {
-                    transform: translateY(-2px);
-                    box-shadow: 0 5px 15px rgba(240, 76, 38, 0.3);
-                }
-
-                .results-meta {
-                    display: flex;
-                    justify-content: space-between;
-                    align-items: center;
-                    margin-bottom: 25px;
-                }
-
-                .sort-container {
-                    display: flex;
-                    align-items: center;
-                    gap: 10px;
-                }
-
-                /* Existing Package Styles */
-                .category-section {
-                    margin-bottom: 50px;
-                }
-
-                .category-header {
-                    display: flex;
-                    align-items: center;
-                    justify-content: space-between;
-                    margin-bottom: 25px;
-                    border-left: 4px solid var(--primary-blue);
-                    padding-left: 15px;
-                }
-
-                .category-title {
-                    font-size: 24px;
-                    font-weight: 800;
-                    margin: 0;
-                    text-transform: uppercase;
-                    letter-spacing: 1px;
-                    text-shadow: 0 2px 10px rgba(0,0,0,0.8);
-                }
-
-                .package-grid {
-                    display: grid;
-                    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-                    gap: 25px;
-                }
-
-                .package-card {
-                    background: rgba(255, 255, 255, 0.03);
-                    backdrop-filter: blur(15px);
-                    -webkit-backdrop-filter: blur(15px);
-                    border-radius: 15px;
-                    overflow: hidden;
-                    border: 1px solid rgba(255, 255, 255, 0.1);
-                    transition: var(--transition);
-                    position: relative;
-                    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
-                }
-
-                .package-card:hover {
-                    transform: translateY(-10px);
-                    border-color: var(--primary-blue);
-                    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-                }
-
-                .package-img-wrapper {
-                    position: relative;
-                    width: 100%;
-                    aspect-ratio: 16 / 10;
-                    overflow: hidden;
-                    background: #000;
-                }
-
-                .package-img,
-                .package-video {
-                    width: 100%;
-                    height: 100%;
-                    object-fit: cover;
-                    object-position: center;
-                    transition: opacity 0.5s ease, transform 0.5s ease;
-                    position: absolute;
-                    top: 0;
-                    left: 0;
-                }
-
-                .package-video {
-                    opacity: 0;
-                    pointer-events: none;
-                }
-
-                .package-card:hover .package-img {
-                    opacity: 0;
-                    transform: scale(1.1);
-                }
-
-                .package-card:hover .package-video {
-                    opacity: 1;
-                    transform: scale(1.1);
-                }
-
-                .play-overlay {
-                    position: absolute;
-                    top: 50%;
-                    left: 50%;
-                    transform: translate(-50%, -50%);
-                    color: #fff;
-                    font-size: 40px;
-                    opacity: 0.6;
-                    z-index: 2;
-                    pointer-events: none;
-                    display: none;
-                }
-
-                .has-video .play-overlay {
-                    display: block;
-                }
-
-                .package-card:hover .play-overlay {
-                    opacity: 0;
-                }
-
-                .package-tag {
-                    position: absolute;
-                    top: 15px;
-                    right: 15px;
-                    background: var(--primary-blue);
-                    color: #fff;
-                    padding: 4px 12px;
-                    border-radius: 20px;
-                    font-size: 11px;
-                    font-weight: 700;
-                    text-transform: uppercase;
-                }
-
-                .package-content {
-                    padding: 20px;
-                }
-
-                .package-title {
-                    font-size: 18px;
-                    font-weight: 700;
-                    margin-bottom: 10px;
-                    color: #fff;
-                    height: 44px;
-                    overflow: hidden;
-                    display: -webkit-box;
-                    -webkit-line-clamp: 2;
-                    -webkit-box-orient: vertical;
-                    text-shadow: 0 2px 4px rgba(0,0,0,0.5);
-                }
-
-                .package-footer {
-                    display: flex;
-                    align-items: center;
-                    justify-content: space-between;
-                    margin-top: 15px;
-                    padding-top: 15px;
-                    border-top: 1px solid rgba(255, 255, 255, 0.05);
-                }
-
-                .package-price {
-                    font-size: 20px;
-                    font-weight: 800;
-                    color: #fff;
-                    text-shadow: 0 2px 4px rgba(0,0,0,0.3);
-                }
-
-                .btn-view {
-                    background: rgba(255, 255, 255, 0.05);
-                    color: #fff;
-                    border: 1px solid rgba(255, 255, 255, 0.1);
-                    padding: 8px 15px;
-                    border-radius: 8px;
-                    font-size: 13px;
-                    font-weight: 600;
-                    transition: var(--transition);
-                }
-
-                .package-card:hover .btn-view {
-                    background: var(--primary-blue);
-                    border-color: var(--primary-blue);
-                }
-
-                .empty-state {
-                    text-align: center;
-                    padding: 80px 20px;
-                    background: var(--dark-card);
-                    border-radius: 20px;
-                    border: 1px dotted rgba(255, 255, 255, 0.1);
-                }
-
-                @media (max-width: 991px) {
-                    .main-content { margin-left: 0; padding: 90px 20px 40px; }
-                    .dash-header { flex-direction: column; align-items: flex-start; gap: 20px; padding: 20px; }
-                    .search-container { width: 100% !important; }
-                    .results-meta { flex-direction: column; align-items: flex-start; gap: 15px; }
-                    .sort-container { flex-direction: column; width: 100%; align-items: flex-start; }
-                    .sort-container > div { width: 100%; justify-content: space-between; }
-                }
-
-                @media (max-width: 576px) {
-                    .package-grid { grid-template-columns: 1fr; }
-                    .category-title { font-size: 20px; }
-                    .category-header { flex-direction: column; align-items: flex-start; gap: 5px; }
-                }
-
-                /* Prevent infinite horizontal stretch on ultra-wide screens */
-                @media (min-width: 2000px) {
-                    .header, .main-content {
-                        max-width: 1920px;
-                        margin-left: auto;
-                        margin-right: auto;
-                    }
-                    .wrapper { justify-content: center; }
-                }
-            </style>
-        </head>
-
-        <body class="premium-theme">
-            <!-- Sunlight Rays -->
-            <div class="sun-rays-container">
-                <div class="ray ray-1"></div>
-                <div class="ray ray-2"></div>
-                <div class="ray ray-3"></div>
-                <div class="ray ray-4"></div>
-            </div>
-            <header class="header">
-                <div class="header-logo"><a href="<c:url value='/'/>"><img
-                            src="<c:url value='/views/assets/images/logo.png'/>" style="height: 35px;"></a></div>
-                <div style="display: flex; align-items: center; gap: 20px;">
-                    <div style="display: flex; align-items: center; gap: 15px; cursor: pointer;" onclick="showMyPoints()">
-                        <span style="font-weight: 700;">Hi, ${user.name}</span>
-                        <c:set var="defaultAvatar"
-                            value="https://ui-avatars.com/api/?name=${user.name}&background=f04c26&color=fff" />
-                        <img src="${not empty user.profilePhoto ? user.profilePhoto : defaultAvatar}"
-                            style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover; border: 2px solid rgba(255,255,255,0.2);">
+    <div class="wrapper">
+        <jsp:include page="user-sidebar.jsp"><jsp:param name="activePage" value="dashboard" /></jsp:include>
+        
+        <main class="main-content">
+            <form action="<c:url value='/user/dashboard'/>" method="GET" id="filterForm">
+                <div class="dash-header">
+                    <div>
+                        <h1 class="fw-bold m-0" style="font-size: 38px;">Dashboard</h1>
+                        <p class="text-white-50 m-0">Discover amazing travel packages and plan your next adventure.</p>
+                    </div>
+                    <div class="d-flex gap-3 align-items-center">
+                        <div class="search-container">
+                            <input type="text" name="search" value="${currentParams.search}" placeholder="Search trips..." oninput="handleSearch(this.value)">
+                            <i class="fa fa-search"></i>
+                        </div>
+                        <button type="button" class="btn btn-outline-light rounded-pill px-4" onclick="toggleFilter()">
+                            <i class="fa fa-sliders me-2"></i> Filters
+                        </button>
                     </div>
                 </div>
-            </header>
-            <div class="wrapper">
-                <jsp:include page="user-sidebar.jsp">
-                    <jsp:param name="activePage" value="dashboard" />
-                </jsp:include>
-                <main class="main-content">
-                    <form action="<c:url value='/user/dashboard'/>" method="GET" id="filterForm">
-                        <div class="dash-header d-flex flex-column flex-md-row text-center text-md-start">
-                            <div class="mb-3 mb-md-0">
-                                <h1 style="font-weight: 800; margin: 0; font-size: 32px; text-shadow: 0 4px 15px rgba(0,0,0,0.8); color: #fff;">Dashboard</h1>
-                                <p style="color: #fff; margin: 0; text-shadow: 0 2px 8px rgba(0,0,0,0.8); font-weight: 600; font-size: 15px;">Discover amazing travel packages and plan your next adventure.</p>
-                            </div>
-                            <div class="d-flex flex-column flex-md-row gap-3 align-items-center w-100" style="max-width: fit-content;">
-                                <div class="search-container w-100" style="max-width: 300px;">
-                                    <input type="text" name="search" value="${currentParams.search}"
-                                        placeholder="Search trips, destinations...">
-                                    <i class="fa fa-search"></i>
-                                </div>
-                                <button type="button" class="btn-filter-toggle w-100 w-md-auto justify-content-center" onclick="toggleFilter()">
-                                    <i class="fa fa-sliders"></i> Filters
-                                </button>
-                            </div>
-                        </div>
 
-                        <!-- Offcanvas Overlay -->
-                        <div class="offcanvas-overlay" id="filterOverlay" onclick="toggleFilter()"></div>
+                <!-- Filter Sidebar (Photo Sync) -->
+                <div class="filter-overlay" id="filterOverlay" onclick="toggleFilter()"></div>
+                <div class="filter-sidebar" id="filterSidebar">
+                    <div class="d-flex justify-content-between align-items-center mb-5">
+                        <h2 class="fw-black m-0" style="font-size: 24px; letter-spacing: -1px;">Filters</h2>
+                        <button type="button" class="btn-close btn-close-white" onclick="toggleFilter()"></button>
+                    </div>
 
-                        <!-- OFFCANVAS FILTER SIDEBAR -->
-                        <div class="offcanvas-filter" id="filterSidebar">
-                            <div style="display: flex; justify-content: space-between; align-items: center; padding: 25px; border-bottom: 1px solid rgba(255,255,255,0.05);">
-                                <h4 style="font-weight: 800; margin: 0; color: #fff; font-size: 20px;">Filters</h4>
-                                <button type="button" onclick="toggleFilter()" style="background: none; border: none; color: var(--text-muted); font-size: 20px; cursor: pointer;">
-                                    <i class="fa fa-times"></i>
-                                </button>
-                            </div>
-                            
-                            <div style="display: flex; flex-direction: column; gap: 20px; padding: 25px;">
-                                    
-                                    <div>
-                                        <label class="filter-label" style="margin-bottom: 8px;">Destination</label>
-                                        <select name="destination" class="form-select-custom" style="width: 100%;">
-                                            <option value="All Destinations">All Destinations</option>
-                                            <c:forEach var="dest" items="${destinations}">
-                                                <option value="${dest}" ${currentParams.destination==dest ? 'selected' : ''}>${dest}</option>
-                                            </c:forEach>
-                                        </select>
-                                    </div>
-                                    
-                                    <div>
-                                        <label class="filter-label" style="margin-bottom: 8px;">Trip Type</label>
-                                        <select name="tripType" class="form-select-custom" style="width: 100%;">
-                                            <option value="All Types">All Types</option>
-                                            <option value="Adventure" ${currentParams.tripType=='Adventure' ? 'selected' : ''}>Adventure</option>
-                                            <option value="Solo" ${currentParams.tripType=='Solo' ? 'selected' : ''}>Solo</option>
-                                            <option value="Group" ${currentParams.tripType=='Group' ? 'selected' : ''}>Group</option>
-                                            <option value="Workation" ${currentParams.tripType=='Workation' ? 'selected' : ''}>Workation</option>
-                                            <option value="Festivals" ${currentParams.tripType=='Festivals' ? 'selected' : ''}>Festivals</option>
-                                            <option value="Volunteering" ${currentParams.tripType=='Volunteering' ? 'selected' : ''}>Volunteering</option>
-                                            <option value="Nightlife" ${currentParams.tripType=='Nightlife' ? 'selected' : ''}>Nightlife</option>
-                                            <option value="Content Creation" ${currentParams.tripType=='Content Creation' ? 'selected' : ''}>Content Creation</option>
-                                            <option value="Wellness" ${currentParams.tripType=='Wellness' ? 'selected' : ''}>Wellness</option>
-                                            <option value="Budget Backpacking" ${currentParams.tripType=='Budget Backpacking' ? 'selected' : ''}>Budget Backpacking</option>
-                                        </select>
-                                    </div>
-                                    
-                                    <div>
-                                        <label class="filter-label" style="margin-bottom: 8px;">Duration</label>
-                                        <select name="duration" class="form-select-custom" style="width: 100%;">
-                                            <option value="All Durations">All Durations</option>
-                                            <option value="1-3 Days" ${currentParams.duration=='1-3 Days' ? 'selected' : ''}>1-3 Days</option>
-                                            <option value="4-7 Days" ${currentParams.duration=='4-7 Days' ? 'selected' : ''}>4-7 Days</option>
-                                            <option value="7+ Days" ${currentParams.duration=='7+ Days' ? 'selected' : ''}>7+ Days</option>
-                                        </select>
-                                    </div>
-                                    
-                                    <div>
-                                        <label class="filter-label" style="margin-bottom: 8px;">Departure City</label>
-                                        <select name="departureCity" class="form-select-custom" style="width: 100%;">
-                                            <option value="Any">Any City</option>
-                                            <option value="Delhi" ${currentParams.departureCity=='Delhi' ? 'selected' : ''}>Delhi</option>
-                                            <option value="Mumbai" ${currentParams.departureCity=='Mumbai' ? 'selected' : ''}>Mumbai</option>
-                                            <option value="Bengaluru" ${currentParams.departureCity=='Bengaluru' ? 'selected' : ''}>Bengaluru</option>
-                                            <option value="Chennai" ${currentParams.departureCity=='Chennai' ? 'selected' : ''}>Chennai</option>
-                                            <option value="Kolkata" ${currentParams.departureCity=='Kolkata' ? 'selected' : ''}>Kolkata</option>
-                                            <option value="Hyderabad" ${currentParams.departureCity=='Hyderabad' ? 'selected' : ''}>Hyderabad</option>
-                                            <option value="Pune" ${currentParams.departureCity=='Pune' ? 'selected' : ''}>Pune</option>
-                                            <option value="Ahmedabad" ${currentParams.departureCity=='Ahmedabad' ? 'selected' : ''}>Ahmedabad</option>
-                                        </select>
-                                    </div>
-                                    
-                                    <div>
-                                        <label class="filter-label" style="margin-bottom: 8px;">Travel Month</label>
-                                        <select name="travelMonth" class="form-select-custom" style="width: 100%;">
-                                            <option value="Any">Any Month</option>
-                                            <option value="January" ${currentParams.travelMonth=='January' ? 'selected' : ''}>January</option>
-                                            <option value="February" ${currentParams.travelMonth=='February' ? 'selected' : ''}>February</option>
-                                            <option value="March" ${currentParams.travelMonth=='March' ? 'selected' : ''}>March</option>
-                                            <option value="April" ${currentParams.travelMonth=='April' ? 'selected' : ''}>April</option>
-                                            <option value="May" ${currentParams.travelMonth=='May' ? 'selected' : ''}>May</option>
-                                            <option value="June" ${currentParams.travelMonth=='June' ? 'selected' : ''}>June</option>
-                                            <option value="July" ${currentParams.travelMonth=='July' ? 'selected' : ''}>July</option>
-                                            <option value="August" ${currentParams.travelMonth=='August' ? 'selected' : ''}>August</option>
-                                            <option value="September" ${currentParams.travelMonth=='September' ? 'selected' : ''}>September</option>
-                                            <option value="October" ${currentParams.travelMonth=='October' ? 'selected' : ''}>October</option>
-                                            <option value="November" ${currentParams.travelMonth=='November' ? 'selected' : ''}>November</option>
-                                            <option value="December" ${currentParams.travelMonth=='December' ? 'selected' : ''}>December</option>
-                                        </select>
-                                    </div>
-                                    
-                                    <div>
-                                        <label class="filter-label" style="margin-bottom: 8px;">Price Range</label>
-                                        <div class="price-range-container">
-                                            <input type="range" name="maxPrice" class="price-slider" min="0" max="100000" step="500" value="${currentParams.maxPrice}" oninput="updatePrice(this.value)">
-                                            <div class="price-values">
-                                                <span>₹0</span>
-                                                <span id="priceVal">₹${currentParams.maxPrice}+</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="filter-actions" style="display: flex; flex-direction: column; gap: 10px; margin-top: 10px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.05);">
-                                        <button type="submit" class="btn-apply" style="width: 100%; border-radius: 12px;">Apply Filters</button>
-                                        <button type="button" class="btn-reset" onclick="window.location.href='/user/dashboard'" style="width: 100%; justify-content: center; border-radius: 12px;">Reset</button>
-                                    </div>
-                                </div> <!-- End Padding Container -->
-                            </div> <!-- End Offcanvas Sidebar -->
-                            
-                            <!-- MAIN CONTENT AREA -->
-                            <div style="width: 100%;">
-                                <div class="results-meta" style="margin-bottom: 30px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 20px;">
-                                    <div style="font-weight: 700; font-size: 16px; text-shadow: 0 2px 10px rgba(0,0,0,0.8); color: #fff;">Showing ${totalCount} packages</div>
-                                    <div class="sort-container" style="display: flex; align-items: center; gap: 15px;">
-                                        <div class="d-flex align-items-center gap-2 flex-grow-1">
-                                            <span style="font-size: 13px; font-weight: 700; color: #fff; text-shadow: 0 1px 5px rgba(0,0,0,0.8); white-space: nowrap;">Group by:</span>
-                                            <select name="groupBy" class="form-select-custom w-100" style="padding: 8px 15px; border-radius: 10px;" onchange="this.form.submit()">
-                                                <option value="travelerType" ${currentParams.groupBy == 'travelerType' ? 'selected' : ''}>Traveler Type</option>
-                                                <option value="activity" ${currentParams.groupBy == 'activity' ? 'selected' : ''}>Activity</option>
-                                                <option value="adventure" ${currentParams.groupBy == 'adventure' ? 'selected' : ''}>Adventures</option>
-                                                <option value="transport" ${currentParams.groupBy == 'transport' ? 'selected' : ''}>Transport</option>
-                                                <option value="stay" ${currentParams.groupBy == 'stay' ? 'selected' : ''}>Stay Category</option>
-                                            </select>
-                                        </div>
-                                        <div class="d-flex align-items-center gap-2 flex-grow-1">
-                                            <span style="font-size: 13px; font-weight: 700; color: #fff; text-shadow: 0 1px 5px rgba(0,0,0,0.8); white-space: nowrap;">Sort by:</span>
-                                            <select name="sortBy" class="form-select-custom w-100" style="padding: 8px 15px; border-radius: 10px;" onchange="this.form.submit()">
-                                                <option value="latest" ${currentParams.sortBy == 'latest' ? 'selected' : ''}>Latest</option>
-                                                <option value="priceLow" ${currentParams.sortBy == 'priceLow' ? 'selected' : ''}>Price: Low to High</option>
-                                                <option value="priceHigh" ${currentParams.sortBy == 'priceHigh' ? 'selected' : ''}>Price: High to Low</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-
-
-                    <c:choose>
-                        <c:when test="${not empty groupedPackages}">
-                            <c:forEach var="entry" items="${groupedPackages}">
-                                <section class="category-section">
-                                    <div class="category-header">
-                                        <h2 class="category-title">${entry.key}</h2>
-                                        <span
-                                            style="color: var(--text-muted); font-size: 14px; font-weight: 600;">${entry.value.size()}
-                                            Packages</span>
-                                    </div>
-                                    <div class="package-grid">
-                                        <c:forEach var="trip" items="${entry.value}">
-                                            <c:set var="videoUrl" value="" />
-                                            <c:set var="hasVideo" value="false" />
-                                            <c:forEach var="url" items="${trip.mediaUrls.split(',')}">
-                                                <c:if
-                                                    test="${url.toLowerCase().endsWith('.mp4') || url.toLowerCase().endsWith('.webm') || url.toLowerCase().endsWith('.mov')}">
-                                                    <c:set var="videoUrl" value="${url}" />
-                                                    <c:set var="hasVideo" value="true" />
-                                                </c:if>
-                                            </c:forEach>
-
-                                            <div class="package-card ${hasVideo ? 'has-video' : ''} ${trip.soldOut ? 'sold-out' : ''}"
-                                                onmouseenter="${!trip.soldOut ? 'playVideo(this)' : ''}" onmouseleave="${!trip.soldOut ? 'pauseVideo(this)' : ''}">
-                                                <div class="package-img-wrapper">
-                                                    <c:if test="${trip.soldOut}">
-                                                        <span class="sold-out-badge">Sold Out</span>
-                                                    </c:if>
-                                                    <img src="${not empty trip.imageUrl ? trip.imageUrl : 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80'}"
-                                                        class="package-img" loading="lazy">
-                                                    <c:if test="${hasVideo && !trip.soldOut}">
-                                                        <video class="package-video" muted loop playsinline
-                                                            preload="none">
-                                                            <source src="${videoUrl}" type="video/mp4">
-                                                        </video>
-                                                        <i class="fa fa-play-circle play-overlay"></i>
-                                                    </c:if>
-                                                    <span class="package-tag">${entry.key}</span>
-                                                </div>
-                                                <div class="package-content">
-                                                    <h4 class="package-title">${trip.title}</h4>
-                                                    <div style="font-size: 13px; color: var(--text-muted);"><i
-                                                            class="fa fa-map-marker"></i> ${trip.destination}</div>
-                                                    <div
-                                                        style="font-size: 12px; color: var(--text-muted); margin-top: 5px;">
-                                                        <i class="fa fa-calendar"></i> ${trip.days} Days /
-                                                        ${trip.nights} Nights
-                                                    </div>
-                                                    <div
-                                                        style="font-size: 11px; margin-top: 8px; display: flex; gap: 8px; flex-wrap: wrap;">
-                                                        <c:if test="${not empty trip.ageGroup}">
-                                                            <span
-                                                                style="background: rgba(255,255,255,0.05); padding: 2px 6px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.1);">
-                                                                <i class="fa fa-users"
-                                                                    style="color: var(--primary-blue);"></i>
-                                                                ${trip.ageGroup}
-                                                            </span>
-                                                        </c:if>
-                                                        <c:if test="${trip.studentDiscountAvailable}">
-                                                            <span
-                                                                style="background: rgba(40,167,69,0.1); color: #28a745; padding: 2px 6px; border-radius: 4px; border: 1px solid rgba(40,167,69,0.2);">
-                                                                <i class="fa fa-id-card-o"></i> Student Discount
-                                                            </span>
-                                                        </c:if>
-                                                    </div>
-
-                                                    <div class="package-footer">
-                                                        <div class="package-price">₹${trip.price} <span>/ person</span>
-                                                        </div>
-                                                        <c:choose>
-                                                            <c:when test="${trip.soldOut}">
-                                                                <button class="btn-view" disabled style="background: rgba(255,255,255,0.05); color: rgba(255,255,255,0.3); cursor: not-allowed; border-color: transparent;">Sold Out</button>
-                                                            </c:when>
-                                                            <c:otherwise>
-                                                                <a href="<c:url value='/user/package/${trip.id}'/>" class="btn-view">View Details</a>
-                                                            </c:otherwise>
-                                                        </c:choose>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </c:forEach>
-                                    </div>
-                                </section>
+                    <div class="filter-group mb-4">
+                        <label class="filter-label">DESTINATION</label>
+                        <select class="luxe-select" name="destination" id="filterDest">
+                            <option value="All">All Destinations</option>
+                            <c:forEach var="dest" items="${destinations}">
+                                <option value="${dest}" ${currentParams.destination==dest ? 'selected' : ''}>${dest}</option>
                             </c:forEach>
-                        </c:when>
-                        <c:otherwise>
-                            <div class="empty-state">
-                                <i class="fa fa-suitcase"
-                                    style="font-size: 60px; color: rgba(255,255,255,0.05); margin-bottom: 20px;"></i>
-                                <h3 style="font-weight: 700; color: #fff;">No Packages Found</h3>
-                                <p style="color: var(--text-muted); max-width: 400px; margin: 0 auto;">Try adjusting
-                                    your filters or search keywords to find what you're looking for.</p>
-                            </div>
-                        </c:otherwise>
-                    </c:choose>
-                            </div> <!-- End Right Column -->
-                        </div> <!-- End Flex Container -->
-                    </form>
-                </main>
-            </div>
+                        </select>
+                    </div>
 
-            <!-- Points Detail Modal -->
-            <div id="pointsModal" class="offcanvas-filter" style="right: -400px; width: 350px;">
-                <div style="display: flex; justify-content: space-between; align-items: center; padding: 25px; border-bottom: 1px solid rgba(255,255,255,0.05); background: var(--dark-card);">
-                    <h4 style="font-weight: 800; margin: 0; color: #ff9f43; font-size: 20px;">Your Reputation</h4>
-                    <button type="button" onclick="hidePoints()" style="background: none; border: none; color: #fff; font-size: 20px; cursor: pointer;">
-                        <i class="fa fa-times"></i>
-                    </button>
-                </div>
-                <div style="padding: 30px; text-align: center;">
-                    <div style="position: relative; width: 120px; height: 120px; margin: 0 auto 20px;">
-                        <img id="modalUserAvatar" src="${not empty user.profilePhoto ? user.profilePhoto : defaultAvatar}" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 3px solid #ff9f43; box-shadow: 0 0 30px rgba(255,159,67,0.3);">
-                        <div style="position: absolute; bottom: -5px; right: -5px; width: 45px; height: 45px; background: #ff9f43; border: 3px solid var(--dark-card); border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(0,0,0,0.5);">
-                            <span id="modalPointsValue" style="font-size: 18px; font-weight: 800; color: #fff;">0</span>
+                    <div class="filter-group mb-4">
+                        <label class="filter-label">TRIP TYPE</label>
+                        <select class="luxe-select" name="category" id="filterType">
+                            <option value="All">All Types</option>
+                            <option value="Trekking" ${currentParams.category=='Trekking' ? 'selected' : ''}>Trekking</option>
+                            <option value="Camping" ${currentParams.category=='Camping' ? 'selected' : ''}>Camping</option>
+                            <option value="Backpacking" ${currentParams.category=='Backpacking' ? 'selected' : ''}>Backpacking</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-group mb-4">
+                        <label class="filter-label">DURATION</label>
+                        <select class="luxe-select" name="duration" id="filterDuration">
+                            <option value="All">All Durations</option>
+                            <option value="Short" ${currentParams.duration=='Short' ? 'selected' : ''}>1-3 Days</option>
+                            <option value="Medium" ${currentParams.duration=='Medium' ? 'selected' : ''}>4-7 Days</option>
+                            <option value="Long" ${currentParams.duration=='Long' ? 'selected' : ''}>7+ Days</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-group mb-4">
+                        <label class="filter-label">DEPARTURE CITY</label>
+                        <select class="luxe-select" name="departureCity" id="filterCity">
+                            <option value="All">Any City</option>
+                            <option value="Bangalore" ${currentParams.departureCity=='Bangalore' ? 'selected' : ''}>Bangalore</option>
+                            <option value="Mumbai" ${currentParams.departureCity=='Mumbai' ? 'selected' : ''}>Mumbai</option>
+                            <option value="Delhi" ${currentParams.departureCity=='Delhi' ? 'selected' : ''}>Delhi</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-group mb-4">
+                        <label class="filter-label">TRAVEL MONTH</label>
+                        <select class="luxe-select" name="month" id="filterMonth">
+                            <option value="All">Any Month</option>
+                            <option value="05" ${currentParams.month=='05' ? 'selected' : ''}>May 2026</option>
+                            <option value="06" ${currentParams.month=='06' ? 'selected' : ''}>June 2026</option>
+                            <option value="07" ${currentParams.month=='07' ? 'selected' : ''}>July 2026</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-group mb-5">
+                        <label class="filter-label d-flex justify-content-between">
+                            PRICE RANGE
+                            <span id="priceVal" class="text-white-50">₹0 - ₹${not empty currentParams.maxPrice ? currentParams.maxPrice : '100000'}+</span>
+                        </label>
+                        <input type="range" class="luxe-range" name="maxPrice" id="filterPrice" min="0" max="100000" step="1000" value="${not empty currentParams.maxPrice ? currentParams.maxPrice : '100000'}" oninput="updatePriceLabel(this.value)">
+                        <div class="d-flex justify-content-between small mt-2 text-white-50">
+                            <span>₹0</span>
+                            <span>₹100000.0+</span>
                         </div>
                     </div>
-                    <h3 style="font-weight: 700; margin-bottom: 5px;">Total Points Earned</h3>
-                    <h2 id="modalTotalPointsLabel" style="font-size: 32px; font-weight: 800; color: #ff9f43; margin-bottom: 10px;">0</h2>
-                    <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 30px;">Your traveler influence across the Youth Travel platform.</p>
-                    
-                    <div style="text-align: left; background: rgba(0,0,0,0.2); padding: 20px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.05);">
-                        <div style="display: flex; justify-content: space-between; margin-bottom: 12px; font-size: 13px;">
-                            <span><i class="fa fa-heart" style="color: #ff9f43; width: 20px;"></i> Like received</span>
-                            <span style="font-weight: 700; color: #28a745;">+10 pts</span>
-                        </div>
-                        <div style="display: flex; justify-content: space-between; margin-bottom: 12px; font-size: 13px;">
-                            <span><i class="fa fa-eye" style="color: #ff9f43; width: 20px;"></i> Memory view</span>
-                            <span style="font-weight: 700; color: #28a745;">+2 pts</span>
-                        </div>
-                        <div style="display: flex; justify-content: space-between; font-size: 13px;">
-                            <span><i class="fa fa-user" style="color: #ff9f43; width: 20px;"></i> Profile visit</span>
-                            <span style="font-weight: 700; color: #28a745;">+1 pt</span>
-                        </div>
+
+                    <button type="submit" class="btn-apply-filters mb-3">Apply Filters</button>
+                    <button type="button" class="btn-reset-filters" onclick="window.location.href='/user/dashboard'">Reset</button>
+                </div>
+
+                <div class="results-meta">
+                    <div class="fw-bold">EXPLORING <span class="text-danger">${totalCount}</span> ADVENTURES</div>
+                    <div class="d-flex gap-3 align-items-center">
+                        <div class="small fw-bold text-white-50">Group by:</div>
+                        <select name="groupBy" class="sort-select" onchange="this.form.submit()">
+                            <option value="travelerType" ${currentParams.groupBy == 'travelerType' ? 'selected' : ''}>Traveler Type</option>
+                            <option value="activity" ${currentParams.groupBy == 'activity' ? 'selected' : ''}>Activity</option>
+                        </select>
+                        <div class="small fw-bold text-white-50">Sort by:</div>
+                        <select name="sortBy" class="sort-select" onchange="this.form.submit()">
+                            <option value="latest" ${currentParams.sortBy == 'latest' ? 'selected' : ''}>Latest</option>
+                            <option value="priceLow" ${currentParams.sortBy == 'priceLow' ? 'selected' : ''}>Price: Low to High</option>
+                        </select>
                     </div>
                 </div>
-            </div>
-            <script>
-                function updatePrice(val) {
-                    document.getElementById('priceVal').innerText = '₹' + val + (val == 100000 ? '+' : '');
-                }
 
-                function playVideo(card) {
-                    const video = card.querySelector('.package-video');
-                    if (video) {
-                        if (video.readyState < 2) video.load(); // Lazy load video
-                        video.play().catch(e => console.log("Video play blocked:", e));
-                    }
-                }
+                <c:choose>
+                    <c:when test="${not empty groupedPackages}">
+                        <c:forEach var="entry" items="${groupedPackages}">
+                            <section class="category-section">
+                                <div class="category-header">
+                                    <h2 class="category-title">${entry.key}</h2>
+                                    <span class="badge bg-danger-soft text-danger fw-bold">${entry.value.size()} Packages</span>
+                                </div>
+                                <div class="package-grid">
+                                    <c:forEach var="trip" items="${entry.value}">
+                                        <c:set var="videoUrl" value="" />
+                                        <c:set var="hasVideo" value="false" />
+                                        <c:forEach var="url" items="${trip.mediaUrls.split(',')}">
+                                            <c:if test="${url.toLowerCase().endsWith('.mp4') || url.toLowerCase().endsWith('.webm')}">
+                                                <c:set var="videoUrl" value="${url}" />
+                                                <c:set var="hasVideo" value="true" />
+                                            </c:if>
+                                        </c:forEach>
 
-                function pauseVideo(card) {
-                    const video = card.querySelector('.package-video');
-                    if (video) {
-                        video.pause();
-                        video.currentTime = 0;
-                    }
+                                        <div class="package-card ${trip.soldOut ? 'sold-out' : ''}" onmouseenter="playVideo(this)" onmouseleave="pauseVideo(this)">
+                                            <div class="package-img-wrapper">
+                                                <img src="${trip.imageUrl}" class="package-img">
+                                                <c:if test="${hasVideo && !trip.soldOut}">
+                                                    <video class="package-video" muted loop playsinline><source src="${videoUrl}" type="video/mp4"></video>
+                                                </c:if>
+                                                <div class="expert-badge-container">
+                                                    <c:choose>
+                                                        <c:when test="${trip.soldOut}"><span class="expert-badge badge-sold-out">SOLD OUT</span></c:when>
+                                                        <c:otherwise>
+                                                            <span class="expert-badge badge-expert">EXPERT PICK</span>
+                                                            <span class="expert-badge badge-trending" style="background: #f59e0b; color: #000; margin-left: 5px;">TRENDING</span>
+                                                        </c:otherwise>
+                                                    </c:choose>
+                                                </div>
+                                                <div class="wishlist-btn-overlay" style="position: absolute; top: 15px; right: 15px; z-index: 10;">
+                                                    <button class="btn btn-link text-white p-0" style="font-size: 20px; text-shadow: 0 2px 10px rgba(0,0,0,0.5);"><i class="fa fa-heart-o"></i></button>
+                                                </div>
+                                                <div class="quick-view-overlay">
+                                                    <a href="<c:url value='/user/package/${trip.id}'/>" class="btn-quick-view">QUICK VIEW</a>
+                                                </div>
+                                            </div>
+                                            <div class="package-info">
+                                                <h3 class="package-name">${trip.title}</h3>
+                                                <div class="package-meta"><i class="fa fa-map-marker"></i> ${trip.destination}</div>
+                                                <div class="package-meta"><i class="fa fa-calendar"></i> ${trip.days}D / ${trip.nights}N</div>
+                                                <div class="package-footer">
+                                                    <div class="package-price">₹<fmt:formatNumber value="${trip.price}" pattern="#,##0" /> <span>/ person</span></div>
+                                                    <a href="<c:url value='/user/package/${trip.id}'/>" class="btn-view ${trip.soldOut ? 'disabled' : ''}">
+                                                        ${trip.soldOut ? 'SOLD OUT' : 'DETAILS'}
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </c:forEach>
+                                </div>
+                            </section>
+                        </c:forEach>
+                    </c:when>
+                    <c:otherwise>
+                        <div class="text-center py-5 opacity-50">
+                            <i class="fa fa-search fa-4x mb-3"></i>
+                            <h3>No Adventures Found</h3>
+                        </div>
+                    </c:otherwise>
+                </c:choose>
+            </form>
+        </main>
+    </div>
+
+    <script>
+        function filterBy(category) {
+            document.querySelectorAll('.filter-item').forEach(el => el.classList.remove('active'));
+            if(event) event.target.classList.add('active');
+
+            const cards = document.querySelectorAll('.col-package');
+            let found = 0;
+
+            cards.forEach(card => {
+                const tripCategory = card.getAttribute('data-category');
+                if (category === 'All' || tripCategory === category) {
+                    card.style.display = 'block';
+                    card.style.opacity = '1';
+                    found++;
+                } else {
+                    card.style.display = 'none';
                 }
+            });
+
+            const noResult = document.getElementById('noResultsMessage');
+            if (noResult) noResult.style.display = (found === 0) ? 'block' : 'none';
+        }
+
+        function searchTrips() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            const cards = document.querySelectorAll('.col-package');
+            let found = 0;
+
+            cards.forEach(card => {
+                const title = card.querySelector('.package-title').innerText.toLowerCase();
+                const dest = card.querySelector('.package-meta').innerText.toLowerCase();
+
+                if (title.includes(query) || dest.includes(query)) {
+                    card.style.display = 'block';
+                    found++;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
             
-                function toggleFilter() {
-                    const sidebar = document.getElementById('filterSidebar');
-                    const overlay = document.getElementById('filterOverlay');
-                    
-                    sidebar.classList.toggle('show');
-                    
-                    if (overlay.classList.contains('show')) {
-                        overlay.style.opacity = '0';
-                        setTimeout(() => overlay.classList.remove('show'), 300);
-                    } else {
-                        overlay.classList.add('show');
-                        // trigger reflow
-                        void overlay.offsetWidth;
-                        overlay.style.opacity = '1';
-                    }
-                }
+            const noResult = document.getElementById('noResultsMessage');
+            if (noResult) noResult.style.display = (found === 0) ? 'block' : 'none';
+        }
 
-                function showMyPoints() {
-                    const modal = document.getElementById('pointsModal');
-                    const overlay = document.getElementById('filterOverlay');
-                    
-                    // Fetch latest points
-                    fetch('/user/profile/api/data')
-                        .then(res => res.json())
-                        .then(data => {
-                            const pts = data.user.travelPoints || 0;
-                            document.getElementById('modalPointsValue').innerText = pts;
-                            document.getElementById('modalTotalPointsLabel').innerText = pts;
-                        });
+        function playVideo(card) {
+            const video = card.querySelector('.package-video');
+            if (video) video.play();
+        }
 
-                    modal.style.right = '0';
-                    overlay.classList.add('show');
-                    void overlay.offsetWidth;
-                    overlay.style.opacity = '1';
-                }
+        function pauseVideo(card) {
+            const video = card.querySelector('.package-video');
+            if (video) {
+                video.pause();
+                video.currentTime = 0;
+            }
+        }
 
-                function hidePoints() {
-                    const modal = document.getElementById('pointsModal');
-                    const overlay = document.getElementById('filterOverlay');
-                    
-                    modal.style.right = '-400px';
-                    overlay.style.opacity = '0';
-                    setTimeout(() => overlay.classList.remove('show'), 300);
-                }
+        function toggleFilter() {
+            const sidebar = document.getElementById('filterSidebar');
+            const overlay = document.getElementById('filterOverlay');
+            if(sidebar) sidebar.classList.toggle('show');
+            if(overlay) overlay.classList.toggle('show');
+        }
 
-            </script>
-        </body>
-
-        </html>
+        function updatePriceLabel(val) {
+            const label = document.getElementById('priceVal');
+            if(label) {
+                label.innerText = '₹0 - ₹' + parseInt(val).toLocaleString('en-IN') + (val >= 100000 ? '+' : '');
+            }
+        }
+    </script>
+</body>
+</html>

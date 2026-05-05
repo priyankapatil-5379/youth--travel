@@ -477,14 +477,19 @@
         <div class="fish fish-1 fish-orange">
             <div class="fish-body"></div>
         </div>
-        
-        <!-- 2. Blue Tang -->
         <div class="fish fish-2 fish-cyan">
             <div class="fish-body"></div>
         </div>
-        
-        <!-- 3. Yellow Tang -->
-        <div class="fish fish-3 fish-golden">
+        <div class="fish fish-3 fish-purple">
+            <div class="fish-body"></div>
+        </div>
+        <div class="fish fish-4 fish-gold">
+            <div class="fish-body"></div>
+        </div>
+        <div class="fish fish-5 fish-red">
+            <div class="fish-body"></div>
+        </div>
+        <div class="fish fish-6 fish-black">
             <div class="fish-body"></div>
         </div>
 
@@ -513,12 +518,10 @@
                     
                     <div class="mobile-btn-wrap d-lg-none">
                         <a href="<c:url value='/user/login'/>" class="login-btn">Login / Sign Up</a>
-                        <a href="<c:url value='/vendor/login'/>" class="login-btn" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2);">Vendor Portal</a>
                     </div>
                 </div>
                 <div class="nav-right">
                     <a href="<c:url value='/user/login'/>" class="login-btn d-none d-lg-inline-block">Login / Sign Up</a>
-                    <a href="<c:url value='/vendor/login'/>" class="login-btn d-none d-lg-inline-block" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); font-size: 14px; padding: 10px 18px;">Vendor Portal</a>
                     <div class="nav-mobile-toggle" onclick="document.querySelector('.nav-links').classList.toggle('active')">
                         <i class="fa fa-bars"></i>
                     </div>
@@ -582,13 +585,13 @@
                             We started Youth Travel because we were tired of "tour packages" that felt like school field trips. We wanted the freedom of the road with the security of a plan.
                         </p>
                         <p style="font-size: 18px; line-height: 1.8; color: #eee;">
-                            Whether you're planning with college mates or your office gang, we bridge the gap between "we should go" and "we are here." No hidden costs, no boring guides — just raw India.
+                            Whether you're planning with college mates or your office gang, we bridge the gap between "we should go" and "we are here." No hidden costs, no boring guides â€” just raw India.
                         </p>
                     </div>
                     <div class="col-md-5">
                         <div class="hero-special-card">
                             <h4>Built for Indian Weekends</h4>
-                            <p>Real travel time, real local knowledge, and support that speaks your language — ensuring your trip is legendary from start to finish.</p>
+                            <p>Real travel time, real local knowledge, and support that speaks your language â€” ensuring your trip is legendary from start to finish.</p>
                             <a class="btn-red" href="<c:url value='/contact'/>" style="width: 100%; justify-content: center;">Join the Movement <i class="fa fa-arrow-right"></i></a>
                         </div>
                     </div>
@@ -604,7 +607,7 @@
                     <div class="footer-logo" style="margin-bottom: 25px;">
                         <img src="<c:url value='/views/assets/images/footer-logo.png'/>" alt="" style="height: 45px;"/>
                     </div>
-                    <p style="color: #fff; margin-bottom: 30px; font-size: 16px; line-height: 1.8;">Not just places, but moments that stay with you forever. Explore the unexplored with Youth Travel.</p>
+                    <p style="color: #fff; margin-bottom: 30px; font-size: 16px; line-height: 1.8;">Travelling is more than just visiting places; it's about the vibes, the stories, and the memories that last a lifetime. Explore the unexplored with Youth Travel!</p>
                     <div class="footer-address" style="color: #fff;">
                         <p style="margin-bottom: 12px;"><i class="fa fa-map-marker" style="color: #e63946; margin-right: 12px; width: 20px;"></i> Youth Travel, MG Road, Bengaluru, Karnataka, India</p>
                         <p style="margin-bottom: 12px;"><i class="fa fa-phone" style="color: #e63946; margin-right: 12px; width: 20px;"></i> +91 98765 43210</p>
@@ -664,4 +667,5 @@
 </body>
 
 </html>
+
 

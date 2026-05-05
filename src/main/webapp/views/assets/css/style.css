@@ -575,6 +575,12 @@ img {
     overflow: hidden;
     border: 1px solid rgba(255, 255, 255, 0.10);
     box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35);
+    position: relative;
+    transition: transform 0.4s ease;
+}
+
+.yt-mini-thumb:hover {
+    transform: translateY(-5px);
 }
 
 .yt-mini-thumb img {
@@ -582,6 +588,32 @@ img {
     height: 165px;
     object-fit: cover;
     display: block;
+    transition: transform 0.6s ease;
+}
+
+.yt-mini-thumb:hover img {
+    transform: scale(1.1);
+}
+
+.yt-thumb-caption {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 12px 10px 8px;
+    background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.4) 60%, transparent 100%);
+    color: #fff;
+    font-size: 13px;
+    font-weight: 600;
+    text-align: center;
+    pointer-events: none;
+    z-index: 2;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+    transition: background 0.3s ease;
+}
+
+.yt-mini-thumb:hover .yt-thumb-caption {
+    background: linear-gradient(to top, rgba(224, 76, 38, 0.9) 0%, rgba(0,0,0,0.5) 70%, transparent 100%);
 }
 
 .yt-featured {
@@ -2691,8 +2723,8 @@ img {
 
 .fish {
     position: absolute;
-    width: 140px;
-    height: 100px;
+    width: 80px;
+    height: 60px;
     opacity: 0.9;
     filter: drop-shadow(0 12px 25px rgba(0,0,0,0.4));
     z-index: -1;
@@ -2716,18 +2748,33 @@ img {
     background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 80'><defs><clipPath id='b'><path d='M15,45 C15,20 85,20 85,45 C85,70 15,70 15,45'/></clipPath></defs><path d='M90,40 L115,20 Q120,40 115,60 L90,40' fill='%230077be' stroke='%23003366' stroke-width='2'/><path d='M40,20 Q60,0 90,30' fill='%230077be' stroke='%23003366' stroke-width='2'/><path d='M45,60 Q65,80 90,50' fill='%230077be' stroke='%23003366' stroke-width='2'/><path d='M15,45 C15,20 85,20 85,45 C85,70 15,70 15,45' fill='%2300aaff' stroke='%23003366' stroke-width='2'/><g clip-path='url(%23b)'><path d='M35,10 Q45,45 35,80 M55,10 Q65,45 55,80 M75,10 Q85,45 75,80' fill='none' stroke='%23ffdd00' stroke-width='9' opacity='0.8'/></g><circle cx='32' cy='40' r='9' fill='white' stroke='%23003366' stroke-width='1.5'/><circle cx='34' cy='40' r='5' fill='black'/><circle cx='32' cy='38' r='2' fill='white'/><circle cx='38' cy='52' r='2.5' fill='%23ff77aa' opacity='0.6'/><path d='M15,45 Q10,45 10,48 Q10,51 15,50' fill='none' stroke='%23003366' stroke-width='2'/></svg>");
 }
 
-.fish-golden .fish-body {
+.fish-purple .fish-body {
     background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 80'><defs><clipPath id='b'><path d='M15,45 C15,20 85,20 85,45 C85,70 15,70 15,45'/></clipPath></defs><path d='M90,40 L115,20 Q120,40 115,60 L90,40' fill='%238800cc' stroke='%23330066' stroke-width='2'/><path d='M40,20 Q60,0 90,30' fill='%238800cc' stroke='%23330066' stroke-width='2'/><path d='M45,60 Q65,80 90,50' fill='%238800cc' stroke='%23330066' stroke-width='2'/><path d='M15,45 C15,20 85,20 85,45 C85,70 15,70 15,45' fill='%23aa33ff' stroke='%23330066' stroke-width='2'/><g clip-path='url(%23b)'><path d='M35,10 Q45,45 35,80 M55,10 Q65,45 55,80 M75,10 Q85,45 75,80' fill='none' stroke='%23ff66cc' stroke-width='9' opacity='0.8'/></g><circle cx='32' cy='40' r='9' fill='white' stroke='%23330066' stroke-width='1.5'/><circle cx='34' cy='40' r='5' fill='black'/><circle cx='32' cy='38' r='2' fill='white'/><circle cx='38' cy='52' r='2.5' fill='%23ff99cc' opacity='0.6'/><path d='M15,45 Q10,45 10,48 Q10,51 15,50' fill='none' stroke='%23330066' stroke-width='2'/></svg>");
+}
+
+.fish-gold .fish-body {
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 80'><defs><clipPath id='b'><path d='M15,45 C15,20 85,20 85,45 C85,70 15,70 15,45'/></clipPath></defs><path d='M90,40 L115,20 Q120,40 115,60 L90,40' fill='%23cc9900' stroke='%23664400' stroke-width='2'/><path d='M40,20 Q60,0 90,30' fill='%23cc9900' stroke='%23664400' stroke-width='2'/><path d='M45,60 Q65,80 90,50' fill='%23cc9900' stroke='%23664400' stroke-width='2'/><path d='M15,45 C15,20 85,20 85,45 C85,70 15,70 15,45' fill='%23ffdd00' stroke='%23664400' stroke-width='2'/><g clip-path='url(%23b)'><path d='M35,10 Q45,45 35,80 M55,10 Q65,45 55,80 M75,10 Q85,45 75,80' fill='none' stroke='white' stroke-width='9' opacity='0.8'/></g><circle cx='32' cy='40' r='9' fill='white' stroke='%23664400' stroke-width='1.5'/><circle cx='34' cy='40' r='5' fill='black'/><circle cx='32' cy='38' r='2' fill='white'/><circle cx='38' cy='52' r='2.5' fill='%23ffccaa' opacity='0.6'/><path d='M15,45 Q10,45 10,48 Q10,51 15,50' fill='none' stroke='%23664400' stroke-width='2'/></svg>");
+}
+
+.fish-red .fish-body {
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 80'><defs><clipPath id='b'><path d='M15,45 C15,20 85,20 85,45 C85,70 15,70 15,45'/></clipPath></defs><path d='M90,40 L115,20 Q120,40 115,60 L90,40' fill='%23b91c1c' stroke='%23450a0a' stroke-width='2'/><path d='M40,20 Q60,0 90,30' fill='%23b91c1c' stroke='%23450a0a' stroke-width='2'/><path d='M45,60 Q65,80 90,50' fill='%23b91c1c' stroke='%23450a0a' stroke-width='2'/><path d='M15,45 C15,20 85,20 85,45 C85,70 15,70 15,45' fill='%23ef4444' stroke='%23450a0a' stroke-width='2'/><g clip-path='url(%23b)'><path d='M35,10 Q45,45 35,80 M55,10 Q65,45 55,80 M75,10 Q85,45 75,80' fill='none' stroke='white' stroke-width='9' opacity='0.8'/></g><circle cx='32' cy='40' r='9' fill='white' stroke='%23450a0a' stroke-width='1.5'/><circle cx='34' cy='40' r='5' fill='black'/><circle cx='32' cy='38' r='2' fill='white'/><circle cx='38' cy='52' r='2.5' fill='%23fca5a5' opacity='0.6'/><path d='M15,45 Q10,45 10,48 Q10,51 15,50' fill='none' stroke='%23450a0a' stroke-width='2'/></svg>");
+}
+
+.fish-black .fish-body {
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 80'><defs><clipPath id='b'><path d='M15,45 C15,20 85,20 85,45 C85,70 15,70 15,45'/></clipPath></defs><path d='M90,40 L115,20 Q120,40 115,60 L90,40' fill='%23000000' stroke='%23333333' stroke-width='2'/><path d='M40,20 Q60,0 90,30' fill='%23000000' stroke='%23333333' stroke-width='2'/><path d='M45,60 Q65,80 90,50' fill='%23000000' stroke='%23333333' stroke-width='2'/><path d='M15,45 C15,20 85,20 85,45 C85,70 15,70 15,45' fill='%231a1a1a' stroke='%23333333' stroke-width='2'/><g clip-path='url(%23b)'><path d='M35,10 Q45,45 35,80 M55,10 Q65,45 55,80 M75,10 Q85,45 75,80' fill='none' stroke='%23555555' stroke-width='9' opacity='0.8'/></g><circle cx='32' cy='40' r='9' fill='white' stroke='%23333333' stroke-width='1.5'/><circle cx='34' cy='40' r='5' fill='black'/><circle cx='32' cy='38' r='2' fill='white'/><circle cx='38' cy='52' r='2.5' fill='%23444444' opacity='0.6'/><path d='M15,45 Q10,45 10,48 Q10,51 15,50' fill='none' stroke='%23333333' stroke-width='2'/></svg>");
 }
 
 .fish-1 { top: 15%; animation: swim-right 28s linear infinite; }
 .fish-2 { top: 45%; animation: swim-left 34s linear infinite; }
 .fish-3 { top: 75%; animation: swim-right 22s linear infinite; }
+.fish-4 { top: 30%; animation: swim-right 40s linear infinite; animation-delay: -5s; }
+.fish-5 { top: 60%; animation: swim-left 45s linear infinite; animation-delay: -10s; }
+.fish-6 { top: 85%; animation: swim-right 35s linear infinite; animation-delay: -15s; }
 
 .diver {
     position: absolute;
-    width: 200px;
-    height: 100px;
+    width: 450px;
+    height: 225px;
     opacity: 0.8;
     filter: drop-shadow(0 10px 15px rgba(0,0,0,0.5));
     z-index: -1;
@@ -2752,16 +2799,16 @@ img {
 
 .bubble-stream span {
     position: absolute;
-    width: 8px;
-    height: 8px;
+    width: 12px;
+    height: 12px;
     background: rgba(255, 255, 255, 0.4);
     border: 1px solid rgba(255, 255, 255, 0.6);
     border-radius: 50%;
     animation: risingBubbles 3s infinite ease-out;
 }
 
-.bubble-stream span:nth-child(2) { animation-delay: 1s; left: 5px; width: 6px; height: 6px; }
-.bubble-stream span:nth-child(3) { animation-delay: 2s; left: -5px; width: 10px; height: 10px; }
+.bubble-stream span:nth-child(2) { animation-delay: 1s; left: 8px; width: 9px; height: 9px; }
+.bubble-stream span:nth-child(3) { animation-delay: 2s; left: -8px; width: 15px; height: 15px; }
 
 @keyframes risingBubbles {
     0% { transform: translateY(0) scale(1); opacity: 0; }
@@ -2784,11 +2831,11 @@ img {
 }
 
 @keyframes swim-right {
-    0% { transform: translateX(-150px) scaleX(-1); }
-    100% { transform: translateX(calc(100vw + 150px)) scaleX(-1); }
+    0% { transform: translateX(-500px) scaleX(-1); }
+    100% { transform: translateX(calc(100vw + 500px)) scaleX(-1); }
 }
 
 @keyframes swim-left {
-    0% { transform: translateX(calc(100vw + 150px)) scaleX(1); }
-    100% { transform: translateX(-150px) scaleX(1); }
+    0% { transform: translateX(calc(100vw + 500px)) scaleX(1); }
+    100% { transform: translateX(-500px) scaleX(1); }
 }
