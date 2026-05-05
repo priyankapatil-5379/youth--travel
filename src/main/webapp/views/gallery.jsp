@@ -390,6 +390,7 @@
                 </div>
                 <div class="nav-links">
                     <a href="<c:url value='/'/>">Home</a>
+                    <a href="<c:url value='/explore-packages'/>">Explore</a>
                     <a href="<c:url value='/gallery'/>" class="active">Gallery</a>
                     <a href="<c:url value='/about'/>">About Us</a>
                     <a href="<c:url value='/contact'/>">Contact Us</a>
@@ -466,62 +467,90 @@
         </div>
     </section>
 
-    <section class="footer" style="background: rgba(0,0,0,0.2); padding: 80px 0; border-top: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);">
+    <section class="footer">
         <div class="container">
             <div class="row">
-                <div class="col-md-6">
-                    <div class="footer-logo" style="margin-bottom: 20px;">
-                        <img src="<c:url value='/views/assets/images/footer-logo.png'/>" alt="" style="height: 40px;"/>
-                    </div>
-                    <p style="color: #fff; margin-bottom: 30px;">Travelling is more than just visiting places; it's about the vibes, the stories, and the memories that last a lifetime. Explore the unexplored with Youth Travel!</p>
-                    <div class="footer-address" style="color: #fff;">
-                        <p><i class="fa fa-map-marker" style="color: #e63946; margin-right: 10px;"></i> Youth Travel, MG Road, Bengaluru, Karnataka, India</p>
-                        <p><i class="fa fa-phone" style="color: #e63946; margin-right: 10px;"></i> +91 98765 43210</p>
-                        <p><i class="fa fa-envelope" style="color: #e63946; margin-right: 10px;"></i> support@youthtravel.in</p>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="news">
-                        <p style="font-weight: 700; text-transform: uppercase; margin-bottom: 15px; color: #fff;">Newsletter Subscribe</p>
-                    </div>
-                    <form id="newsFormGallery" onsubmit="subscribeNewsGallery(event)">
-                        <div class="input-group-custom" style="margin-bottom: 30px; display: flex; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; overflow: hidden;">
-                            <input type="email" id="emailGallery" placeholder="Enter E-mail" style="flex: 1; background: transparent; border: none; padding: 12px; color: #fff; outline: none;" required>
-                            <button type="submit" id="btnGallery" style="background: #e63946; border: none; padding: 0 25px; color: #fff; font-weight: 600; cursor: pointer;">Subscribe</button>
+                <div class="col-md-12">
+                    <div class="col-md-6">
+                        <div class="footer-content">
+                            <div class="footer-logo">
+                                <img src="<c:url value='/views/assets/images/footer-logo.png'/>" alt="" />
+                            </div>
+                            <div class="footer-text">
+                                <p>
+                                    Travelling is more than just visiting places; it's about the vibes, the stories, and the memories that last a lifetime. Explore the unexplored with Youth Travel!
+                                </p>
+                            </div>
+                            <div class="footer-address">
+                                <ul>
+                                    <li><i class="fa fa-map-marker" aria-hidden="true"></i> Youth Travel, MG Road, Bengaluru, Karnataka, India
+                                    </li>
+
+                                    <li>
+                                        <i class="fa fa-phone" aria-hidden="true"></i> +91 98765 43210
+
+                                    </li>
+                                    <li>
+                                        <i class="fa fa-envelope" aria-hidden="true"></i> support@youthtravel.in
+
+                                    </li>
+                                </ul>
+                            </div>
                         </div>
-                    </form>
-                    <script>
-                        function subscribeNewsGallery(e) {
-                            e.preventDefault();
-                            const email = document.getElementById('emailGallery').value;
-                            const btn = document.getElementById('btnGallery');
-                            const formData = new FormData();
-                            formData.append("name", "Newsletter Subscriber");
-                            formData.append("email", email);
-                            formData.append("message", "Subscribed to newsletter.");
-                            fetch('/enquiry/submit', { method: 'POST', body: formData })
-                            .then(res => {
-                                if(res.ok) {
-                                    const originalText = btn.innerHTML;
-                                    const originalBg = btn.style.background;
-                                    btn.innerHTML = "Subscribed";
-                                    btn.style.background = "#4caf50";
-                                    btn.disabled = true;
-                                    document.getElementById('emailGallery').value = "";
-                                    setTimeout(() => {
-                                        btn.innerHTML = originalText;
-                                        btn.style.background = originalBg;
-                                        btn.disabled = false;
-                                    }, 3000);
+                    </div>
+                    <div class="col-md-6">
+                        <div class="footer-content">
+                            <div class="news">
+                                <p>
+                                    Newsletter Subscribe
+                                </p>
+                            </div>
+                            <div class="subscribe">
+                                <form id="newsletterForm" onsubmit="subscribeNewsletter(event)">
+                                    <div class="input-group">
+                                        <input type="email" id="newsletterEmail" class="form-control" size="50" placeholder="Enter E-mail" required>
+                                        <div class="input-group-btn">
+                                            <button type="submit" id="subscribeBtn" class="btn btn-danger">Subscribe</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <script>
+                                function subscribeNewsletter(e) {
+                                    e.preventDefault();
+                                    const email = document.getElementById('newsletterEmail').value;
+                                    const btn = document.getElementById('subscribeBtn');
+                                    const formData = new FormData();
+                                    formData.append("name", "Newsletter Subscriber");
+                                    formData.append("email", email);
+                                    formData.append("message", "Subscribed to newsletter.");
+                                    fetch('/enquiry/submit', { method: 'POST', body: formData })
+                                    .then(res => {
+                                        if(res.ok) {
+                                            const originalText = btn.innerHTML;
+                                            const originalBg = btn.style.background;
+                                            btn.innerHTML = "Subscribed";
+                                            btn.style.background = "#4caf50";
+                                            btn.disabled = true;
+                                            document.getElementById('newsletterEmail').value = "";
+                                            setTimeout(() => {
+                                                btn.innerHTML = originalText;
+                                                btn.style.background = originalBg;
+                                                btn.disabled = false;
+                                            }, 3000);
+                                        }
+                                    });
                                 }
-                            });
-                        }
-                    </script>
-                    <div class="social-icons" style="display: flex; gap: 20px;">
-                        <a href="#" style="color: #fff; font-size: 20px;"><i class="fa fa-facebook"></i></a>
-                        <a href="#" style="color: #fff; font-size: 20px;"><i class="fa fa-twitter"></i></a>
-                        <a href="#" style="color: #fff; font-size: 20px;"><i class="fa fa-linkedin"></i></a>
-                        <a href="#" style="color: #fff; font-size: 20px;"><i class="fa fa-instagram"></i></a>
+                            </script>
+                            <div class="footer-social">
+                                <ul>
+                                    <li><a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
+                                    <li><a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
+                                    <li><a href="#"><i class="fa fa-linkedin" aria-hidden="true"></i></a></li>
+                                    <li><a href="#"><i class="fa fa-instagram" aria-hidden="true"></i></a></li>
+                                </ul>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
