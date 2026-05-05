@@ -1,4 +1,4 @@
-﻿<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -477,14 +477,19 @@
         <div class="fish fish-1 fish-orange">
             <div class="fish-body"></div>
         </div>
-        
-        <!-- 2. Blue Tang -->
         <div class="fish fish-2 fish-cyan">
             <div class="fish-body"></div>
         </div>
-        
-        <!-- 3. Yellow Tang -->
-        <div class="fish fish-3 fish-golden">
+        <div class="fish fish-3 fish-purple">
+            <div class="fish-body"></div>
+        </div>
+        <div class="fish fish-4 fish-gold">
+            <div class="fish-body"></div>
+        </div>
+        <div class="fish fish-5 fish-red">
+            <div class="fish-body"></div>
+        </div>
+        <div class="fish fish-6 fish-black">
             <div class="fish-body"></div>
         </div>
 
@@ -602,7 +607,7 @@
                     <div class="footer-logo" style="margin-bottom: 25px;">
                         <img src="<c:url value='/views/assets/images/footer-logo.png'/>" alt="" style="height: 45px;"/>
                     </div>
-                    <p style="color: #fff; margin-bottom: 30px; font-size: 16px; line-height: 1.8;">Not just places, but moments that stay with you forever. Explore the unexplored with Youth Travel.</p>
+                    <p style="color: #fff; margin-bottom: 30px; font-size: 16px; line-height: 1.8;">Travelling is more than just visiting places; it's about the vibes, the stories, and the memories that last a lifetime. Explore the unexplored with Youth Travel!</p>
                     <div class="footer-address" style="color: #fff;">
                         <p style="margin-bottom: 12px;"><i class="fa fa-map-marker" style="color: #e63946; margin-right: 12px; width: 20px;"></i> Youth Travel, MG Road, Bengaluru, Karnataka, India</p>
                         <p style="margin-bottom: 12px;"><i class="fa fa-phone" style="color: #e63946; margin-right: 12px; width: 20px;"></i> +91 98765 43210</p>

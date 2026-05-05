@@ -1,4 +1,4 @@
-﻿<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -948,14 +948,19 @@
         <div class="fish fish-1 fish-orange">
             <div class="fish-body"></div>
         </div>
-        
-        <!-- 2. Blue Tang -->
         <div class="fish fish-2 fish-cyan">
             <div class="fish-body"></div>
         </div>
-        
-        <!-- 3. Yellow Tang -->
-        <div class="fish fish-3 fish-golden">
+        <div class="fish fish-3 fish-purple">
+            <div class="fish-body"></div>
+        </div>
+        <div class="fish fish-4 fish-gold">
+            <div class="fish-body"></div>
+        </div>
+        <div class="fish fish-5 fish-red">
+            <div class="fish-body"></div>
+        </div>
+        <div class="fish fish-6 fish-black">
             <div class="fish-body"></div>
         </div>
 
@@ -1826,7 +1831,7 @@
                             </div>
                             <div class="footer-text">
                                 <p>
-                                    Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur
+                                    Travelling is more than just visiting places; it's about the vibes, the stories, and the memories that last a lifetime. Explore the unexplored with Youth Travel!
                                 </p>
                             </div>
                             <div class="footer-address">
