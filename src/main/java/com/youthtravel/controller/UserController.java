@@ -472,6 +472,16 @@ public class UserController {
                 model.addAttribute("gallery", trip.getMediaUrls().split(","));
             }
 
+            // Fetch Related Trips
+            List<Trip> allTrips = tripService.getAllTrips();
+            List<Trip> related = allTrips.stream()
+                .filter(t -> !"Inactive".equalsIgnoreCase(t.getStatus()))
+                .filter(t -> !t.getId().equals(id))
+                .filter(t -> t.getCategory() != null && t.getCategory().equals(trip.getCategory()))
+                .limit(4)
+                .collect(Collectors.toList());
+            model.addAttribute("relatedTrips", related);
+
             return "users/package-details";
         }
 
