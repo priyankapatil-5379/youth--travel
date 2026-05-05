@@ -125,6 +125,123 @@
             100% { transform: rotate(8deg)  scaleX(0.85); opacity: 0.25; }
         }
 
+        /* === WELCOME MODAL === */
+        #welcomeModal {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            z-index: 1000000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        #welcomeModal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .welcome-modal-content {
+            background: #fff;
+            width: 90%;
+            max-width: 480px;
+            padding: 60px 40px;
+            border-radius: 32px;
+            position: relative;
+            text-align: center;
+            box-shadow: 0 40px 100px rgba(0,0,0,0.6);
+            transform: scale(0.9) translateY(40px);
+            transition: all 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        #welcomeModal.active .welcome-modal-content {
+            transform: scale(1) translateY(0);
+        }
+
+        .welcome-modal-close {
+            position: absolute;
+            top: 25px; right: 25px;
+            width: 40px;
+            height: 40px;
+            line-height: 40px;
+            font-size: 28px;
+            color: #999;
+            cursor: pointer;
+            transition: 0.3s;
+            background: #f5f5f5;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .welcome-modal-close:hover { 
+            color: #e63946; 
+            background: #fee2e2;
+            transform: rotate(90deg); 
+        }
+
+        .welcome-modal-logo { 
+            height: 55px; 
+            margin-bottom: 35px; 
+            filter: drop-shadow(0 5px 15px rgba(0,0,0,0.1));
+        }
+
+        .welcome-modal-content h2 {
+            font-family: 'Oswald', sans-serif;
+            font-size: 36px;
+            color: #111;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 700;
+        }
+
+        .welcome-modal-content p {
+            font-size: 18px;
+            color: #555;
+            margin-bottom: 40px;
+            line-height: 1.7;
+        }
+
+        .welcome-btn {
+            display: block;
+            background: linear-gradient(135deg, #e63946 0%, #c1121f 100%);
+            color: #fff;
+            padding: 18px 40px;
+            border-radius: 16px;
+            font-weight: 700;
+            font-size: 20px;
+            text-decoration: none;
+            transition: 0.4s;
+            box-shadow: 0 15px 30px rgba(230,57,70,0.4);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .welcome-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(230,57,70,0.5);
+            color: #fff;
+            filter: brightness(1.1);
+        }
+
+        .guest-link {
+            display: inline-block;
+            margin-top: 25px;
+            color: #888;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 15px;
+            transition: 0.3s;
+        }
+        .guest-link:hover { color: #e63946; }
+
         .yt-new-hero {
             position: relative;
             width: 100%;
@@ -2028,6 +2145,38 @@
                 }
             }
         }
+    </script>
+    <div id="welcomeModal">
+        <div class="welcome-modal-content">
+            <span class="welcome-modal-close" onclick="closeWelcomeModal()">&times;</span>
+            <img src="<c:url value='/views/assets/images/logo.png'/>" alt="Youth Travel" class="welcome-modal-logo">
+            <h2>Adventure Awaits!</h2>
+            <p>Join our tribe today! <strong>Sign in</strong> to unlock 10% off your first trip and get secret adventure deals.</p>
+            <a href="<c:url value='/user/login'/>" class="welcome-btn">Sign In or Register</a>
+            <a href="javascript:void(0)" onclick="closeWelcomeModal()" class="guest-link">Maybe Later, Continue as Guest</a>
+        </div>
+    </div>
+
+    <script>
+        function openWelcomeModal() {
+            document.getElementById('welcomeModal').classList.add('active');
+            document.body.style.overflow = 'hidden'; // Prevent scrolling
+        }
+
+        function closeWelcomeModal() {
+            document.getElementById('welcomeModal').classList.remove('active');
+            document.body.style.overflow = 'auto'; // Restore scrolling
+        }
+
+        window.addEventListener('DOMContentLoaded', (event) => {
+            // Show modal after 1.2 seconds for a premium feel
+            setTimeout(openWelcomeModal, 1200);
+        });
+
+        // Close on escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === "Escape") closeWelcomeModal();
+        });
     </script>
 </body>
 
