@@ -189,7 +189,7 @@
         .welcome-modal-logo { 
             height: 55px; 
             margin-bottom: 35px; 
-            filter: drop-shadow(0 5px 15px rgba(0,0,0,0.1));
+            filter: drop-shadow(0 0 1px rgba(0,0,0,0.5)) drop-shadow(0 0 1px rgba(0,0,0,0.5));
         }
 
         .welcome-modal-content h2 {
@@ -1102,7 +1102,7 @@
                     
                     <div class="nav-links">
                         <a href="<c:url value='/'/>" class="active">Home</a>
-                        <a href="#choose-adventure">Explore</a>
+                        <a href="<c:url value='/explore-packages'/>">Explore</a>
                         <a href="<c:url value='/gallery'/>">Gallery</a>
                         <a href="<c:url value='/about'/>">About Us</a>
                         <a href="<c:url value='/contact'/>">Contact Us</a>
@@ -1128,7 +1128,7 @@
                 <p class="hero-subtitle">Not just places, but moments that<br>stay with you forever.</p>
                 
                 <div class="hero-action-btns">
-                    <a href="#choose-adventure" class="btn-red">Explore Now <i class="fa fa-arrow-right"></i></a>
+                    <a href="<c:url value='/explore-packages'/>" class="btn-red">Explore Now <i class="fa fa-arrow-right"></i></a>
                     <a href="<c:url value='/plan-trip'/>" class="btn-outline"><i class="fa fa-users"></i> Plan My Trip</a>
                     <a href="<c:url value='/user/register'/>" class="btn-outline"><i class="fa fa-user-plus"></i> Join Community</a>
                 </div>
@@ -1767,7 +1767,7 @@
             </div>
 
             <div class="yt-why-cta">
-                <a class="yt-btn yt-btn-primary" href="#choose-adventure">Explore Experiences</a>
+                <a class="yt-btn yt-btn-primary" href="<c:url value='/explore-packages'/>">Explore Experiences</a>
                 <a class="yt-btn yt-btn-outline" href="<c:url value='/contact'/>">Talk to Us</a>
             </div>
         </div>
