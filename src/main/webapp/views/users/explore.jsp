@@ -259,19 +259,6 @@
                                     <h4>${a.title}</h4>
                                     <p>${a.content}</p>
                                     
-                                    <div class="advice-details" style="margin-top: 15px;">
-                                        <c:if test="${not empty a.bestTimeToVisit}"><div style="font-size: 11px; margin-top: 5px; border-left: 2px solid var(--primary-blue); padding-left: 8px;"><strong style="color: var(--primary-blue);">Best Time:</strong> ${a.bestTimeToVisit}</div></c:if>
-                                        <c:if test="${not empty a.whatToPack}"><div style="font-size: 11px; margin-top: 5px; border-left: 2px solid var(--primary-blue); padding-left: 8px;"><strong style="color: var(--primary-blue);">Packing:</strong> ${a.whatToPack}</div></c:if>
-                                        <c:if test="${not empty a.safetyTips}"><div style="font-size: 11px; margin-top: 5px; border-left: 2px solid var(--primary-blue); padding-left: 8px;"><strong style="color: var(--primary-blue);">Safety:</strong> ${a.safetyTips}</div></c:if>
-                                        <c:if test="${not empty a.budgetTips}"><div style="font-size: 11px; margin-top: 5px; border-left: 2px solid var(--primary-blue); padding-left: 8px;"><strong style="color: var(--primary-blue);">Budget:</strong> ${a.budgetTips}</div></c:if>
-                                        <c:if test="${not empty a.stayFoodAdvice}"><div style="font-size: 11px; margin-top: 5px; border-left: 2px solid var(--primary-blue); padding-left: 8px;"><strong style="color: var(--primary-blue);">Stay & Food:</strong> ${a.stayFoodAdvice}</div></c:if>
-                                        <c:if test="${not empty a.transportTips}"><div style="font-size: 11px; margin-top: 5px; border-left: 2px solid var(--primary-blue); padding-left: 8px;"><strong style="color: var(--primary-blue);">Transport:</strong> ${a.transportTips}</div></c:if>
-                                        <c:if test="${not empty a.connectivityTips}"><div style="font-size: 11px; margin-top: 5px; border-left: 2px solid var(--primary-blue); padding-left: 8px;"><strong style="color: var(--primary-blue);">Network:</strong> ${a.connectivityTips}</div></c:if>
-                                        <c:if test="${not empty a.localRules}"><div style="font-size: 11px; margin-top: 5px; border-left: 2px solid var(--primary-blue); padding-left: 8px;"><strong style="color: var(--primary-blue);">Rules:</strong> ${a.localRules}</div></c:if>
-                                        <c:if test="${not empty a.environmentalTips}"><div style="font-size: 11px; margin-top: 5px; border-left: 2px solid var(--primary-blue); padding-left: 8px;"><strong style="color: var(--primary-blue);">Eco Tips:</strong> ${a.environmentalTips}</div></c:if>
-                                        <c:if test="${not empty a.proTips}"><div style="font-size: 11px; margin-top: 5px; border-left: 2px solid var(--primary-blue); padding-left: 8px;"><strong style="color: var(--primary-blue);">Pro Tips:</strong> ${a.proTips}</div></c:if>
-                                    </div>
-
                                     <div style="margin-top: 15px; font-size: 12px; color: rgba(255,255,255,0.6);">
                                         <span><i class="fa fa-heart"></i> ${a.likes} likes</span>
                                     </div>
