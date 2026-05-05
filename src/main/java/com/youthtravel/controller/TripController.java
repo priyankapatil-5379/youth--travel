@@ -41,6 +41,7 @@ public class TripController {
         List<Trip> trips = tripService.getTripsByVendor(vendor);
         model.addAttribute("trips", trips);
         model.addAttribute("vendor", vendor);
+        model.addAttribute("tripCount", trips.size());
         return "/vendor/tours";
     }
 
@@ -86,11 +87,31 @@ public class TripController {
             @RequestParam(required = false) String refundPolicy,
             @RequestParam(required = false) String reschedulePolicy,
             @RequestParam(required = false) String tripRules,
-            @RequestParam(required = false) Integer bookingCutoffHours,
-            @RequestParam(required = false) Integer minTravelers,
+            @RequestParam(required = false) Integer bookingCutoff,
+            @RequestParam(required = false) Integer minBatchSize,
             @RequestParam(required = false) Boolean customizable,
             @RequestParam(required = false) String ageGroup,
             @RequestParam(required = false) Boolean studentDiscountAvailable,
+            @RequestParam(required = false) String stayName,
+            @RequestParam(required = false) String stayCategory,
+            @RequestParam(required = false) String stayVariant,
+            @RequestParam(required = false) String stayLink,
+            @RequestParam(required = false) String stayDescription,
+            @RequestParam(required = false) String transportCategory,
+            @RequestParam(required = false) String vehicleName,
+            @RequestParam(required = false) String acType,
+            @RequestParam(required = false) String transferType,
+            @RequestParam(value = "transportInclusions", required = false) List<String> transportInclusions,
+            @RequestParam(required = false) String mealPlan,
+            @RequestParam(value = "dietType", required = false) List<String> dietType,
+            @RequestParam(required = false) String mealNotes,
+            @RequestParam(required = false) String coveringPlaces,
+            @RequestParam(required = false) String inclusionsOther,
+            @RequestParam(required = false) String essentialsOther,
+            @RequestParam(value = "stayPhotos", required = false) MultipartFile[] stayPhotos,
+            @RequestParam(value = "itinerary", required = false) String itinerary,
+            @RequestParam(value = "inclusions", required = false) List<String> inclusions,
+            @RequestParam(value = "essentials", required = false) List<String> essentials,
             HttpSession session, RedirectAttributes redirectAttributes) {
         Vendor vendor = (Vendor) session.getAttribute("loggedInVendor");
         if (vendor == null) {
@@ -122,6 +143,18 @@ public class TripController {
                 for (MultipartFile file : videoFiles) {
                     if (!file.isEmpty()) {
                         String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
+                        java.nio.file.Path path = java.nio.file.Paths.get(uploadDir + fileName);
+                        java.nio.file.Files.copy(file.getInputStream(), path,
+                                java.nio.file.StandardCopyOption.REPLACE_EXISTING);
+                        filePaths.add("/uploads/trips/" + fileName);
+                    }
+                }
+            }
+            // Process Stay Photos
+            if (stayPhotos != null) {
+                for (MultipartFile file : stayPhotos) {
+                    if (!file.isEmpty()) {
+                        String fileName = "stay_" + System.currentTimeMillis() + "_" + file.getOriginalFilename();
                         java.nio.file.Path path = java.nio.file.Paths.get(uploadDir + fileName);
                         java.nio.file.Files.copy(file.getInputStream(), path,
                                 java.nio.file.StandardCopyOption.REPLACE_EXISTING);
@@ -186,13 +219,45 @@ public class TripController {
         trip.setRefundPolicy(refundPolicy);
         trip.setReschedulePolicy(reschedulePolicy);
         trip.setTripRules(tripRules);
-        trip.setBookingCutoffHours(bookingCutoffHours != null ? bookingCutoffHours : 24);
-        trip.setMinTravelers(minTravelers != null ? minTravelers : 1);
+        trip.setBookingCutoffHours(bookingCutoff != null ? bookingCutoff : 24);
+        trip.setMinTravelers(minBatchSize != null ? minBatchSize : 1);
+        
+        // Extended Fields
+        trip.setStayName(stayName);
+        trip.setStayCategory(stayCategory);
+        trip.setStayVariant(stayVariant);
+        trip.setStayLink(stayLink);
+        trip.setStayDescription(stayDescription);
+        trip.setTransportCategory(transportCategory);
+        trip.setVehicleName(vehicleName);
+        trip.setAcType(acType);
+        trip.setTransferType(transferType);
+        if (transportInclusions != null) trip.setTransportInclusions(String.join(", ", transportInclusions));
+        trip.setMealPlan(mealPlan);
+        if (dietType != null) trip.setDietType(String.join(", ", dietType));
+        trip.setMealNotes(mealNotes);
+        trip.setCoveringPlaces(coveringPlaces);
+        trip.setInclusionsOther(inclusionsOther);
+        trip.setEssentialsOther(essentialsOther);
+        
+        if (itinerary != null) trip.setItinerary(itinerary);
+        if (inclusions != null && !inclusions.isEmpty()) {
+            trip.setInclusions(String.join(", ", inclusions));
+        }
+        if (essentials != null && !essentials.isEmpty()) {
+            trip.setEssentials(String.join(", ", essentials));
+        }
+
         if (trip.getMaxTravelers() == null)
             trip.setMaxTravelers(20);
         trip.setCustomizable(customizable != null ? customizable : false);
         trip.setAgeGroup(ageGroup);
         trip.setStudentDiscountAvailable(studentDiscountAvailable != null ? studentDiscountAvailable : false);
+        
+        // Explicitly set status for new trips to ensure they appear in portfolio
+        if (trip.getStatus() == null || trip.getStatus().isEmpty()) {
+            trip.setStatus("Active");
+        }
 
         Trip savedTrip = tripService.saveTrip(trip);
 
@@ -202,6 +267,23 @@ public class TripController {
 
         redirectAttributes.addFlashAttribute("message", "Trip added successfully!");
         return "redirect:/vendor/tours";
+    }
+
+    @GetMapping("/view-trip/{id}")
+    public String showTripDetails(@PathVariable Long id, HttpSession session, Model model) {
+        Vendor vendor = (Vendor) session.getAttribute("loggedInVendor");
+        if (vendor == null) {
+            return "redirect:/vendor/login";
+        }
+        Trip trip = tripService.getTripById(id).orElse(null);
+        if (trip == null || !trip.getVendor().getId().equals(vendor.getId())) {
+            return "redirect:/vendor/tours";
+        }
+        List<TripSchedule> schedules = tripScheduleRepository.findByTrip(trip);
+        model.addAttribute("trip", trip);
+        model.addAttribute("schedules", schedules);
+        model.addAttribute("vendor", vendor);
+        return "/vendor/view-trip";
     }
 
     @GetMapping("/edit-trip/{id}")
@@ -291,11 +373,31 @@ public class TripController {
             @RequestParam(required = false) String refundPolicy,
             @RequestParam(required = false) String reschedulePolicy,
             @RequestParam(required = false) String tripRules,
-            @RequestParam(required = false) Integer bookingCutoffHours,
-            @RequestParam(required = false) Integer minTravelers,
+            @RequestParam(required = false) Integer bookingCutoff,
+            @RequestParam(required = false) Integer minBatchSize,
             @RequestParam(required = false) Boolean customizable,
             @RequestParam(required = false) String ageGroup,
             @RequestParam(required = false) Boolean studentDiscountAvailable,
+            @RequestParam(required = false) String stayName,
+            @RequestParam(required = false) String stayCategory,
+            @RequestParam(required = false) String stayVariant,
+            @RequestParam(required = false) String stayLink,
+            @RequestParam(required = false) String stayDescription,
+            @RequestParam(required = false) String transportCategory,
+            @RequestParam(required = false) String vehicleName,
+            @RequestParam(required = false) String acType,
+            @RequestParam(required = false) String transferType,
+            @RequestParam(value = "transportInclusions", required = false) List<String> transportInclusions,
+            @RequestParam(required = false) String mealPlan,
+            @RequestParam(value = "dietType", required = false) List<String> dietType,
+            @RequestParam(required = false) String mealNotes,
+            @RequestParam(required = false) String coveringPlaces,
+            @RequestParam(required = false) String inclusionsOther,
+            @RequestParam(required = false) String essentialsOther,
+            @RequestParam(value = "stayPhotos", required = false) MultipartFile[] stayPhotos,
+            @RequestParam(value = "itinerary", required = false) String itinerary,
+            @RequestParam(value = "inclusions", required = false) List<String> inclusions,
+            @RequestParam(value = "essentials", required = false) List<String> essentials,
             HttpSession session, RedirectAttributes redirectAttributes) {
         Vendor vendor = (Vendor) session.getAttribute("loggedInVendor");
         if (vendor == null) {
@@ -320,8 +422,9 @@ public class TripController {
 
         boolean hasNewPhotos = photoFiles != null && photoFiles.length > 0 && !photoFiles[0].isEmpty();
         boolean hasNewVideos = videoFiles != null && videoFiles.length > 0 && !videoFiles[0].isEmpty();
+        boolean hasStayPhotos = stayPhotos != null && stayPhotos.length > 0 && !stayPhotos[0].isEmpty();
 
-        if (hasNewPhotos || hasNewVideos) {
+        if (hasNewPhotos || hasNewVideos || hasStayPhotos) {
             try {
                 if (hasNewPhotos) {
                     for (MultipartFile file : photoFiles) {
@@ -338,6 +441,17 @@ public class TripController {
                     for (MultipartFile file : videoFiles) {
                         if (!file.isEmpty()) {
                             String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
+                            java.nio.file.Path path = java.nio.file.Paths.get(uploadDir + fileName);
+                            java.nio.file.Files.copy(file.getInputStream(), path,
+                                    java.nio.file.StandardCopyOption.REPLACE_EXISTING);
+                            filePaths.add("/uploads/trips/" + fileName);
+                        }
+                    }
+                }
+                if (hasStayPhotos) {
+                    for (MultipartFile file : stayPhotos) {
+                        if (!file.isEmpty()) {
+                            String fileName = "stay_" + System.currentTimeMillis() + "_" + file.getOriginalFilename();
                             java.nio.file.Path path = java.nio.file.Paths.get(uploadDir + fileName);
                             java.nio.file.Files.copy(file.getInputStream(), path,
                                     java.nio.file.StandardCopyOption.REPLACE_EXISTING);
@@ -389,6 +503,13 @@ public class TripController {
         if (!finalSubCategories.isEmpty()) {
             trip.setTravelerSubCategory(String.join(", ", finalSubCategories));
         }
+        
+        if (inclusions != null && !inclusions.isEmpty()) {
+            trip.setInclusions(String.join(", ", inclusions));
+        }
+        if (essentials != null && !essentials.isEmpty()) {
+            trip.setEssentials(String.join(", ", essentials));
+        }
 
         // Preserve metadata
         trip.setVendor(vendor);
@@ -412,13 +533,46 @@ public class TripController {
         trip.setRefundPolicy(refundPolicy);
         trip.setReschedulePolicy(reschedulePolicy);
         trip.setTripRules(tripRules);
-        trip.setBookingCutoffHours(bookingCutoffHours != null ? bookingCutoffHours : 24);
-        trip.setMinTravelers(minTravelers != null ? minTravelers : 1);
+        trip.setBookingCutoffHours(bookingCutoff != null ? bookingCutoff : 24);
+        trip.setMinTravelers(minBatchSize != null ? minBatchSize : 1);
+        
+        // Extended Fields
+        trip.setStayName(stayName);
+        trip.setStayCategory(stayCategory);
+        trip.setStayVariant(stayVariant);
+        trip.setStayLink(stayLink);
+        trip.setStayDescription(stayDescription);
+        trip.setTransportCategory(transportCategory);
+        trip.setVehicleName(vehicleName);
+        trip.setAcType(acType);
+        trip.setTransferType(transferType);
+        if (transportInclusions != null) trip.setTransportInclusions(String.join(", ", transportInclusions));
+        trip.setMealPlan(mealPlan);
+        if (dietType != null) trip.setDietType(String.join(", ", dietType));
+        trip.setMealNotes(mealNotes);
+        trip.setCoveringPlaces(coveringPlaces);
+        trip.setInclusionsOther(inclusionsOther);
+        trip.setEssentialsOther(essentialsOther);
+
         if (trip.getMaxTravelers() == null)
             trip.setMaxTravelers(20);
         trip.setCustomizable(customizable != null ? customizable : false);
         trip.setAgeGroup(ageGroup);
         trip.setStudentDiscountAvailable(studentDiscountAvailable != null ? studentDiscountAvailable : false);
+        
+        // Handle JSON fields
+        if (itinerary != null) trip.setItinerary(itinerary);
+        if (pickupPoints != null) trip.setPickupPoints(pickupPoints);
+        if (stayAmenities != null) trip.setStayAmenities(stayAmenities);
+        if (mealsConfig != null) trip.setMealsConfig(mealsConfig);
+        
+        if (inclusions != null && !inclusions.isEmpty()) {
+            trip.setInclusions(String.join(", ", inclusions));
+        }
+        if (essentials != null && !essentials.isEmpty()) {
+            trip.setEssentials(String.join(", ", essentials));
+        }
+
 
         Trip savedTrip = tripService.saveTrip(trip);
 

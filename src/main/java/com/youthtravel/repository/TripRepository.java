@@ -10,11 +10,11 @@ import java.util.List;
 
 @Repository
 public interface TripRepository extends JpaRepository<Trip, Long> {
-    List<Trip> findByVendor(Vendor vendor);
+    List<Trip> findByVendor_Id(Long vendorId);
 
-    long countByVendor(Vendor vendor);
+    long countByVendor_Id(Long vendorId);
 
-    long countByVendorAndStatus(Vendor vendor, String status);
+    long countByVendor_IdAndStatus(Long vendorId, String status);
     
     List<Trip> findTop5ByStatusOrderByCreatedAtDesc(String status);
 }

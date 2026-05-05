@@ -24,6 +24,15 @@ public class Trip {
     @Column(nullable = false)
     private String destination;
 
+    private String state;
+    private String country;
+    private String originCity;
+    private String originState;
+    private String region;
+
+    @Column(columnDefinition = "TEXT")
+    private String coveringPlaces;
+
     private String duration;
     private Integer days;
     private Integer nights;
@@ -91,6 +100,14 @@ public class Trip {
     @Column(name = "weekend_price")
     private Double weekendPrice; // Price for weekend slots
 
+    @Column(name = "booking_amount")
+    private Double bookingAmount;
+
+    private Double discount;
+
+    @Column(name = "tax_status")
+    private String taxStatus;
+
     @Column(name = "slot_pricing", columnDefinition = "LONGTEXT")
     private String slotPricing; // JSON format for date-range specific prices
 
@@ -117,6 +134,18 @@ public class Trip {
     @Column(name = "transport_type")
     private String transportType;
 
+    @Column(name = "vehicle_name")
+    private String vehicleName;
+
+    @Column(name = "ac_type")
+    private String acType;
+
+    @Column(name = "transfer_type")
+    private String transferType;
+
+    @Column(name = "transport_inclusions", columnDefinition = "TEXT")
+    private String transportInclusions;
+
     @Column(name = "stay_category")
     private String stayCategory;
 
@@ -132,9 +161,27 @@ public class Trip {
     @Column(name = "stay_amenities", columnDefinition = "LONGTEXT")
     private String stayAmenities;
 
+    @Column(name = "stay_name")
+    private String stayName;
+
+    @Column(name = "stay_link")
+    private String stayLink;
+
+    @Column(name = "stay_description", columnDefinition = "TEXT")
+    private String stayDescription;
+
     // Module B: Hospitality, Safety & Prep
     @Column(name = "meals_config", columnDefinition = "LONGTEXT")
     private String mealsConfig; // JSON: {B: true, L: true, D: true, VegOnly: true}
+
+    @Column(name = "meal_plan")
+    private String mealPlan;
+
+    @Column(name = "diet_type")
+    private String dietType;
+
+    @Column(name = "meal_notes")
+    private String mealNotes;
 
     @Column(name = "difficulty")
     private String difficulty; // Easy, Moderate, Hard
@@ -193,6 +240,18 @@ public class Trip {
 
     @Transient
     private String travelerSubCategoryOther;
+
+    @Column(name = "essentials", columnDefinition = "TEXT")
+    private String essentials;
+
+    @Column(name = "essentials_other")
+    private String essentialsOther;
+
+    @Column(name = "inclusions_other")
+    private String inclusionsOther;
+
+    @Column(name = "trip_duration")
+    private String tripDuration;
 
 
     public Trip() {
@@ -710,6 +769,190 @@ public class Trip {
             sum += r.getRating() != null ? r.getRating() : 0;
         }
         return Math.round((sum / reviews.size()) * 10.0) / 10.0;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public String getOriginCity() {
+        return originCity;
+    }
+
+    public void setOriginCity(String originCity) {
+        this.originCity = originCity;
+    }
+
+    public String getOriginState() {
+        return originState;
+    }
+
+    public void setOriginState(String originState) {
+        this.originState = originState;
+    }
+
+    public String getRegion() {
+        return region;
+    }
+
+    public void setRegion(String region) {
+        this.region = region;
+    }
+
+    public String getCoveringPlaces() {
+        return coveringPlaces;
+    }
+
+    public void setCoveringPlaces(String coveringPlaces) {
+        this.coveringPlaces = coveringPlaces;
+    }
+
+    public Double getBookingAmount() {
+        return bookingAmount;
+    }
+
+    public void setBookingAmount(Double bookingAmount) {
+        this.bookingAmount = bookingAmount;
+    }
+
+    public Double getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(Double discount) {
+        this.discount = discount;
+    }
+
+    public String getTaxStatus() {
+        return taxStatus;
+    }
+
+    public void setTaxStatus(String taxStatus) {
+        this.taxStatus = taxStatus;
+    }
+
+    public String getStayName() {
+        return stayName;
+    }
+
+    public void setStayName(String stayName) {
+        this.stayName = stayName;
+    }
+
+    public String getStayLink() {
+        return stayLink;
+    }
+
+    public void setStayLink(String stayLink) {
+        this.stayLink = stayLink;
+    }
+
+    public String getStayDescription() {
+        return stayDescription;
+    }
+
+    public void setStayDescription(String stayDescription) {
+        this.stayDescription = stayDescription;
+    }
+
+    public String getVehicleName() {
+        return vehicleName;
+    }
+
+    public void setVehicleName(String vehicleName) {
+        this.vehicleName = vehicleName;
+    }
+
+    public String getAcType() {
+        return acType;
+    }
+
+    public void setAcType(String acType) {
+        this.acType = acType;
+    }
+
+    public String getTransferType() {
+        return transferType;
+    }
+
+    public void setTransferType(String transferType) {
+        this.transferType = transferType;
+    }
+
+    public String getTransportInclusions() {
+        return transportInclusions;
+    }
+
+    public void setTransportInclusions(String transportInclusions) {
+        this.transportInclusions = transportInclusions;
+    }
+
+    public String getMealPlan() {
+        return mealPlan;
+    }
+
+    public void setMealPlan(String mealPlan) {
+        this.mealPlan = mealPlan;
+    }
+
+    public String getDietType() {
+        return dietType;
+    }
+
+    public void setDietType(String dietType) {
+        this.dietType = dietType;
+    }
+
+    public String getMealNotes() {
+        return mealNotes;
+    }
+
+    public void setMealNotes(String mealNotes) {
+        this.mealNotes = mealNotes;
+    }
+
+    public String getEssentials() {
+        return essentials;
+    }
+
+    public void setEssentials(String essentials) {
+        this.essentials = essentials;
+    }
+
+    public String getEssentialsOther() {
+        return essentialsOther;
+    }
+
+    public void setEssentialsOther(String essentialsOther) {
+        this.essentialsOther = essentialsOther;
+    }
+
+    public String getInclusionsOther() {
+        return inclusionsOther;
+    }
+
+    public void setInclusionsOther(String inclusionsOther) {
+        this.inclusionsOther = inclusionsOther;
+    }
+
+    public String getTripDuration() {
+        return tripDuration;
+    }
+
+    public void setTripDuration(String tripDuration) {
+        this.tripDuration = tripDuration;
     }
 
     @PrePersist

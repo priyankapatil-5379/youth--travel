@@ -418,7 +418,7 @@
                                             <h5 class="rt-title">${trip.title}</h5>
                                             <div class="rt-meta">
                                                 <span class="rt-loc"><i class="fa fa-map-marker"></i> ${trip.destination}</span>
-                                                <span class="status-badge ${trip.status == 'ACTIVE' ? 'status-active' : 'status-inactive'}">${trip.status}</span>
+                                                <span class="status-badge ${trip.status.equalsIgnoreCase('Active') ? 'status-active' : 'status-inactive'}">${trip.status}</span>
                                             </div>
                                         </div>
                                     </a>

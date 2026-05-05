@@ -1,386 +1,328 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-    <%@ taglib prefix="c" uri="jakarta.tags.core" %>
-        <!DOCTYPE html>
-        <html lang="en">
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Manage Tours | Youth Travel</title>
+    <link rel="stylesheet" href="<c:url value='/views/assets/css/bootstrap.min.css'/>">
+    <link rel="stylesheet" href="<c:url value='/views/assets/css/style.css'/>">
+    <link rel="stylesheet" href="<c:url value='/views/assets/css/font-awesome.min.css'/>">
+    <link rel="stylesheet" href="<c:url value='/views/assets/css/premium-dashboard.css'/>">
+    <link href="https://fonts.googleapis.com/css?family=Dosis:300,400,500,600,700,800" rel="stylesheet">
+    <style>
+        .main-content {
+            padding: 40px;
+            margin-left: 260px;
+            min-height: 100vh;
+        }
 
-        <head>
-            <meta charset="utf-8">
-            <meta http-equiv="X-UA-Compatible" content="IE=edge">
-            <meta name="viewport" content="width=device-width, initial-scale=1">
-            <title>Tour Portfolio | Youth Travel</title>
-            <link rel="stylesheet" href="<c:url value='/views/assets/css/bootstrap.min.css'/>">
-            <link rel="stylesheet" href="<c:url value='/views/assets/css/style.css'/>">
-            <link rel="stylesheet" href="<c:url value='/views/assets/css/font-awesome.min.css'/>">
-            <link rel="stylesheet" href="<c:url value='/views/assets/css/premium-dashboard.css'/>">
-            <link href="https://fonts.googleapis.com/css?family=Dosis:300,400,500,600,700,800" rel="stylesheet">
-            <style>
-                body.yt-dark {
-                    background: transparent;
-                    color: #fff;
-                    font-family: 'Dosis', sans-serif;
-                }
+        @media (max-width: 991px) {
+            .main-content { margin-left: 0; padding: 20px; }
+        }
 
-                .page-header {
-                    display: flex;
-                    justify-content: space-between;
-                    align-items: center;
-                    margin-bottom: 30px;
-                }
+        /* GRID SYSTEM */
+        .trip-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 25px;
+            padding-bottom: 60px;
+        }
 
-                .page-header h1 {
-                    font-size: 32px;
-                    font-weight: 800;
-                    margin: 0;
-                    color: #fff;
-                    text-shadow: 0 4px 15px rgba(0,0,0,0.8);
-                }
+        @media (max-width: 1200px) {
+            .trip-grid { grid-template-columns: repeat(3, 1fr); }
+        }
 
-                .btn-add {
-                    background: #f04c26;
-                    color: #fff;
-                    font-weight: 700;
-                    border-radius: 12px;
-                    padding: 10px 24px;
-                    transition: all 0.2s;
-                    text-decoration: none;
-                    display: inline-flex;
-                    align-items: center;
-                    gap: 8px;
-                    box-shadow: 0 10px 20px rgba(240, 76, 38, 0.2);
-                }
+        @media (max-width: 991px) {
+            .trip-grid { grid-template-columns: repeat(2, 1fr); }
+        }
 
-                .btn-add:hover {
-                    background: #d93d1a;
-                    color: #fff;
-                    transform: translateY(-2px);
-                    box-shadow: 0 15px 30px rgba(240, 76, 38, 0.3);
-                }
+        @media (max-width: 576px) {
+            .trip-grid { grid-template-columns: 1fr; }
+        }
 
-                .trip-grid {
-                    display: grid;
-                    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-                    gap: 30px;
-                    margin-top: 20px;
-                }
+        /* CARD DESIGN */
+        .trip-card {
+            display: flex;
+            flex-direction: column;
+            background: rgba(26, 31, 43, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            height: 100%;
+            position: relative;
+        }
 
-                .trip-card {
-                    background: rgba(0,0,0,0.4);
-                    backdrop-filter: blur(15px);
-                    border: 1px solid rgba(255,255,255,0.1);
-                    border-radius: 28px;
-                    overflow: hidden;
-                    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-                    position: relative;
-                    display: flex;
-                    flex-direction: column;
-                    box-shadow: 0 8px 32px 0 rgba(0,0,0,0.3);
-                }
+        .trip-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            border-color: #f04c26;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+            z-index: 10;
+        }
 
-                .trip-card:hover {
-                    transform: translateY(-10px);
-                    background: rgba(255, 255, 255, 0.05);
-                    border-color: rgba(240, 76, 38, 0.4);
-                    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
-                }
+        /* IMAGE AREA */
+        .card-image-box {
+            height: 180px;
+            position: relative;
+            overflow: hidden;
+        }
 
-                .card-image-box {
-                    position: relative;
-                    height: 200px;
-                    width: 100%;
-                    overflow: hidden;
-                }
+        .card-image-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s ease;
+        }
 
-                .card-image-box img {
-                    width: 100%;
-                    height: 100%;
-                    object-fit: cover;
-                    transition: transform 0.6s ease;
-                }
+        .trip-card:hover .card-image-box img {
+            transform: scale(1.1);
+        }
 
-                .card-badge-price {
-                    position: absolute;
-                    top: 15px;
-                    right: 15px;
-                    background: rgba(0, 0, 0, 0.6);
-                    backdrop-filter: blur(10px);
-                    color: #fff;
-                    padding: 8px 16px;
-                    border-radius: 12px;
-                    font-weight: 800;
-                    font-size: 14px;
-                    border: 1px solid rgba(255, 255, 255, 0.2);
-                    z-index: 2;
-                }
+        /* BADGES */
+        .badge-duration {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(5px);
+            color: #fff;
+            padding: 5px 12px;
+            border-radius: 30px;
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            z-index: 2;
+        }
 
-                .card-tag {
-                    position: absolute;
-                    top: 15px;
-                    left: 15px;
-                    background: #f04c26;
-                    color: #fff;
-                    padding: 4px 12px;
-                    border-radius: 8px;
-                    font-size: 10px;
-                    font-weight: 800;
-                    text-transform: uppercase;
-                    letter-spacing: 1px;
-                }
+        .badge-price {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: #f04c26;
+            color: #fff;
+            padding: 6px 14px;
+            border-radius: 30px;
+            font-size: 14px;
+            font-weight: 800;
+            box-shadow: 0 4px 10px rgba(240, 76, 38, 0.3);
+            z-index: 2;
+        }
 
-                .card-content {
-                    padding: 24px;
-                    flex-grow: 1;
-                }
+        /* CARD CONTENT */
+        .card-content {
+            padding: 20px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
 
-                .card-title {
-                    font-size: 18px;
-                    font-weight: 800;
-                    color: #fff;
-                    margin-bottom: 8px;
-                    text-shadow: 0 2px 5px rgba(0,0,0,0.5);
-                }
-                .card-meta {
-                    display: flex;
-                    align-items: center;
-                    gap: 12px;
-                    color: #fff;
-                    font-size: 13px;
-                    margin-bottom: 15px;
-                    font-weight: 600;
-                    text-shadow: 0 1px 3px rgba(0,0,0,0.5);
-                }
+        .card-location {
+            font-size: 11px;
+            color: #f04c26;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
 
-                .card-category {
-                    background: rgba(0,0,0,0.3);
-                    padding: 12px;
-                    border-radius: 12px;
-                    margin-bottom: 20px;
-                    border: 1px solid rgba(255,255,255,0.05);
-                }
+        .card-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 12px;
+            line-height: 1.3;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            height: 46px;
+        }
 
-                .category-label {
-                    font-size: 10px;
-                    color: #f04c26;
-                    font-weight: 700;
-                    text-transform: uppercase;
-                    display: block;
-                    margin-bottom: 4px;
-                }
+        .card-meta-box {
+            background: rgba(255,255,255,0.03);
+            padding: 10px 15px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
 
-                .category-value {
-                    font-size: 12px;
-                    color: rgba(255, 255, 255, 0.8);
-                    display: block;
-                }
+        .meta-item {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: rgba(255,255,255,0.5);
+            margin-bottom: 4px;
+        }
 
-                .card-footer {
-                    padding: 20px 24px;
-                    border-top: 1px solid rgba(255, 255, 255, 0.05);
-                    display: flex;
-                    align-items: center;
-                    justify-content: space-between;
-                }
+        .meta-item:last-child { margin-bottom: 0; }
 
-                .status-indicator {
-                    display: flex;
-                    align-items: center;
-                    gap: 6px;
-                    font-size: 12px;
-                    font-weight: 700;
-                    text-transform: uppercase;
-                }
+        .meta-item span:last-child { color: #fff; font-weight: 600; }
 
-                .dot {
-                    width: 8px;
-                    height: 8px;
-                    border-radius: 50%;
-                }
+        /* ACTION AREA */
+        .card-action-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 15px;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            margin-top: auto;
+        }
 
-                .dot-active {
-                    background: #22c55e;
-                    box-shadow: 0 0 10px #22c55e;
-                }
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 6px;
+        }
 
-                .dot-inactive {
-                    background: #ef4444;
-                    box-shadow: 0 0 10px #ef4444;
-                }
+        .status-active { background: #22c55e; box-shadow: 0 0 10px rgba(34, 197, 94, 0.5); }
+        .status-inactive { background: #ef4444; }
 
-                .action-group {
-                    display: flex;
-                    gap: 8px;
-                }
+        .status-text {
+            font-size: 11px;
+            font-weight: 600;
+            color: rgba(255,255,255,0.6);
+            display: flex;
+            align-items: center;
+        }
 
-                .mini-btn {
-                    width: 32px;
-                    height: 32px;
-                    border-radius: 8px;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    color: #fff;
-                    background: rgba(255, 255, 255, 0.08);
-                    transition: all 0.2s;
-                    text-decoration: none;
-                }
+        .btn-group-mini {
+            display: flex;
+            gap: 8px;
+        }
 
-                .mini-btn:hover {
-                    background: #f04c26;
-                    transform: scale(1.1);
-                }
+        .btn-mini {
+            width: 32px;
+            height: 32px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255,255,255,0.05);
+            color: #fff;
+            border: 1px solid rgba(255,255,255,0.08);
+            transition: all 0.2s;
+            text-decoration: none;
+            font-size: 12px;
+        }
 
-                .alert {
-                    border-radius: 16px;
-                    background: rgba(34, 197, 94, 0.1);
-                    border: 1px solid rgba(34, 197, 94, 0.2);
-                    color: #22c55e;
-                    padding: 15px 25px;
-                    margin-bottom: 30px;
-                }
-            </style>
-        </head>
+        .btn-mini:hover {
+            background: #f04c26;
+            border-color: #f04c26;
+            color: #fff;
+            transform: translateY(-3px);
+        }
 
-        <body class="yt-dark premium-theme">
-            <div class="sun-rays-container">
-                <div class="ray ray-1"></div>
-                <div class="ray ray-2"></div>
-                <div class="ray ray-3"></div>
-                <div class="ray ray-4"></div>
-            </div>
-                <jsp:include page="vendor-sidebar.jsp">
+        .btn-mini.btn-view:hover { background: #3b82f6; border-color: #3b82f6; }
+        .btn-mini.btn-delete:hover { background: #ef4444; border-color: #ef4444; }
+
+    </style>
+</head>
+
+<body class="yt-dark premium-theme">
+    <jsp:include page="vendor-sidebar.jsp">
         <jsp:param name="activePage" value="tours" />
     </jsp:include>
 
     <div class="main-content">
-                <div class="mobile-header">
-                    <img src="<c:url value='/views/assets/images/logo.png'/>" alt="Youth Travel" height="24">
-                    <div class="menu-toggle" onclick="toggleSidebar()">
-                        <i class="fa fa-bars"></i>
-                    </div>
+        <div class="container-fluid">
+            <c:if test="${not empty message}">
+                <div class="alert alert-success" style="border-radius: 15px; border: none; background: rgba(34, 197, 94, 0.1); color: #22c55e; margin-bottom: 30px;">
+                    <i class="fa fa-check-circle"></i> ${message}
                 </div>
-                <c:if test="${not empty message}">
-                    <div class="alert">
-                        <i class="fa fa-check-circle"></i> ${message}
-                    </div>
-                </c:if>
+            </c:if>
 
-                <div class="page-header">
-                            <div>
-                                <h1>Tour Portfolio</h1>
-                                <p style="color: #fff; margin: 0; font-weight: 600; text-shadow: 0 2px 8px rgba(0,0,0,0.8);">Manage your travel collection.</p>
-                            </div>
-                    <a href="<c:url value='/vendor/add-trip'/>" class="btn-add">
-                        <i class="fa fa-plus"></i> Launch New Trip
-                    </a>
+            <div style="margin-bottom: 40px; display: flex; justify-content: space-between; align-items: flex-end;">
+                <div>
+                    <h1 style="font-weight: 800; font-size: 36px; margin: 0; color: #fff; letter-spacing: -1px;">Tour Portfolio</h1>
+                    <p style="color: rgba(255,255,255,0.5); margin: 8px 0 0 0; font-size: 16px;">Manage your travel packages and departures</p>
                 </div>
+                <a href="<c:url value='/vendor/add-trip'/>" class="btn btn-primary" style="background: linear-gradient(135deg, #f04c26, #ff6b4a); border: none; padding: 14px 28px; border-radius: 15px; font-weight: 700; box-shadow: 0 10px 20px rgba(240, 76, 38, 0.2);">
+                    <i class="fa fa-plus"></i> Create New Trip
+                </a>
+            </div>
 
-                <div class="trip-grid">
-                    <c:forEach items="${trips}" var="trip">
-                        <div class="trip-card" data-status="${trip.status}">
-                            <div class="card-image-box">
-                                <span class="card-tag">${trip.duration}</span>
-                                <div class="card-badge-price">₹${trip.price}</div>
-                                <c:choose>
-                                    <c:when test="${not empty trip.imageUrl}">
-                                        <img src="<c:url value='${trip.imageUrl}'/>" alt="Trip">
-                                    </c:when>
-                                    <c:otherwise>
-                                        <img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&q=80&w=600"
-                                            alt="Trip">
-                                    </c:otherwise>
-                                </c:choose>
+            <div class="trip-grid">
+                <c:forEach items="${trips}" var="trip">
+                    <div class="trip-card">
+                        <div class="card-image-box">
+                            <div class="badge-duration">${trip.duration}</div>
+                            <div class="badge-price">₹${trip.price}</div>
+                            <c:choose>
+                                <c:when test="${not empty trip.imageUrl}">
+                                    <img src="<c:url value='${trip.imageUrl}'/>" alt="${trip.title}">
+                                </c:when>
+                                <c:otherwise>
+                                    <img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&q=80&w=600" alt="Default">
+                                </c:otherwise>
+                            </c:choose>
+                        </div>
+
+                        <div class="card-content">
+                            <div class="card-location">
+                                <i class="fa fa-map-marker"></i> ${trip.destination}
                             </div>
-
-                            <div class="card-content">
-                                <h3 class="card-title">${trip.title}</h3>
-                                <div class="card-meta">
-                                    <span><i class="fa fa-map-marker" style="color: #f04c26;"></i>
-                                        ${trip.destination}</span>
+                            <h3 class="card-title">${trip.title}</h3>
+                            
+                            <div class="card-meta-box">
+                                <div class="meta-item">
+                                    <span>Category</span>
+                                    <span>${not empty trip.category ? trip.category : 'Adventure'}</span>
                                 </div>
-                                <div class="card-category">
-                                    <span class="category-label">Classification</span>
-                                    <span class="category-value">${not empty trip.travelerCategory ?
-                                        trip.travelerCategory : 'General'}</span>
-                                    <span class="category-value"
-                                        style="font-size: 11px; opacity: 0.6; margin-top: 4px;">
-                                        ${not empty trip.travelerSubCategory ? trip.travelerSubCategory : ''}
-                                    </span>
+                                <div class="meta-item">
+                                    <span>Difficulty</span>
+                                    <span>${not empty trip.difficulty ? trip.difficulty : 'Medium'}</span>
                                 </div>
                             </div>
 
-                            <div class="card-footer">
-                                <div class="status-indicator"
-                                    style="color: ${trip.status == 'ACTIVE' ? '#22c55e' : '#ef4444'}">
-                                    <span class="dot ${trip.status == 'ACTIVE' ? 'dot-active' : 'dot-inactive'}"></span>
+                            <div class="card-action-bar">
+                                <div class="status-text">
+                                    <span class="status-dot ${trip.status.equalsIgnoreCase('Active') ? 'status-active' : 'status-inactive'}"></span>
                                     ${trip.status}
                                 </div>
-                                <div class="action-group">
-                                    <a href="<c:url value='/vendor/toggle-status/${trip.id}'/>" class="mini-btn"
-                                        title="Toggle Status">
+                                <div class="btn-group-mini">
+                                    <a href="<c:url value='/vendor/view-trip/${trip.id}'/>" class="btn-mini btn-view" title="View Details">
+                                        <i class="fa fa-eye"></i>
+                                    </a>
+                                    <a href="<c:url value='/vendor/edit-trip/${trip.id}'/>" class="btn-mini" title="Edit">
+                                        <i class="fa fa-pencil"></i>
+                                    </a>
+                                    <a href="<c:url value='/vendor/toggle-status/${trip.id}'/>" class="btn-mini" title="Toggle Visibility">
                                         <i class="fa fa-power-off"></i>
                                     </a>
-                                    <a href="<c:url value='/vendor/edit-trip/${trip.id}'/>" class="mini-btn"
-                                        title="Edit">
-                                        <i class="fa fa-edit"></i>
-                                    </a>
-                                    <a href="<c:url value='/vendor/delete-trip/${trip.id}'/>" class="mini-btn"
-                                        title="Delete" onclick="return confirm('Delete this adventure?')"
-                                        style="color: #ef4444;">
+                                    <a href="<c:url value='/vendor/delete-trip/${trip.id}'/>" class="btn-mini btn-delete" title="Delete" onclick="return confirm('Archive this package?')">
                                         <i class="fa fa-trash"></i>
                                     </a>
                                 </div>
                             </div>
                         </div>
-                    </c:forEach>
-                </div>
-
-                <c:if test="${empty trips}">
-                    <div
-                        style="text-align: center; padding: 100px 20px; background: rgba(255,255,255,0.02); border-radius: 30px; border: 2px dashed rgba(255,255,255,0.05); margin-top: 30px;">
-                        <i class="fa fa-map-o"
-                            style="font-size: 60px; color: rgba(255,255,255,0.1); margin-bottom: 20px;"></i>
-                        <h2 style="color: rgba(255,255,255,0.4);">No Adventures Found</h2>
-                        <p style="color: rgba(255,255,255,0.2);">Start by adding your first travel package.</p>
-                        <a href="<c:url value='/vendor/add-trip'/>" class="btn-add"
-                            style="display: inline-flex; margin-top: 20px;">
-                            <i class="fa fa-plus"></i> Create Catalog
-                        </a>
                     </div>
-                </c:if>
+                </c:forEach>
             </div>
-            <script src="<c:url value='/views/assets/js/jquery.min.js'/>"></script>
-            <script>
-                function toggleSidebar() {
-                    $('.sidebar').toggleClass('show');
-                    $('.sidebar-overlay').toggleClass('show');
-                }
 
-                $(document).ready(function () {
-                    const urlParams = new URLSearchParams(window.location.search);
-                    const filter = urlParams.get('filter');
+            <c:if test="${empty trips}">
+                <div style="text-align: center; padding: 80px 20px; background: rgba(255,255,255,0.02); border-radius: 30px; border: 2px dashed rgba(255,255,255,0.05); margin-top: 30px;">
+                    <i class="fa fa-map-o" style="font-size: 60px; color: rgba(255,255,255,0.1); margin-bottom: 20px;"></i>
+                    <h2 style="color: rgba(255,255,255,0.4); font-weight: 700;">No Packages Found</h2>
+                    <p style="color: rgba(255,255,255,0.2);">Start expanding your portfolio by adding a new trip.</p>
+                </div>
+            </c:if>
+        </div>
+    </div>
 
-                    if (filter) {
-                        const cards = document.querySelectorAll('.trip-card');
-                        let count = 0;
-                        cards.forEach(card => {
-                            if (card.getAttribute('data-status') === filter) {
-                                card.style.display = 'flex';
-                                count++;
-                            } else {
-                                card.style.display = 'none';
-                            }
-                        });
-
-                        // Update header title to reflect filter
-                        const header = document.querySelector('.page-header h1');
-                        header.innerText = filter.charAt(0) + filter.slice(1).toLowerCase() + ' Collections';
-
-                        // Handle empty case
-                        if (count === 0) {
-                            $('.trip-grid').after('<div id="filter-empty" style="text-align:center; padding:50px; opacity:0.5;"><h3>No ' + filter.toLowerCase() + ' tours found.</h3></div>');
-                        }
-                    }
-                });
-            </script>
-        </body>
-
-        </html>
+    <script src="<c:url value='/views/assets/js/jquery.min.js'/>"></script>
+    <script>
+        function toggleSidebar() {
+            $('.sidebar').toggleClass('show');
+            $('.sidebar-overlay').toggleClass('show');
+        }
+    </script>
+</body>
+</html>
