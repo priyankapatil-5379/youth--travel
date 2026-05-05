@@ -20,19 +20,19 @@ public class TripService {
     }
 
     public List<Trip> getTripsByVendor(Vendor vendor) {
-        return tripRepository.findByVendor(vendor);
+        return tripRepository.findByVendor_Id(vendor.getId());
     }
 
     public long getTourCountByVendor(Vendor vendor) {
-        return tripRepository.countByVendor(vendor);
+        return tripRepository.countByVendor_Id(vendor.getId());
     }
 
     public long getActiveTourCountByVendor(Vendor vendor) {
-        return tripRepository.countByVendorAndStatus(vendor, "Active");
+        return tripRepository.countByVendor_IdAndStatus(vendor.getId(), "Active");
     }
 
     public long getInactiveTourCountByVendor(Vendor vendor) {
-        return tripRepository.countByVendorAndStatus(vendor, "Inactive");
+        return tripRepository.countByVendor_IdAndStatus(vendor.getId(), "Inactive");
     }
 
     public List<Trip> getAllTrips() {

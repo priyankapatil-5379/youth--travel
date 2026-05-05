@@ -125,6 +125,123 @@
             100% { transform: rotate(8deg)  scaleX(0.85); opacity: 0.25; }
         }
 
+        /* === WELCOME MODAL === */
+        #welcomeModal {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            z-index: 1000000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        #welcomeModal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .welcome-modal-content {
+            background: #fff;
+            width: 90%;
+            max-width: 480px;
+            padding: 60px 40px;
+            border-radius: 32px;
+            position: relative;
+            text-align: center;
+            box-shadow: 0 40px 100px rgba(0,0,0,0.6);
+            transform: scale(0.9) translateY(40px);
+            transition: all 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        #welcomeModal.active .welcome-modal-content {
+            transform: scale(1) translateY(0);
+        }
+
+        .welcome-modal-close {
+            position: absolute;
+            top: 25px; right: 25px;
+            width: 40px;
+            height: 40px;
+            line-height: 40px;
+            font-size: 28px;
+            color: #999;
+            cursor: pointer;
+            transition: 0.3s;
+            background: #f5f5f5;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .welcome-modal-close:hover { 
+            color: #e63946; 
+            background: #fee2e2;
+            transform: rotate(90deg); 
+        }
+
+        .welcome-modal-logo { 
+            height: 55px; 
+            margin-bottom: 35px; 
+            filter: drop-shadow(0 0 1px rgba(0,0,0,0.5)) drop-shadow(0 0 1px rgba(0,0,0,0.5));
+        }
+
+        .welcome-modal-content h2 {
+            font-family: 'Oswald', sans-serif;
+            font-size: 36px;
+            color: #111;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 700;
+        }
+
+        .welcome-modal-content p {
+            font-size: 18px;
+            color: #555;
+            margin-bottom: 40px;
+            line-height: 1.7;
+        }
+
+        .welcome-btn {
+            display: block;
+            background: linear-gradient(135deg, #e63946 0%, #c1121f 100%);
+            color: #fff;
+            padding: 18px 40px;
+            border-radius: 16px;
+            font-weight: 700;
+            font-size: 20px;
+            text-decoration: none;
+            transition: 0.4s;
+            box-shadow: 0 15px 30px rgba(230,57,70,0.4);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .welcome-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(230,57,70,0.5);
+            color: #fff;
+            filter: brightness(1.1);
+        }
+
+        .guest-link {
+            display: inline-block;
+            margin-top: 25px;
+            color: #888;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 15px;
+            transition: 0.3s;
+        }
+        .guest-link:hover { color: #e63946; }
+
         .yt-new-hero {
             position: relative;
             width: 100%;
@@ -948,14 +1065,19 @@
         <div class="fish fish-1 fish-orange">
             <div class="fish-body"></div>
         </div>
-        
-        <!-- 2. Blue Tang -->
         <div class="fish fish-2 fish-cyan">
             <div class="fish-body"></div>
         </div>
-        
-        <!-- 3. Yellow Tang -->
-        <div class="fish fish-3 fish-golden">
+        <div class="fish fish-3 fish-purple">
+            <div class="fish-body"></div>
+        </div>
+        <div class="fish fish-4 fish-gold">
+            <div class="fish-body"></div>
+        </div>
+        <div class="fish fish-5 fish-red">
+            <div class="fish-body"></div>
+        </div>
+        <div class="fish fish-6 fish-black">
             <div class="fish-body"></div>
         </div>
 
@@ -980,7 +1102,7 @@
                     
                     <div class="nav-links">
                         <a href="<c:url value='/'/>" class="active">Home</a>
-                        <a href="#choose-adventure">Explore</a>
+                        <a href="<c:url value='/explore-packages'/>">Explore</a>
                         <a href="<c:url value='/gallery'/>">Gallery</a>
                         <a href="<c:url value='/about'/>">About Us</a>
                         <a href="<c:url value='/contact'/>">Contact Us</a>
@@ -1006,7 +1128,7 @@
                 <p class="hero-subtitle">Not just places, but moments that<br>stay with you forever.</p>
                 
                 <div class="hero-action-btns">
-                    <a href="#choose-adventure" class="btn-red">Explore Now <i class="fa fa-arrow-right"></i></a>
+                    <a href="<c:url value='/explore-packages'/>" class="btn-red">Explore Now <i class="fa fa-arrow-right"></i></a>
                     <a href="<c:url value='/plan-trip'/>" class="btn-outline"><i class="fa fa-users"></i> Plan My Trip</a>
                     <a href="<c:url value='/user/register'/>" class="btn-outline"><i class="fa fa-user-plus"></i> Join Community</a>
                 </div>
@@ -1017,7 +1139,7 @@
                 /* Outer wrap â€” absolute positioned in hero */
                 .hero-vss-wrap {
                     position: absolute;
-                    right: 4%;
+                    right: 14%;
                     top: 50%;
                     transform: translateY(-50%);
                     display: flex;
@@ -1645,7 +1767,7 @@
             </div>
 
             <div class="yt-why-cta">
-                <a class="yt-btn yt-btn-primary" href="#choose-adventure">Explore Experiences</a>
+                <a class="yt-btn yt-btn-primary" href="<c:url value='/explore-packages'/>">Explore Experiences</a>
                 <a class="yt-btn yt-btn-outline" href="<c:url value='/contact'/>">Talk to Us</a>
             </div>
         </div>
@@ -1826,7 +1948,7 @@
                             </div>
                             <div class="footer-text">
                                 <p>
-                                    Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur
+                                    Travelling is more than just visiting places; it's about the vibes, the stories, and the memories that last a lifetime. Explore the unexplored with Youth Travel!
                                 </p>
                             </div>
                             <div class="footer-address">
@@ -2023,6 +2145,38 @@
                 }
             }
         }
+    </script>
+    <div id="welcomeModal">
+        <div class="welcome-modal-content">
+            <span class="welcome-modal-close" onclick="closeWelcomeModal()">&times;</span>
+            <img src="<c:url value='/views/assets/images/logo.png'/>" alt="Youth Travel" class="welcome-modal-logo">
+            <h2>Adventure Awaits!</h2>
+            <p>Join our tribe today! <strong>Sign in</strong> to unlock 10% off your first trip and get secret adventure deals.</p>
+            <a href="<c:url value='/user/login'/>" class="welcome-btn">Sign In or Register</a>
+            <a href="javascript:void(0)" onclick="closeWelcomeModal()" class="guest-link">Maybe Later, Continue as Guest</a>
+        </div>
+    </div>
+
+    <script>
+        function openWelcomeModal() {
+            document.getElementById('welcomeModal').classList.add('active');
+            document.body.style.overflow = 'hidden'; // Prevent scrolling
+        }
+
+        function closeWelcomeModal() {
+            document.getElementById('welcomeModal').classList.remove('active');
+            document.body.style.overflow = 'auto'; // Restore scrolling
+        }
+
+        window.addEventListener('DOMContentLoaded', (event) => {
+            // Show modal after 1.2 seconds for a premium feel
+            setTimeout(openWelcomeModal, 1200);
+        });
+
+        // Close on escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === "Escape") closeWelcomeModal();
+        });
     </script>
 </body>
 

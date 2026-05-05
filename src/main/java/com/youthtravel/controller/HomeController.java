@@ -2,8 +2,14 @@ package com.youthtravel.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import com.youthtravel.entity.Trip;
+import java.util.*;
+import java.util.stream.Collectors;
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class HomeController {
@@ -54,6 +60,84 @@ public class HomeController {
 	@RequestMapping("/plan-trip")
 	public String planTrip() {
 		return "plan-trip";
+	}
+
+	@RequestMapping("/explore-packages")
+	public String explorePackages(
+			@RequestParam(required = false) String destination,
+			@RequestParam(required = false) String tripType,
+			@RequestParam(required = false) String search,
+			@RequestParam(required = false, defaultValue = "latest") String sortBy,
+			Model model, HttpSession session) {
+		
+		List<Trip> allTrips = tripRepository.findAll();
+		
+		// Apply Filters
+		List<Trip> filteredTrips = allTrips.stream()
+				.filter(t -> t != null && "Active".equalsIgnoreCase(t.getStatus()))
+				.filter(t -> {
+					boolean match = true;
+					if (destination != null && !destination.isEmpty() && !"All".equalsIgnoreCase(destination)) {
+						match = match && t.getDestination().toLowerCase().contains(destination.toLowerCase());
+					}
+					if (tripType != null && !tripType.isEmpty() && !"All".equalsIgnoreCase(tripType)) {
+						String tt = tripType.toLowerCase();
+						match = match && (
+							(t.getTravelerCategory() != null && t.getTravelerCategory().toLowerCase().contains(tt)) ||
+							(t.getCategory() != null && t.getCategory().toLowerCase().contains(tt))
+						);
+					}
+					if (search != null && !search.isEmpty()) {
+						String s = search.toLowerCase();
+						match = match && (t.getTitle().toLowerCase().contains(s) || t.getDestination().toLowerCase().contains(s));
+					}
+					return match;
+				}).collect(Collectors.toList());
+
+		// Sorting
+		if ("priceLow".equals(sortBy)) {
+			filteredTrips.sort(Comparator.comparing(Trip::getPrice, Comparator.nullsLast(Comparator.naturalOrder())));
+		} else if ("priceHigh".equals(sortBy)) {
+			filteredTrips.sort(Comparator.comparing(Trip::getPrice, Comparator.nullsLast(Comparator.reverseOrder())));
+		} else {
+			filteredTrips.sort((a, b) -> {
+				if (a.getCreatedAt() == null) return 1;
+				if (b.getCreatedAt() == null) return -1;
+				return b.getCreatedAt().compareTo(a.getCreatedAt());
+			});
+		}
+
+		// Grouping by traveler category
+		Map<String, List<Trip>> groupedPackages = new LinkedHashMap<>();
+		for (Trip trip : filteredTrips) {
+			String category = "Featured Adventures";
+			if (trip.getTravelerCategory() != null && !trip.getTravelerCategory().trim().isEmpty()) {
+				category = trip.getTravelerCategory().split(",")[0].trim();
+			} else if (trip.getCategory() != null && !trip.getCategory().trim().isEmpty()) {
+				category = trip.getCategory();
+			}
+			groupedPackages.computeIfAbsent(category, k -> new ArrayList<>()).add(trip);
+		}
+
+		model.addAttribute("groupedPackages", groupedPackages);
+		model.addAttribute("totalCount", filteredTrips.size());
+		
+		// Unique destinations for filter
+		List<String> destinations = allTrips.stream()
+				.map(Trip::getDestination)
+				.filter(Objects::nonNull)
+				.distinct()
+				.sorted()
+				.collect(Collectors.toList());
+		model.addAttribute("destinations", destinations);
+
+		model.addAttribute("user", session.getAttribute("user"));
+		model.addAttribute("destination", destination);
+		model.addAttribute("tripType", tripType);
+		model.addAttribute("search", search);
+		model.addAttribute("sortBy", sortBy);
+
+		return "explore-packages";
 	}
 }
 
