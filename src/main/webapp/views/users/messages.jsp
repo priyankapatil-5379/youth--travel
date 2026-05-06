@@ -25,7 +25,7 @@
             box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
         }
 
-        .main-content { margin-left: 240px; height: calc(100vh - 75px); display: flex; flex-direction: column; padding: 0; background: transparent; margin-top: 75px; }
+        .main-content { margin-left: 240px; height: 100vh; display: flex; flex-direction: column; padding: 0; background: transparent; margin-top: 0; }
 
         /* Top Header */
         .page-header { padding: 25px 40px; border-bottom: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.3); backdrop-filter: blur(10px); display: flex; align-items: center; justify-content: space-between; box-shadow: 0 4px 20px rgba(0,0,0,0.2); }
@@ -77,16 +77,6 @@
 </head>
 
 <body class="yt-dark premium-theme">
-    <header class="header">
-        <div class="header-logo"><a href="<c:url value='/'/>"><img src="<c:url value='/views/assets/images/logo.png'/>" style="height: 35px;"></a></div>
-        <div style="display: flex; align-items: center; gap: 20px;">
-                <div style="display: flex; align-items: center; gap: 15px; cursor: pointer;">
-                    <span style="font-weight: 700;">Hi, ${user.name}</span>
-                    <c:set var="defaultAvatar" value="https://ui-avatars.com/api/?name=${user.name}&background=f04c26&color=fff" />
-                    <img src="${not empty user.profilePhoto ? user.profilePhoto : defaultAvatar}" style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover; border: 2px solid rgba(255,255,255,0.2);">
-                </div>
-        </div>
-    </header>
 
     <!-- Sunlight Rays -->
     <div class="sun-rays-container">

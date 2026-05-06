@@ -61,7 +61,7 @@
         .ray { position: absolute; top: -20%; width: 100px; height: 150%; background: linear-gradient(180deg, rgba(255,255,255,0.1) 0%, transparent 80%); filter: blur(50px); transform-origin: top center; animation: ray-swing 10s ease-in-out infinite alternate; }
         @keyframes ray-swing { 0% { transform: rotate(-8deg) scaleX(1); opacity: 0.3; } 100% { transform: rotate(8deg) scaleX(0.8); opacity: 0.6; } }
 
-        .main-container { max-width: 1200px; margin: 0 auto; padding: 120px 20px 40px; position: relative; z-index: 1; }
+        .main-container { max-width: 1200px; margin: 0 auto; padding: 40px 20px 40px; position: relative; z-index: 1; }
 
         .header { 
             position: fixed; top: 0; left: 0; right: 0; height: 75px; 
@@ -266,23 +266,13 @@
         <div class="ray ray-4"></div>
     </div>
 
-    <header class="header">
-        <div class="header-logo"><a href="<c:url value='/'/>"><img src="<c:url value='/views/assets/images/logo.png'/>" style="height: 35px;"></a></div>
-        <div style="display: flex; align-items: center; gap: 20px;">
-            <div style="display: flex; align-items: center; gap: 15px; cursor: pointer;" onclick="showMyPoints()">
-                <span style="font-weight: 700;">Hi, ${user.name}</span>
-                <c:set var="defaultAvatar" value="https://ui-avatars.com/api/?name=${user.name}&background=f04c26&color=fff" />
-                <img src="${not empty user.profilePhoto ? user.profilePhoto : defaultAvatar}" style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover; border: 2px solid rgba(255,255,255,0.2);">
-            </div>
-        </div>
-    </header>
 
     <div class="wrapper" style="display: flex; min-height: 100vh;">
         <jsp:include page="user-sidebar.jsp">
             <jsp:param name="activePage" value="profile" />
         </jsp:include>
         
-        <main class="main-content" style="flex: 1; margin-left: 240px; padding: 100px 30px 40px;">
+        <main class="main-content" style="flex: 1; margin-left: 240px; padding: 40px 30px 40px;">
 
 
     <!-- Nuclear Option Modals (Pure JS/CSS - 100% Reliable) -->

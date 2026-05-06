@@ -10,49 +10,78 @@
     <link rel="stylesheet" href="<c:url value='/views/assets/css/premium-dashboard.css'/>">
     <link href="https://fonts.googleapis.com/css?family=Dosis:300,400,500,600,700,800" rel="stylesheet">
     <style>
-        :root { --primary-blue: #e63946; --text-muted: #7e8c9a; --transition: all 0.3s ease; }
-        body { font-family: 'Dosis', sans-serif; background-color: #0b0f18; color: rgba(255, 255, 255, 0.92); margin: 0; padding: 0; }
+        :root {
+            --sidebar-teal: #14b8a6;
+            --sidebar-teal-dark: #0f766e;
+            --accent-coral: #ef4444;
+            --accent-coral-dark: #dc2626;
+            --bg-main: #f8fafc;
+            --bg-card: #ffffff;
+            --border-light: #e5e7eb;
+            --text-main: #1f2937;
+            --text-secondary: #6b7280;
+            --transition: all 0.3s ease;
+        }
+
+        body.theme-light-premium {
+            font-family: 'Dosis', sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+        }
         .wrapper { display: flex; min-height: 100vh; }
-        .main-content { flex: 1; margin-left: 240px; padding: 100px 30px 40px; }
-        .header { position: fixed; top: 0; left: 0; right: 0; height: 70px; background: rgba(0,0,0,0.4); backdrop-filter: blur(10px); display: flex; align-items: center; justify-content: space-between; padding: 0 30px; z-index: 1000; border-bottom: 1px solid rgba(255,255,255,0.05); }
-        .card-white { background: rgba(0,0,0,0.3); backdrop-filter: blur(15px); padding: 40px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 8px 32px 0 rgba(0,0,0,0.3); }
-        .table { color: #fff; margin-bottom: 0; }
-        .table th { color: #fff; font-size: 13px; font-weight: 800; text-transform: uppercase; border: none; text-shadow: 0 2px 4px rgba(0,0,0,0.8); letter-spacing: 1px; padding-bottom: 20px; }
-        .table td { border-color: rgba(255,255,255,0.1); vertical-align: middle; padding: 18px 10px; font-weight: 500; text-shadow: 0 1px 3px rgba(0,0,0,0.5); }
-        .status-badge { padding: 6px 14px; border-radius: 20px; font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; border: 1px solid rgba(255,255,255,0.1); }
-        .status-success { background: rgba(46, 125, 50, 0.2); color: #81c784; }
-        .status-pending { background: rgba(239, 108, 0, 0.2); color: #ffb74d; }
+        .main-content { flex: 1; margin-left: 240px; padding: 40px 40px 40px; }
+        
+        .card-white { 
+            background: #ffffff; 
+            padding: 40px; 
+            border-radius: 24px; 
+            border: 1px solid var(--border-light); 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.03); 
+        }
+        
+        .table { color: var(--text-main); margin-bottom: 0; }
+        .table th { 
+            color: var(--text-secondary); 
+            font-size: 11px; 
+            font-weight: 800; 
+            text-transform: uppercase; 
+            border: none; 
+            letter-spacing: 1.5px; 
+            padding-bottom: 20px; 
+        }
+        .table td { 
+            border-color: #f1f5f9; 
+            vertical-align: middle; 
+            padding: 20px 10px; 
+            font-weight: 600; 
+            color: var(--text-main); 
+        }
+        
+        .status-badge { 
+            padding: 6px 14px; 
+            border-radius: 20px; 
+            font-size: 11px; 
+            font-weight: 800; 
+            text-transform: uppercase; 
+            letter-spacing: 0.5px; 
+        }
+        .status-success { background: rgba(34, 197, 94, 0.1); color: #16a34a; }
+        .status-pending { background: rgba(245, 158, 11, 0.1); color: #d97706; }
     </style>
 </head>
-<body class="premium-theme">
-    <!-- Sunlight Rays -->
-    <div class="sun-rays-container">
-        <div class="ray ray-1"></div>
-        <div class="ray ray-2"></div>
-        <div class="ray ray-3"></div>
-        <div class="ray ray-4"></div>
-    </div>
-    <header class="header">
-        <div class="header-logo"><a href="<c:url value='/'/>"><img src="<c:url value='/views/assets/images/logo.png'/>" style="height: 35px;"></a></div>
-        <div style="display: flex; align-items: center; gap: 20px;">
-            <div style="display: flex; align-items: center; gap: 15px;">
-                <span style="font-weight: 700;">Hi, ${user.name}</span>
-                <c:set var="defaultAvatar" value="https://ui-avatars.com/api/?name=${user.name}&background=f04c26&color=fff" />
-                <img src="${not empty user.profilePhoto ? user.profilePhoto : defaultAvatar}" style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover;">
-            </div>
-        </div>
-    </header>
+<body class="theme-light-premium">
     <div class="wrapper">
         <jsp:include page="user-sidebar.jsp">
             <jsp:param name="activePage" value="payments" />
         </jsp:include>
         <main class="main-content">
-            <div class="mb-4">
-                <div>
-                    <h2 style="font-weight: 800; margin: 0; color: #fff; text-shadow: 0 4px 15px rgba(0,0,0,0.8); font-size: 32px;">Payment History</h2>
-                    <p style="color: #fff; margin: 0; font-weight: 600; text-shadow: 0 2px 8px rgba(0,0,0,0.8);">Manage your transaction records</p>
+                <div class="mb-5">
+                    <h2 style="font-weight: 800; margin: 0; color: var(--text-main); font-size: 36px; letter-spacing: -1px;">Payment History</h2>
+                    <p style="color: var(--text-secondary); margin: 5px 0 0; font-weight: 500; font-size: 16px;">Manage your transaction records</p>
                 </div>
-            </div>
             <div class="card-white">
                 <c:choose>
                     <c:when test="${not empty payments}">
@@ -62,8 +91,8 @@
                                 <tbody>
                                     <c:forEach var="payment" items="${payments}">
                                         <tr>
-                                            <td style="font-weight: 700;">${payment.booking.trip.title}</td>
-                                            <td style="font-weight: 800; color: #ff4d4d; font-size: 16px;">₹${payment.amount}</td>
+                                            <td style="font-weight: 700; color: var(--text-main);">${payment.booking.trip.title}</td>
+                                            <td style="font-weight: 800; color: var(--accent-coral); font-size: 16px;">₹${payment.amount}</td>
                                             <td><span class="status-badge status-${payment.status.toLowerCase()}">${payment.status}</span></td>
                                             <td>${payment.paymentDate}</td>
                                         </tr>
@@ -73,9 +102,12 @@
                         </div>
                     </c:when>
                     <c:otherwise>
-                        <div class="text-center" style="padding: 60px;">
-                            <i class="fa fa-credit-card" style="font-size: 60px; color: rgba(255,255,255,0.2); margin-bottom: 20px; display: block; text-shadow: 0 0 20px rgba(0,0,0,0.5);"></i>
-                            <p style="color: #fff; font-weight: 700; font-size: 18px; text-shadow: 0 2px 5px rgba(0,0,0,0.8);">No payment records found.</p>
+                        <div class="text-center" style="padding: 100px 40px;">
+                            <div style="width: 80px; height: 80px; background: rgba(241, 245, 249, 1); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 25px;">
+                                <i class="fa fa-credit-card" style="font-size: 32px; color: var(--text-secondary);"></i>
+                            </div>
+                            <h3 style="color: var(--text-main); font-weight: 800; margin-bottom: 10px;">No payment records found</h3>
+                            <p style="color: var(--text-secondary); font-size: 16px;">Manage your transaction records here once you book a trip.</p>
                         </div>
                     </c:otherwise>
                 </c:choose>

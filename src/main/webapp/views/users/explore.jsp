@@ -14,7 +14,7 @@
         :root { --primary-blue: #ef4444; --text-muted: #7e8c9a; --transition: all 0.3s ease; }
         body { font-family: 'Dosis', sans-serif; background-color: #0b0f18; color: rgba(255, 255, 255, 0.92); margin: 0; padding: 0; }
         .wrapper { display: flex; min-height: 100vh; }
-        .main-content { flex: 1; margin-left: 240px; padding: 100px 30px 40px; }
+        .main-content { flex: 1; margin-left: 240px; padding: 40px 30px 40px; }
         .header { position: fixed; top: 0; left: 0; right: 0; height: 70px; background: rgba(0,0,0,0.4); backdrop-filter: blur(10px); display: flex; align-items: center; justify-content: space-between; padding: 0 30px; z-index: 1000; border-bottom: 1px solid rgba(255,255,255,0.05); }
         .explore-header { background: rgba(0,0,0,0.3); backdrop-filter: blur(10px); padding: 30px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); margin-bottom: 30px; display: flex; justify-content: space-between; align-items: flex-end; box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3); }
         .search-container { position: relative; width: 400px; }
@@ -115,16 +115,6 @@
         <div class="ray ray-3"></div>
         <div class="ray ray-4"></div>
     </div>
-    <header class="header">
-        <div class="header-logo"><a href="<c:url value='/'/>"><img src="<c:url value='/views/assets/images/logo.png'/>" style="height: 35px;"></a></div>
-        <div style="display: flex; align-items: center; gap: 20px;">
-                <div style="display: flex; align-items: center; gap: 15px; cursor: pointer;" onclick="showMyPoints()">
-                    <span style="font-weight: 700;">Hi, ${user.name}</span>
-                    <c:set var="defaultAvatar" value="https://ui-avatars.com/api/?name=${user.name}&background=f04c26&color=fff" />
-                    <img src="${not empty user.profilePhoto ? user.profilePhoto : defaultAvatar}" style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover; border: 2px solid rgba(255,255,255,0.2);">
-                </div>
-        </div>
-    </header>
     <div id="pointsModal" class="modal" style="display: none; z-index: 3000;">
         <div class="modal-content-custom" style="max-width: 350px; text-align: center;">
             <span class="modal-close" onclick="hidePoints()">&times;</span>

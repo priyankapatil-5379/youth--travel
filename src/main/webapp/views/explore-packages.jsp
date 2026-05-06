@@ -302,6 +302,11 @@
                             <c:forEach var="trip" items="${entry.value}">
                                 <div class="package-card">
                                     <div class="vendor-tag"><i class="fa fa-certificate" style="color: #f59e0b; margin-right: 5px;"></i> ${trip.vendor.brandName}</div>
+                                    <div class="wishlist-btn-overlay" style="position: absolute; top: 20px; right: 20px; z-index: 10;">
+                                        <button type="button" onclick="toggleWishlist(${trip.id}, this)" class="btn btn-link p-0" style="font-size: 20px; text-shadow: 0 2px 10px rgba(0,0,0,0.5); border: none; outline: none; box-shadow: none;">
+                                            <i class="fa ${savedTripIds.contains(trip.id) ? 'fa-heart text-danger' : 'fa-heart-o text-white'}"></i>
+                                        </button>
+                                    </div>
                                     <img src="${trip.imageUrl}" class="package-img" alt="${trip.title}">
                                     <div class="package-content">
                                         <h3 class="package-name">${trip.title}</h3>
@@ -422,5 +427,82 @@
         </div>
     </section>
 
+    </section>
+
+    <script>
+        function toggleWishlist(tripId, btn) {
+            const icon = btn.querySelector('i');
+            
+            // Visual feedback
+            icon.style.transform = 'scale(1.3)';
+            setTimeout(() => icon.style.transform = 'scale(1)', 200);
+
+            fetch('<c:url value="/user/api/toggle-wishlist/"/>' + tripId, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' }
+            })
+            .then(response => {
+                if (response.status === 401) {
+                    window.location.href = '<c:url value="/user/login"/>';
+                    return;
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data && data.saved !== undefined) {
+                    if (data.saved) {
+                        icon.classList.remove('fa-heart-o', 'text-white');
+                        icon.classList.add('fa-heart', 'text-danger');
+                        showToast('Trip saved to wishlist!');
+                    } else {
+                        icon.classList.remove('fa-heart', 'text-danger');
+                        icon.classList.add('fa-heart-o', 'text-white');
+                        showToast('Trip removed from wishlist');
+                    }
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+
+        function showToast(message) {
+            let container = document.getElementById('toast-container');
+            if (!container) {
+                container = document.createElement('div');
+                container.id = 'toast-container';
+                container.style.cssText = 'position: fixed; bottom: 30px; right: 30px; z-index: 9999;';
+                document.body.appendChild(container);
+            }
+
+            const toast = document.createElement('div');
+            toast.innerHTML = message;
+            toast.style.cssText = `
+                background: rgba(0, 34, 68, 0.9);
+                backdrop-filter: blur(10px);
+                color: white;
+                padding: 15px 30px;
+                border-radius: 12px;
+                margin-top: 10px;
+                font-weight: 700;
+                border: 1px solid rgba(255,255,255,0.1);
+                box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+                transform: translateX(100px);
+                opacity: 0;
+                transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+                font-family: 'Dosis', sans-serif;
+            `;
+            container.appendChild(toast);
+
+            setTimeout(() => {
+                toast.style.transform = 'translateX(0)';
+                toast.style.opacity = '1';
+            }, 100);
+
+            setTimeout(() => {
+                toast.style.transform = 'translateX(100px)';
+                toast.style.opacity = '0';
+                setTimeout(() => toast.remove(), 400);
+            }, 3000);
+        }
+    </script>
 </body>
 </html>

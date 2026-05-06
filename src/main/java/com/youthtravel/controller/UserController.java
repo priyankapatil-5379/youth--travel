@@ -28,6 +28,8 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Random;
 import java.util.stream.Collectors;
+import java.util.Collections;
+import com.youthtravel.entity.SavedPackage;
 
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -296,6 +298,11 @@ public class UserController {
         model.addAllAttributes(dashboardData);
         model.addAttribute("user", user);
 
+        // Fetch saved trip IDs for highlighting heart icons
+        List<Long> savedTripIds = savedPackageService.getSavedPackagesByEmail(user.getEmail())
+            .stream().map(sp -> sp.getTrip().getId()).collect(Collectors.toList());
+        model.addAttribute("savedTripIds", savedTripIds);
+
         // Fetch all trips
         List<Trip> allTrips = tripService.getAllTrips();
 
@@ -529,6 +536,30 @@ public class UserController {
         }
 
         return "redirect:/user/dashboard";
+    }
+
+    @PostMapping("/api/toggle-wishlist/{id}")
+    @ResponseBody
+    public ResponseEntity<?> toggleWishlistAjax(@PathVariable Long id, HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        if (user == null) return ResponseEntity.status(401).build();
+
+        Optional<Trip> tripOpt = tripService.getTripById(id);
+        if (tripOpt.isPresent()) {
+            Trip trip = tripOpt.get();
+            boolean isSaved;
+            if (savedPackageService.isTripSaved(user, trip)) {
+                savedPackageService.removeSavedTrip(user, trip);
+                isSaved = false;
+            } else {
+                savedPackageService.saveTrip(user, trip);
+                isSaved = true;
+            }
+            Map<String, Object> response = new HashMap<>();
+            response.put("saved", isSaved);
+            return ResponseEntity.ok(response);
+        }
+        return ResponseEntity.notFound().build();
     }
 
     @GetMapping("/booking/{id}")

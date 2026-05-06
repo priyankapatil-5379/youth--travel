@@ -2,6 +2,9 @@
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 
 <aside class="sidebar">
+    <div class="sidebar-logo" style="padding: 25px; margin-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.05);">
+        <a href="<c:url value='/'/>"><img src="<c:url value='/views/assets/images/logo.png'/>" style="height: 35px;"></a>
+    </div>
     <ul class="nav-menu">
         <li class="nav-item ${param.activePage == 'dashboard' ? 'active' : ''}">
             <a href="<c:url value='/user/dashboard'/>"><i class="fa fa-th-large"></i> <span class="nav-text">Dashboard</span></a>
@@ -41,7 +44,7 @@
         background: rgba(0, 0, 0, 0.3);
         backdrop-filter: blur(20px);
         -webkit-backdrop-filter: blur(20px);
-        padding-top: 80px;
+        padding-top: 20px;
         position: fixed;
         height: 100vh;
         border-right: 1px solid rgba(255, 255, 255, 0.1);
@@ -89,6 +92,35 @@
         .sidebar.active {
             transform: translateX(0);
         }
+    }
+
+    /* === LIGHT PREMIUM THEME === */
+    body.theme-light-premium .sidebar {
+        background: #14b8a6;
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+        border-right: none;
+        box-shadow: 4px 0 20px rgba(20, 184, 166, 0.15);
+    }
+
+    body.theme-light-premium .sidebar-logo {
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+    }
+
+    body.theme-light-premium .nav-item a {
+        color: rgba(255, 255, 255, 0.75);
+    }
+
+    body.theme-light-premium .nav-item.active a {
+        background: linear-gradient(135deg, #14b8a6, #0f766e);
+        color: #ffffff;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    body.theme-light-premium .nav-item a:hover:not(.active) {
+        background: rgba(255, 255, 255, 0.1);
+        color: #ffffff;
     }
 </style>
 

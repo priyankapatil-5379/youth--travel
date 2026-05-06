@@ -198,6 +198,29 @@
         .vendor-name-luxe { font-size: 13px; font-weight: 900; color: #fff; margin-bottom: 4px; }
         .vendor-stars { color: #fbbf24; font-size: 10px; letter-spacing: 2px; }
 
+        .wishlist-luxe-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 8px 15px;
+            color: #fff;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: 0.3s;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        .wishlist-luxe-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: var(--accent-red);
+        }
+        .wishlist-luxe-btn i { font-size: 14px; }
+
         @media (max-width: 1200px) {
             .hero-title { font-size: 5rem; letter-spacing: -3px; }
             .layout-container { grid-template-columns: 1fr; }
@@ -219,7 +242,9 @@
         <div class="hero-img-luxe" id="heroImg"></div>
         <div class="hero-overlay"></div>
         <div class="hero-content">
-            <h1 class="hero-title">${trip.title}</h1>
+            <div class="d-flex align-items-center gap-4 mb-3">
+                <h1 class="hero-title m-0">${trip.title}</h1>
+            </div>
             <div class="hero-meta-grid">
                 <div class="meta-item-luxe">
                     <div class="meta-icon-luxe"><i class="fa fa-map-marker"></i></div>
@@ -378,13 +403,19 @@
                     </form>
 
                     <div class="vendor-badge-luxe">
-                        <img src="https://ui-avatars.com/api/?name=${fn:replace(trip.vendor.businessName, ' ', '+')}&background=e63946&color=fff" class="vendor-avatar">
-                        <div class="vendor-info-text">
-                            <div class="vendor-name-luxe">EXPERT: ${trip.vendor.businessName}</div>
-                            <div class="vendor-stars">
-                                <i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i>
-                                <span class="ms-2 opacity-50" style="font-size: 8px;">VERIFIED</span>
+                        <div class="d-flex align-items-center gap-3 w-100">
+                            <img src="https://ui-avatars.com/api/?name=${fn:replace(trip.vendor.businessName, ' ', '+')}&background=e63946&color=fff" class="vendor-avatar">
+                            <div class="vendor-info-text text-start flex-grow-1">
+                                <div class="vendor-name-luxe">EXPERT: ${trip.vendor.businessName}</div>
+                                <div class="vendor-stars">
+                                    <i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i>
+                                    <span class="ms-2 opacity-50" style="font-size: 8px;">VERIFIED</span>
+                                </div>
                             </div>
+                            <button type="button" onclick="toggleWishlist(${trip.id}, this)" class="wishlist-luxe-btn">
+                                <i class="fa ${isSaved ? 'fa-heart text-danger' : 'fa-heart-o'}"></i>
+                                <span class="wishlist-text">${isSaved ? 'Saved in Wishlist' : 'Add to Wishlist'}</span>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -422,25 +453,88 @@
             });
 
             document.querySelectorAll('.nav-link-mmt').forEach(el => el.classList.remove('active'));
-            event.target.classList.add('active');
-        }
-    </script>
-</body>
-</html>
-
-    <script>
-        const basePrice = ${trip.price};
-        function updateLuxePrice() {
-            const pax = document.getElementById('paxSelect').value;
-            const total = basePrice * pax;
-            document.getElementById('paxDisplay').innerText = pax;
-            document.getElementById('baseTotal').innerText = '₹' + total.toLocaleString('en-IN');
-            document.getElementById('finalTotal').innerText = '₹' + total.toLocaleString('en-IN');
+            if(event && event.target) event.target.classList.add('active');
         }
         function scrollToId(id) {
             document.getElementById(id).scrollIntoView({ behavior: 'smooth', block: 'start' });
             document.querySelectorAll('.nav-link-mmt').forEach(el => el.classList.remove('active'));
             event.target.classList.add('active');
+
+        function toggleWishlist(tripId, btn) {
+            const icon = btn.querySelector('i');
+            icon.style.transform = 'scale(1.3)';
+            setTimeout(() => icon.style.transform = 'scale(1)', 200);
+
+            fetch('<c:url value="/user/api/toggle-wishlist/"/>' + tripId, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' }
+            })
+            .then(response => {
+                if (response.status === 401) {
+                    window.location.href = '<c:url value="/user/login"/>';
+                    return;
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data && data.saved !== undefined) {
+                    if (data.saved) {
+                        icon.classList.remove('fa-heart-o', 'text-white');
+                        icon.classList.add('fa-heart', 'text-danger');
+                        const text = btn.querySelector('.wishlist-text');
+                        if(text) text.innerText = 'Saved in Wishlist';
+                        showToast('Trip saved to wishlist!');
+                    } else {
+                        icon.classList.remove('fa-heart', 'text-danger');
+                        icon.classList.add('fa-heart-o');
+                        if(!icon.classList.contains('text-white') && btn.classList.contains('btn-link')) icon.classList.add('text-white');
+                        const text = btn.querySelector('.wishlist-text');
+                        if(text) text.innerText = 'Add to Wishlist';
+                        showToast('Trip removed from wishlist');
+                    }
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+
+        function showToast(message) {
+            let container = document.getElementById('toast-container');
+            if (!container) {
+                container = document.createElement('div');
+                container.id = 'toast-container';
+                container.style.cssText = 'position: fixed; bottom: 30px; right: 30px; z-index: 9999;';
+                document.body.appendChild(container);
+            }
+
+            const toast = document.createElement('div');
+            toast.innerHTML = message;
+            toast.style.cssText = `
+                background: rgba(0, 10, 18, 0.9);
+                backdrop-filter: blur(10px);
+                color: white;
+                padding: 15px 30px;
+                border-radius: 12px;
+                margin-top: 10px;
+                font-weight: 700;
+                border: 1px solid rgba(255,255,255,0.1);
+                box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+                transform: translateX(100px);
+                opacity: 0;
+                transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+                font-family: 'Outfit', sans-serif;
+            `;
+            container.appendChild(toast);
+
+            setTimeout(() => {
+                toast.style.transform = 'translateX(0)';
+                toast.style.opacity = '1';
+            }, 100);
+
+            setTimeout(() => {
+                toast.style.transform = 'translateX(100px)';
+                toast.style.opacity = '0';
+                setTimeout(() => toast.remove(), 400);
+            }, 3000);
         }
     </script>
 </body>

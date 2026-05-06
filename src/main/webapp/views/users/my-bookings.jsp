@@ -49,7 +49,7 @@
             box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
         }
 
-        .main-content { flex: 1; margin-left: 240px; padding: 120px 40px 60px; }
+        .main-content { flex: 1; margin-left: 240px; padding: 40px 40px 60px; }
 
         .page-title { font-size: 42px; font-weight: 950; margin-bottom: 40px; text-transform: uppercase; letter-spacing: -1px; text-shadow: 0 10px 30px rgba(0,0,0,0.5); }
 
@@ -87,10 +87,22 @@
         .card-footer { margin-top: 20px; display: flex; justify-content: space-between; align-items: center; padding-top: 20px; border-top: 1px solid var(--glass-border); }
         .card-price { font-size: 24px; font-weight: 950; color: #fff; }
         .btn-view { 
-            background: rgba(255,255,255,0.05); color: #fff; border: 1px solid rgba(255,255,255,0.1); 
-            padding: 10px 20px; border-radius: 12px; font-weight: 800; font-size: 12px; 
-            text-decoration: none; text-transform: uppercase; letter-spacing: 1px; transition: 0.3s;
-            cursor: pointer; position: relative; z-index: 20;
+            display: inline-block;
+            background: rgba(255,255,255,0.05); 
+            color: #fff; 
+            border: 1px solid rgba(255,255,255,0.1); 
+            padding: 12px 24px; 
+            border-radius: 12px; 
+            font-weight: 800; 
+            font-size: 13px; 
+            text-decoration: none; 
+            text-transform: uppercase; 
+            letter-spacing: 1px; 
+            transition: 0.3s;
+            cursor: pointer; 
+            position: relative; 
+            z-index: 20;
+            text-align: center;
         }
         .booking-card:hover .btn-view { background: var(--accent-red); border-color: transparent; box-shadow: 0 5px 15px rgba(230, 57, 70, 0.3); }
         /* Prevent hover override for special buttons */
@@ -109,16 +121,6 @@
         <div class="ray" style="left: 85%; animation-delay: 3s;"></div>
     </div>
 
-    <header class="header">
-        <div class="header-logo"><a href="<c:url value='/'/>"><img src="<c:url value='/views/assets/images/logo.png'/>" style="height: 35px;"></a></div>
-        <div style="display: flex; align-items: center; gap: 20px;">
-                <div style="display: flex; align-items: center; gap: 15px; cursor: pointer;">
-                    <span style="font-weight: 700;">Hi, ${user.name}</span>
-                    <c:set var="defaultAvatar" value="https://ui-avatars.com/api/?name=${user.name}&background=f04c26&color=fff" />
-                    <img src="${not empty user.profilePhoto ? user.profilePhoto : defaultAvatar}" style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover; border: 2px solid rgba(255,255,255,0.2);">
-                </div>
-        </div>
-    </header>
 
     <div class="wrapper">
         <jsp:include page="user-sidebar.jsp">
