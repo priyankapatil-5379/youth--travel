@@ -28,6 +28,8 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Random;
 import java.util.stream.Collectors;
+import java.util.Collections;
+import com.youthtravel.entity.SavedPackage;
 
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -177,6 +179,10 @@ public class UserController {
             HttpSession session, RedirectAttributes redirectAttributes) {
         if (userService.loginUser(email, password)) {
             User user = userService.getUserByEmail(email);
+            if (user.getIsBlocked()) {
+                redirectAttributes.addFlashAttribute("error", "Your account has been blocked by the administrator.");
+                return "redirect:/user/login";
+            }
             session.setAttribute("user", user);
             redirectAttributes.addFlashAttribute("message", "Login successful! Welcome back.");
             return "redirect:/user/dashboard";
@@ -295,6 +301,11 @@ public class UserController {
 
         model.addAllAttributes(dashboardData);
         model.addAttribute("user", user);
+
+        // Fetch saved trip IDs for highlighting heart icons
+        List<Long> savedTripIds = savedPackageService.getSavedPackagesByEmail(user.getEmail())
+            .stream().map(sp -> sp.getTrip().getId()).collect(Collectors.toList());
+        model.addAttribute("savedTripIds", savedTripIds);
 
         // Fetch all trips
         List<Trip> allTrips = tripService.getAllTrips();
@@ -529,6 +540,30 @@ public class UserController {
         }
 
         return "redirect:/user/dashboard";
+    }
+
+    @PostMapping("/api/toggle-wishlist/{id}")
+    @ResponseBody
+    public ResponseEntity<?> toggleWishlistAjax(@PathVariable Long id, HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        if (user == null) return ResponseEntity.status(401).build();
+
+        Optional<Trip> tripOpt = tripService.getTripById(id);
+        if (tripOpt.isPresent()) {
+            Trip trip = tripOpt.get();
+            boolean isSaved;
+            if (savedPackageService.isTripSaved(user, trip)) {
+                savedPackageService.removeSavedTrip(user, trip);
+                isSaved = false;
+            } else {
+                savedPackageService.saveTrip(user, trip);
+                isSaved = true;
+            }
+            Map<String, Object> response = new HashMap<>();
+            response.put("saved", isSaved);
+            return ResponseEntity.ok(response);
+        }
+        return ResponseEntity.notFound().build();
     }
 
     @GetMapping("/booking/{id}")
@@ -833,6 +868,23 @@ public class UserController {
         }
         return ResponseEntity.notFound().build();
     }
+    @GetMapping("/booking/{id}/advice")
+    public String showAdvicePage(@PathVariable Long id, HttpSession session, Model model) {
+        User user = (User) session.getAttribute("user");
+        if (user == null) return "redirect:/user/login";
+
+        java.util.Optional<com.youthtravel.entity.Booking> bookingOpt = bookingService.getBookingById(id);
+        if (bookingOpt.isPresent()) {
+            com.youthtravel.entity.Booking booking = bookingOpt.get();
+            if (booking.getCustomerEmail().equals(user.getEmail())) {
+                model.addAttribute("booking", booking);
+                model.addAttribute("user", user);
+                return "users/write-advice";
+            }
+        }
+        return "redirect:/user/my-bookings";
+    }
+
     @PostMapping("/booking/{id}/advice")
     @ResponseBody
     public ResponseEntity<String> submitAdvice(@PathVariable Long id, @RequestBody Map<String, Object> payload, HttpSession session) {
@@ -845,9 +897,9 @@ public class UserController {
             
             Advice advice = new Advice();
             advice.setUser(user);
-            advice.setTitle(payload.get("title").toString());
-            advice.setContent(payload.get("content").toString());
-            advice.setCategories(payload.get("categories") != null ? payload.get("categories").toString() : booking.getTrip().getCategory());
+            advice.setTitle(payload.get("title") != null ? payload.get("title").toString() : "My Journey Advice");
+            advice.setContent(payload.get("content") != null ? payload.get("content").toString() : "");
+            advice.setCategories(payload.get("categories") != null ? payload.get("categories").toString() : (booking.getTrip() != null ? booking.getTrip().getCategory() : "General"));
             
             // Expert Fields
             advice.setBestTimeToVisit(payload.get("bestTimeToVisit") != null ? payload.get("bestTimeToVisit").toString() : "");
@@ -855,6 +907,14 @@ public class UserController {
             advice.setSafetyTips(payload.get("safetyTips") != null ? payload.get("safetyTips").toString() : "");
             advice.setBudgetTips(payload.get("budgetTips") != null ? payload.get("budgetTips").toString() : "");
             
+            // Additional Expert Fields
+            advice.setStayFoodAdvice(payload.get("stayFoodAdvice") != null ? payload.get("stayFoodAdvice").toString() : "");
+            advice.setTransportTips(payload.get("transportTips") != null ? payload.get("transportTips").toString() : "");
+            advice.setConnectivityTips(payload.get("connectivityTips") != null ? payload.get("connectivityTips").toString() : "");
+            advice.setLocalRules(payload.get("localRules") != null ? payload.get("localRules").toString() : "");
+            advice.setEnvironmentalTips(payload.get("environmentalTips") != null ? payload.get("environmentalTips").toString() : "");
+            advice.setProTips(payload.get("proTips") != null ? payload.get("proTips").toString() : "");
+
             adviceRepository.save(advice);
             return ResponseEntity.ok("Advice saved");
         }

@@ -250,32 +250,43 @@
                         text-decoration: none;
                     }
                 </style>
-            </head>
+            <link rel="stylesheet" href="<c:url value='/views/assets/css/admin-light.css'/>">
+</head>
 
-            <body>
+            <body class="admin-light-theme">
                 <div class="admin-layout">
                     <aside class="admin-sidebar">
-                        <div class="sidebar-header">
-                            <a href="<c:url value='/'/>"><img src="<c:url value='/views/assets/images/logo.png'/>"
-                                    alt="Youth Travel"></a>
-                        </div>
-                        <nav class="admin-nav">
-                            <a href="<c:url value='/admin/dashboard'/>" class="admin-nav-item"><i
-                                    class="fa fa-th-large"></i> Dashboard</a>
-                            <a href="<c:url value='/admin/trips'/>" class="admin-nav-item active"><i
-                                    class="fa fa-suitcase"></i> Manage Trips</a>
-                            <a href="<c:url value='/admin/users'/>" class="admin-nav-item"><i class="fa fa-users"></i>
-                                User Accounts</a>
-                            <a href="<c:url value='/admin/vendors'/>" class="admin-nav-item"><i
-                                    class="fa fa-handshake-o"></i> Vendor Requests</a>
-                            <a href="<c:url value='/admin/inquiries'/>" class="admin-nav-item"><i
-                                    class="fa fa-envelope"></i> Inquiries</a>
-                            <div style="margin-top: 50px; border-top: 1px solid #222; padding-top: 20px;">
-                                <a href="<c:url value='/'/>" class="admin-nav-item"><i class="fa fa-sign-out"></i> Back
-                                    to Site</a>
-                            </div>
-                        </nav>
-                    </aside>
+            <div class="sidebar-header">
+                <a href="<c:url value='/'/>">
+                    <img src="<c:url value='/views/assets/images/logo.png'/>" alt="Youth Travel">
+                </a>
+            </div>
+            <nav class="admin-nav">
+                <a href="<c:url value='/admin/dashboard'/>" class="admin-nav-item ">
+                    <i class="fa fa-th-large"></i> Dashboard
+                </a>
+                <a href="<c:url value='/admin/trips'/>" class="admin-nav-item active">
+                    <i class="fa fa-motorcycle"></i> Manage Trips
+                </a>
+                <a href="<c:url value='/admin/users'/>" class="admin-nav-item ">
+                    <i class="fa fa-users"></i> User Accounts
+                </a>
+                <a href="<c:url value='/admin/vendors'/>" class="admin-nav-item ">
+                    <i class="fa fa-handshake-o"></i> Vendor Requests
+                </a>
+                <a href="<c:url value='/admin/home-images'/>" class="admin-nav-item ">
+                    <i class="fa fa-image"></i> Homepage Photos
+                </a>
+                <a href="<c:url value='/admin/inquiries'/>" class="admin-nav-item ">
+                    <i class="fa fa-envelope"></i> Inquiries
+                </a>
+                <div style="margin-top: 50px; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 20px;">
+                    <a href="<c:url value='/'/>" class="admin-nav-item">
+                        <i class="fa fa-sign-out"></i> Back to Site
+                    </a>
+                </div>
+            </nav>
+        </aside>
                     <main class="admin-main">
                         <div class="breadcrumb-bar">
                             <a href="<c:url value='/admin/trips'/>"><i class="fa fa-arrow-left"></i> Back to All
@@ -297,7 +308,7 @@
                                     <span><i class="fa fa-map-marker"></i>${pkg.destination}</span>
                                     <span><i class="fa fa-inr"></i>₹${pkg.price}</span>
                                     <span><i class="fa fa-users"></i><strong
-                                            style="color:#fff;">${bookings.size()}</strong> bookings</span>
+                                            style="color:#fff;">${not empty bookings ? bookings.size() : 0}</strong> bookings</span>
                                 </div>
                             </div>
                         </div>
@@ -306,7 +317,7 @@
                         <div class="admin-section">
                             <div class="section-title">
                                 Users Who Used This Package
-                                <span>${bookings.size()}</span>
+                                <span>${not empty bookings ? bookings.size() : 0}</span>
                             </div>
                             <c:choose>
                                 <c:when test="${empty bookings}">

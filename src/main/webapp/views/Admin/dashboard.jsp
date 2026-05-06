@@ -302,9 +302,10 @@
             }
         }
     </style>
+<link rel="stylesheet" href="<c:url value='/views/assets/css/admin-light.css'/>">
 </head>
 
-<body class="premium-theme">
+<body class="premium-theme admin-light-theme">
     <!-- Sunlight Rays -->
     <div class="sun-rays-container">
         <div class="ray ray-1"></div>
@@ -324,19 +325,19 @@
                 <a href="<c:url value='/admin/dashboard'/>" class="admin-nav-item active">
                     <i class="fa fa-th-large"></i> Dashboard
                 </a>
-                <a href="<c:url value='/admin/trips'/>" class="admin-nav-item">
+                <a href="<c:url value='/admin/trips'/>" class="admin-nav-item ">
                     <i class="fa fa-motorcycle"></i> Manage Trips
                 </a>
-                <a href="<c:url value='/admin/users'/>" class="admin-nav-item">
+                <a href="<c:url value='/admin/users'/>" class="admin-nav-item ">
                     <i class="fa fa-users"></i> User Accounts
                 </a>
-                <a href="<c:url value='/admin/vendors'/>" class="admin-nav-item">
+                <a href="<c:url value='/admin/vendors'/>" class="admin-nav-item ">
                     <i class="fa fa-handshake-o"></i> Vendor Requests
                 </a>
-                <a href="<c:url value='/admin/home-images'/>" class="admin-nav-item">
+                <a href="<c:url value='/admin/home-images'/>" class="admin-nav-item ">
                     <i class="fa fa-image"></i> Homepage Photos
                 </a>
-                <a href="<c:url value='/admin/inquiries'/>" class="admin-nav-item">
+                <a href="<c:url value='/admin/inquiries'/>" class="admin-nav-item ">
                     <i class="fa fa-envelope"></i> Inquiries
                 </a>
                 <div style="margin-top: 50px; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 20px;">

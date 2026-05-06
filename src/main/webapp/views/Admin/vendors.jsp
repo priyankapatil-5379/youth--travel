@@ -49,9 +49,10 @@
         .table tbody td { padding: 15px; vertical-align: middle; border-top: 1px solid rgba(255,255,255,0.05); color: #fff; text-shadow: 0 1px 3px rgba(0,0,0,0.5); font-weight: 600; }
     </style>
 
+<link rel="stylesheet" href="<c:url value='/views/assets/css/admin-light.css'/>">
 </head>
 
-<body class="premium-theme">
+<body class="premium-theme admin-light-theme">
     <div class="sun-rays-container">
         <div class="ray ray-1"></div>
         <div class="ray ray-2"></div>
@@ -61,16 +62,33 @@
     <div class="admin-layout">
         <aside class="admin-sidebar">
             <div class="sidebar-header">
-                <a href="<c:url value='/'/>"><img src="<c:url value='/views/assets/images/logo.png'/>" alt="Youth Travel"></a>
+                <a href="<c:url value='/'/>">
+                    <img src="<c:url value='/views/assets/images/logo.png'/>" alt="Youth Travel">
+                </a>
             </div>
             <nav class="admin-nav">
-                <a href="<c:url value='/admin/dashboard'/>" class="admin-nav-item"><i class="fa fa-th-large"></i> Dashboard</a>
-                <a href="<c:url value='/admin/trips'/>" class="admin-nav-item"><i class="fa fa-motorcycle"></i> Manage Trips</a>
-                <a href="<c:url value='/admin/users'/>" class="admin-nav-item"><i class="fa fa-users"></i> User Accounts</a>
-                <a href="<c:url value='/admin/vendors'/>" class="admin-nav-item active"><i class="fa fa-handshake-o"></i> Vendor Requests</a>
-                <a href="<c:url value='/admin/inquiries'/>" class="admin-nav-item"><i class="fa fa-envelope"></i> Inquiries</a>
+                <a href="<c:url value='/admin/dashboard'/>" class="admin-nav-item ">
+                    <i class="fa fa-th-large"></i> Dashboard
+                </a>
+                <a href="<c:url value='/admin/trips'/>" class="admin-nav-item ">
+                    <i class="fa fa-motorcycle"></i> Manage Trips
+                </a>
+                <a href="<c:url value='/admin/users'/>" class="admin-nav-item ">
+                    <i class="fa fa-users"></i> User Accounts
+                </a>
+                <a href="<c:url value='/admin/vendors'/>" class="admin-nav-item active">
+                    <i class="fa fa-handshake-o"></i> Vendor Requests
+                </a>
+                <a href="<c:url value='/admin/home-images'/>" class="admin-nav-item ">
+                    <i class="fa fa-image"></i> Homepage Photos
+                </a>
+                <a href="<c:url value='/admin/inquiries'/>" class="admin-nav-item ">
+                    <i class="fa fa-envelope"></i> Inquiries
+                </a>
                 <div style="margin-top: 50px; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 20px;">
-                    <a href="<c:url value='/'/>" class="admin-nav-item"><i class="fa fa-sign-out"></i> Back to Site</a>
+                    <a href="<c:url value='/'/>" class="admin-nav-item">
+                        <i class="fa fa-sign-out"></i> Back to Site
+                    </a>
                 </div>
             </nav>
         </aside>
@@ -125,8 +143,14 @@
                                                     ${vendor.status}
                                                 </span>
                                             </td>
-                                            <td>
+                                            <td style="display: flex; gap: 5px;">
                                                 <a href="<c:url value='/admin/vendors/${vendor.id}'/>" class="btn btn-sm" style="background: #007bff; color: white; padding: 5px 10px; border-radius: 3px; text-decoration: none; font-size: 12px;">View Details</a>
+                                                <c:set var="blockAction" value="${vendor.isBlocked ? 'unblock' : 'block'}" />
+                                                <form action="<c:url value='/admin/vendors/${vendor.id}/${blockAction}'/>" method="post" onsubmit="return confirm('Are you sure you want to ${blockAction} this vendor?');" style="margin:0;">
+                                                    <button type="submit" class="btn btn-sm" style="background: ${vendor.isBlocked ? '#28a745' : '#dc3545'}; color: white; padding: 5px 10px; border-radius: 3px; border: none; font-size: 12px;">
+                                                        <i class="fa ${vendor.isBlocked ? 'fa-unlock' : 'fa-lock'}"></i> ${vendor.isBlocked ? 'Unblock' : 'Block'}
+                                                    </button>
+                                                </form>
                                             </td>
                                         </tr>
                                     </c:forEach>

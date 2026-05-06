@@ -36,22 +36,39 @@
         
         .alert-success { background: rgba(76, 175, 80, 0.1); border: 1px solid #4caf50; color: #4caf50; border-radius: 8px; }
     </style>
+<link rel="stylesheet" href="<c:url value='/views/assets/css/admin-light.css'/>">
 </head>
-<body>
+<body class="admin-light-theme">
     <div class="admin-layout">
         <aside class="admin-sidebar">
             <div class="sidebar-header">
-                <a href="<c:url value='/'/>"><img src="<c:url value='/views/assets/images/logo.png'/>" alt="Youth Travel"></a>
+                <a href="<c:url value='/'/>">
+                    <img src="<c:url value='/views/assets/images/logo.png'/>" alt="Youth Travel">
+                </a>
             </div>
             <nav class="admin-nav">
-                <a href="<c:url value='/admin/dashboard'/>" class="admin-nav-item"><i class="fa fa-th-large"></i> Dashboard</a>
-                <a href="<c:url value='/admin/trips'/>" class="admin-nav-item"><i class="fa fa-motorcycle"></i> Manage Trips</a>
-                <a href="<c:url value='/admin/users'/>" class="admin-nav-item"><i class="fa fa-users"></i> User Accounts</a>
-                <a href="<c:url value='/admin/vendors'/>" class="admin-nav-item"><i class="fa fa-handshake-o"></i> Vendor Requests</a>
-                <a href="<c:url value='/admin/inquiries'/>" class="admin-nav-item"><i class="fa fa-envelope"></i> Inquiries</a>
-                <a href="<c:url value='/admin/settings'/>" class="admin-nav-item active"><i class="fa fa-cog"></i> Settings</a>
-                <div style="margin-top: 50px; border-top: 1px solid #222; padding-top: 20px;">
-                    <a href="<c:url value='/'/>" class="admin-nav-item"><i class="fa fa-sign-out"></i> Back to Site</a>
+                <a href="<c:url value='/admin/dashboard'/>" class="admin-nav-item ">
+                    <i class="fa fa-th-large"></i> Dashboard
+                </a>
+                <a href="<c:url value='/admin/trips'/>" class="admin-nav-item ">
+                    <i class="fa fa-motorcycle"></i> Manage Trips
+                </a>
+                <a href="<c:url value='/admin/users'/>" class="admin-nav-item ">
+                    <i class="fa fa-users"></i> User Accounts
+                </a>
+                <a href="<c:url value='/admin/vendors'/>" class="admin-nav-item ">
+                    <i class="fa fa-handshake-o"></i> Vendor Requests
+                </a>
+                <a href="<c:url value='/admin/home-images'/>" class="admin-nav-item ">
+                    <i class="fa fa-image"></i> Homepage Photos
+                </a>
+                <a href="<c:url value='/admin/inquiries'/>" class="admin-nav-item ">
+                    <i class="fa fa-envelope"></i> Inquiries
+                </a>
+                <div style="margin-top: 50px; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 20px;">
+                    <a href="<c:url value='/'/>" class="admin-nav-item">
+                        <i class="fa fa-sign-out"></i> Back to Site
+                    </a>
                 </div>
             </nav>
         </aside>

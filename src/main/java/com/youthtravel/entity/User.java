@@ -34,13 +34,16 @@ package com.youthtravel.entity;
     private int profileViews = 0;
     private long travelPoints = 0;
  
-     @Column(name = "created_at", updatable = false)
-     private java.time.LocalDateTime createdAt;
- 
-     @PrePersist
-     protected void onCreate() {
-         createdAt = java.time.LocalDateTime.now();
-     }
+    @Column(name = "created_at", updatable = false)
+    private java.time.LocalDateTime createdAt;
+
+    @Column(nullable = false, columnDefinition = "boolean default false")
+    private boolean isBlocked = false;
+
+    @PrePersist
+    protected void onCreate() {
+        createdAt = java.time.LocalDateTime.now();
+    }
  
      // Default Constructor
      public User() {
@@ -174,5 +177,13 @@ package com.youthtravel.entity;
 
      public java.time.LocalDateTime getRegisteredAt() {
          return createdAt;
+     }
+
+     public boolean getIsBlocked() {
+         return isBlocked;
+     }
+
+     public void setIsBlocked(boolean isBlocked) {
+         this.isBlocked = isBlocked;
      }
  }

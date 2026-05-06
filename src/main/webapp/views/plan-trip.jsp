@@ -429,55 +429,110 @@
         </div>
     </section>
 
-<section class="footer" style="position: relative; z-index: 20; background: rgba(8, 12, 20, 0.9); backdrop-filter: blur(10px);">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="col-md-6">
-                    <div class="footer-content">
-                        <div class="footer-logo">
-                            <img src="<c:url value='/views/assets/images/footer-logo.png'/>" alt="" />
-                        </div>
-                        <div class="footer-text">
-                            <p>Connecting the youth with extraordinary experiences. Explore India like never before with curated trips, safe stays, and like-minded travelers.</p>
-                        </div>
-                        <div class="footer-address">
-                            <ul>
-                                <li><i class="fa fa-map-marker" aria-hidden="true"></i> Youth Travel, MG Road, Bengaluru, Karnataka, India</li>
-                                <li><i class="fa fa-phone" aria-hidden="true"></i> +91 98765 43210</li>
-                                <li><i class="fa fa-envelope" aria-hidden="true"></i> support@youthtravel.in</li>
-                            </ul>
+    <section class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="col-md-6">
+                        <div class="footer-content">
+                            <div class="footer-logo">
+                                <img src="<c:url value='/views/assets/images/footer-logo.png'/>" alt="" />
+                            </div>
+                            <div class="footer-text">
+                                <p>
+                                    Travelling is more than just visiting places; it's about the vibes, the stories, and the memories that last a lifetime. Explore the unexplored with Youth Travel!
+                                </p>
+                            </div>
+                            <div class="footer-address">
+                                <ul>
+                                    <li><i class="fa fa-map-marker" aria-hidden="true"></i> Youth Travel, MG Road, Bengaluru, Karnataka, India
+                                    </li>
+
+                                    <li>
+                                        <i class="fa fa-phone" aria-hidden="true"></i> +91 98765 43210
+
+                                    </li>
+                                    <li>
+                                        <i class="fa fa-envelope" aria-hidden="true"></i> support@youthtravel.in
+
+                                    </li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="footer-content">
-                        <div class="news">
-                            <p>Stay Updated</p>
-                        </div>
-                        <div class="subscribe">
-                            <form id="newsletterForm" onsubmit="subscribeNewsletter(event)">
-                                <div class="input-group">
-                                    <input type="email" id="newsletterEmail" class="form-control" size="50" placeholder="Enter E-mail" required>
-                                    <div class="input-group-btn">
-                                        <button type="submit" id="subscribeBtn" class="btn btn-danger">Subscribe</button>
+                    <div class="col-md-6">
+                        <div class="footer-content">
+                            <div class="news">
+                                <p>
+                                    Newsletter Subscribe
+                                </p>
+                            </div>
+                            <div class="subscribe">
+                                <form id="newsletterForm" onsubmit="subscribeNewsletter(event)">
+                                    <div class="input-group">
+                                        <input type="email" id="newsletterEmail" class="form-control" size="50" placeholder="Enter E-mail" required>
+                                        <div class="input-group-btn">
+                                            <button type="submit" id="subscribeBtn" class="btn btn-danger">Subscribe</button>
+                                        </div>
                                     </div>
-                                </div>
-                            </form>
-                        </div>
-                        <div class="social-icons">
-                            <ul>
-                                <li><a href="#"><i class="fa fa-facebook" aria-hidden="true"></i> FACEBOOK</a></li>
-                                <li><a href="#"><i class="fa fa-twitter" aria-hidden="true"></i> TWITTER</a></li>
-                                <li><a href="#"><i class="fa fa-linkedin" aria-hidden="true"></i> LINKEDIN</a></li>
-                            </ul>
+                                </form>
+                            </div>
+                            <script>
+                                function subscribeNewsletter(e) {
+                                    e.preventDefault();
+                                    const email = document.getElementById('newsletterEmail').value;
+                                    const btn = document.getElementById('subscribeBtn');
+                                    const formData = new FormData();
+                                    formData.append("name", "Newsletter Subscriber");
+                                    formData.append("email", email);
+                                    formData.append("message", "Subscribed to newsletter.");
+                                    fetch('/enquiry/submit', { method: 'POST', body: formData })
+                                    .then(res => {
+                                        if(res.ok) {
+                                            const originalText = btn.innerHTML;
+                                            const originalBg = btn.style.background;
+                                            btn.innerHTML = "Subscribed";
+                                            btn.style.background = "#4caf50";
+                                            btn.disabled = true;
+                                            document.getElementById('newsletterEmail').value = "";
+                                            setTimeout(() => {
+                                                btn.innerHTML = originalText;
+                                                btn.style.background = originalBg;
+                                                btn.disabled = false;
+                                            }, 3000);
+                                        }
+                                    });
+                                }
+                            </script>
+                            <div class="social-icons">
+                                <ul>
+                                    <li><a href="https://www.facebook.com/login" target="_blank"><i class="fa fa-facebook" aria-hidden="true"></i> FACEBOOK</a></li>
+                                    <li><a href="https://twitter.com/login" target="_blank"><i class="fa fa-twitter" aria-hidden="true"></i> TWITTER</a></li>
+                                    <li><a href="https://www.linkedin.com/login" target="_blank"><i class="fa fa-linkedin" aria-hidden="true"></i> LINKEDIN</a></li>
+                                </ul>
+                            </div>
+                            <div class="yt-footer-stores" aria-label="Download our app">
+                                <a class="yt-store-btn" href="https://play.google.com/store" target="_blank" aria-label="Get it on Google Play">
+                                    <i class="fa fa-android" aria-hidden="true"></i>
+                                    <span>
+                                        <small>Get it on</small>
+                                        <strong>Google Play</strong>
+                                    </span>
+                                </a>
+                                <a class="yt-store-btn" href="https://www.apple.com/app-store/" target="_blank" aria-label="Download on the App Store">
+                                    <i class="fa fa-apple" aria-hidden="true"></i>
+                                    <span>
+                                        <small>Download on</small>
+                                        <strong>App Store</strong>
+                                    </span>
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
 
 <script src="<c:url value='/views/assets/js/jquery.min.js'/>"></script>
 <script src="<c:url value='/views/assets/js/bootstrap.min.js'/>"></script>

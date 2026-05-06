@@ -149,6 +149,46 @@ public class AdminController {
         return "redirect:/admin/vendors";
     }
 
+    @PostMapping("/vendors/{id}/block")
+    public String blockVendor(@PathVariable Long id, org.springframework.web.servlet.mvc.support.RedirectAttributes redirectAttributes) {
+        vendorRepository.findById(id).ifPresent(vendor -> {
+            vendor.setIsBlocked(true);
+            vendorRepository.save(vendor);
+            redirectAttributes.addFlashAttribute("message", "Vendor blocked successfully.");
+        });
+        return "redirect:/admin/vendors";
+    }
+
+    @PostMapping("/vendors/{id}/unblock")
+    public String unblockVendor(@PathVariable Long id, org.springframework.web.servlet.mvc.support.RedirectAttributes redirectAttributes) {
+        vendorRepository.findById(id).ifPresent(vendor -> {
+            vendor.setIsBlocked(false);
+            vendorRepository.save(vendor);
+            redirectAttributes.addFlashAttribute("message", "Vendor unblocked successfully.");
+        });
+        return "redirect:/admin/vendors";
+    }
+
+    @PostMapping("/users/{id}/block")
+    public String blockUser(@PathVariable Long id, org.springframework.web.servlet.mvc.support.RedirectAttributes redirectAttributes) {
+        userRepository.findById(id).ifPresent(user -> {
+            user.setIsBlocked(true);
+            userRepository.save(user);
+            redirectAttributes.addFlashAttribute("message", "User blocked successfully.");
+        });
+        return "redirect:/admin/users";
+    }
+
+    @PostMapping("/users/{id}/unblock")
+    public String unblockUser(@PathVariable Long id, org.springframework.web.servlet.mvc.support.RedirectAttributes redirectAttributes) {
+        userRepository.findById(id).ifPresent(user -> {
+            user.setIsBlocked(false);
+            userRepository.save(user);
+            redirectAttributes.addFlashAttribute("message", "User unblocked successfully.");
+        });
+        return "redirect:/admin/users";
+    }
+
     private void sendEmail(String to, String subject, String text) {
         try {
             org.springframework.mail.SimpleMailMessage message = new org.springframework.mail.SimpleMailMessage();

@@ -55,21 +55,39 @@
         .empty-state { text-align: center; padding: 50px; color: #555; }
         .empty-state i { font-size: 48px; display: block; margin-bottom: 15px; color: #333; }
     </style>
+<link rel="stylesheet" href="<c:url value='/views/assets/css/admin-light.css'/>">
 </head>
-<body>
+<body class="admin-light-theme">
     <div class="admin-layout">
         <aside class="admin-sidebar">
             <div class="sidebar-header">
-                <a href="<c:url value='/'/>"><img src="<c:url value='/views/assets/images/logo.png'/>" alt="Youth Travel"></a>
+                <a href="<c:url value='/'/>">
+                    <img src="<c:url value='/views/assets/images/logo.png'/>" alt="Youth Travel">
+                </a>
             </div>
             <nav class="admin-nav">
-                <a href="<c:url value='/admin/dashboard'/>" class="admin-nav-item"><i class="fa fa-th-large"></i> Dashboard</a>
-                <a href="<c:url value='/admin/trips'/>" class="admin-nav-item"><i class="fa fa-suitcase"></i> Manage Trips</a>
-                <a href="<c:url value='/admin/users'/>" class="admin-nav-item active"><i class="fa fa-users"></i> User Accounts</a>
-                <a href="<c:url value='/admin/vendors'/>" class="admin-nav-item"><i class="fa fa-handshake-o"></i> Vendor Requests</a>
-                <a href="<c:url value='/admin/inquiries'/>" class="admin-nav-item"><i class="fa fa-envelope"></i> Inquiries</a>
-                <div style="margin-top: 50px; border-top: 1px solid #222; padding-top: 20px;">
-                    <a href="<c:url value='/'/>" class="admin-nav-item"><i class="fa fa-sign-out"></i> Back to Site</a>
+                <a href="<c:url value='/admin/dashboard'/>" class="admin-nav-item ">
+                    <i class="fa fa-th-large"></i> Dashboard
+                </a>
+                <a href="<c:url value='/admin/trips'/>" class="admin-nav-item ">
+                    <i class="fa fa-motorcycle"></i> Manage Trips
+                </a>
+                <a href="<c:url value='/admin/users'/>" class="admin-nav-item active">
+                    <i class="fa fa-users"></i> User Accounts
+                </a>
+                <a href="<c:url value='/admin/vendors'/>" class="admin-nav-item ">
+                    <i class="fa fa-handshake-o"></i> Vendor Requests
+                </a>
+                <a href="<c:url value='/admin/home-images'/>" class="admin-nav-item ">
+                    <i class="fa fa-image"></i> Homepage Photos
+                </a>
+                <a href="<c:url value='/admin/inquiries'/>" class="admin-nav-item ">
+                    <i class="fa fa-envelope"></i> Inquiries
+                </a>
+                <div style="margin-top: 50px; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 20px;">
+                    <a href="<c:url value='/'/>" class="admin-nav-item">
+                        <i class="fa fa-sign-out"></i> Back to Site
+                    </a>
                 </div>
             </nav>
         </aside>
@@ -82,7 +100,9 @@
 
             <!-- User Profile Card -->
             <div class="user-profile-card">
-                <div class="user-avatar-lg">${fn:toUpperCase(fn:substring(user.name, 0, 1))}</div>
+                <div class="user-avatar-lg">
+                    ${not empty user.name ? fn:toUpperCase(fn:substring(user.name, 0, 1)) : 'U'}
+                </div>
                 <div class="user-info" style="flex-grow:1;">
                     <h2>${user.name}</h2>
                     <div class="user-meta">
@@ -94,7 +114,7 @@
                     </div>
                     <div class="stat-pills">
                         <div class="stat-pill">
-                            <h4>${bookings.size()}</h4>
+                            <h4>${not empty bookings ? bookings.size() : 0}</h4>
                             <p>Trips Taken</p>
                         </div>
                     </div>
@@ -105,7 +125,7 @@
             <div class="admin-section">
                 <div class="section-title">
                     Trip Booking History
-                    <span class="count-badge">${bookings.size()} bookings</span>
+                    <span class="count-badge">${not empty bookings ? bookings.size() : 0} bookings</span>
                 </div>
                 <c:choose>
                     <c:when test="${empty bookings}">
