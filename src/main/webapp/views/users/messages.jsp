@@ -8,103 +8,155 @@
     <title>My Messages | Youth Travel</title>
     <link rel="stylesheet" href="<c:url value='/views/assets/css/bootstrap.min.css'/>">
     <link rel="stylesheet" href="<c:url value='/views/assets/css/font-awesome.min.css'/>">
-    <link rel="stylesheet" href="<c:url value='/views/assets/css/premium-dashboard.css'/>">
-    <link href="https://fonts.googleapis.com/css?family=Dosis:300,400,500,600,700,800" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        :root { --primary-blue: #e63946; --text-muted: #7e8c9a; --transition: all 0.3s ease; }
-        body.yt-dark { background: #0b0f18; color: #fff; font-family: 'Dosis', sans-serif; margin: 0; padding: 0; overflow: hidden; height: 100vh; }
-
-        .header { 
-            position: fixed; top: 0; left: 0; right: 0; height: 75px; 
-            background: rgba(0, 0, 0, 0.4); 
-            backdrop-filter: blur(15px); 
-            -webkit-backdrop-filter: blur(15px);
-            display: flex; align-items: center; justify-content: space-between; 
-            padding: 0 40px; z-index: 1000; 
-            border-bottom: 1px solid rgba(255, 255, 255, 0.08); 
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+        :root {
+            --primary: #008080;
+            --primary-hover: #077378;
+            --accent-red: #e63946;
+            --bg-body: #f1f5f9;
+            --bg-card: #ffffff;
+            --border-color: #e2e8f0;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --sidebar-width: 260px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        .main-content { margin-left: 240px; height: calc(100vh - 75px); display: flex; flex-direction: column; padding: 0; background: transparent; margin-top: 75px; }
+        body.light-theme { 
+            background: var(--bg-body); 
+            color: var(--text-main); 
+            font-family: 'Inter', sans-serif; 
+            margin: 0; padding: 0; 
+            overflow: hidden; 
+            height: 100vh; 
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .wrapper { display: flex; height: 100vh; }
+
+        .main-content { 
+            flex: 1; 
+            margin-left: var(--sidebar-width); 
+            height: 100vh; 
+            display: flex; 
+            flex-direction: column; 
+            background: var(--bg-body);
+        }
 
         /* Top Header */
-        .page-header { padding: 25px 40px; border-bottom: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.3); backdrop-filter: blur(10px); display: flex; align-items: center; justify-content: space-between; box-shadow: 0 4px 20px rgba(0,0,0,0.2); }
-        .page-header h2 { margin: 0; font-weight: 800; font-size: 24px; color: #fff; text-shadow: 0 2px 10px rgba(0,0,0,0.8); }
+        .page-header { 
+            padding: 24px 40px; 
+            background: var(--bg-card); 
+            border-bottom: 1px solid var(--border-color); 
+            display: flex; 
+            align-items: center; 
+            justify-content: space-between; 
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            z-index: 10;
+        }
+        .page-header h2 { margin: 0; font-weight: 800; font-size: 24px; color: var(--text-main); letter-spacing: -0.5px; }
 
         /* Chat UI Container */
-        .chat-container { display: flex; flex-grow: 1; overflow: hidden; }
+        .chat-container { display: flex; flex: 1; overflow: hidden; background: var(--bg-card); margin: 24px; border-radius: 16px; border: 1px solid var(--border-color); box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
 
         /* Left Inbox List */
-        .inbox-list { width: 350px; background: rgba(0,0,0,0.1); backdrop-filter: blur(15px); border-right: 1px solid rgba(255,255,255,0.1); overflow-y: auto; display: flex; flex-direction: column; }
-        .inbox-search { padding: 20px; border-bottom: 1px solid rgba(255,255,255,0.05); }
-        .inbox-search input { width: 100%; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.2); border-radius: 30px; padding: 12px 20px; color: #fff; outline: none; transition: var(--transition); backdrop-filter: blur(5px); }
-        .inbox-search input:focus { border-color: var(--primary-blue); background: rgba(0,0,0,0.6); box-shadow: 0 0 15px rgba(230, 57, 70, 0.2); }
+        .inbox-list { width: 350px; background: #f8fafc; border-right: 1px solid var(--border-color); overflow-y: auto; display: flex; flex-direction: column; }
+        .inbox-search { padding: 20px; border-bottom: 1px solid var(--border-color); background: #ffffff; }
+        .inbox-search input { 
+            width: 100%; 
+            background: #f1f5f9; 
+            border: 1px solid var(--border-color); 
+            border-radius: 12px; 
+            padding: 12px 16px; 
+            color: var(--text-main); 
+            outline: none; 
+            transition: var(--transition); 
+            font-size: 14px;
+            font-weight: 500;
+        }
+        .inbox-search input:focus { border-color: var(--primary); background: #ffffff; box-shadow: 0 0 0 4px rgba(0, 128, 128, 0.1); }
         
-        .inbox-item { padding: 20px; border-bottom: 1px solid rgba(255,255,255,0.03); cursor: pointer; transition: 0.2s; display: flex; align-items: center; gap: 15px; }
-        .inbox-item:hover { background: rgba(255,255,255,0.05); }
-        .inbox-item.active { background: rgba(240, 76, 38, 0.1); border-left: 4px solid var(--primary-blue); }
+        .inbox-item { padding: 20px; border-bottom: 1px solid var(--border-color); cursor: pointer; transition: var(--transition); display: flex; align-items: center; gap: 16px; background: #ffffff; }
+        .inbox-item:hover { background: #f8fafc; }
+        .inbox-item.active { background: #f0fdfa; border-left: 4px solid var(--primary); }
         
-        .avatar { width: 48px; height: 48px; border-radius: 50%; object-fit: cover; }
         .inbox-details { flex: 1; overflow: hidden; }
-        .inbox-name { font-weight: 800; font-size: 16px; margin-bottom: 3px; display: flex; justify-content: space-between; align-items: center; color: #fff; text-shadow: 0 1px 3px rgba(0,0,0,0.5); }
-        .inbox-preview { font-size: 13px; color: rgba(255,255,255,0.7); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-weight: 500; }
+        .inbox-name { font-weight: 700; font-size: 15px; margin-bottom: 4px; display: flex; justify-content: space-between; align-items: center; color: var(--text-main); }
+        .inbox-preview { font-size: 13px; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-weight: 500; }
         
         /* Right Chat Area */
-        .chat-view { flex-grow: 1; display: flex; flex-direction: column; background: rgba(0,0,0,0.05); backdrop-filter: blur(5px); }
+        .chat-view { flex: 1; display: flex; flex-direction: column; background: #ffffff; }
         
-        .chat-header { padding: 20px 30px; border-bottom: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.2); backdrop-filter: blur(10px); display: flex; align-items: center; justify-content: space-between; }
+        .chat-header { padding: 20px 32px; border-bottom: 1px solid var(--border-color); background: #ffffff; display: flex; align-items: center; justify-content: space-between; }
         
-        .chat-messages { flex-grow: 1; padding: 30px; overflow-y: auto; display: flex; flex-direction: column; gap: 20px; }
+        .chat-messages { flex: 1; padding: 32px; overflow-y: auto; display: flex; flex-direction: column; gap: 24px; background: #f8fafc; }
         
-        .msg-bubble { max-width: 70%; padding: 15px 22px; border-radius: 20px; font-size: 16px; line-height: 1.5; position: relative; font-weight: 600; text-shadow: 0 1px 3px rgba(0,0,0,0.3); }
-        .msg-time { font-size: 11px; color: rgba(255,255,255,0.8); margin-top: 6px; display: block; font-weight: 700; text-shadow: 0 1px 2px rgba(0,0,0,0.5); }
+        .msg-bubble { max-width: 70%; padding: 14px 20px; border-radius: 16px; font-size: 15px; line-height: 1.5; position: relative; font-weight: 500; }
+        .msg-time { font-size: 11px; margin-top: 6px; display: block; font-weight: 600; }
         
-        /* Bubble from Customer (Me) */
-        .msg-sent { align-self: flex-end; background: #ff4d4d; color: #fff; border-bottom-right-radius: 4px; box-shadow: 0 8px 25px rgba(255, 77, 77, 0.3); }
-        .msg-sent .msg-time { text-align: right; color: rgba(255,255,255,0.9); }
+        /* Bubble from Me */
+        .msg-sent { align-self: flex-end; background: var(--primary); color: #ffffff; border-bottom-right-radius: 4px; box-shadow: 0 4px 6px -1px rgba(0, 128, 128, 0.2); }
+        .msg-sent .msg-time { text-align: right; color: rgba(255,255,255,0.8); }
         
-        /* Bubble from Vendor (Them) */
-        .msg-received { align-self: flex-start; background: rgba(0,0,0,0.5); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); border-bottom-left-radius: 4px; color: #fff; }
+        /* Bubble from Them */
+        .msg-received { align-self: flex-start; background: #ffffff; border: 1px solid var(--border-color); border-bottom-left-radius: 4px; color: var(--text-main); box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); }
+        .msg-received .msg-time { color: var(--text-muted); }
         
         /* Input Area */
-        .chat-input-area { padding: 20px 30px; border-top: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.3); backdrop-filter: blur(10px); }
-        .chat-form { display: flex; gap: 15px; align-items: center; }
-        .chat-input { flex: 1; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.2); border-radius: 30px; padding: 15px 25px; color: #fff; outline: none; transition: var(--transition); backdrop-filter: blur(5px); }
-        .chat-input:focus { border-color: var(--primary-blue); background: rgba(0,0,0,0.6); box-shadow: 0 0 15px rgba(230, 57, 70, 0.2); }
-        .btn-send { background: var(--primary-blue); color: #fff; border: none; width: 50px; height: 50px; border-radius: 50%; display: flex; justify-content: center; align-items: center; cursor: pointer; transition: var(--transition); box-shadow: 0 5px 15px rgba(240, 76, 38, 0.3); flex-shrink: 0; }
-        .btn-send:hover { transform: scale(1.05); }
+        .chat-input-area { padding: 24px 32px; border-top: 1px solid var(--border-color); background: #ffffff; }
+        .chat-form { display: flex; gap: 16px; align-items: center; }
+        .chat-input { 
+            flex: 1; 
+            background: #f1f5f9; 
+            border: 1px solid var(--border-color); 
+            border-radius: 12px; 
+            padding: 14px 20px; 
+            color: var(--text-main); 
+            outline: none; 
+            transition: var(--transition); 
+            font-weight: 500;
+        }
+        .chat-input:focus { border-color: var(--primary); background: #ffffff; box-shadow: 0 0 0 4px rgba(0, 128, 128, 0.1); }
+        
+        .btn-send { 
+            background: var(--primary); 
+            color: #ffffff; 
+            border: none; 
+            width: 48px; 
+            height: 48px; 
+            border-radius: 12px; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            cursor: pointer; 
+            transition: var(--transition); 
+            box-shadow: 0 4px 6px -1px rgba(0, 128, 128, 0.2); 
+            flex-shrink: 0; 
+        }
+        .btn-send:hover { background: var(--primary-hover); transform: translateY(-1px); }
+
+        @media (max-width: 991px) {
+            .main-content { margin-left: 0; }
+            .inbox-list { width: 100%; }
+            .chat-view { display: none; }
+            .chat-view.active { display: flex; position: fixed; inset: 0; z-index: 2000; }
+        }
     </style>
 </head>
 
-<body class="yt-dark premium-theme">
-    <header class="header">
-        <div class="header-logo"><a href="<c:url value='/'/>"><img src="<c:url value='/views/assets/images/logo.png'/>" style="height: 35px;"></a></div>
-        <div style="display: flex; align-items: center; gap: 20px;">
-                <div style="display: flex; align-items: center; gap: 15px; cursor: pointer;">
-                    <span style="font-weight: 700;">Hi, ${user.name}</span>
-                    <c:set var="defaultAvatar" value="https://ui-avatars.com/api/?name=${user.name}&background=f04c26&color=fff" />
-                    <img src="${not empty user.profilePhoto ? user.profilePhoto : defaultAvatar}" style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover; border: 2px solid rgba(255,255,255,0.2);">
-                </div>
-        </div>
-    </header>
-
-    <!-- Sunlight Rays -->
-    <div class="sun-rays-container">
-        <div class="ray ray-1"></div>
-        <div class="ray ray-2"></div>
-        <div class="ray ray-3"></div>
-        <div class="ray ray-4"></div>
-    </div>
     
-    <jsp:include page="user-sidebar.jsp">
-        <jsp:param name="activePage" value="messages" />
-    </jsp:include>
+<body class="light-theme">
+    <div class="wrapper">
+        <jsp:include page="user-sidebar.jsp">
+            <jsp:param name="activePage" value="messages" />
+        </jsp:include>
 
     <!-- Main Content -->
     <div class="main-content">
         <div class="page-header">
             <h2>Messaging Center</h2>
-            <span class="badge" style="background: rgba(34, 197, 94, 0.1); color: #22c55e; padding: 8px 15px; border-radius: 20px; font-weight: 700;">Global Inbox</span>
+            <span style="background: #f0fdf4; color: #166534; padding: 6px 12px; border-radius: 100px; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">Support Active</span>
         </div>
 
         <div class="chat-container">
@@ -119,7 +171,7 @@
                     <c:set var="vendor" value="${entry.key}" />
                     <a href="<c:url value='/user/messages?chatWith=${vendor.id}'/>" style="text-decoration: none; color: inherit; display: block;">
                         <div class="inbox-item ${chatWithVendor != null && chatWithVendor.id == vendor.id ? 'active' : ''}">
-                            <div style="width: 48px; height: 48px; border-radius: 50%; background: rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; font-size: 20px; color: var(--primary-blue); flex-shrink: 0;">
+                            <div style="width: 48px; height: 48px; border-radius: 12px; background: #f0fdfa; display: flex; align-items: center; justify-content: center; font-size: 20px; color: var(--primary); flex-shrink: 0; border: 1px solid #ccfbf1;">
                                 <i class="fa fa-building"></i>
                             </div>
                             <div class="inbox-details">
@@ -152,20 +204,20 @@
                         <!-- Active Chat Header -->
                         <div class="chat-header">
                             <div style="display: flex; align-items: center; gap: 15px;">
-                                <div style="width: 45px; height: 45px; border-radius: 50%; background: rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; font-size: 20px; color: var(--primary-blue);">
+                                <div style="width: 45px; height: 45px; border-radius: 12px; background: #f0fdfa; display: flex; align-items: center; justify-content: center; font-size: 20px; color: var(--primary); border: 1px solid #ccfbf1;">
                                     <i class="fa fa-building"></i>
                                 </div>
                                 <div>
-                                    <h4 style="margin: 0; font-size: 18px; font-weight: 800; color: #fff;">${chatWithVendor.businessName}</h4>
-                                    <div style="font-size: 13px; color: #22c55e;"><i class="fa fa-circle"></i> Online</div>
+                                    <h4 style="margin: 0; font-size: 18px; font-weight: 800; color: var(--text-main); letter-spacing: -0.3px;">${chatWithVendor.businessName}</h4>
+                                    <div style="font-size: 13px; color: #166534; font-weight: 600;"><i class="fa fa-circle" style="font-size: 8px; margin-right: 4px;"></i> Online</div>
                                 </div>
                             </div>
                         </div>
 
                         <!-- Messages -->
                         <div class="chat-messages" id="chatBox">
-                            <div style="text-align: center; margin-bottom: 20px;">
-                                <span style="background: rgba(255,255,255,0.05); padding: 5px 15px; border-radius: 20px; font-size: 12px; color: var(--text-muted);">Conversation started</span>
+                            <div style="text-align: center; margin-bottom: 8px;">
+                                <span style="background: #ffffff; padding: 6px 16px; border-radius: 100px; font-size: 12px; color: var(--text-muted); font-weight: 600; border: 1px solid var(--border-color); box-shadow: 0 1px 2px 0 rgba(0,0,0,0.05);">Secure encrypted conversation started</span>
                             </div>
 
                             <c:forEach var="msg" items="${activeChat}">
@@ -197,12 +249,12 @@
                     </c:when>
                     <c:otherwise>
                         <!-- Empty State -->
-                        <div style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--text-muted);">
-                            <div style="width: 100px; height: 100px; border-radius: 50%; background: rgba(255,255,255,0.02); display: flex; align-items: center; justify-content: center; margin-bottom: 20px;">
-                                <i class="fa fa-comments-o" style="font-size: 40px; color: rgba(255,255,255,0.1);"></i>
+                        <div style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--text-muted); background: #f8fafc;">
+                            <div style="width: 80px; height: 80px; border-radius: 20px; background: #ffffff; display: flex; align-items: center; justify-content: center; margin-bottom: 24px; border: 1px solid var(--border-color); box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);">
+                                <i class="fa fa-comments-o" style="font-size: 40px; color: #e2e8f0;"></i>
                             </div>
-                            <h3 style="color: #fff; font-weight: 700;">Your Messages</h3>
-                            <p>Select a conversation from the left to start chatting.</p>
+                            <h3 style="color: var(--text-main); font-weight: 800; margin-bottom: 8px;">Your Messages</h3>
+                            <p style="font-weight: 500;">Select a conversation to start chatting.</p>
                         </div>
                     </c:otherwise>
                 </c:choose>

@@ -9,680 +9,299 @@
             <meta name="viewport" content="width=device-width, initial-scale=1">
             <title>Edit Trip | Youth Travel</title>
             <link rel="stylesheet" href="<c:url value='/views/assets/css/bootstrap.min.css'/>">
-            <link rel="stylesheet" href="<c:url value='/views/assets/css/style.css'/>">
             <link rel="stylesheet" href="<c:url value='/views/assets/css/font-awesome.min.css'/>">
-            <link rel="stylesheet" href="<c:url value='/views/assets/css/premium-dashboard.css'/>">
-            <link href="https://fonts.googleapis.com/css?family=Dosis:300,400,500,600,700,800" rel="stylesheet">
+            <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
             <style>
-                body.yt-dark {
-                    background: transparent;
-                    color: #fff;
-                    font-family: 'Dosis', sans-serif;
+                :root {
+                    --primary: #008080;
+                    --primary-hover: #077378;
+                    --accent-red: #e63946;
+                    --bg-body: #f1f5f9;
+                    --bg-card: #ffffff;
+                    --border-color: #e2e8f0;
+                    --text-main: #0f172a;
+                    --text-muted: #64748b;
+                    --success: #10b981;
+                    --warning: #f59e0b;
+                    --info: #3b82f6;
+                    --danger: #e63946;
+                    --sidebar-width: 260px;
+                }
+
+                body {
+                    background-color: var(--bg-body) !important;
+                    color: var(--text-main) !important;
+                    font-family: 'Inter', sans-serif !important;
+                    margin: 0;
+                    padding: 0;
+                    -webkit-font-smoothing: antialiased;
+                }
+
+                .main-content {
+                    margin-left: var(--sidebar-width);
+                    min-height: 100vh;
+                    padding: 40px !important;
+                    background-color: var(--bg-body);
                 }
 
                 .form-card {
-                    background: rgba(0,0,0,0.3);
-                    backdrop-filter: blur(15px);
-                    border: 1px solid rgba(255, 255, 255, 0.1);
-                    border-radius: 24px;
+                    background: var(--bg-card);
+                    border: 1px solid var(--border-color);
+                    border-radius: 16px;
                     padding: 40px;
-                    box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+                    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
                 }
 
                 .section-title {
-                    font-size: 24px;
+                    font-size: 20px;
                     font-weight: 800;
-                    color: #fff;
-                    margin-bottom: 35px;
+                    color: var(--text-main);
+                    margin-bottom: 32px;
                     display: flex;
                     align-items: center;
                     gap: 12px;
-                    text-shadow: 0 4px 15px rgba(0,0,0,0.8);
+                    letter-spacing: -0.5px;
+                    text-shadow: none !important;
                 }
 
                 .section-title .badge {
-                    background: rgba(240, 76, 38, 0.15);
-                    color: #f04c26;
+                    background: #e0f2f2 !important;
+                    color: var(--primary) !important;
                     padding: 6px 12px;
                     border-radius: 8px;
                     font-size: 12px;
+                    font-weight: 700;
                 }
 
                 .form-group {
-                    margin-bottom: 32px;
+                    margin-bottom: 24px;
                 }
 
                 .form-group label {
-                    color: #fff;
-                    font-weight: 700;
-                    font-size: 15px;
-                    margin-bottom: 12px;
+                    color: var(--text-main) !important;
+                    font-weight: 600;
+                    font-size: 14px;
+                    margin-bottom: 8px;
                     display: block;
-                    text-shadow: 0 2px 5px rgba(0,0,0,0.8);
+                    text-shadow: none !important;
                 }
 
                 .form-control {
-                    background: rgba(0,0,0,0.4);
-                    border: 1px solid rgba(255, 255, 255, 0.2);
-                    border-radius: 12px;
-                    color: #fff;
-                    height: 50px;
+                    background: #ffffff !important;
+                    border: 1px solid var(--border-color) !important;
+                    border-radius: 10px !important;
+                    color: var(--text-main) !important;
+                    height: 48px;
                     padding: 0 16px;
                     transition: all 0.2s;
-                    backdrop-filter: blur(5px);
+                    font-size: 14px;
                 }
 
                 .form-control:focus {
-                    background: rgba(255, 255, 255, 0.08);
-                    border-color: #f04c26;
-                    box-shadow: 0 0 0 4px rgba(240, 76, 38, 0.15);
+                    background: #ffffff !important;
+                    border-color: var(--primary) !important;
+                    box-shadow: 0 0 0 4px rgba(0, 128, 128, 0.1) !important;
                     outline: none;
                 }
 
                 textarea.form-control {
                     height: auto;
-                    padding-top: 15px;
+                    padding-top: 12px;
                 }
 
                 .select-custom {
-                    cursor: pointer;
-                    -webkit-appearance: none;
-                    -moz-appearance: none;
-                    appearance: none;
-                    background-image: url('data:image/svg+xml;utf8,<svg fill="white" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
+                    background-image: url('data:image/svg+xml;utf8,<svg fill="%2364748b" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>') !important;
                     background-repeat: no-repeat;
                     background-position: right 12px center;
                 }
 
-                .form-control option {
-                    background: #1a1f2b;
-                    color: #fff;
-                    padding: 10px;
-                }
-
-                .checkbox-group {
-                    display: flex;
-                    gap: 20px;
-                    flex-wrap: wrap;
-                    margin-top: 10px;
-                }
-
-                .custom-checkbox {
-                    position: relative;
-                    padding-left: 35px;
-                    margin-bottom: 12px;
-                    cursor: pointer;
-                    font-size: 14px;
-                    font-weight: 600;
-                    color: #ffffff !important;
-                    user-select: none;
-                    display: block;
-                    transition: all 0.2s;
-                    line-height: 20px;
-                    text-shadow: 0 1px 2px rgba(0,0,0,0.5);
-                }
-
-                .custom-checkbox input {
-                    position: absolute;
-                    opacity: 0;
-                    cursor: pointer;
-                    height: 0;
-                    width: 0;
-                }
-
-                .checkmark {
-                    position: absolute;
-                    top: 0;
-                    left: 0;
-                    height: 20px;
-                    width: 20px;
-                    background-color: rgba(255, 255, 255, 0.1);
-                    border: 1px solid rgba(255, 255, 255, 0.2);
-                    border-radius: 6px;
-                    transition: all 0.2s;
-                }
-
-                .custom-checkbox:hover .checkmark {
-                    background-color: rgba(255, 255, 255, 0.2);
-                    border-color: #f04c26;
-                }
-
-                .custom-checkbox input:checked ~ .checkmark {
-                    background-color: #f04c26;
-                    border-color: #f04c26;
-                    box-shadow: 0 0 10px rgba(240, 76, 38, 0.3);
-                }
-
-                .checkmark:after {
-                    content: "";
-                    position: absolute;
-                    display: none;
-                }
-
-                .custom-checkbox input:checked ~ .checkmark:after {
-                    display: block;
-                }
-
-                .custom-checkbox .checkmark:after {
-                    left: 7px;
-                    top: 3px;
-                    width: 5px;
-                    height: 10px;
-                    border: solid white;
-                    border-width: 0 2px 2px 0;
-                    transform: rotate(45deg);
-                }
-
-                .dropdown-menu {
-                    background: #1a1f2b !important;
-                    border: 1px solid rgba(255,255,255,0.1) !important;
-                    box-shadow: 0 15px 35px rgba(0,0,0,0.5) !important;
-                    padding: 15px !important;
-                }
-
-                .dropdown-menu label:hover {
-                    color: #f04c26 !important;
-                }
-
-                .btn-submit {
-                    background: #f04c26;
-                    color: #fff;
-                    font-weight: 800;
-                    border: none;
-                    border-radius: 12px;
-                    padding: 15px 30px;
-                    font-size: 16px;
-                    margin-top: 20px;
-                    transition: all 0.2s;
-                    box-shadow: 0 10px 20px rgba(240, 76, 38, 0.2);
-                }
-
-                .btn-submit:hover {
-                    background: #d93d1a;
-                    transform: translateY(-2px);
-                    box-shadow: 0 15px 30px rgba(240, 76, 38, 0.3);
-                }
-
-                .btn-prev {
-                    background: rgba(255, 255, 255, 0.05);
-                    color: #fff;
-                    font-weight: 700;
-                    border: 1px solid rgba(255, 255, 255, 0.1);
-                    border-radius: 12px;
-                    padding: 15px 30px;
-                }
-
-                .itinerary-day {
-                    background: rgba(0,0,0,0.3);
-                    backdrop-filter: blur(10px);
-                    border: 1px solid rgba(255, 255, 255, 0.1);
-                    border-radius: 16px;
-                    padding: 30px;
-                    margin-bottom: 25px;
-                    position: relative;
-                    animation: slideDown 0.3s ease-out;
-                    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-                }
-
-                /* Utility Classes */
-                .d-none {
-                    display: none !important;
-                }
-
-                .d-flex {
-                    display: flex !important;
-                }
-
-                .flex-wrap {
-                    flex-wrap: wrap !important;
-                }
-
-                .gap-2 {
-                    gap: 10px !important;
-                }
-
-                .w-100 {
-                    width: 100% !important;
-                }
-
-                .text-start {
-                    text-align: left !important;
-                }
-
-                .p-3 {
-                    padding: 15px !important;
-                }
-
-                .mb-0 {
-                    margin-bottom: 0 !important;
-                }
-
-                .mt-2 {
-                    margin-top: 10px !important;
-                }
-
-                .day-number {
-                    position: absolute;
-                    top: -12px;
-                    left: 20px;
-                    background: #f04c26;
-                    color: #fff;
-                    padding: 4px 15px;
-                    border-radius: 20px;
-                    font-weight: 800;
-                    font-size: 12px;
-                    box-shadow: 0 4px 10px rgba(240, 76, 38, 0.3);
-                }
-
-                .remove-day {
-                    position: absolute;
-                    top: 15px;
-                    right: 15px;
-                    color: rgba(255, 255, 255, 0.3);
-                    cursor: pointer;
-                    transition: all 0.2s;
-                }
-
-                .remove-day:hover {
-                    color: #ef4444;
-                }
-
-                .inclusion-chip {
-                    display: inline-flex;
-                    align-items: center;
-                    gap: 8px;
-                    background: rgba(255, 255, 255, 0.05);
-                    border: 1px solid rgba(255, 255, 255, 0.1);
-                    padding: 8px 16px;
-                    border-radius: 10px;
-                    margin-right: 10px;
-                    margin-bottom: 10px;
-                    cursor: pointer;
-                    transition: all 0.2s;
-                }
-
-                .inclusion-chip.active {
-                    background: rgba(34, 197, 94, 0.1);
-                    border-color: #22c55e;
-                    color: #22c55e;
-                }
-
-                .exclusion-chip.active {
-                    background: rgba(239, 68, 68, 0.1);
-                    border-color: #ef4444;
-                    color: #ef4444;
-                }
-
                 /* Wizard Styles */
-                .form-step {
-                    display: block;
-                    margin-bottom: 60px;
-                    padding-bottom: 40px;
-                    border-bottom: 1px solid rgba(255,255,255,0.05);
-                    animation: fadeIn 0.4s ease-out;
-                }
-
-                .step-indicator {
-                    display: flex;
-                    justify-content: space-between;
-                    margin-bottom: 40px;
-                    position: relative;
-                }
-
-                .step-indicator::before {
-                    content: '';
-                    position: absolute;
-                    top: 15px;
-                    left: 0;
-                    right: 0;
-                    height: 2px;
-                    background: rgba(255, 255, 255, 0.05);
-                    z-index: 1;
-                }
-
-                .step-item {
-                    position: relative;
-                    z-index: 2;
-                    text-align: center;
-                    width: 25%;
+                .step-indicator-container {
+                    background: var(--bg-card) !important;
+                    border: 1px solid var(--border-color) !important;
+                    border-radius: 16px !important;
+                    padding: 24px !important;
+                    margin-bottom: 32px !important;
+                    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
                 }
 
                 .step-dot {
-                    width: 32px;
-                    height: 32px;
-                    background: #1a1f2b;
-                    border: 2px solid rgba(255, 255, 255, 0.1);
+                    width: 36px;
+                    height: 36px;
+                    background: #f1f5f9 !important;
+                    border: 2px solid var(--border-color) !important;
                     border-radius: 50%;
-                    margin: 0 auto 10px;
+                    margin: 0 auto 8px;
                     display: flex;
                     align-items: center;
                     justify-content: center;
-                    font-weight: 800;
+                    font-weight: 700;
                     font-size: 14px;
-                    color: rgba(255, 255, 255, 0.3);
+                    color: var(--text-muted) !important;
                     transition: all 0.3s;
                 }
 
                 .step-item.active .step-dot {
-                    border-color: #f04c26;
-                    color: #fff;
-                    background: #f04c26;
-                    box-shadow: 0 0 15px rgba(240, 76, 38, 0.4);
+                    border-color: var(--primary) !important;
+                    color: #ffffff !important;
+                    background: var(--primary) !important;
+                    box-shadow: 0 4px 10px rgba(0, 128, 128, 0.2) !important;
                 }
 
                 .step-item.completed .step-dot {
-                    background: #22c55e;
-                    border-color: #22c55e;
-                    color: #fff;
+                    background: var(--success) !important;
+                    border-color: var(--success) !important;
+                    color: #ffffff !important;
                 }
 
                 .step-label {
-                    font-size: 13px;
-                    font-weight: 700;
-                    color: rgba(255, 255, 255, 0.3);
-                    transition: all 0.3s;
+                    color: var(--text-muted) !important;
+                    font-weight: 600 !important;
+                    font-size: 11px !important;
+                    text-transform: uppercase;
+                    letter-spacing: 0.5px;
+                    text-shadow: none !important;
                 }
 
                 .step-item.active .step-label {
-                    color: #f04c26;
+                    color: var(--primary) !important;
                 }
 
-                @media (max-width: 768px) {
-                    .step-indicator {
-                        margin-bottom: 30px;
-                    }
-
-                    .step-label {
-                        font-size: 11px;
-                    }
-
-                    .step-dot {
-                        width: 28px;
-                        height: 28px;
-                        font-size: 12px;
-                        margin-bottom: 5px;
-                    }
-
-                    .step-indicator::before {
-                        top: 13px;
-                    }
+                .btn-submit {
+                    background: var(--accent-red) !important;
+                    color: #fff !important;
+                    font-weight: 700 !important;
+                    border: none !important;
+                    border-radius: 10px !important;
+                    padding: 14px 28px !important;
+                    font-size: 15px !important;
+                    transition: all 0.2s;
+                    box-shadow: 0 4px 6px -1px rgba(230, 57, 70, 0.2) !important;
                 }
 
-                @media (max-width: 480px) {
-                    .step-label {
-                        font-size: 10px;
-                        overflow: hidden;
-                        text-overflow: ellipsis;
-                        white-space: nowrap;
-                        max-width: 100%;
-                    }
-
-                    .step-dot {
-                        width: 24px;
-                        height: 24px;
-                        font-size: 11px;
-                    }
-
-                    .step-indicator::before {
-                        top: 11px;
-                    }
+                .btn-submit:hover {
+                    background: #d63031 !important;
+                    transform: translateY(-1px);
+                    box-shadow: 0 10px 15px -3px rgba(230, 57, 70, 0.3) !important;
                 }
 
-                @media (max-width: 768px) {
-                    .glass-card {
-                        padding: 20px !important;
-                    }
-
-                    .section-title {
-                        font-size: 1.1rem;
-                    }
-
-                    .btn-submit,
-                    .btn-prev {
-                        padding: 10px 20px;
-                        font-size: 14px;
-                    }
-
-                    .form-control {
-                        font-size: 14px;
-                        padding: 10px 15px;
-                    }
+                .btn-prev {
+                    background: #f1f5f9 !important;
+                    color: var(--text-main) !important;
+                    font-weight: 600 !important;
+                    border: 1px solid var(--border-color) !important;
+                    border-radius: 10px !important;
+                    padding: 14px 28px !important;
                 }
 
-                @media (max-width: 480px) {
-                    .glass-card {
-                        padding: 15px !important;
-                    }
-
-                    .section-title {
-                        font-size: 1rem;
-                    }
-
-                    .badge {
-                        padding: 4px 8px;
-                        font-size: 10px;
-                    }
+                /* Custom Utilities */
+                .bg-dark-subtle { background-color: #f8fafc !important; }
+                .border-secondary { border-color: var(--border-color) !important; }
+                .text-white-50 { color: var(--text-muted) !important; }
+                .text-orange { color: var(--accent-red) !important; }
+                .btn-outline-orange { 
+                    border-color: var(--accent-red) !important; 
+                    color: var(--accent-red) !important; 
+                }
+                .btn-outline-orange:hover {
+                    background-color: var(--accent-red) !important;
+                    color: #fff !important;
                 }
 
-                @keyframes fadeIn {
-                    from {
-                        opacity: 0;
-                        transform: translateY(10px);
-                    }
-
-                    to {
-                        opacity: 1;
-                        transform: translateY(0);
-                    }
+                .itinerary-day {
+                    background: #ffffff !important;
+                    border: 1px solid var(--border-color) !important;
+                    border-radius: 12px !important;
+                    padding: 24px !important;
+                    margin-bottom: 20px !important;
+                    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !important;
                 }
 
-                @keyframes slideDown {
-                    from {
-                        opacity: 0;
-                        transform: translateY(-10px);
-                    }
-
-                    to {
-                        opacity: 1;
-                        transform: translateY(0);
-                    }
+                .day-number {
+                    background: var(--primary) !important;
+                    color: #fff !important;
+                    padding: 4px 12px !important;
+                    border-radius: 6px !important;
+                    font-weight: 700 !important;
+                    font-size: 12px !important;
+                    box-shadow: none !important;
+                    top: 15px !important;
+                    left: 24px !important;
                 }
+
+                .custom-checkbox .checkmark {
+                    background-color: #f1f5f9 !important;
+                    border: 1px solid var(--border-color) !important;
+                }
+
+                .custom-checkbox input:checked ~ .checkmark {
+                    background-color: var(--primary) !important;
+                    border-color: var(--primary) !important;
+                }
+
+                .custom-checkbox {
+                    color: var(--text-main) !important;
+                    text-shadow: none !important;
+                }
+
+                .dropdown-menu {
+                    background: #ffffff !important;
+                    border: 1px solid var(--border-color) !important;
+                    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1) !important;
+                }
+
+                .dropdown-menu label { color: var(--text-main) !important; }
+                .dropdown-menu label:hover { color: var(--primary) !important; }
 
                 .pricing-toggle {
-                    background: rgba(255, 255, 255, 0.03);
-                    border: 1px solid rgba(255, 255, 255, 0.08);
-                    padding: 15px 25px;
-                    border-radius: 16px;
-                    cursor: pointer;
-                    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-                    font-weight: 700;
-                    color: rgba(255, 255, 255, 0.4);
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    gap: 10px;
-                }
-
-                .pricing-toggle i {
-                    font-size: 18px;
+                    background: #f1f5f9 !important;
+                    border: 1px solid var(--border-color) !important;
+                    color: var(--text-muted) !important;
+                    border-radius: 12px !important;
                 }
 
                 .pricing-toggle.active {
-                    background: linear-gradient(135deg, rgba(240, 76, 38, 0.15), rgba(240, 76, 38, 0.05));
-                    border-color: #f04c26;
-                    color: #fff;
-                    box-shadow: 0 8px 20px rgba(240, 76, 38, 0.15);
+                    background: #e0f2f2 !important;
+                    border-color: var(--primary) !important;
+                    color: var(--primary) !important;
+                    box-shadow: none !important;
                 }
 
                 .occ-card {
-                    background: rgba(255, 255, 255, 0.02);
-                    border: 1px solid rgba(255, 255, 255, 0.06);
-                    border-radius: 16px;
-                    padding: 20px;
-                    margin-bottom: 15px;
-                    transition: all 0.2s;
+                    background: #f8fafc !important;
+                    border: 1px solid var(--border-color) !important;
+                    color: var(--text-main) !important;
                 }
 
-                .occ-card:hover {
-                    border-color: rgba(240, 76, 38, 0.3);
-                    background: rgba(255, 255, 255, 0.04);
+                .occ-icon {
+                    background: #e0f2f2 !important;
+                    color: var(--primary) !important;
                 }
 
-                .day-chip-group {
-                    display: flex;
-                    gap: 10px;
-                    flex-wrap: wrap;
+                .sun-rays-container { display: none !important; }
+                
+                @media (max-width: 991px) {
+                    .main-content { margin-left: 0; padding: 24px !important; }
                 }
-
-                .day-chip {
-                    cursor: pointer;
-                    user-select: none;
-                }
-
-                .day-chip input {
-                    display: none;
-                }
-
-                .day-chip .chip-label {
-                    display: inline-block;
-                    padding: 10px 18px;
-                    background: rgba(255, 255, 255, 0.03);
-                    border: 1px solid rgba(255, 255, 255, 0.08);
-                    border-radius: 12px;
-                    font-weight: 700;
-                    font-size: 13px;
-                    color: rgba(255, 255, 255, 0.5);
-                    transition: all 0.2s;
-                }
-
-                .day-chip input:checked+.chip-label {
-                    background: #f04c26;
-                    color: #fff;
-                    border-color: #f04c26;
-                    box-shadow: 0 4px 12px rgba(240, 76, 38, 0.2);
-                }
+            </style>
             </style>
         </head>
 
-        <body class="yt-dark premium-theme">
-        <div class="sun-rays-container">
-            <div class="ray ray-1"></div>
-            <div class="ray ray-2"></div>
-            <div class="ray ray-3"></div>
-            <div class="ray ray-4"></div>
-        </div>
                 <jsp:include page="vendor-sidebar.jsp">
         <jsp:param name="activePage" value="tours" />
     </jsp:include>
 
     <div class="main-content">
-                <div class="mobile-header">
-                    <img src="<c:url value='/views/assets/images/logo.png'/>" alt="Youth Travel" height="24">
-                    <div class="menu-toggle" onclick="toggleSidebar()">
-                        <i class="fa fa-bars"></i>
-                    </div>
-                </div>
-                <div style="margin-bottom: 35px;">
-                    <h1 style="font-weight: 800; font-size: 32px;">Edit Adventure</h1>
-                    <p style="color: rgba(255,255,255,0.5);">Updating details for <strong>${trip.title}</strong>
-                    </p>
-                </div>
+        <div class="dashboard-header">
+            <div class="header-content">
+                <h1>Edit Adventure</h1>
+                <p>Updating details for <strong>${trip.title}</strong></p>
+            </div>
+        </div>
 
                 <!-- Wizard Progress -->
-                <style>
-                    .step-item { cursor: pointer; transition: all 0.3s ease; opacity: 0.7; }
-                    .step-item:hover { opacity: 1; transform: translateY(-2px); }
-                    .step-item.active { opacity: 1; }
-                    .step-label { 
-                        color: #ffffff !important; 
-                        font-weight: 600; 
-                        text-shadow: 0 2px 4px rgba(0,0,0,0.8); 
-                        font-size: 11px;
-                        margin-top: 5px;
-                    }
-                    .step-item.active .step-dot, .step-item.completed .step-dot {
-                        background: #f04c26;
-                        border-color: #f04c26;
-                        box-shadow: 0 0 15px rgba(240, 76, 38, 0.5);
-                    }
-                    .day-image-upload {
-                        border: 2px dashed rgba(255,255,255,0.1);
-                        border-radius: 12px;
-                        height: 100px;
-                        display: flex;
-                        flex-direction: column;
-                        align-items: center;
-                        justify-content: center;
-                        cursor: pointer;
-                        transition: 0.3s;
-                        background: rgba(255,255,255,0.02);
-                        color: rgba(255,255,255,0.5);
-                    }
-                    .day-image-upload:hover {
-                        border-color: #f04c26;
-                        background: rgba(240, 76, 38, 0.05);
-                        color: #f04c26;
-                    }
-                    .day-image-preview img {
-                        width: 80px;
-                        height: 80px;
-                        border-radius: 8px;
-                        object-fit: cover;
-                        border: 2px solid rgba(255,255,255,0.1);
-                    }
-                    .occ-card {
-                        background: rgba(255,255,255,0.03);
-                        border: 1px solid rgba(255,255,255,0.1);
-                        border-radius: 16px;
-                        padding: 20px;
-                        margin-bottom: 15px;
-                        transition: 0.3s;
-                    }
-                    .occ-card:hover {
-                        border-color: rgba(240, 76, 38, 0.4);
-                        background: rgba(255,255,255,0.05);
-                        transform: translateX(5px);
-                    }
-                    .day-chip-group {
-                        display: flex;
-                        gap: 10px;
-                        flex-wrap: wrap;
-                    }
-                    .day-chip {
-                        cursor: pointer;
-                        user-select: none;
-                    }
-                    .day-chip input { display: none; }
-                    .chip-label {
-                        display: block;
-                        padding: 10px 18px;
-                        background: rgba(255,255,255,0.05);
-                        border: 1px solid rgba(255,255,255,0.1);
-                        border-radius: 12px;
-                        color: white;
-                        font-weight: 600;
-                        transition: 0.3s;
-                        font-size: 13px;
-                    }
-                    .day-chip input:checked + .chip-label {
-                        background: #f04c26;
-                        border-color: #f04c26;
-                        box-shadow: 0 4px 12px rgba(240, 76, 38, 0.3);
-                    }
-                    .occ-icon {
-                        width: 35px;
-                        height: 35px;
-                        background: rgba(240, 76, 38, 0.1);
-                        color: #f04c26;
-                        border-radius: 10px;
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                        margin-bottom: 10px;
-                    }
-                </style>
-                <div class="step-indicator-container" style="overflow-x: auto; padding-bottom: 20px; margin-bottom: 30px; background: rgba(0,0,0,0.2); border-radius: 15px; padding-top: 15px;">
-                    <div class="step-indicator" style="min-width: 900px; display: flex; justify-content: space-between; padding: 0 20px;">
+                <div class="step-indicator-container">
+                    <div class="step-indicator" style="display: flex; justify-content: space-between; align-items: center;">
                         <div class="step-item active" id="stepIndicator1" onclick="jumpToStep(0)"><div class="step-dot">1</div><div class="step-label">Basic</div></div>
                         <div class="step-item" id="stepIndicator2" onclick="jumpToStep(1)"><div class="step-dot">2</div><div class="step-label">Dest</div></div>
                         <div class="step-item" id="stepIndicator3" onclick="jumpToStep(2)"><div class="step-dot">3</div><div class="step-label">Time</div></div>
@@ -1788,24 +1407,24 @@
                 function addCustomPickup(savedName = '', savedTime = '', savedType = 'Pickup') {
                     const id = Date.now() + Math.random().toString(36).substr(2, 9);
                     const html = `
-                        <div class="row g-2 align-items-center mb-3 p-3 bg-dark rounded-3 border border-secondary border-opacity-10 pickup-item" id="row_${id}">
+                        <div class="row g-2 align-items-center mb-3 p-3 bg-light rounded-3 border border-light pickup-item" id="row_${id}">
                             <div class="col-md-5">
-                                <label class="small text-white-50 d-block mb-1">Location Name</label>
+                                <label class="small text-muted d-block mb-1">Location Name</label>
                                 <div class="input-group input-group-sm">
-                                    <span class="input-group-text bg-dark border-secondary border-opacity-20 text-orange"><i class="fa fa-map-marker"></i></span>
+                                    <span class="input-group-text bg-white border-light text-danger"><i class="fa fa-map-marker"></i></span>
                                     <input type="text" class="form-control pickup-name" value="${savedName}" placeholder="e.g. Silk Board">
                                 </div>
                             </div>
                             <div class="col-md-3">
-                                <label class="small text-white-50 d-block mb-1">Time</label>
+                                <label class="small text-muted d-block mb-1">Time</label>
                                 <div class="input-group input-group-sm">
-                                    <span class="input-group-text bg-dark border-secondary border-opacity-20 text-white-50"><i class="fa fa-clock-o"></i></span>
+                                    <span class="input-group-text bg-white border-light text-muted"><i class="fa fa-clock-o"></i></span>
                                     <input type="time" class="form-control pickup-time" value="${savedTime}">
                                 </div>
                             </div>
                             <div class="col-md-3">
-                                <label class="small text-white-50 d-block mb-1">Point Type</label>
-                                <select class="form-control form-control-sm pickup-type bg-dark border-secondary border-opacity-20 text-white">
+                                <label class="small text-muted d-block mb-1">Point Type</label>
+                                <select class="form-control form-control-sm pickup-type bg-white border-light text-dark">
                                     <option value="Pickup" \${savedType === 'Pickup' ? 'selected' : ''}>Pickup Point</option>
                                     <option value="Drop" \${savedType === 'Drop' ? 'selected' : ''}>Drop Point</option>
                                     <option value="Meeting" \${savedType === 'Meeting' ? 'selected' : ''}>Meeting Point</option>
@@ -1853,23 +1472,23 @@
                                     <div class="row g-3 align-items-center">
                                         <div class="col-md-4">
                                             <div class="occ-icon"><i class="fa fa-calendar-check-o"></i></div>
-                                            <label class="small text-white-50 mb-1 d-block">Departure Date <span class="text-danger">*</span></label>
+                                            <label class="small text-muted mb-1 d-block">Departure Date <span class="text-danger">*</span></label>
                                             <div class="input-group input-group-sm">
-                                                <input type="date" class="form-control occ-date" min="\${today}" style="background: rgba(0,0,0,0.2); border-color: rgba(255,255,255,0.1); color: white;">
+                                                <input type="date" class="form-control occ-date" min="\${today}" style="background: #ffffff; border-color: #e2e8f0; color: #0f172a;">
                                             </div>
                                         </div>
                                         <div class="col-md-3">
-                                            <div class="occ-icon" style="background: rgba(59, 130, 246, 0.1); color: #3b82f6;"><i class="fa fa-clock-o"></i></div>
-                                            <label class="small text-white-50 mb-1 d-block">Time</label>
+                                            <div class="occ-icon" style="background: #dbeafe; color: #3b82f6;"><i class="fa fa-clock-o"></i></div>
+                                            <label class="small text-muted mb-1 d-block">Time</label>
                                             <div class="input-group input-group-sm">
-                                                <input type="time" class="form-control occ-time" style="background: rgba(0,0,0,0.2); border-color: rgba(255,255,255,0.1); color: white;">
+                                                <input type="time" class="form-control occ-time" style="background: #ffffff; border-color: #e2e8f0; color: #0f172a;">
                                             </div>
                                         </div>
                                         <div class="col-md-3">
-                                            <div class="occ-icon" style="background: rgba(46, 213, 115, 0.1); color: #2ed573;"><i class="fa fa-users"></i></div>
-                                            <label class="small text-white-50 mb-1 d-block">Batch Size</label>
+                                            <div class="occ-icon" style="background: #dcfce7; color: #10b981;"><i class="fa fa-users"></i></div>
+                                            <label class="small text-muted mb-1 d-block">Batch Size</label>
                                             <div class="input-group input-group-sm">
-                                                <input type="number" class="form-control occ-seats" placeholder="Seats" value="20" style="background: rgba(0,0,0,0.2); border-color: rgba(255,255,255,0.1); color: white;">
+                                                <input type="number" class="form-control occ-seats" placeholder="Seats" value="20" style="background: #ffffff; border-color: #e2e8f0; color: #0f172a;">
                                             </div>
                                         </div>
                                         <div class="col-md-2 text-end">
@@ -2137,10 +1756,10 @@
                                                 </div>
                                             </div>
                                             <div class="col-md-4">
-                                                <label class="small text-white-50">Day Photos (New Only)</label>
-                                                <div class="day-image-upload" onclick="this.querySelector('input').click()">
-                                                    <i class="fa fa-camera"></i>
-                                                    <span>Add Photos</span>
+                                                <label class="small text-muted">Day Photos (New Only)</label>
+                                                <div class="day-image-upload" onclick="this.querySelector('input').click()" style="border: 2px dashed #e2e8f0; border-radius: 12px; height: 100px; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; background: #f8fafc;">
+                                                    <i class="fa fa-camera text-muted"></i>
+                                                    <span class="text-muted small">Add Photos</span>
                                                     <input type="file" class="day-photo-input d-none" accept="image/*" multiple onchange="previewDayImage(this)">
                                                 </div>
                                                 <div class="day-image-preview mt-2 d-flex flex-wrap gap-2"></div>
@@ -2171,23 +1790,23 @@
                                                             <div class="row g-3 align-items-center">
                                                                 <div class="col-md-4">
                                                                     <div class="occ-icon"><i class="fa fa-calendar-check-o"></i></div>
-                                                                    <label class="small text-white-50 mb-1 d-block">Departure Date</label>
+                                                                    <label class="small text-muted mb-1 d-block">Departure Date</label>
                                                                     <div class="input-group input-group-sm">
-                                                                        <input type="date" class="form-control occ-date" value="\${s.date}" min="\${today}" style="background: rgba(0,0,0,0.2); border-color: rgba(255,255,255,0.1); color: white;">
+                                                                        <input type="date" class="form-control occ-date" value="\${s.date}" min="\${today}" style="background: #ffffff; border-color: #e2e8f0; color: #0f172a;">
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-md-3">
-                                                                    <div class="occ-icon" style="background: rgba(59, 130, 246, 0.1); color: #3b82f6;"><i class="fa fa-clock-o"></i></div>
-                                                                    <label class="small text-white-50 mb-1 d-block">Time</label>
+                                                                    <div class="occ-icon" style="background: #dbeafe; color: #3b82f6;"><i class="fa fa-clock-o"></i></div>
+                                                                    <label class="small text-muted mb-1 d-block">Time</label>
                                                                     <div class="input-group input-group-sm">
-                                                                        <input type="time" class="form-control occ-time" value="\${s.time}" style="background: rgba(0,0,0,0.2); border-color: rgba(255,255,255,0.1); color: white;">
+                                                                        <input type="time" class="form-control occ-time" value="\${s.time}" style="background: #ffffff; border-color: #e2e8f0; color: #0f172a;">
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-md-3">
-                                                                    <div class="occ-icon" style="background: rgba(46, 213, 115, 0.1); color: #2ed573;"><i class="fa fa-users"></i></div>
-                                                                    <label class="small text-white-50 mb-1 d-block">Batch Size</label>
+                                                                    <div class="occ-icon" style="background: #dcfce7; color: #10b981;"><i class="fa fa-users"></i></div>
+                                                                    <label class="small text-muted mb-1 d-block">Batch Size</label>
                                                                     <div class="input-group input-group-sm">
-                                                                        <input type="number" class="form-control occ-seats" placeholder="Seats" value="\${s.seats}" style="background: rgba(0,0,0,0.2); border-color: rgba(255,255,255,0.1); color: white;">
+                                                                        <input type="number" class="form-control occ-seats" placeholder="Seats" value="\${s.seats}" style="background: #ffffff; border-color: #e2e8f0; color: #0f172a;">
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-md-2 text-end">

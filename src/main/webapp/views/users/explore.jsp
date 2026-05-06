@@ -8,136 +8,243 @@
     <title>Explore Users | Youth Travel</title>
     <link rel="stylesheet" href="<c:url value='/views/assets/css/bootstrap.min.css'/>">
     <link rel="stylesheet" href="<c:url value='/views/assets/css/font-awesome.min.css'/>">
-    <link rel="stylesheet" href="<c:url value='/views/assets/css/premium-dashboard.css'/>">
-    <link href="https://fonts.googleapis.com/css?family=Dosis:300,400,500,600,700,800" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        :root { --primary-blue: #e63946; --text-muted: #7e8c9a; --transition: all 0.3s ease; }
-        body { font-family: 'Dosis', sans-serif; background-color: #0b0f18; color: rgba(255, 255, 255, 0.92); margin: 0; padding: 0; }
-        .wrapper { display: flex; min-height: 100vh; }
-        .main-content { flex: 1; margin-left: 240px; padding: 100px 30px 40px; }
-        .header { position: fixed; top: 0; left: 0; right: 0; height: 70px; background: rgba(0,0,0,0.4); backdrop-filter: blur(10px); display: flex; align-items: center; justify-content: space-between; padding: 0 30px; z-index: 1000; border-bottom: 1px solid rgba(255,255,255,0.05); }
-        .explore-header { background: rgba(0,0,0,0.3); backdrop-filter: blur(10px); padding: 30px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); margin-bottom: 30px; display: flex; justify-content: space-between; align-items: flex-end; box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3); }
-        .search-container { position: relative; width: 400px; }
-        .search-container input { width: 100%; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.2); padding: 12px 20px 12px 45px; border-radius: 25px; color: #fff; outline: none; transition: var(--transition); backdrop-filter: blur(5px); }
-        .search-container input:focus { border-color: var(--primary-blue); background: rgba(0,0,0,0.6); box-shadow: 0 0 15px rgba(230, 57, 70, 0.2); }
-        .search-container i { position: absolute; left: 18px; top: 50%; transform: translateY(-50%); color: #fff; }
-        .nav-tabs { display: flex; gap: 30px; border-bottom: 1px solid rgba(255,255,255,0.1); margin-bottom: 30px; padding-left: 10px; }
-        .nav-tabs button { background: none; border: none; color: rgba(255,255,255,0.6); padding: 10px 0; font-size: 16px; font-weight: 700; cursor: pointer; border-bottom: 2px solid transparent; transition: var(--transition); text-transform: uppercase; letter-spacing: 1px; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
-        .nav-tabs button.active { color: #fff; border-bottom-color: var(--primary-blue); text-shadow: 0 2px 10px rgba(230, 57, 70, 0.5); }
-        .tab-pane { display: none; }
-        .tab-pane.active { display: block; }
-        
-        .user-card { background: rgba(0,0,0,0.3); backdrop-filter: blur(15px); padding: 30px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); text-align: center; transition: var(--transition); box-shadow: 0 8px 32px 0 rgba(0,0,0,0.3); }
-        .user-card:hover { border-color: var(--primary-blue); transform: translateY(-5px); box-shadow: 0 15px 35px rgba(230,57,70,0.2); }
-        .user-avatar { width: 100px; height: 100px; border-radius: 50%; object-fit: cover; margin-bottom: 20px; border: 4px solid rgba(255,255,255,0.1); box-shadow: 0 5px 15px rgba(0,0,0,0.5); }
-        .user-name { font-size: 20px; font-weight: 800; margin: 0 0 5px; color: #fff; text-shadow: 0 2px 5px rgba(0,0,0,0.8); }
-        .user-username { font-size: 14px; color: var(--primary-blue); margin-bottom: 20px; font-weight: 700; text-shadow: 0 1px 3px rgba(0,0,0,0.3); }
-        .btn-view-profile { background: rgba(255,255,255,0.1); color: #fff; border: 1px solid rgba(255,255,255,0.2); padding: 10px 25px; border-radius: 25px; font-size: 14px; font-weight: 700; transition: var(--transition); text-decoration: none; display: inline-block; backdrop-filter: blur(5px); }
-        .btn-view-profile:hover { background: var(--primary-blue); border-color: var(--primary-blue); color: #fff; transform: scale(1.05); }
-        .users-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 25px; }
-        
-        .posts-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px; }
-        .post-card { position: relative; border-radius: 15px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.3); backdrop-filter: blur(10px); display: flex; flex-direction: column; transition: var(--transition); }
-        .post-card:hover { transform: translateY(-5px); border-color: var(--primary-blue); }
-        .post-card img, .post-card video { width: 100%; aspect-ratio: 1; object-fit: cover; }
-        .post-details { padding: 15px; display: flex; flex-direction: column; gap: 8px; }
-        .post-caption { font-size: 14px; color: #fff; font-weight: 500; text-shadow: 0 1px 3px rgba(0,0,0,0.5); }
-        .post-stats { font-size: 13px; color: rgba(255,255,255,0.7); display: flex; gap: 15px; font-weight: 600; }
-        .post-author { position: absolute; top: 12px; left: 12px; background: rgba(0,0,0,0.5); backdrop-filter: blur(5px); padding: 5px 12px; border-radius: 20px; font-size: 12px; color: #fff; font-weight: 700; border: 1px solid rgba(255,255,255,0.1); }
-        
-        .advices-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 25px; }
-        .advice-card { background: rgba(0,0,0,0.3); backdrop-filter: blur(15px); padding: 25px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 8px 32px 0 rgba(0,0,0,0.3); }
-        .advice-card:hover { border-color: var(--primary-blue); transform: translateY(-5px); }
-        .advice-card h4 { margin: 0 0 12px; font-size: 18px; color: #fff; font-weight: 800; text-shadow: 0 2px 5px rgba(0,0,0,0.8); }
-        .advice-card p { font-size: 15px; color: rgba(255,255,255,0.8); line-height: 1.6; margin: 0; font-weight: 500; text-shadow: 0 1px 3px rgba(0,0,0,0.5); }
-        .advice-author { display: flex; align-items: center; gap: 12px; margin-top: 18px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 18px; }
-        .advice-author img { width: 35px; height: 35px; border-radius: 50%; object-fit: cover; border: 2px solid rgba(255,255,255,0.2); }
-        .advice-author span { font-size: 14px; color: #fff; font-weight: 700; text-shadow: 0 1px 3px rgba(0,0,0,0.5); }
-        .btn-view-profile { background: var(--primary-blue); color: white; padding: 8px 16px; border-radius: 10px; font-weight: 700; font-size: 12px; text-decoration: none; transition: 0.3s; }
-        .btn-view-profile:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(230, 57, 70, 0.3); color: white; }
+        :root {
+            --primary: #008080;
+            --primary-hover: #077378;
+            --accent-red: #e63946;
+            --bg-body: #f1f5f9;
+            --bg-card: #ffffff;
+            --border-color: #e2e8f0;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --sidebar-width: 260px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
 
-        /* Advice Details in Modal */
-        .modal-advice-detail { background: rgba(0,0,0,0.4); border-radius: 15px; padding: 20px; border: 1px solid rgba(255,255,255,0.1); }
-        .modal-tip-box { background: rgba(230, 57, 70, 0.05); border: 1px solid rgba(230, 57, 70, 0.1); border-radius: 12px; padding: 12px; height: 100%; }
-        .modal-tip-label { color: var(--primary-blue); font-weight: 700; font-size: 11px; text-transform: uppercase; margin-bottom: 5px; display: flex; align-items: center; gap: 8px; }
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background-color: var(--bg-body); 
+            color: var(--text-main); 
+            margin: 0; padding: 0; 
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .wrapper { display: flex; min-height: 100vh; }
+        .main-content { flex: 1; margin-left: var(--sidebar-width); padding: 40px !important; }
+
+        /* Professional Explore Header */
+        .explore-header { 
+            background: var(--bg-card); 
+            padding: 32px; 
+            border-radius: 16px; 
+            border: 1px solid var(--border-color); 
+            margin-bottom: 32px; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: flex-end; 
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1); 
+        }
+
+        .explore-header h1 { font-size: 28px; font-weight: 800; color: var(--text-main); margin: 0; letter-spacing: -0.5px; }
+        .explore-header p { color: var(--text-muted); margin: 4px 0 0; font-size: 15px; font-weight: 500; }
+
+        .search-container { position: relative; width: 400px; }
+        .search-container input { 
+            width: 100%; 
+            background: #ffffff; 
+            border: 1px solid var(--border-color); 
+            padding: 12px 20px 12px 45px; 
+            border-radius: 12px; 
+            color: var(--text-main); 
+            outline: none; 
+            transition: var(--transition); 
+            font-weight: 500;
+        }
+        .search-container input:focus { border-color: var(--primary); box-shadow: 0 0 0 4px rgba(0, 128, 128, 0.1); }
+        .search-container i { position: absolute; left: 18px; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 16px; }
+
+        /* Modern Tabs */
+        .nav-tabs { 
+            display: flex; 
+            gap: 8px; 
+            background: #e2e8f0; 
+            padding: 4px; 
+            border-radius: 12px; 
+            margin-bottom: 32px; 
+            border: none;
+            width: fit-content;
+        }
+        .nav-tabs button { 
+            background: none; 
+            border: none; 
+            color: var(--text-muted); 
+            padding: 10px 24px; 
+            font-size: 14px; 
+            font-weight: 600; 
+            cursor: pointer; 
+            border-radius: 10px;
+            transition: var(--transition); 
+        }
+        .nav-tabs button.active { 
+            background: #ffffff; 
+            color: var(--primary); 
+            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+        }
         
-        /* Modal Fixes */
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 2000; backdrop-filter: blur(8px); }
-        .modal-content-custom { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 90%; max-width: 600px; max-height: 90vh; overflow-y: auto; background: #0b0f18; border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; padding: 25px; color: white; }
-        .modal-close { position: absolute; top: 15px; right: 20px; font-size: 24px; cursor: pointer; color: #7e8c9a; }
+        .tab-pane { display: none; animation: fadeIn 0.4s ease-out; }
+        .tab-pane.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Traveler Cards */
+        .users-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 24px; }
+        .user-card { 
+            background: var(--bg-card); 
+            padding: 32px 24px; 
+            border-radius: 16px; 
+            border: 1px solid var(--border-color); 
+            text-align: center; 
+            transition: var(--transition); 
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05); 
+        }
+        .user-card:hover { border-color: var(--primary); transform: translateY(-4px); box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); }
+        
+        .user-avatar { width: 90px; height: 90px; border-radius: 50%; object-fit: cover; margin-bottom: 20px; border: 3px solid #f8fafc; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
+        .user-name { font-size: 18px; font-weight: 700; margin: 0 0 4px; color: var(--text-main); }
+        .user-username { font-size: 13px; color: var(--primary); margin-bottom: 16px; font-weight: 600; }
+        
+        .points-badge { 
+            margin: 0 0 20px; 
+            font-size: 12px; 
+            font-weight: 700; 
+            color: #d97706; 
+            background: #fffbeb; 
+            padding: 6px 16px; 
+            border-radius: 100px; 
+            display: inline-block; 
+            border: 1px solid #fef3c7; 
+        }
+
+        .btn-view-profile { 
+            background: var(--primary); 
+            color: #ffffff !important; 
+            padding: 10px 24px; 
+            border-radius: 10px; 
+            font-size: 13px; 
+            font-weight: 700; 
+            transition: var(--transition); 
+            text-decoration: none !important; 
+            display: inline-block; 
+        }
+        .btn-view-profile:hover { background: var(--primary-hover); transform: translateY(-1px); }
+
+        /* Memory Cards */
+        .posts-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 24px; }
+        .post-card { 
+            background: var(--bg-card); 
+            border-radius: 16px; 
+            overflow: hidden; 
+            border: 1px solid var(--border-color); 
+            transition: var(--transition); 
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05); 
+        }
+        .post-card:hover { transform: translateY(-4px); box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); border-color: var(--primary); }
+        
+        .post-media-wrapper { position: relative; width: 100%; aspect-ratio: 1; overflow: hidden; background: #f1f5f9; }
+        .post-card img, .post-card video { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
+        .post-card:hover img, .post-card:hover video { transform: scale(1.05); }
+        
+        .post-author-overlay { 
+            position: absolute; top: 12px; left: 12px; 
+            background: rgba(255, 255, 255, 0.9); 
+            backdrop-filter: blur(4px); 
+            padding: 6px 12px; 
+            border-radius: 100px; 
+            font-size: 11px; 
+            color: var(--text-main); 
+            font-weight: 700; 
+            border: 1px solid rgba(255,255,255,0.2); 
+            z-index: 5;
+        }
+
+        .post-info { padding: 16px; }
+        .post-caption { font-size: 13px; color: var(--text-main); font-weight: 500; margin-bottom: 12px; line-height: 1.5; }
+        .post-stats { font-size: 12px; color: var(--text-muted); display: flex; gap: 16px; font-weight: 600; border-top: 1px solid var(--border-color); padding-top: 12px; }
+        .post-stats i { color: var(--primary); }
+        
+        /* Advice Cards */
+        .advices-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 24px; }
+        .advice-card { 
+            background: var(--bg-card); 
+            padding: 24px; 
+            border-radius: 16px; 
+            border: 1px solid var(--border-color); 
+            transition: var(--transition); 
+            box-shadow: 0 1px 3px 0 rgba(0,0,0,0.05); 
+        }
+        .advice-card:hover { border-color: var(--primary); transform: translateY(-4px); box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); }
+        .advice-card h4 { margin: 0 0 12px; font-size: 18px; color: var(--text-main); font-weight: 700; }
+        .advice-card p { font-size: 14px; color: var(--text-muted); line-height: 1.6; margin: 0; font-weight: 400; height: 66px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; }
+        
+        .advice-meta { margin-top: 16px; font-size: 12px; font-weight: 600; color: var(--text-muted); display: flex; gap: 12px; }
+        .advice-author { display: flex; align-items: center; gap: 12px; margin-top: 20px; border-top: 1px solid var(--border-color); padding-top: 16px; }
+        .advice-author img { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; }
+        .advice-author span { font-size: 13px; color: var(--text-main); font-weight: 600; }
+
+        /* Modal Customization */
+        .modal { 
+            background: rgba(15, 23, 42, 0.5); 
+            backdrop-filter: blur(8px); 
+        }
+        .modal-content-custom { 
+            background: #ffffff; 
+            border: 1px solid var(--border-color); 
+            border-radius: 20px; 
+            padding: 32px; 
+            color: var(--text-main); 
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+        .modal-close { color: var(--text-muted); transition: 0.2s; }
+        .modal-close:hover { color: var(--accent-red); }
+
+        .modal-tip-box { background: #f8fafc; border: 1px solid var(--border-color); border-radius: 12px; padding: 16px; }
+        .modal-tip-label { color: var(--primary); font-weight: 700; font-size: 11px; text-transform: uppercase; margin-bottom: 8px; }
         
         @media (max-width: 991px) {
-            .main-content { margin-left: 0; padding: 90px 20px 40px; }
-            .explore-header { flex-direction: column; align-items: flex-start; gap: 20px; padding: 20px; }
+            .main-content { margin-left: 0; padding: 80px 20px 40px !important; }
+            .explore-header { flex-direction: column; align-items: flex-start; gap: 24px; padding: 24px; }
             .search-container { width: 100% !important; }
-            .nav-tabs { overflow-x: auto; padding-bottom: 5px; gap: 20px; }
-            .nav-tabs button { white-space: nowrap; }
-        }
-
-        @media (max-width: 576px) {
-            .users-grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 15px; }
-            .user-card { padding: 20px; }
-            .user-avatar { width: 80px; height: 80px; }
-            .user-name { font-size: 16px; }
-            .posts-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 10px; }
-            .advices-grid { grid-template-columns: 1fr; }
-        }
-
-        /* Prevent infinite horizontal stretch on ultra-wide screens */
-        @media (min-width: 2000px) {
-            .header, .main-content {
-                max-width: 1920px;
-                margin-left: auto;
-                margin-right: auto;
-            }
-            .wrapper { justify-content: center; }
         }
     </style>
 </head>
-<body class="premium-theme">
-    <!-- Sunlight Rays -->
-    <div class="sun-rays-container">
-        <div class="ray ray-1"></div>
-        <div class="ray ray-2"></div>
-        <div class="ray ray-3"></div>
-        <div class="ray ray-4"></div>
-    </div>
-    <header class="header">
-        <div class="header-logo"><a href="<c:url value='/'/>"><img src="<c:url value='/views/assets/images/logo.png'/>" style="height: 35px;"></a></div>
-        <div style="display: flex; align-items: center; gap: 20px;">
-                <div style="display: flex; align-items: center; gap: 15px; cursor: pointer;" onclick="showMyPoints()">
-                    <span style="font-weight: 700;">Hi, ${user.name}</span>
-                    <c:set var="defaultAvatar" value="https://ui-avatars.com/api/?name=${user.name}&background=f04c26&color=fff" />
-                    <img src="${not empty user.profilePhoto ? user.profilePhoto : defaultAvatar}" style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover; border: 2px solid rgba(255,255,255,0.2);">
-                </div>
-        </div>
-    </header>
+<body class="light-theme">
     <div id="pointsModal" class="modal" style="display: none; z-index: 3000;">
-        <div class="modal-content-custom" style="max-width: 350px; text-align: center;">
+        <div class="modal-content-custom" style="max-width: 400px; text-align: center;">
             <span class="modal-close" onclick="hidePoints()">&times;</span>
-            <div style="padding: 20px;">
-                <div style="position: relative; width: 100px; height: 100px; margin: 0 auto 20px;">
-                    <img id="modalUserAvatar" src="${not empty user.profilePhoto ? user.profilePhoto : defaultAvatar}" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 3px solid var(--primary-blue); box-shadow: 0 0 25px rgba(230,57,70,0.3);">
-                    <div style="position: absolute; bottom: -5px; right: -5px; width: 40px; height: 40px; background: var(--primary-blue); border: 3px solid #0b0f18; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(0,0,0,0.5);">
-                        <span id="modalPointsValue" style="font-size: 16px; font-weight: 800; color: #fff;">0</span>
+            <div style="padding: 10px;">
+                <div style="position: relative; width: 100px; height: 100px; margin: 0 auto 24px;">
+                    <img id="modalUserAvatar" src="${not empty user.profilePhoto ? user.profilePhoto : defaultAvatar}" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 4px solid var(--primary); box-shadow: 0 10px 25px rgba(0, 128, 128, 0.15);">
+                    <div style="position: absolute; bottom: -5px; right: -5px; width: 36px; height: 36px; background: var(--primary); border: 3px solid #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+                        <span id="modalPointsValue" style="font-size: 14px; font-weight: 800; color: #fff;">0</span>
                     </div>
                 </div>
-                <h3 style="font-weight: 700; margin-bottom: 5px; color: #fff; font-size: 18px;">Total Points Earned</h3>
-                <h2 id="modalTotalPointsLabel" style="font-size: 32px; font-weight: 800; color: var(--primary-blue); margin-bottom: 10px;">0</h2>
-                <p style="color: var(--text-muted); font-size: 13px; margin-bottom: 25px;">Track your traveler influence across the platform!</p>
+                <h3 style="font-weight: 800; margin-bottom: 4px; color: var(--text-main); font-size: 20px;">Influence Points</h3>
+                <h2 id="modalTotalPointsLabel" style="font-size: 36px; font-weight: 800; color: var(--primary); margin-bottom: 8px;">0</h2>
+                <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 24px;">Your traveler impact across the platform</p>
                 
-                <div style="text-align: left; background: rgba(255,255,255,0.03); padding: 15px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05);">
-                    <div style="display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 12px;">
-                        <span><i class="fa fa-heart" style="color: var(--primary-blue); width: 18px;"></i> Like received</span>
-                        <span style="font-weight: 700; color: #4caf50;">+10 pts</span>
+                <div style="text-align: left; background: #f8fafc; padding: 20px; border-radius: 16px; border: 1px solid var(--border-color);">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 12px; font-size: 13px;">
+                        <span><i class="fa fa-heart" style="color: var(--accent-red); width: 20px;"></i> Like received</span>
+                        <span style="font-weight: 700; color: #10b981;">+10 pts</span>
                     </div>
-                    <div style="display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 12px;">
-                        <span><i class="fa fa-eye" style="color: var(--primary-blue); width: 18px;"></i> Memory view</span>
-                        <span style="font-weight: 700; color: #4caf50;">+2 pts</span>
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 12px; font-size: 13px;">
+                        <span><i class="fa fa-eye" style="color: var(--primary); width: 20px;"></i> Memory view</span>
+                        <span style="font-weight: 700; color: #10b981;">+2 pts</span>
                     </div>
-                    <div style="display: flex; justify-content: space-between; font-size: 12px;">
-                        <span><i class="fa fa-user" style="color: var(--primary-blue); width: 18px;"></i> Profile visit</span>
-                        <span style="font-weight: 700; color: #4caf50;">+1 pt</span>
+                    <div style="display: flex; justify-content: space-between; font-size: 13px;">
+                        <span><i class="fa fa-user" style="color: var(--primary); width: 20px;"></i> Profile visit</span>
+                        <span style="font-weight: 700; color: #10b981;">+1 pt</span>
                     </div>
                 </div>
             </div>
@@ -151,12 +258,12 @@
         <main class="main-content">
             <div class="explore-header">
                 <div>
-                    <h1 style="font-weight: 800; margin: 0; font-size: 32px; color: #fff; text-shadow: 0 4px 15px rgba(0,0,0,0.8);">Explore Content</h1>
-                    <p style="color: #fff; margin: 0; font-weight: 600; text-shadow: 0 2px 8px rgba(0,0,0,0.8);">Find friends, view memories, and discover travel advice.</p>
+                    <h1>Explore Community</h1>
+                    <p>Connect with travelers and discover shared memories.</p>
                 </div>
                 <form action="<c:url value='/user/explore'/>" method="GET">
                     <div class="search-container">
-                        <input type="text" name="search" value="${searchQuery}" placeholder="Search anything...">
+                        <input type="text" name="search" value="${searchQuery}" placeholder="Search travelers or advice...">
                         <i class="fa fa-search"></i>
                     </div>
                 </form>
@@ -177,7 +284,7 @@
                                     <img src="${not empty u.profilePhoto ? u.profilePhoto : 'https://ui-avatars.com/api/?name='.concat(u.fullName).concat('&background=random')}" class="user-avatar">
                                     <h3 class="user-name">${u.fullName}</h3>
                                     <p class="user-username">@${not empty u.username ? u.username : 'traveler'}</p>
-                                    <div style="margin: 10px 0; font-size: 13px; font-weight: 700; color: #ff9f43; background: rgba(255,159,67,0.1); padding: 5px 15px; border-radius: 20px; display: inline-block; border: 1px solid rgba(255,159,67,0.2);">
+                                    <div class="points-badge">
                                         <i class="fa fa-star"></i> ${u.travelPoints} Points
                                     </div>
                                     <a href="<c:url value='/profile?username=${not empty u.username ? u.username : u.fullName}'/>" class="btn-view-profile">View Profile</a>
@@ -185,10 +292,10 @@
                             </c:forEach>
                         </c:when>
                         <c:otherwise>
-                            <div style="grid-column: 1/-1; text-align: center; padding: 80px 20px; background: rgba(0,0,0,0.3); backdrop-filter: blur(10px); border-radius: 20px; border: 1px dotted rgba(255,255,255,0.2);">
-                                <i class="fa fa-users" style="font-size: 60px; color: rgba(255,255,255,0.1); margin-bottom: 20px; text-shadow: 0 0 20px rgba(0,0,0,0.5);"></i>
-                                <h3 style="font-weight: 800; color: #fff; text-shadow: 0 2px 10px rgba(0,0,0,0.8);">No users found</h3>
-                                <p style="color: #fff; font-weight: 600; text-shadow: 0 2px 5px rgba(0,0,0,0.5);">Try a different search term.</p>
+                            <div style="grid-column: 1/-1; text-align: center; padding: 80px 20px; background: var(--bg-card); border-radius: 20px; border: 2px dashed var(--border-color);">
+                                <i class="fa fa-users" style="font-size: 60px; color: #e2e8f0; margin-bottom: 20px;"></i>
+                                <h3 style="font-weight: 800; color: var(--text-main);">No travelers found</h3>
+                                <p style="color: var(--text-muted); font-weight: 500;">Try a different search term.</p>
                             </div>
                         </c:otherwise>
                     </c:choose>
@@ -201,16 +308,18 @@
                         <c:when test="${not empty posts}">
                             <c:forEach var="p" items="${posts}">
                                 <div class="post-card" onclick="window.location.href='<c:url value='/profile?username=${not empty p.user.username ? p.user.username : p.user.fullName}'/>'" style="cursor: pointer;">
-                                    <div class="post-author">@${p.user.fullName}</div>
-                                    <c:choose>
-                                        <c:when test="${p.mediaType == 'video'}">
-                                            <video src="${p.mediaUrl}" muted loop onmouseover="this.play()" onmouseout="this.pause()"></video>
-                                        </c:when>
-                                        <c:otherwise>
-                                            <img src="${p.mediaUrl}" loading="lazy">
-                                        </c:otherwise>
-                                    </c:choose>
-                                    <div class="post-details">
+                                    <div class="post-media-wrapper">
+                                        <div class="post-author-overlay">@${p.user.fullName}</div>
+                                        <c:choose>
+                                            <c:when test="${p.mediaType == 'video'}">
+                                                <video src="${p.mediaUrl}" muted loop onmouseover="this.play()" onmouseout="this.pause()"></video>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <img src="${p.mediaUrl}" loading="lazy">
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </div>
+                                    <div class="post-info">
                                         <c:if test="${not empty p.caption}">
                                             <div class="post-caption">${p.caption}</div>
                                         </c:if>
@@ -223,9 +332,9 @@
                             </c:forEach>
                         </c:when>
                         <c:otherwise>
-                            <div style="grid-column: 1/-1; text-align: center; padding: 80px 20px; background: #161c28; border-radius: 20px; border: 1px dotted rgba(255,255,255,0.1);">
-                                <i class="fa fa-image" style="font-size: 50px; color: rgba(255,255,255,0.1); margin-bottom: 20px;"></i>
-                                <h3 style="font-weight: 700;">No memories found</h3>
+                            <div style="grid-column: 1/-1; text-align: center; padding: 80px 20px; background: var(--bg-card); border-radius: 20px; border: 2px dashed var(--border-color);">
+                                <i class="fa fa-image" style="font-size: 50px; color: #e2e8f0; margin-bottom: 20px;"></i>
+                                <h3 style="font-weight: 700; color: var(--text-main);">No memories found</h3>
                             </div>
                         </c:otherwise>
                     </c:choose>
@@ -259,7 +368,7 @@
                                     <h4>${a.title}</h4>
                                     <p>${a.content}</p>
                                     
-                                    <div style="margin-top: 15px; font-size: 12px; color: rgba(255,255,255,0.6);">
+                                    <div class="advice-meta">
                                         <span><i class="fa fa-heart"></i> ${a.likes} likes</span>
                                     </div>
                                     <div class="advice-author">
@@ -271,9 +380,9 @@
                             </c:forEach>
                         </c:when>
                         <c:otherwise>
-                            <div style="grid-column: 1/-1; text-align: center; padding: 80px 20px; background: #161c28; border-radius: 20px; border: 1px dotted rgba(255,255,255,0.1);">
-                                <i class="fa fa-lightbulb-o" style="font-size: 50px; color: rgba(255,255,255,0.1); margin-bottom: 20px;"></i>
-                                <h3 style="font-weight: 700;">No advice found</h3>
+                            <div style="grid-column: 1/-1; text-align: center; padding: 80px 20px; background: var(--bg-card); border-radius: 20px; border: 2px dashed var(--border-color);">
+                                <i class="fa fa-lightbulb-o" style="font-size: 50px; color: #e2e8f0; margin-bottom: 20px;"></i>
+                                <h3 style="font-weight: 700; color: var(--text-main);">No advice found</h3>
                             </div>
                         </c:otherwise>
                     </c:choose>
@@ -365,7 +474,7 @@
                         <div style="margin-bottom: 15px;">
                             <div class="modal-tip-box">
                                 <div class="modal-tip-label"><i class="fa \${t.icon}"></i> \${t.label}</div>
-                                <div style="font-size: 13px; color: #fff;">\${t.val}</div>
+                                <div style="font-size: 13px; color: var(--text-main);">\${t.val}</div>
                             </div>
                         </div>
                     `;
