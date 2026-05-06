@@ -467,7 +467,7 @@
         </div>
     </section>
 
-    <section class="footer">
+            <section class="footer">
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
@@ -542,13 +542,28 @@
                                     });
                                 }
                             </script>
-                            <div class="footer-social">
+                            <div class="social-icons">
                                 <ul>
-                                    <li><a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
-                                    <li><a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
-                                    <li><a href="#"><i class="fa fa-linkedin" aria-hidden="true"></i></a></li>
-                                    <li><a href="#"><i class="fa fa-instagram" aria-hidden="true"></i></a></li>
+                                    <li><a href="https://www.facebook.com/login" target="_blank"><i class="fa fa-facebook" aria-hidden="true"></i> FACEBOOK</a></li>
+                                    <li><a href="https://twitter.com/login" target="_blank"><i class="fa fa-twitter" aria-hidden="true"></i> TWITTER</a></li>
+                                    <li><a href="https://www.linkedin.com/login" target="_blank"><i class="fa fa-linkedin" aria-hidden="true"></i> LINKEDIN</a></li>
                                 </ul>
+                            </div>
+                            <div class="yt-footer-stores" aria-label="Download our app">
+                                <a class="yt-store-btn" href="https://play.google.com/store" target="_blank" aria-label="Get it on Google Play">
+                                    <i class="fa fa-android" aria-hidden="true"></i>
+                                    <span>
+                                        <small>Get it on</small>
+                                        <strong>Google Play</strong>
+                                    </span>
+                                </a>
+                                <a class="yt-store-btn" href="https://www.apple.com/app-store/" target="_blank" aria-label="Download on the App Store">
+                                    <i class="fa fa-apple" aria-hidden="true"></i>
+                                    <span>
+                                        <small>Download on</small>
+                                        <strong>App Store</strong>
+                                    </span>
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -561,7 +576,21 @@
     <script src="<c:url value='/views/assets/js/bootstrap.min.js'/>"></script>
     <script src="<c:url value='/views/assets/js/jquery.fancybox.min.js'/>"></script>
     <script type="text/javascript">
-        $("[data-fancybox]").fancybox({});
+        $(document).ready(function() {
+            $("[data-fancybox]").fancybox({
+                loop: true,
+                buttons: [
+                    "zoom",
+                    "slideShow",
+                    "fullScreen",
+                    "thumbs",
+                    "close"
+                ],
+                animationEffect: "zoom-in-out",
+                transitionEffect: "fade",
+                hash: false
+            });
+        });
     </script>
 </body>
 

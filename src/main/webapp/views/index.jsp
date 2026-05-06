@@ -1321,9 +1321,9 @@
             <!-- ===== END VERTICAL HERO SLIDESHOW ===== -->
 
             <div class="hero-social">
-                <a href="#"><i class="fa fa-instagram"></i></a>
-                <a href="#"><i class="fa fa-youtube-play"></i></a>
-                <a href="#">
+                <a href="https://www.instagram.com/accounts/login/" target="_blank"><i class="fa fa-instagram"></i></a>
+                <a href="https://www.youtube.com/login" target="_blank"><i class="fa fa-youtube-play"></i></a>
+                <a href="https://www.tiktok.com/login" target="_blank">
                     <!-- TikTok SVG icon since FontAwesome 4 doesn't have it -->
                     <svg viewBox="0 0 448 512" width="16" fill="currentColor" style="display:block;"><path d="M448 209.91a210.06 210.06 0 0 1 -122.77-39.25V349.38A162.55 162.55 0 1 1 185 188.31V278.2a74.62 74.62 0 1 0 52.23 71.18V0l88 0a121.18 121.18 0 0 0 1.86 22.17h0A122.18 122.18 0 0 0 381 102.39a121.43 121.43 0 0 0 67 20.14Z"/></svg>
                 </a>
@@ -2014,26 +2014,20 @@
                             </script>
                             <div class="social-icons">
                                 <ul>
-                                    <li><a href="#"><i class="fa fa-facebook" aria-hidden="true"></i>
-
-                                       FACEBOOK</a></li>
-                                    <li><a href="#"><i class="fa fa-twitter" aria-hidden="true"></i>
-
-                                       TWITTER</a></li>
-                                    <li><a href="#"><i class="fa fa-linkedin" aria-hidden="true"></i>
-
-                                   LINKEDIN</a></li>
+                                    <li><a href="https://www.facebook.com/login" target="_blank"><i class="fa fa-facebook" aria-hidden="true"></i> FACEBOOK</a></li>
+                                    <li><a href="https://twitter.com/login" target="_blank"><i class="fa fa-twitter" aria-hidden="true"></i> TWITTER</a></li>
+                                    <li><a href="https://www.linkedin.com/login" target="_blank"><i class="fa fa-linkedin" aria-hidden="true"></i> LINKEDIN</a></li>
                                 </ul>
                             </div>
                             <div class="yt-footer-stores" aria-label="Download our app">
-                                <a class="yt-store-btn" href="#" aria-label="Get it on Google Play">
+                                <a class="yt-store-btn" href="https://play.google.com/store" target="_blank" aria-label="Get it on Google Play">
                                     <i class="fa fa-android" aria-hidden="true"></i>
                                     <span>
                                         <small>Get it on</small>
                                         <strong>Google Play</strong>
                                     </span>
                                 </a>
-                                <a class="yt-store-btn" href="#" aria-label="Download on the App Store">
+                                <a class="yt-store-btn" href="https://www.apple.com/app-store/" target="_blank" aria-label="Download on the App Store">
                                     <i class="fa fa-apple" aria-hidden="true"></i>
                                     <span>
                                         <small>Download on</small>
@@ -2123,7 +2117,6 @@
         })
     </script>
     <script type="text/javascript">
-        $("[data-fancybox]").fancybox({});
     </script>
     <script>
         jQuery(function() {
@@ -2176,6 +2169,22 @@
         // Close on escape key
         document.addEventListener('keydown', function(e) {
             if (e.key === "Escape") closeWelcomeModal();
+        });
+
+        // Initialize Fancybox
+        $(document).ready(function() {
+            $("[data-fancybox]").fancybox({
+                loop: true,
+                buttons: [
+                    "zoom",
+                    "slideShow",
+                    "fullScreen",
+                    "thumbs",
+                    "close"
+                ],
+                animationEffect: "zoom-in-out",
+                transitionEffect: "fade"
+            });
         });
     </script>
 </body>

@@ -70,21 +70,78 @@
             100% { transform: rotate(8deg) scaleX(0.85); opacity: 0.25; }
         }
 
-        /* Nav Sync */
+        /* Premium Navigation Sync from Home Page */
         .yt-main-nav {
-            background: rgba(0, 34, 68, 0.8);
-            backdrop-filter: blur(15px);
-            padding: 15px 0;
             position: fixed;
             top: 0; width: 100%;
-            z-index: 1000;
+            z-index: 2000;
+            padding: 20px 0;
+            background: rgba(0, 34, 68, 0.85);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
             border-bottom: 1px solid rgba(255,255,255,0.1);
+            transition: all 0.4s ease;
         }
-        .nav-flex { display: flex; justify-content: space-between; align-items: center; }
-        .nav-links a { color: #fff; text-decoration: none; margin-left: 30px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; font-size: 14px; transition: 0.3s; }
+        .nav-flex { 
+            display: flex; 
+            align-items: center; 
+            justify-content: space-between; 
+            position: relative;
+        }
+        .nav-flex .logo { flex: 1; }
+        .nav-links { 
+            display: flex; 
+            gap: 35px; 
+            align-items: center; 
+            justify-content: center; 
+            flex: 2; 
+        }
+        .nav-links a { 
+            color: #fff; 
+            text-decoration: none; 
+            font-weight: 700; 
+            text-transform: uppercase; 
+            letter-spacing: 1px; 
+            font-size: 14px; 
+            transition: 0.3s; 
+        }
         .nav-links a:hover, .nav-links a.active { color: var(--primary-red); }
+        
+        .nav-right { 
+            display: flex; 
+            align-items: center; 
+            justify-content: flex-end; 
+            gap: 15px; 
+            flex: 1; 
+        }
+        .login-btn {
+            background: var(--primary-red);
+            color: #fff !important;
+            padding: 10px 24px;
+            border-radius: 8px;
+            font-weight: 700;
+            text-decoration: none;
+            transition: 0.3s;
+            text-transform: uppercase;
+            font-size: 13px;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 15px rgba(230,57,70,0.3);
+        }
+        .login-btn:hover {
+            background: #c1121f;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(230,57,70,0.5);
+        }
+        
+        .nav-mobile-toggle {
+            display: none;
+            color: #fff;
+            font-size: 24px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
 
-        .main-container { margin-top: 120px; padding-bottom: 80px; }
+        .main-container { margin-top: 140px; padding-bottom: 80px; }
 
         /* Hero Header */
         .explore-hero {
@@ -239,22 +296,27 @@
         <div class="container">
             <div class="nav-flex">
                 <div class="logo">
-                    <a href="<c:url value='/'/>"><img src="<c:url value='/views/assets/images/logo.png'/>" alt="Youth Travel" style="height: 40px;" /></a>
+                    <a href="<c:url value='/'/>"><img src="<c:url value='/views/assets/images/logo.png'/>" alt="Youth Travel" /></a>
                 </div>
                 <div class="nav-links">
                     <a href="<c:url value='/'/>">Home</a>
                     <a href="<c:url value='/explore-packages'/>" class="active">Explore</a>
                     <a href="<c:url value='/gallery'/>">Gallery</a>
-                    <a href="<c:url value='/about'/>">About</a>
-                    <a href="<c:url value='/contact'/>">Contact</a>
+                    <a href="<c:url value='/about'/>">About Us</a>
+                    <a href="<c:url value='/contact'/>">Contact Us</a>
+                </div>
+                <div class="nav-right">
                     <c:choose>
                         <c:when test="${not empty user}">
-                            <a href="<c:url value='/user/dashboard'/>" class="login-btn" style="background: var(--primary-red); padding: 8px 20px; border-radius: 10px;">Dashboard</a>
+                            <a href="<c:url value='/user/dashboard'/>" class="login-btn">My Dashboard</a>
                         </c:when>
                         <c:otherwise>
-                            <a href="<c:url value='/user/login'/>" class="login-btn" style="background: var(--primary-red); padding: 8px 20px; border-radius: 10px;">Login</a>
+                            <a href="<c:url value='/user/login'/>" class="login-btn">Login / Sign Up</a>
                         </c:otherwise>
                     </c:choose>
+                    <div class="nav-mobile-toggle">
+                        <i class="fa fa-bars"></i>
+                    </div>
                 </div>
             </div>
         </div>
@@ -337,7 +399,7 @@
     </div>
 
     <!-- Footer Sync -->
-    <section class="footer">
+            <section class="footer">
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
@@ -412,13 +474,28 @@
                                     });
                                 }
                             </script>
-                            <div class="footer-social">
+                            <div class="social-icons">
                                 <ul>
-                                    <li><a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
-                                    <li><a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
-                                    <li><a href="#"><i class="fa fa-linkedin" aria-hidden="true"></i></a></li>
-                                    <li><a href="#"><i class="fa fa-instagram" aria-hidden="true"></i></a></li>
+                                    <li><a href="https://www.facebook.com/login" target="_blank"><i class="fa fa-facebook" aria-hidden="true"></i> FACEBOOK</a></li>
+                                    <li><a href="https://twitter.com/login" target="_blank"><i class="fa fa-twitter" aria-hidden="true"></i> TWITTER</a></li>
+                                    <li><a href="https://www.linkedin.com/login" target="_blank"><i class="fa fa-linkedin" aria-hidden="true"></i> LINKEDIN</a></li>
                                 </ul>
+                            </div>
+                            <div class="yt-footer-stores" aria-label="Download our app">
+                                <a class="yt-store-btn" href="https://play.google.com/store" target="_blank" aria-label="Get it on Google Play">
+                                    <i class="fa fa-android" aria-hidden="true"></i>
+                                    <span>
+                                        <small>Get it on</small>
+                                        <strong>Google Play</strong>
+                                    </span>
+                                </a>
+                                <a class="yt-store-btn" href="https://www.apple.com/app-store/" target="_blank" aria-label="Download on the App Store">
+                                    <i class="fa fa-apple" aria-hidden="true"></i>
+                                    <span>
+                                        <small>Download on</small>
+                                        <strong>App Store</strong>
+                                    </span>
+                                </a>
                             </div>
                         </div>
                     </div>
