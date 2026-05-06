@@ -9,9 +9,9 @@
     <link rel="stylesheet" href="<c:url value='/views/assets/css/bootstrap.min.css'/>">
     <link rel="stylesheet" href="<c:url value='/views/assets/css/font-awesome.min.css'/>">
     <link rel="stylesheet" href="<c:url value='/views/assets/css/premium-dashboard.css'/>">
-    <link href="https://fonts.googleapis.com/css?family=Dosis:300,400,500,600,700,800" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Dosis', sans-serif; background-color: #0b0f18; color: #fff; }
+        body { font-family: 'Inter', sans-serif; background-color: #f1f5f9; color: #0f172a; }
         .admin-layout { display: flex; min-height: 100vh; }
         .admin-sidebar { width: 260px; background: rgba(0,0,0,0.4); backdrop-filter: blur(25px); border-right: 1px solid rgba(255,255,255,0.1); flex-shrink: 0; }
         .sidebar-header { padding: 30px 20px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.1); }
@@ -90,22 +90,22 @@
                 <form action="<c:url value='/admin/home-images/upload'/>" method="POST" enctype="multipart/form-data" class="row">
                     <div class="col-md-4">
                         <label>Select Section</label>
-                        <select name="section" class="form-control" style="background: #1a1a1a; color: #fff; border: 1px solid #333;">
+                        <select name="section" class="form-control">
                             <option value="GALLERY">Gallery Section</option>
                             <option value="MOMENTS">More Moments Section</option>
                         </select>
                     </div>
                     <div class="col-md-4">
                         <label>Image File</label>
-                        <input type="file" name="file" class="form-control" style="background: #1a1a1a; color: #fff; border: 1px solid #333;" required>
+                        <input type="file" name="file" class="form-control" required>
                     </div>
                     <div class="col-md-3">
                         <label>Caption (Optional)</label>
-                        <input type="text" name="caption" class="form-control" placeholder="e.g. Scuba Diving Fun" style="background: #1a1a1a; color: #fff; border: 1px solid #333;">
+                        <input type="text" name="caption" class="form-control" placeholder="e.g. Scuba Diving Fun">
                     </div>
                     <div class="col-md-1">
                         <label>&nbsp;</label>
-                        <button type="submit" class="btn btn-danger btn-block" style="background: #e63946; border: none; font-weight: 700;">Upload</button>
+                        <button type="submit" class="btn btn-danger btn-block" style="background: #008080; border: none; font-weight: 700;">Upload</button>
                     </div>
                 </form>
             </div>
