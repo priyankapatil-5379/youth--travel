@@ -833,6 +833,23 @@ public class UserController {
         }
         return ResponseEntity.notFound().build();
     }
+    @GetMapping("/booking/{id}/advice")
+    public String showAdvicePage(@PathVariable Long id, HttpSession session, Model model) {
+        User user = (User) session.getAttribute("user");
+        if (user == null) return "redirect:/user/login";
+
+        java.util.Optional<com.youthtravel.entity.Booking> bookingOpt = bookingService.getBookingById(id);
+        if (bookingOpt.isPresent()) {
+            com.youthtravel.entity.Booking booking = bookingOpt.get();
+            if (booking.getCustomerEmail().equals(user.getEmail())) {
+                model.addAttribute("booking", booking);
+                model.addAttribute("user", user);
+                return "users/write-advice";
+            }
+        }
+        return "redirect:/user/my-bookings";
+    }
+
     @PostMapping("/booking/{id}/advice")
     @ResponseBody
     public ResponseEntity<String> submitAdvice(@PathVariable Long id, @RequestBody Map<String, Object> payload, HttpSession session) {
@@ -845,9 +862,9 @@ public class UserController {
             
             Advice advice = new Advice();
             advice.setUser(user);
-            advice.setTitle(payload.get("title").toString());
-            advice.setContent(payload.get("content").toString());
-            advice.setCategories(payload.get("categories") != null ? payload.get("categories").toString() : booking.getTrip().getCategory());
+            advice.setTitle(payload.get("title") != null ? payload.get("title").toString() : "My Journey Advice");
+            advice.setContent(payload.get("content") != null ? payload.get("content").toString() : "");
+            advice.setCategories(payload.get("categories") != null ? payload.get("categories").toString() : (booking.getTrip() != null ? booking.getTrip().getCategory() : "General"));
             
             // Expert Fields
             advice.setBestTimeToVisit(payload.get("bestTimeToVisit") != null ? payload.get("bestTimeToVisit").toString() : "");
@@ -855,6 +872,14 @@ public class UserController {
             advice.setSafetyTips(payload.get("safetyTips") != null ? payload.get("safetyTips").toString() : "");
             advice.setBudgetTips(payload.get("budgetTips") != null ? payload.get("budgetTips").toString() : "");
             
+            // Additional Expert Fields
+            advice.setStayFoodAdvice(payload.get("stayFoodAdvice") != null ? payload.get("stayFoodAdvice").toString() : "");
+            advice.setTransportTips(payload.get("transportTips") != null ? payload.get("transportTips").toString() : "");
+            advice.setConnectivityTips(payload.get("connectivityTips") != null ? payload.get("connectivityTips").toString() : "");
+            advice.setLocalRules(payload.get("localRules") != null ? payload.get("localRules").toString() : "");
+            advice.setEnvironmentalTips(payload.get("environmentalTips") != null ? payload.get("environmentalTips").toString() : "");
+            advice.setProTips(payload.get("proTips") != null ? payload.get("proTips").toString() : "");
+
             adviceRepository.save(advice);
             return ResponseEntity.ok("Advice saved");
         }

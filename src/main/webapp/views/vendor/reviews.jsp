@@ -4,81 +4,195 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Customer Reviews | Youth Travel</title>
     <link rel="stylesheet" href="<c:url value='/views/assets/css/bootstrap.min.css'/>">
-    <link rel="stylesheet" href="<c:url value='/views/assets/css/style.css'/>">
     <link rel="stylesheet" href="<c:url value='/views/assets/css/font-awesome.min.css'/>">
-    <link rel="stylesheet" href="<c:url value='/views/assets/css/premium-dashboard.css'/>">
-    <link href="https://fonts.googleapis.com/css?family=Dosis:300,400,500,600,700,800" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        :root { --primary-blue: #f04c26; --transition: all 0.3s ease; }
-        body.yt-dark { background: transparent; color: #fff; font-family: 'Dosis', sans-serif; }
+        :root {
+            --primary: #008080;
+            --primary-hover: #077378;
+            --accent-red: #e63946;
+            --bg-body: #f8fafc;
+            --bg-card: #ffffff;
+            --border-color: #e2e8f0;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --sidebar-width: 260px;
+            --star-gold: #f59e0b;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+        }
+
+        .main-content {
+            margin-left: var(--sidebar-width);
+            padding: 40px;
+            min-height: 100vh;
+            transition: 0.3s;
+        }
+
+        @media (max-width: 991px) {
+            .main-content { margin-left: 0; padding: 20px; }
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+        }
+
+        .page-header h2 {
+            font-weight: 800;
+            margin: 0;
+            font-size: 32px;
+            letter-spacing: -1px;
+        }
+
+        .page-header p {
+            color: var(--text-muted);
+            margin-top: 8px;
+            font-size: 15px;
+        }
+
+        .rating-summary {
+            text-align: right;
+            background: #ffffff;
+            padding: 16px 24px;
+            border-radius: 16px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+        }
+
+        .rating-summary .big-star {
+            font-size: 32px;
+            font-weight: 800;
+            color: var(--star-gold);
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 10px;
+        }
 
         .review-card {
-            background: rgba(0,0,0,0.4);
-            backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 24px;
-            padding: 35px;
-            margin-bottom: 25px;
-            transition: var(--transition);
-            box-shadow: 0 8px 32px 0 rgba(0,0,0,0.3);
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 32px;
+            margin-bottom: 24px;
+            transition: 0.3s;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+            position: relative;
+            height: 100%;
         }
 
         .review-card:hover {
-            transform: translateY(-5px);
-            background: rgba(255, 255, 255, 0.05);
+            transform: translateY(-4px);
+            border-color: var(--primary);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
         }
 
-        .stars { color: #f59e0b; font-size: 18px; margin-bottom: 10px; }
-        
+        .trip-tag {
+            background: #e0f2f2;
+            color: var(--primary);
+            padding: 6px 14px;
+            border-radius: 30px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 20px;
+        }
+
         .reviewer-info {
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 12px;
             margin-bottom: 20px;
         }
 
         .reviewer-info img {
-            width: 50px; height: 50px; border-radius: 50%; object-fit: cover;
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            object-fit: cover;
         }
 
-        .trip-tag {
-            background: rgba(240, 76, 38, 0.1);
-            color: #f04c26;
-            padding: 5px 12px;
-            border-radius: 20px;
-            font-size: 12px;
+        .reviewer-name {
             font-weight: 700;
-            display: inline-block;
-            margin-bottom: 15px;
+            font-size: 16px;
+            color: var(--text-main);
+        }
+
+        .review-date {
+            font-size: 12px;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .stars {
+            color: var(--star-gold);
+            font-size: 14px;
+            margin-bottom: 16px;
+            display: flex;
+            gap: 2px;
+        }
+        
+        .review-text {
+            color: var(--text-main);
+            line-height: 1.7;
+            font-size: 15px;
+            font-weight: 500;
+            font-style: italic;
+        }
+
+        .empty-state {
+            padding: 80px 20px;
+            text-align: center;
+            background: white;
+            border-radius: 24px;
+            border: 1px solid var(--border-color);
+        }
+
+        .empty-state i {
+            font-size: 56px;
+            color: var(--border-color);
+            margin-bottom: 24px;
+        }
+
+        .empty-state h3 {
+            font-weight: 700;
+            color: var(--text-main);
         }
     </style>
 </head>
 
-<body class="yt-dark premium-theme">
-    <div class="sun-rays-container">
-        <div class="ray ray-1"></div>
-        <div class="ray ray-2"></div>
-        <div class="ray ray-3"></div>
-        <div class="ray ray-4"></div>
-    </div>
+<body>
     <jsp:include page="vendor-sidebar.jsp">
         <jsp:param name="activePage" value="reviews" />
     </jsp:include>
 
-    <!-- Main Content -->
     <div class="main-content">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px;">
+        <div class="page-header">
             <div>
-                <h2 style="font-weight: 800; margin: 0; font-size: 38px; color: #fff; text-shadow: 0 4px 15px rgba(0,0,0,0.8);">Customer Reviews</h2>
-                <p style="color: #fff; margin-top: 5px; font-weight: 600; text-shadow: 0 2px 8px rgba(0,0,0,0.8);">See what your travelers are saying about your trips.</p>
+                <h2>Customer Reviews</h2>
+                <p>Authentic traveler feedback and ratings for your published trips.</p>
             </div>
-            <div style="text-align: right;">
-                <div style="font-size: 42px; font-weight: 800; color: #f59e0b; text-shadow: 0 2px 15px rgba(245, 158, 11, 0.3);">
+            <div class="rating-summary">
+                <div class="big-star">
                     <i class="fa fa-star"></i> 4.8
                 </div>
-                <div style="color: #fff; font-size: 14px; font-weight: 700; text-shadow: 0 2px 5px rgba(0,0,0,0.5);">Average Rating</div>
+                <div style="color: var(--text-muted); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">Average Rating</div>
             </div>
         </div>
 
@@ -86,12 +200,14 @@
             <c:forEach var="review" items="${reviews}">
                 <div class="col-md-6 mb-4">
                     <div class="review-card">
-                        <div class="trip-tag"><i class="fa fa-map-marker"></i> ${review.trip.title}</div>
+                        <div class="trip-tag">
+                            <i class="fa fa-map-marker"></i> ${review.trip.title}
+                        </div>
                         <div class="reviewer-info">
-                            <img src="https://ui-avatars.com/api/?name=${review.user.name}&background=random">
+                            <img src="https://ui-avatars.com/api/?name=${review.user.name}&background=random&rounded=true&size=128">
                             <div>
-                                <div style="font-weight: 800; font-size: 20px; color: #fff; text-shadow: 0 2px 5px rgba(0,0,0,0.5);">${review.user.name}</div>
-                                <div style="color: #fff; font-size: 13px; font-weight: 600; text-shadow: 0 1px 3px rgba(0,0,0,0.5);">${review.createdAt.toLocalDate()}</div>
+                                <div class="reviewer-name">${review.user.name}</div>
+                                <div class="review-date">${review.createdAt.toLocalDate()}</div>
                             </div>
                         </div>
                         <div class="stars">
@@ -99,23 +215,28 @@
                                 <i class="fa fa-star"></i>
                             </c:forEach>
                             <c:forEach begin="1" end="${5 - review.rating}">
-                                <i class="fa fa-star-o" style="color: rgba(255,255,255,0.2);"></i>
+                                <i class="fa fa-star-o" style="color: var(--border-color);"></i>
                             </c:forEach>
                         </div>
-                        <p style="color: #fff; line-height: 1.6; font-size: 16px; font-weight: 500; text-shadow: 0 1px 3px rgba(0,0,0,0.5); font-style: italic;">
+                        <p class="review-text">
                             "${review.reviewText}"
                         </p>
                     </div>
                 </div>
             </c:forEach>
+            
             <c:if test="${empty reviews}">
-                <div class="col-12 text-center" style="padding: 80px 20px;">
-                    <i class="fa fa-star-half-o" style="font-size: 60px; color: rgba(255,255,255,0.1); margin-bottom: 20px;"></i>
-                    <h3 style="font-weight: 700; color: #fff;">No Reviews Yet</h3>
-                    <p style="color: rgba(255,255,255,0.4);">Once travelers complete their trips and leave feedback, it will appear here.</p>
+                <div class="col-12">
+                    <div class="empty-state">
+                        <i class="fa fa-star-half-o"></i>
+                        <h3>No Reviews Yet</h3>
+                        <p style="color: var(--text-muted);">Once travelers complete their trips and leave feedback, it will appear here.</p>
+                    </div>
                 </div>
             </c:if>
         </div>
     </div>
+
+    <script src="<c:url value='/views/assets/js/jquery.min.js'/>"></script>
 </body>
 </html>

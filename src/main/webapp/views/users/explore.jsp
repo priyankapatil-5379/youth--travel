@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="<c:url value='/views/assets/css/premium-dashboard.css'/>">
     <link href="https://fonts.googleapis.com/css?family=Dosis:300,400,500,600,700,800" rel="stylesheet">
     <style>
-        :root { --primary-blue: #e63946; --text-muted: #7e8c9a; --transition: all 0.3s ease; }
+        :root { --primary-blue: #ef4444; --text-muted: #7e8c9a; --transition: all 0.3s ease; }
         body { font-family: 'Dosis', sans-serif; background-color: #0b0f18; color: rgba(255, 255, 255, 0.92); margin: 0; padding: 0; }
         .wrapper { display: flex; min-height: 100vh; }
         .main-content { flex: 1; margin-left: 240px; padding: 100px 30px 40px; }
@@ -19,16 +19,16 @@
         .explore-header { background: rgba(0,0,0,0.3); backdrop-filter: blur(10px); padding: 30px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); margin-bottom: 30px; display: flex; justify-content: space-between; align-items: flex-end; box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3); }
         .search-container { position: relative; width: 400px; }
         .search-container input { width: 100%; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.2); padding: 12px 20px 12px 45px; border-radius: 25px; color: #fff; outline: none; transition: var(--transition); backdrop-filter: blur(5px); }
-        .search-container input:focus { border-color: var(--primary-blue); background: rgba(0,0,0,0.6); box-shadow: 0 0 15px rgba(230, 57, 70, 0.2); }
+        .search-container input:focus { border-color: var(--primary-blue); background: rgba(0,0,0,0.6); box-shadow: 0 0 15px rgba(239, 68, 68, 0.2); }
         .search-container i { position: absolute; left: 18px; top: 50%; transform: translateY(-50%); color: #fff; }
         .nav-tabs { display: flex; gap: 30px; border-bottom: 1px solid rgba(255,255,255,0.1); margin-bottom: 30px; padding-left: 10px; }
         .nav-tabs button { background: none; border: none; color: rgba(255,255,255,0.6); padding: 10px 0; font-size: 16px; font-weight: 700; cursor: pointer; border-bottom: 2px solid transparent; transition: var(--transition); text-transform: uppercase; letter-spacing: 1px; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
-        .nav-tabs button.active { color: #fff; border-bottom-color: var(--primary-blue); text-shadow: 0 2px 10px rgba(230, 57, 70, 0.5); }
+        .nav-tabs button.active { color: #fff; border-bottom-color: var(--primary-blue); text-shadow: 0 2px 10px rgba(239, 68, 68, 0.5); }
         .tab-pane { display: none; }
         .tab-pane.active { display: block; }
         
         .user-card { background: rgba(0,0,0,0.3); backdrop-filter: blur(15px); padding: 30px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); text-align: center; transition: var(--transition); box-shadow: 0 8px 32px 0 rgba(0,0,0,0.3); }
-        .user-card:hover { border-color: var(--primary-blue); transform: translateY(-5px); box-shadow: 0 15px 35px rgba(230,57,70,0.2); }
+        .user-card:hover { border-color: var(--primary-blue); transform: translateY(-5px); box-shadow: 0 15px 35px rgba(239, 68, 68, 0.2); }
         .user-avatar { width: 100px; height: 100px; border-radius: 50%; object-fit: cover; margin-bottom: 20px; border: 4px solid rgba(255,255,255,0.1); box-shadow: 0 5px 15px rgba(0,0,0,0.5); }
         .user-name { font-size: 20px; font-weight: 800; margin: 0 0 5px; color: #fff; text-shadow: 0 2px 5px rgba(0,0,0,0.8); }
         .user-username { font-size: 14px; color: var(--primary-blue); margin-bottom: 20px; font-weight: 700; text-shadow: 0 1px 3px rgba(0,0,0,0.3); }
@@ -54,17 +54,30 @@
         .advice-author img { width: 35px; height: 35px; border-radius: 50%; object-fit: cover; border: 2px solid rgba(255,255,255,0.2); }
         .advice-author span { font-size: 14px; color: #fff; font-weight: 700; text-shadow: 0 1px 3px rgba(0,0,0,0.5); }
         .btn-view-profile { background: var(--primary-blue); color: white; padding: 8px 16px; border-radius: 10px; font-weight: 700; font-size: 12px; text-decoration: none; transition: 0.3s; }
-        .btn-view-profile:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(230, 57, 70, 0.3); color: white; }
+        .btn-view-profile:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(239, 68, 68, 0.3); color: white; }
 
         /* Advice Details in Modal */
         .modal-advice-detail { background: rgba(0,0,0,0.4); border-radius: 15px; padding: 20px; border: 1px solid rgba(255,255,255,0.1); }
-        .modal-tip-box { background: rgba(230, 57, 70, 0.05); border: 1px solid rgba(230, 57, 70, 0.1); border-radius: 12px; padding: 12px; height: 100%; }
+        .modal-tip-box { background: rgba(239, 68, 68, 0.05); border: 1px solid rgba(239, 68, 68, 0.1); border-radius: 12px; padding: 12px; height: 100%; }
         .modal-tip-label { color: var(--primary-blue); font-weight: 700; font-size: 11px; text-transform: uppercase; margin-bottom: 5px; display: flex; align-items: center; gap: 8px; }
         
         /* Modal Fixes */
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 2000; backdrop-filter: blur(8px); }
         .modal-content-custom { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 90%; max-width: 600px; max-height: 90vh; overflow-y: auto; background: #0b0f18; border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; padding: 25px; color: white; }
         .modal-close { position: absolute; top: 15px; right: 20px; font-size: 24px; cursor: pointer; color: #7e8c9a; }
+
+        /* Sidebar Overrides - Specific for this page */
+        .sidebar .nav-item.active a {
+            background: rgba(20, 184, 166, 0.15) !important;
+            color: #14b8a6 !important;
+            border: 1px solid rgba(20, 184, 166, 0.3) !important;
+        }
+        .sidebar .nav-item a:hover:not(.active) {
+            color: #14b8a6 !important;
+        }
+        .sidebar {
+            border-right: 1px solid rgba(20, 184, 166, 0.1) !important;
+        }
         
         @media (max-width: 991px) {
             .main-content { margin-left: 0; padding: 90px 20px 40px; }

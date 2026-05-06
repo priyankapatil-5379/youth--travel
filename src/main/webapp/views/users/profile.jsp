@@ -503,6 +503,10 @@
                         <span class="stat-num" id="countPosts">0</span>
                         <span class="stat-label">Posts</span>
                     </div>
+                    <div class="stat-item">
+                        <span class="stat-num" id="countAdvices">0</span>
+                        <span class="stat-label">Advices</span>
+                    </div>
                     <div class="reputation-badge">
                         <div class="reputation-value" id="countPoints">0</div>
                         <div class="reputation-label">Traveler Points</div>
@@ -559,6 +563,20 @@
 
         $(document).ready(function() {
             loadProfileData();
+
+            // Handle Tab Switching from URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const activeTab = urlParams.get('tab');
+            if (activeTab === 'advice') {
+                $('.tab-trigger').removeClass('active');
+                $('.tab-trigger').each(function() {
+                    if ($(this).text().includes('ADVICES')) {
+                        $(this).addClass('active');
+                    }
+                });
+                $('#postsSection').hide();
+                $('#adviceSection').show();
+            }
 
             $('.tab-trigger').on('click', function() {
                 $('.tab-trigger').removeClass('active');
@@ -803,6 +821,7 @@
             $.get('/user/profile/api/data?username=' + profileUsername, function(data) {
                 dataCache = data;
                 $('#countPosts').text(data.postsCount || 0);
+                $('#countAdvices').text(data.advicesCount || 0);
                 $('#countPoints').text(data.user.travelPoints || 0);
                 $('#displayUsername').text(data.user.username || 'user');
                 

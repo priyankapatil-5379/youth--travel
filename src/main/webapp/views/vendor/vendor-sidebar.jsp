@@ -1,28 +1,39 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
     :root {
-        --primary-color: #e63946;
-        --primary-gradient: linear-gradient(135deg, #e63946 0%, #c1121f 100%);
-        --card-border: rgba(255, 255, 255, 0.1);
-        --text-muted: rgba(255, 255, 255, 0.6);
-        --danger: #ef4444;
+        --primary-teal: #008080;
+        --secondary-teal: #077378;
+        --accent-red: #e63946;
+        --sidebar-bg-gradient: linear-gradient(to bottom, #008080, #077378);
+        --sidebar-text: rgba(255, 255, 255, 0.7);
+        --sidebar-text-active: #ffffff;
+        --sidebar-hover-bg: rgba(255, 255, 255, 0.1);
+        --danger: #e63946;
     }
 
     .sidebar {
+<<<<<<< HEAD
         background:linear-gradient(to bottom, #81A6C6,darkcyan);
         backdrop-filter: blur(25px);
         border-right: 1px solid rgba(255,255,255,0.1);
+=======
+        background: var(--sidebar-bg-gradient);
+        border-right: 1px solid rgba(255, 255, 255, 0.1);
+>>>>>>> 2ddce92670cb8d95dcedca2c09d2207a88ba4c70
         height: 100vh;
         position: fixed;
         left: 0;
         top: 0;
         width: 260px;
-        padding: 40px 25px;
+        padding: 32px 16px;
         z-index: 1000;
         transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         overflow-y: auto;
-        box-shadow: 10px 0 30px rgba(0,0,0,0.3);
+        font-family: 'Inter', sans-serif;
+        color: white;
     }
 
     /* Hide scrollbar for sidebar */
@@ -32,16 +43,15 @@
     }
 
     .sidebar-logo {
-        margin-bottom: 50px;
-        text-align: center;
+        margin-bottom: 40px;
+        padding: 0 12px;
+        text-align: left;
     }
 
     .sidebar-logo img {
-        height: 36px;
-        transition: transform 0.3s;
+        height: 32px;
+        filter: brightness(0) invert(1); /* Ensure logo is visible on dark */
     }
-
-    .sidebar-logo img:hover { transform: scale(1.05); }
 
     .nav-sidebar {
         padding: 0;
@@ -49,58 +59,41 @@
     }
 
     .nav-sidebar li {
-        margin-bottom: 10px;
+        margin-bottom: 4px;
     }
 
     .nav-sidebar a {
-        color: rgba(255,255,255,0.7);
+        color: var(--sidebar-text);
         display: flex;
         align-items: center;
-        padding: 14px 20px;
-        border-radius: 14px;
-        font-weight: 700;
-        font-size: 15px;
-        transition: all 0.3s ease;
+        padding: 12px 16px;
+        border-radius: 10px;
+        font-weight: 500;
+        font-size: 14px;
+        transition: all 0.2s ease;
         text-decoration: none;
         position: relative;
-        overflow: hidden;
-        text-shadow: 0 2px 4px rgba(0,0,0,0.5);
     }
 
     .nav-sidebar a i {
-        width: 24px;
-        font-size: 18px;
-        margin-right: 15px;
+        width: 20px;
+        font-size: 16px;
+        margin-right: 12px;
         text-align: center;
-        z-index: 2;
-    }
-
-    .nav-sidebar a span { z-index: 2; }
-
-    .nav-sidebar a::before {
-        content: '';
-        position: absolute;
-        top: 0; left: 0; width: 100%; height: 100%;
-        background: var(--primary-gradient);
-        opacity: 0;
-        transition: 0.3s;
-        z-index: 1;
     }
 
     .nav-sidebar a:hover {
-        color: #fff;
-        background: rgba(255,255,255,0.05);
-        transform: translateX(5px);
+        color: var(--sidebar-text-active);
+        background: var(--sidebar-hover-bg);
     }
 
     .nav-sidebar a.active {
-        color: #fff;
-        box-shadow: 0 10px 20px rgba(240, 76, 38, 0.3);
-        text-shadow: 0 2px 10px rgba(255,255,255,0.3);
+        color: var(--sidebar-text-active);
+        background: var(--accent-red);
+        font-weight: 600;
+        box-shadow: 0 10px 15px -3px rgba(230, 57, 70, 0.3);
     }
     
-    .nav-sidebar a.active::before { opacity: 1; }
-
     .main-content {
         margin-left: 260px;
         position: relative;
@@ -115,7 +108,7 @@
     @media (max-width: 991px) {
         .sidebar {
             transform: translateX(-100%);
-            box-shadow: 10px 0 30px rgba(0,0,0,0.5);
+            box-shadow: 20px 0 25px -5px rgba(0, 0, 0, 0.1);
         }
         .sidebar.active {
             transform: translateX(0);
@@ -129,27 +122,24 @@
             position: fixed;
             top: 15px;
             left: 15px;
-            width: 45px;
-            height: 45px;
-            background: rgba(0,0,0,0.5);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border-radius: 12px;
-            border: 1px solid rgba(255,255,255,0.2);
+            width: 40px;
+            height: 40px;
+            background: var(--sidebar-bg);
+            border-radius: 8px;
+            border: 1px solid rgba(255,255,255,0.1);
             color: #fff;
             align-items: center;
             justify-content: center;
-            font-size: 22px;
+            font-size: 20px;
             cursor: pointer;
             z-index: 9999;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
         }
     }
 
     .sidebar-overlay {
         position: fixed;
         top: 0; left: 0; right: 0; bottom: 0;
-        background: rgba(0,0,0,0.6);
+        background: rgba(15, 23, 42, 0.7);
         backdrop-filter: blur(4px);
         z-index: 899;
         display: none;
@@ -182,15 +172,19 @@
         </a>
     </div>
     <ul class="nav-sidebar">
-        <li><a href="<c:url value='/vendor/dashboard'/>" class="${param.activePage == 'dashboard' ? 'active' : ''}"><span><i class="fa fa-th-large"></i> Dashboard</span></a></li>
-        <li><a href="<c:url value='/vendor/tours'/>" class="${param.activePage == 'tours' ? 'active' : ''}"><span><i class="fa fa-map"></i> Manage Tours</span></a></li>
-        <li><a href="<c:url value='/vendor/add-trip'/>" class="${param.activePage == 'add-trip' ? 'active' : ''}"><span><i class="fa fa-plus-circle"></i> Create Trip</span></a></li>
-        <li><a href="<c:url value='/vendor/inventory'/>" class="${param.activePage == 'inventory' ? 'active' : ''}"><span><i class="fa fa-tasks"></i> Inventory & Slots</span></a></li>
-        <li><a href="<c:url value='/vendor/bookings'/>" class="${param.activePage == 'bookings' ? 'active' : ''}"><span><i class="fa fa-calendar"></i> Bookings</span></a></li>
-        <li><a href="<c:url value='/vendor/messages'/>" class="${param.activePage == 'messages' ? 'active' : ''}"><span><i class="fa fa-envelope"></i> Messages</span></a></li>
-        <li><a href="<c:url value='/vendor/reviews'/>" class="${param.activePage == 'reviews' ? 'active' : ''}"><span><i class="fa fa-star"></i> Reviews</span></a></li>
-        <li><a href="<c:url value='/vendor/earnings'/>" class="${param.activePage == 'earnings' ? 'active' : ''}"><span><i class="fa fa-line-chart"></i> Financials</span></a></li>
-        <li><a href="<c:url value='/vendor/profile'/>" class="${param.activePage == 'profile' ? 'active' : ''}"><span><i class="fa fa-user"></i> Settings</span></a></li>
-        <li style="margin-top: 50px;"><a href="<c:url value='/vendor/logout'/>" style="color: var(--danger);"><span><i class="fa fa-sign-out"></i> Logout</span></a></li>
+        <li><a href="<c:url value='/vendor/dashboard'/>" class="${param.activePage == 'dashboard' ? 'active' : ''}"><i class="fa fa-th-large"></i> Dashboard</a></li>
+        <li><a href="<c:url value='/vendor/tours'/>" class="${param.activePage == 'tours' ? 'active' : ''}"><i class="fa fa-map"></i> Manage Tours</a></li>
+        <li><a href="<c:url value='/vendor/add-trip'/>" class="${param.activePage == 'add-trip' ? 'active' : ''}"><i class="fa fa-plus-circle"></i> Create Trip</a></li>
+        <li><a href="<c:url value='/vendor/inventory'/>" class="${param.activePage == 'inventory' ? 'active' : ''}"><i class="fa fa-tasks"></i> Inventory & Slots</a></li>
+        <li><a href="<c:url value='/vendor/bookings'/>" class="${param.activePage == 'bookings' ? 'active' : ''}"><i class="fa fa-calendar"></i> Bookings</a></li>
+        <li><a href="<c:url value='/vendor/messages'/>" class="${param.activePage == 'messages' ? 'active' : ''}"><i class="fa fa-envelope"></i> Messages</a></li>
+        <li><a href="<c:url value='/vendor/reviews'/>" class="${param.activePage == 'reviews' ? 'active' : ''}"><i class="fa fa-star"></i> Reviews</a></li>
+        <li><a href="<c:url value='/vendor/earnings'/>" class="${param.activePage == 'earnings' ? 'active' : ''}"><i class="fa fa-line-chart"></i> Financials</a></li>
+        <li><a href="<c:url value='/vendor/profile'/>" class="${param.activePage == 'profile' ? 'active' : ''}"><i class="fa fa-user"></i> Settings</a></li>
+        <li style="margin-top: 40px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.05);">
+            <a href="<c:url value='/vendor/logout'/>" class="logout-link" style="color: var(--danger);">
+                <i class="fa fa-sign-out"></i> Logout
+            </a>
+        </li>
     </ul>
 </div>
