@@ -14,9 +14,10 @@ body.premium-theme.admin-light-theme {
     color: #0f172a !important;
     font-family: 'Inter', sans-serif !important;
     min-height: 100vh;
+    height: 100vh;
     margin: 0;
     padding: 0;
-    overflow-x: hidden;
+    overflow: hidden !important;
 }
 
 /* Hide underwater canvas / rays */
@@ -26,13 +27,14 @@ body.admin-light-theme canvas {
     display: none !important;
 }
 
-/* ── Layout ── */
+/* ── Layout — full viewport, no body scroll ── */
 body.admin-light-theme .admin-layout {
     display: flex;
-    min-height: 100vh;
+    height: 100vh;
+    overflow: hidden;
 }
 
-/* ── SIDEBAR — Teal gradient, matches vendor ── */
+/* ── SIDEBAR — Fixed, never scrolls with content ── */
 body.admin-light-theme .admin-sidebar {
     width: 260px !important;
     background: linear-gradient(to bottom, #008080, #077378) !important;
@@ -40,9 +42,10 @@ body.admin-light-theme .admin-sidebar {
     -webkit-backdrop-filter: none !important;
     border-right: 1px solid rgba(255, 255, 255, 0.1) !important;
     box-shadow: 4px 0 20px rgba(0, 128, 128, 0.25) !important;
-    height: 100vh;
-    position: sticky;
-    top: 0;
+    height: 100vh !important;
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
     flex-shrink: 0;
     overflow-y: auto;
     z-index: 1100;
@@ -115,13 +118,17 @@ body.admin-light-theme .admin-nav-item[href="/"] {
     color: rgba(255, 255, 255, 0.55) !important;
 }
 
-/* ── Main Content ── */
+/* ── Main Content — scrolls independently, sidebar stays fixed ── */
 body.admin-light-theme .admin-main {
+    margin-left: 260px !important;   /* push content past fixed sidebar */
     flex-grow: 1;
     background-color: #f1f5f9 !important;
     color: #0f172a !important;
     padding: 40px !important;
-    overflow-y: auto;
+    height: 100vh !important;         /* fill full viewport height */
+    overflow-y: auto !important;      /* only THIS scrolls */
+    overflow-x: hidden;
+    box-sizing: border-box;
 }
 
 /* ── Header / Page Title ── */
@@ -491,12 +498,18 @@ body.admin-light-theme .empty-state h2 {
 
 /* ── Responsive ── */
 @media (max-width: 991px) {
+    body.admin-light-theme .admin-layout {
+        overflow: hidden;
+        height: 100vh;
+    }
+
     body.admin-light-theme .admin-sidebar {
         position: fixed !important;
         left: -260px !important;
         top: 0 !important;
-        bottom: 0 !important;
         height: 100vh !important;
+        transition: left 0.3s ease !important;
+        z-index: 1200 !important;
     }
 
     body.admin-light-theme .admin-sidebar.active {
@@ -504,8 +517,11 @@ body.admin-light-theme .empty-state h2 {
     }
 
     body.admin-light-theme .admin-main {
-        padding: 24px !important;
-        width: 100%;
+        margin-left: 0 !important;   /* no sidebar on mobile */
+        padding: 20px !important;
+        width: 100% !important;
+        height: 100vh !important;
+        overflow-y: auto !important;
     }
 }
 
