@@ -38,6 +38,7 @@
 
         .wrapper { display: flex; min-height: 100vh; position: relative; z-index: 1; }
 
+        /* Diamond Standard Navbar */
         .header { 
             position: fixed; top: 0; left: 0; right: 0; height: 75px; 
             background: rgba(0, 0, 0, 0.4); 
@@ -93,8 +94,11 @@
             cursor: pointer; position: relative; z-index: 20;
         }
         .booking-card:hover .btn-view { background: var(--accent-red); border-color: transparent; box-shadow: 0 5px 15px rgba(230, 57, 70, 0.3); }
-        /* Prevent hover override for special buttons */
         .btn-view[style*="background: rgba(0, 122, 255"] { background: rgba(0, 122, 255, 0.2) !important; }
+
+        /* Points Modal Styling */
+        .modal-content-custom { background: #0b0f18; border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; padding: 25px; color: white; }
+        .modal-close { position: absolute; top: 15px; right: 20px; font-size: 24px; cursor: pointer; color: #7e8c9a; }
 
         @media (max-width: 991px) { .main-content { margin-left: 0; padding: 100px 20px 40px; } }
     </style>
@@ -112,13 +116,32 @@
     <header class="header">
         <div class="header-logo"><a href="<c:url value='/'/>"><img src="<c:url value='/views/assets/images/logo.png'/>" style="height: 35px;"></a></div>
         <div style="display: flex; align-items: center; gap: 20px;">
-                <div style="display: flex; align-items: center; gap: 15px; cursor: pointer;">
+                <div style="display: flex; align-items: center; gap: 15px; cursor: pointer;" onclick="showMyPoints()">
                     <span style="font-weight: 700;">Hi, ${user.name}</span>
                     <c:set var="defaultAvatar" value="https://ui-avatars.com/api/?name=${user.name}&background=f04c26&color=fff" />
                     <img src="${not empty user.profilePhoto ? user.profilePhoto : defaultAvatar}" style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover; border: 2px solid rgba(255,255,255,0.2);">
                 </div>
         </div>
     </header>
+
+    <div id="pointsModal" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+            <div class="modal-content-custom" style="text-align: center; position: relative;">
+                <button type="button" class="close" data-dismiss="modal" style="color: #fff; opacity: 1; position: absolute; right: 15px; top: 10px;">&times;</button>
+                <div style="padding: 20px;">
+                    <div style="position: relative; width: 80px; height: 80px; margin: 0 auto 15px;">
+                        <img src="${not empty user.profilePhoto ? user.profilePhoto : defaultAvatar}" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 3px solid var(--accent-red); box-shadow: 0 0 20px rgba(230,57,70,0.3);">
+                        <div style="position: absolute; bottom: -5px; right: -5px; width: 35px; height: 35px; background: var(--accent-red); border: 3px solid #0b0f18; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                            <span style="font-size: 14px; font-weight: 800; color: #fff;">${user.travelPoints}</span>
+                        </div>
+                    </div>
+                    <h3 style="font-weight: 700; margin-bottom: 5px; color: #fff; font-size: 16px;">Traveler Points</h3>
+                    <h2 style="font-size: 28px; font-weight: 800; color: var(--accent-red); margin-bottom: 10px;">${user.travelPoints}</h2>
+                    <p style="color: var(--text-dim); font-size: 12px;">Share wisdom to earn more!</p>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div class="wrapper">
         <jsp:include page="user-sidebar.jsp">
@@ -152,7 +175,7 @@
                                         <div class="card-price">₹${booking.totalPrice}</div>
                                         <c:choose>
                                             <c:when test="${booking.reviewed}">
-                                                <button onclick="event.stopPropagation(); openReviewModal('${booking.id}', '${booking.trip.title}', true)" class="btn-view" style="flex: 1; background: rgba(34, 197, 94, 0.1); border-color: rgba(34, 197, 94, 0.2); color: #22c55e;">Reflection</button>
+                                                <button onclick="event.stopPropagation(); openReviewModal('${booking.id}', true)" class="btn-view" style="flex: 1; background: rgba(34, 197, 94, 0.1); border-color: rgba(34, 197, 94, 0.2); color: #22c55e;">Reflection</button>
                                             </c:when>
                                             <c:otherwise>
                                                 <div class="btn-group-reflection" style="display: flex; gap: 8px; flex: 1; justify-content: flex-end; position: relative; z-index: 25;">
@@ -182,10 +205,6 @@
                                 </div>
                             </div>
                         </c:forEach>
-                    </div>
-                    <div id="noBookingsMsg" style="display: none; text-align: center; padding: 100px 0; background: rgba(255,255,255,0.03); border-radius: 30px; border: 1px dotted rgba(255,255,255,0.1);">
-                        <i class="fa fa-calendar-times-o" style="font-size: 60px; color: rgba(255,255,255,0.05); margin-bottom: 20px;"></i>
-                        <h3 style="font-weight: 700; color: rgba(255,255,255,0.3);">No Journeys Found</h3>
                     </div>
                     <div id="noBookingsMsg" style="display: none; text-align: center; padding: 100px 0; background: rgba(255,255,255,0.03); border-radius: 30px; border: 1px dotted rgba(255,255,255,0.1);">
                         <i class="fa fa-calendar-times-o" style="font-size: 60px; color: rgba(255,255,255,0.05); margin-bottom: 20px;"></i>
@@ -250,12 +269,10 @@
                 <div class="modal-body" style="padding: 30px; max-height: 70vh; overflow-y: auto;">
                     <form id="adviceForm">
                         <input type="hidden" id="adviceBookingId">
-                        
                         <div class="mb-4">
                             <label class="form-label" style="font-weight: 700; color: #ff9f43; text-transform: uppercase; font-size: 11px; letter-spacing: 1px; margin-bottom: 8px;">Trip Title</label>
                             <input type="text" class="form-control" id="adviceTitle" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; color: #fff; padding: 12px;" placeholder="e.g. Hiking in Manali" required>
                         </div>
-
                         <div class="mb-4">
                             <label class="form-label" style="font-weight: 700; color: #ff9f43; text-transform: uppercase; font-size: 11px; letter-spacing: 1px; margin-bottom: 8px;">Trip Category</label>
                             <select class="form-select" id="adviceCategory" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; color: #fff; padding: 12px;">
@@ -267,32 +284,26 @@
                                 <option value="Road Trip">Road Trip</option>
                             </select>
                         </div>
-
                         <div class="mb-4">
                             <label class="form-label" style="font-weight: 700; color: #ff9f43; text-transform: uppercase; font-size: 11px; letter-spacing: 1px; margin-bottom: 8px;">Your Review / Experience</label>
                             <textarea class="form-control" id="adviceContent" rows="3" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; color: #fff; padding: 12px;" placeholder="Share your experience and tips..." required></textarea>
                         </div>
-
                         <div class="mb-4">
                             <label class="form-label" style="font-weight: 700; color: #ff9f43; text-transform: uppercase; font-size: 11px; letter-spacing: 1px; margin-bottom: 8px;">Best Time to Visit</label>
                             <textarea class="form-control" id="adviceBestTime" rows="2" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; color: #fff; padding: 12px;" placeholder="When should people visit?"></textarea>
                         </div>
-
                         <div class="mb-4">
                             <label class="form-label" style="font-weight: 700; color: #ff9f43; text-transform: uppercase; font-size: 11px; letter-spacing: 1px; margin-bottom: 8px;">What to Pack</label>
                             <textarea class="form-control" id="advicePack" rows="2" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; color: #fff; padding: 12px;" placeholder="Essential items to carry..."></textarea>
                         </div>
-
                         <div class="mb-4">
                             <label class="form-label" style="font-weight: 700; color: #ff9f43; text-transform: uppercase; font-size: 11px; letter-spacing: 1px; margin-bottom: 8px;">Safety Tips</label>
                             <textarea class="form-control" id="adviceSafety" rows="2" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; color: #fff; padding: 12px;" placeholder="How to stay safe..."></textarea>
                         </div>
-
                         <div class="mb-4">
                             <label class="form-label" style="font-weight: 700; color: #ff9f43; text-transform: uppercase; font-size: 11px; letter-spacing: 1px; margin-bottom: 8px;">Money & Budget Tips</label>
                             <textarea class="form-control" id="adviceBudget" rows="2" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; color: #fff; padding: 12px;" placeholder="Cost estimates and saving tips..."></textarea>
                         </div>
-
                         <button type="submit" class="btn btn-primary" style="width: 100%; background: #ff9f43; border: none; padding: 15px; border-radius: 12px; font-weight: 900; text-transform: uppercase; letter-spacing: 1px; color: #fff; box-shadow: 0 10px 20px rgba(255, 159, 67, 0.2);">Archive Wisdom</button>
                     </form>
                 </div>
@@ -301,6 +312,8 @@
     </div>
 
     <script>
+        function showMyPoints() { $('#pointsModal').modal('show'); }
+
         function filterBookings(type, element) {
             document.querySelectorAll('.tab-item').forEach(tab => tab.classList.remove('active'));
             element.classList.add('active');
@@ -313,16 +326,10 @@
 
             cards.forEach(card => {
                 const dateStr = card.getAttribute('data-date');
-                // Ensure date parsing is robust
                 const tripDate = new Date(dateStr);
                 tripDate.setHours(0, 0, 0, 0);
 
-                let show = false;
-                if (type === 'upcoming') {
-                    show = tripDate >= today;
-                } else {
-                    show = tripDate < today;
-                }
+                let show = (type === 'upcoming') ? (tripDate >= today) : (tripDate < today);
 
                 if (show) {
                     card.style.display = 'block';
@@ -447,6 +454,5 @@
             if (upcomingTab) filterBookings('upcoming', upcomingTab);
         };
     </script>
-
 </body>
 </html>

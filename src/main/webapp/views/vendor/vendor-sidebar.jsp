@@ -10,7 +10,7 @@
     }
 
     .sidebar {
-        background: rgba(0,0,0,0.3);
+        background:linear-gradient(to bottom, #81A6C6,darkcyan);
         backdrop-filter: blur(25px);
         border-right: 1px solid rgba(255,255,255,0.1);
         height: 100vh;
