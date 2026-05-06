@@ -9,10 +9,8 @@
             <meta name="viewport" content="width=device-width, initial-scale=1">
             <title>Edit Trip | Youth Travel</title>
             <link rel="stylesheet" href="<c:url value='/views/assets/css/bootstrap.min.css'/>">
-            <link rel="stylesheet" href="<c:url value='/views/assets/css/style.css'/>">
             <link rel="stylesheet" href="<c:url value='/views/assets/css/font-awesome.min.css'/>">
-            <link rel="stylesheet" href="<c:url value='/views/assets/css/premium-dashboard.css'/>">
-            <link href="https://fonts.googleapis.com/css?family=Dosis:300,400,500,600,700,800" rel="stylesheet">
+            <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
             <style>
                 :root {
                     --primary: #008080;
@@ -304,6 +302,7 @@
                     .main-content { margin-left: 0; padding: 24px !important; }
                 }
             </style>
+            </style>
         </head>
 
     <body class="professional-theme">
@@ -312,113 +311,16 @@
     </jsp:include>
 
     <div class="main-content">
-                <div class="mobile-header">
-                    <img src="<c:url value='/views/assets/images/logo.png'/>" alt="Youth Travel" height="24">
-                    <div class="menu-toggle" onclick="toggleSidebar()">
-                        <i class="fa fa-bars"></i>
-                    </div>
-                </div>
-                <div style="margin-bottom: 35px;">
-                    <h1 style="font-weight: 800; font-size: 32px;">Edit Adventure</h1>
-                    <p style="color: rgba(255,255,255,0.5);">Updating details for <strong>${trip.title}</strong>
-                    </p>
-                </div>
+        <div class="dashboard-header">
+            <div class="header-content">
+                <h1>Edit Adventure</h1>
+                <p>Updating details for <strong>${trip.title}</strong></p>
+            </div>
+        </div>
 
                 <!-- Wizard Progress -->
-                <style>
-                    .step-item { cursor: pointer; transition: all 0.3s ease; opacity: 0.7; }
-                    .step-item:hover { opacity: 1; transform: translateY(-2px); }
-                    .step-item.active { opacity: 1; }
-                    .step-label { 
-                        color: #ffffff !important; 
-                        font-weight: 600; 
-                        text-shadow: 0 2px 4px rgba(0,0,0,0.8); 
-                        font-size: 11px;
-                        margin-top: 5px;
-                    }
-                    .step-item.active .step-dot, .step-item.completed .step-dot {
-                        background: #f04c26;
-                        border-color: #f04c26;
-                        box-shadow: 0 0 15px rgba(240, 76, 38, 0.5);
-                    }
-                    .day-image-upload {
-                        border: 2px dashed rgba(255,255,255,0.1);
-                        border-radius: 12px;
-                        height: 100px;
-                        display: flex;
-                        flex-direction: column;
-                        align-items: center;
-                        justify-content: center;
-                        cursor: pointer;
-                        transition: 0.3s;
-                        background: rgba(255,255,255,0.02);
-                        color: rgba(255,255,255,0.5);
-                    }
-                    .day-image-upload:hover {
-                        border-color: #f04c26;
-                        background: rgba(240, 76, 38, 0.05);
-                        color: #f04c26;
-                    }
-                    .day-image-preview img {
-                        width: 80px;
-                        height: 80px;
-                        border-radius: 8px;
-                        object-fit: cover;
-                        border: 2px solid rgba(255,255,255,0.1);
-                    }
-                    .occ-card {
-                        background: rgba(255,255,255,0.03);
-                        border: 1px solid rgba(255,255,255,0.1);
-                        border-radius: 16px;
-                        padding: 20px;
-                        margin-bottom: 15px;
-                        transition: 0.3s;
-                    }
-                    .occ-card:hover {
-                        border-color: rgba(240, 76, 38, 0.4);
-                        background: rgba(255,255,255,0.05);
-                        transform: translateX(5px);
-                    }
-                    .day-chip-group {
-                        display: flex;
-                        gap: 10px;
-                        flex-wrap: wrap;
-                    }
-                    .day-chip {
-                        cursor: pointer;
-                        user-select: none;
-                    }
-                    .day-chip input { display: none; }
-                    .chip-label {
-                        display: block;
-                        padding: 10px 18px;
-                        background: rgba(255,255,255,0.05);
-                        border: 1px solid rgba(255,255,255,0.1);
-                        border-radius: 12px;
-                        color: white;
-                        font-weight: 600;
-                        transition: 0.3s;
-                        font-size: 13px;
-                    }
-                    .day-chip input:checked + .chip-label {
-                        background: #f04c26;
-                        border-color: #f04c26;
-                        box-shadow: 0 4px 12px rgba(240, 76, 38, 0.3);
-                    }
-                    .occ-icon {
-                        width: 35px;
-                        height: 35px;
-                        background: rgba(240, 76, 38, 0.1);
-                        color: #f04c26;
-                        border-radius: 10px;
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                        margin-bottom: 10px;
-                    }
-                </style>
-                <div class="step-indicator-container" style="overflow-x: auto; padding-bottom: 20px; margin-bottom: 30px; background: rgba(0,0,0,0.2); border-radius: 15px; padding-top: 15px;">
-                    <div class="step-indicator" style="min-width: 900px; display: flex; justify-content: space-between; padding: 0 20px;">
+                <div class="step-indicator-container">
+                    <div class="step-indicator" style="display: flex; justify-content: space-between; align-items: center;">
                         <div class="step-item active" id="stepIndicator1" onclick="jumpToStep(0)"><div class="step-dot">1</div><div class="step-label">Basic</div></div>
                         <div class="step-item" id="stepIndicator2" onclick="jumpToStep(1)"><div class="step-dot">2</div><div class="step-label">Dest</div></div>
                         <div class="step-item" id="stepIndicator3" onclick="jumpToStep(2)"><div class="step-dot">3</div><div class="step-label">Time</div></div>
@@ -1524,11 +1426,11 @@
                 function addCustomPickup(savedName = '', savedTime = '', savedType = 'Pickup') {
                     const id = Date.now() + Math.random().toString(36).substr(2, 9);
                     const html = `
-                        <div class="row g-2 align-items-center mb-3 p-3 bg-dark rounded-3 border border-secondary border-opacity-10 pickup-item" id="row_${id}">
+                        <div class="row g-2 align-items-center mb-3 p-3 bg-light rounded-3 border border-light pickup-item" id="row_${id}">
                             <div class="col-md-5">
                                 <label class="small text-muted d-block mb-1">Location Name</label>
                                 <div class="input-group input-group-sm">
-                                    <span class="input-group-text bg-dark border-secondary border-opacity-20 text-orange"><i class="fa fa-map-marker"></i></span>
+                                    <span class="input-group-text bg-white border-light text-danger"><i class="fa fa-map-marker"></i></span>
                                     <input type="text" class="form-control pickup-name" value="${savedName}" placeholder="e.g. Silk Board">
                                 </div>
                             </div>
@@ -1591,21 +1493,21 @@
                                             <div class="occ-icon"><i class="fa fa-calendar-check-o"></i></div>
                                             <label class="small text-muted mb-1 d-block">Departure Date <span class="text-danger">*</span></label>
                                             <div class="input-group input-group-sm">
-                                                <input type="date" class="form-control occ-date" min="\${today}" style="background: rgba(0,0,0,0.2); border-color: rgba(255,255,255,0.1); color: white;">
+                                                <input type="date" class="form-control occ-date" min="\${today}" style="background: #ffffff; border-color: #e2e8f0; color: #0f172a;">
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="occ-icon" style="background: rgba(59, 130, 246, 0.1); color: #3b82f6;"><i class="fa fa-clock-o"></i></div>
                                             <label class="small text-muted mb-1 d-block">Time</label>
                                             <div class="input-group input-group-sm">
-                                                <input type="time" class="form-control occ-time" style="background: rgba(0,0,0,0.2); border-color: rgba(255,255,255,0.1); color: white;">
+                                                <input type="time" class="form-control occ-time" style="background: #ffffff; border-color: #e2e8f0; color: #0f172a;">
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="occ-icon" style="background: rgba(46, 213, 115, 0.1); color: #2ed573;"><i class="fa fa-users"></i></div>
                                             <label class="small text-muted mb-1 d-block">Batch Size</label>
                                             <div class="input-group input-group-sm">
-                                                <input type="number" class="form-control occ-seats" placeholder="Seats" value="20" style="background: rgba(0,0,0,0.2); border-color: rgba(255,255,255,0.1); color: white;">
+                                                <input type="number" class="form-control occ-seats" placeholder="Seats" value="20" style="background: #ffffff; border-color: #e2e8f0; color: #0f172a;">
                                             </div>
                                         </div>
                                         <div class="col-md-2 text-end">
@@ -1909,21 +1811,21 @@
                                                                     <div class="occ-icon"><i class="fa fa-calendar-check-o"></i></div>
                                                                     <label class="small text-muted mb-1 d-block">Departure Date</label>
                                                                     <div class="input-group input-group-sm">
-                                                                        <input type="date" class="form-control occ-date" value="\${s.date}" min="\${today}" style="background: rgba(0,0,0,0.2); border-color: rgba(255,255,255,0.1); color: white;">
+                                                                        <input type="date" class="form-control occ-date" value="\${s.date}" min="\${today}" style="background: #ffffff; border-color: #e2e8f0; color: #0f172a;">
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-md-3">
                                                                     <div class="occ-icon" style="background: rgba(59, 130, 246, 0.1); color: #3b82f6;"><i class="fa fa-clock-o"></i></div>
                                                                     <label class="small text-muted mb-1 d-block">Time</label>
                                                                     <div class="input-group input-group-sm">
-                                                                        <input type="time" class="form-control occ-time" value="\${s.time}" style="background: rgba(0,0,0,0.2); border-color: rgba(255,255,255,0.1); color: white;">
+                                                                        <input type="time" class="form-control occ-time" value="\${s.time}" style="background: #ffffff; border-color: #e2e8f0; color: #0f172a;">
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-md-3">
                                                                     <div class="occ-icon" style="background: rgba(46, 213, 115, 0.1); color: #2ed573;"><i class="fa fa-users"></i></div>
                                                                     <label class="small text-muted mb-1 d-block">Batch Size</label>
                                                                     <div class="input-group input-group-sm">
-                                                                        <input type="number" class="form-control occ-seats" placeholder="Seats" value="\${s.seats}" style="background: rgba(0,0,0,0.2); border-color: rgba(255,255,255,0.1); color: white;">
+                                                                        <input type="number" class="form-control occ-seats" placeholder="Seats" value="\${s.seats}" style="background: #ffffff; border-color: #e2e8f0; color: #0f172a;">
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-md-2 text-end">

@@ -23,6 +23,9 @@ public class HomeController {
 	@Autowired
 	private com.youthtravel.repository.TripRepository tripRepository;
 
+	@Autowired
+	private com.youthtravel.service.SavedPackageService savedPackageService;
+
 	@RequestMapping("/")
 	public String Home(org.springframework.ui.Model model) {
 		model.addAttribute("galleryImages", homeImageRepository.findBySection("GALLERY"));
@@ -131,7 +134,16 @@ public class HomeController {
 				.collect(Collectors.toList());
 		model.addAttribute("destinations", destinations);
 
-		model.addAttribute("user", session.getAttribute("user"));
+		com.youthtravel.entity.User user = (com.youthtravel.entity.User) session.getAttribute("user");
+		if (user != null) {
+			List<Long> savedTripIds = savedPackageService.getSavedPackagesByEmail(user.getEmail())
+				.stream().map(sp -> sp.getTrip().getId()).collect(Collectors.toList());
+			model.addAttribute("savedTripIds", savedTripIds);
+		} else {
+			model.addAttribute("savedTripIds", Collections.emptyList());
+		}
+
+		model.addAttribute("user", user);
 		model.addAttribute("destination", destination);
 		model.addAttribute("tripType", tripType);
 		model.addAttribute("search", search);

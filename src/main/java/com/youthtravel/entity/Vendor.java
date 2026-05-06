@@ -72,8 +72,19 @@ public class Vendor {
     @Column(nullable = false)
     private String status = "PENDING"; // PENDING, APPROVED, REJECTED
 
+    @Column(nullable = false, columnDefinition = "boolean default false")
+    private boolean isBlocked = false;
+
     // Default Constructor
     public Vendor() {
+    }
+
+    public boolean getIsBlocked() {
+        return isBlocked;
+    }
+
+    public void setIsBlocked(boolean isBlocked) {
+        this.isBlocked = isBlocked;
     }
 
     public String getStatus() {

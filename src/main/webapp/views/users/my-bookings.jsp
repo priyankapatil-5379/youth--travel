@@ -11,114 +11,171 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-deep: #000a12;
+            --primary: #008080;
+            --primary-hover: #077378;
             --accent-red: #e63946;
-            --glass-card: rgba(20, 25, 35, 0.6);
-            --glass-border: rgba(255, 255, 255, 0.08);
-            --text-light: #f8fafc;
-            --text-dim: #94a3b8;
-            --accent-glow: rgba(230, 57, 70, 0.5);
+            --bg-body: #f1f5f9;
+            --bg-card: #ffffff;
+            --border-color: #e2e8f0;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --sidebar-width: 260px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         body {
-            font-family: 'Outfit', sans-serif;
-            background-color: var(--bg-deep);
-            color: var(--text-light);
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-main);
             margin: 0; padding: 0;
-            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
         }
 
-        /* Immersive Background System */
-        .ocean-bg { position: fixed; inset: 0; background: radial-gradient(circle at 50% 0%, #001f3f, #000a12); z-index: -2; }
-        .sun-rays { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; opacity: 0.3; }
-        .ray { position: absolute; top: -20%; width: 100px; height: 150%; background: linear-gradient(180deg, rgba(255,255,255,0.1) 0%, transparent 80%); filter: blur(50px); transform-origin: top center; animation: ray-swing 10s ease-in-out infinite alternate; }
-        @keyframes ray-swing { 0% { transform: rotate(-8deg) scaleX(1); opacity: 0.3; } 100% { transform: rotate(8deg) scaleX(0.8); opacity: 0.6; } }
+        .wrapper { display: flex; min-height: 100vh; }
+        .main-content { flex: 1; margin-left: var(--sidebar-width); padding: 40px !important; }
 
-        .wrapper { display: flex; min-height: 100vh; position: relative; z-index: 1; }
-
-        .header { 
-            position: fixed; top: 0; left: 0; right: 0; height: 75px; 
-            background: rgba(0, 0, 0, 0.4); 
-            backdrop-filter: blur(15px); 
-            -webkit-backdrop-filter: blur(15px);
-            display: flex; align-items: center; justify-content: space-between; 
-            padding: 0 40px; z-index: 1000; 
-            border-bottom: 1px solid rgba(255, 255, 255, 0.08); 
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+        .page-title { 
+            font-size: 28px; 
+            font-weight: 800; 
+            margin-bottom: 32px; 
+            color: var(--text-main); 
+            letter-spacing: -0.5px; 
         }
 
-        .main-content { flex: 1; margin-left: 240px; padding: 120px 40px 60px; }
+        /* Modern Tabs */
+        .tabs-container { 
+            display: flex; 
+            gap: 8px; 
+            background: #e2e8f0; 
+            padding: 4px; 
+            border-radius: 12px; 
+            margin-bottom: 32px; 
+            width: fit-content;
+        }
+        .tab-item { 
+            padding: 10px 24px; 
+            font-weight: 600; 
+            font-size: 14px; 
+            color: var(--text-muted); 
+            cursor: pointer; 
+            border-radius: 100px;
+            transition: var(--transition);
+        }
+        .tab-item.active { 
+            background: #ffffff; 
+            color: var(--primary); 
+            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+        }
 
-        .page-title { font-size: 42px; font-weight: 950; margin-bottom: 40px; text-transform: uppercase; letter-spacing: -1px; text-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-
-        .tabs-container { display: flex; gap: 40px; border-bottom: 1px solid var(--glass-border); margin-bottom: 40px; }
-        .tab-item { padding-bottom: 15px; font-weight: 900; font-size: 14px; color: var(--text-dim); cursor: pointer; position: relative; text-transform: uppercase; letter-spacing: 2px; }
-        .tab-item.active { color: #fff; }
-        .tab-item.active::after { content: ''; position: absolute; bottom: -1px; left: 0; right: 0; height: 3px; background: var(--accent-red); box-shadow: 0 0 15px var(--accent-red); }
-
-        .booking-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 30px; }
+        /* Booking Cards */
+        .booking-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 24px; }
         .booking-card { 
-            background: var(--glass-card); backdrop-filter: blur(20px); border: 1px solid var(--glass-border); 
-            border-radius: 24px; overflow: hidden; transition: 0.4s; position: relative;
+            background: var(--bg-card); 
+            border: 1px solid var(--border-color); 
+            border-radius: 16px; 
+            overflow: hidden; 
+            transition: var(--transition); 
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
         }
-        .booking-card:hover { transform: translateY(-10px); border-color: var(--accent-red); box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
+        .booking-card:hover { transform: translateY(-4px); box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); border-color: var(--primary); }
         
-        .card-image { width: 100%; aspect-ratio: 16 / 10; position: relative; overflow: hidden; }
-        .card-image img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; }
-        .booking-card:hover .card-image img { transform: scale(1.1); }
+        .card-image { width: 100%; aspect-ratio: 16 / 9; position: relative; overflow: hidden; background: #f1f5f9; }
+        .card-image img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
+        .booking-card:hover .card-image img { transform: scale(1.05); }
         
         .status-badge { 
-            position: absolute; top: 20px; right: 20px; 
-            background: var(--accent-red); color: #fff; 
-            padding: 6px 15px; border-radius: 100px; 
-            font-size: 10px; font-weight: 950; 
-            text-transform: uppercase; letter-spacing: 1px;
-            box-shadow: 0 5px 15px rgba(230, 57, 70, 0.4);
+            position: absolute; top: 16px; right: 16px; 
+            background: var(--primary); 
+            color: #ffffff; 
+            padding: 6px 14px; 
+            border-radius: 100px; 
+            font-size: 11px; 
+            font-weight: 700; 
+            text-transform: uppercase; 
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
             z-index: 10;
         }
 
-        .card-body { padding: 25px; }
-        .card-title { font-size: 20px; font-weight: 900; margin-bottom: 15px; color: #fff; height: 52px; overflow: hidden; }
-        .info-item { display: flex; align-items: center; gap: 10px; font-size: 13px; font-weight: 700; color: var(--text-dim); margin-bottom: 10px; }
-        .info-item i { color: var(--accent-red); width: 15px; }
+        .card-body { padding: 24px; }
+        .card-title { font-size: 18px; font-weight: 700; margin-bottom: 16px; color: var(--text-main); line-height: 1.4; }
+        .info-item { display: flex; align-items: center; gap: 12px; font-size: 13px; font-weight: 600; color: var(--text-muted); margin-bottom: 12px; }
+        .info-item i { color: var(--primary); width: 16px; font-size: 14px; }
 
-        .card-footer { margin-top: 20px; display: flex; justify-content: space-between; align-items: center; padding-top: 20px; border-top: 1px solid var(--glass-border); }
-        .card-price { font-size: 24px; font-weight: 950; color: #fff; }
-        .btn-view { 
-            background: rgba(255,255,255,0.05); color: #fff; border: 1px solid rgba(255,255,255,0.1); 
-            padding: 10px 20px; border-radius: 12px; font-weight: 800; font-size: 12px; 
-            text-decoration: none; text-transform: uppercase; letter-spacing: 1px; transition: 0.3s;
-            cursor: pointer; position: relative; z-index: 20;
+        .card-footer { 
+            margin-top: 20px; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            padding-top: 20px; 
+            border-top: 1px solid var(--border-color); 
         }
-        .booking-card:hover .btn-view { background: var(--accent-red); border-color: transparent; box-shadow: 0 5px 15px rgba(230, 57, 70, 0.3); }
-        /* Prevent hover override for special buttons */
-        .btn-view[style*="background: rgba(0, 122, 255"] { background: rgba(0, 122, 255, 0.2) !important; }
+        .card-price { font-size: 22px; font-weight: 800; color: var(--text-main); }
+        
+        .btn-view { 
+            background: var(--bg-body); 
+            color: var(--text-main); 
+            border: 1px solid var(--border-color); 
+            padding: 10px 20px; 
+            border-radius: 10px; 
+            font-weight: 700; 
+            font-size: 12px; 
+            text-decoration: none !important; 
+            text-transform: uppercase; 
+            letter-spacing: 0.5px; 
+            transition: var(--transition);
+            cursor: pointer;
+        }
+        .btn-view:hover { background: var(--primary); color: #ffffff; border-color: var(--primary); transform: translateY(-1px); }
 
-        @media (max-width: 991px) { .main-content { margin-left: 0; padding: 100px 20px 40px; } }
+        /* Modal Customization */
+        .modal-content { 
+            background: #ffffff !important; 
+            border: 1px solid var(--border-color) !important; 
+            border-radius: 20px !important; 
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25) !important; 
+            color: var(--text-main) !important; 
+        }
+        .modal-header { border-bottom: 1px solid var(--border-color) !important; padding: 24px !important; }
+        .modal-title { font-weight: 800 !important; color: var(--text-main) !important; font-size: 20px !important; }
+        .modal-header .close { color: var(--text-main) !important; opacity: 0.5 !important; font-size: 24px !important; }
+        
+        .form-label { font-weight: 700; color: var(--text-main); font-size: 12px; text-transform: uppercase; margin-bottom: 8px; display: block; }
+        .form-control, .form-select { 
+            background: #f8fafc !important; 
+            border: 1px solid var(--border-color) !important; 
+            border-radius: 12px !important; 
+            color: var(--text-main) !important; 
+            padding: 12px 16px !important; 
+            font-weight: 500 !important;
+            width: 100%;
+        }
+        .form-control:focus { border-color: var(--primary) !important; box-shadow: 0 0 0 4px rgba(0, 128, 128, 0.1) !important; }
+
+        .btn-primary { 
+            background: var(--primary) !important; 
+            border: none !important; 
+            padding: 14px !important; 
+            border-radius: 12px !important; 
+            font-weight: 700 !important; 
+            text-transform: uppercase !important; 
+            letter-spacing: 1px !important; 
+            color: #ffffff !important;
+            width: 100%;
+        }
+        .btn-primary:hover { background: var(--primary-hover) !important; transform: translateY(-1px); }
+
+        .star-rating i { cursor: pointer; transition: 0.2s; }
+        .star-rating i:hover { transform: scale(1.1); }
+
+        @media (max-width: 991px) { .main-content { margin-left: 0; padding: 80px 20px 40px !important; } }
     </style>
 </head>
 <body>
 
-    <div class="ocean-bg"></div>
-    <div class="sun-rays">
-        <div class="ray" style="left: 10%; animation-delay: 0s;"></div>
-        <div class="ray" style="left: 35%; animation-delay: 2s;"></div>
-        <div class="ray" style="left: 65%; animation-delay: 1s;"></div>
-        <div class="ray" style="left: 85%; animation-delay: 3s;"></div>
-    </div>
-
-    <header class="header">
-        <div class="header-logo"><a href="<c:url value='/'/>"><img src="<c:url value='/views/assets/images/logo.png'/>" style="height: 35px;"></a></div>
-        <div style="display: flex; align-items: center; gap: 20px;">
-                <div style="display: flex; align-items: center; gap: 15px; cursor: pointer;">
-                    <span style="font-weight: 700;">Hi, ${user.name}</span>
-                    <c:set var="defaultAvatar" value="https://ui-avatars.com/api/?name=${user.name}&background=f04c26&color=fff" />
-                    <img src="${not empty user.profilePhoto ? user.profilePhoto : defaultAvatar}" style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover; border: 2px solid rgba(255,255,255,0.2);">
-                </div>
-        </div>
-    </header>
 
     <div class="wrapper">
         <jsp:include page="user-sidebar.jsp">
@@ -130,7 +187,6 @@
 
             <div class="tabs-container">
                 <div class="tab-item active" onclick="filterBookings('upcoming', this)">Upcoming</div>
-                <div class="tab-item" onclick="filterBookings('pending', this)">Pending</div>
                 <div class="tab-item" onclick="filterBookings('completed', this)">Completed</div>
             </div>
 
@@ -138,7 +194,7 @@
                 <c:when test="${not empty bookings}">
                     <div class="booking-grid" id="bookingGrid">
                         <c:forEach var="booking" items="${bookings}">
-                            <div class="booking-card" data-date="${booking.selectedDate}" data-status="${booking.status}">
+                            <div class="booking-card" data-date="${booking.selectedDate}">
                                 <div class="card-image">
                                     <img src="${not empty booking.trip.mediaUrls ? booking.trip.mediaUrls.split(',')[0] : 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=800'}" alt="Trip">
                                     <span class="status-badge">${booking.status}</span>
@@ -153,7 +209,7 @@
                                         <div class="card-price">₹${booking.totalPrice}</div>
                                         <c:choose>
                                             <c:when test="${booking.reviewed}">
-                                                 <button onclick="event.stopPropagation(); openReviewModal('${booking.id}', true)" class="btn-view" style="flex: 1; background: rgba(34, 197, 94, 0.1); border-color: rgba(34, 197, 94, 0.2); color: #22c55e;">Reflection</button>
+                                                <button onclick="event.stopPropagation(); openReviewModal('${booking.id}', '${booking.trip.title}', true)" class="btn-view" style="flex: 1; background: #f0fdf4; border-color: #bbf7d0; color: #166534;">Reflection</button>
                                             </c:when>
                                             <c:otherwise>
                                                 <div class="btn-group-reflection" style="display: flex; gap: 8px; flex: 1; justify-content: flex-end; position: relative; z-index: 25;">
@@ -164,16 +220,14 @@
                                                             tripDate.setHours(0,0,0,0);
                                                             const today = new Date();
                                                             today.setHours(0,0,0,0);
-                                                            const status = '${booking.status}'.toLowerCase();
-                                                            
-                                                            if (tripDate < today || status === 'completed') {
+                                                            if (tripDate < today) {
                                                                 const parent = document.currentScript.parentElement;
                                                                 const detailsBtn = parent.querySelector('.btn-view');
-                                                                if (detailsBtn) detailsBtn.style.display = "none";
+                                                                detailsBtn.style.display = "none";
                                                                 
                                                                 parent.innerHTML = `
                                                                     <button type="button" onclick="event.stopPropagation(); openReviewModal('${booking.id}', false)" class="btn-view" style="background: var(--accent-red); padding: 8px 12px; font-size: 11px; cursor: pointer; position: relative; z-index: 30;">Review</button>
-                                                                    <a href="/user/booking/${booking.id}/advice" class="btn-view" style="background: rgba(0, 122, 255, 0.2); border-color: rgba(0, 122, 255, 0.3); color: #007aff; padding: 8px 12px; font-size: 11px; cursor: pointer; position: relative; z-index: 30; text-decoration: none; display: inline-block;">Advice</a>
+                                                                    <button type="button" onclick="event.stopPropagation(); openAdviceModal('${booking.id}')" class="btn-view" style="background: rgba(0, 122, 255, 0.2); border-color: rgba(0, 122, 255, 0.3); color: #007aff; padding: 8px 12px; font-size: 11px; cursor: pointer; position: relative; z-index: 30;">Advice</button>
                                                                 `;
                                                             }
                                                         }
@@ -186,19 +240,15 @@
                             </div>
                         </c:forEach>
                     </div>
-                    <div id="noBookingsMsg" style="display: none; text-align: center; padding: 100px 0; background: rgba(255,255,255,0.03); border-radius: 30px; border: 1px dotted rgba(255,255,255,0.1);">
-                        <i class="fa fa-calendar-times-o" style="font-size: 60px; color: rgba(255,255,255,0.05); margin-bottom: 20px;"></i>
-                        <h3 style="font-weight: 700; color: rgba(255,255,255,0.3);">No Journeys Found</h3>
-                    </div>
-                    <div id="noBookingsMsg" style="display: none; text-align: center; padding: 100px 0; background: rgba(255,255,255,0.03); border-radius: 30px; border: 1px dotted rgba(255,255,255,0.1);">
-                        <i class="fa fa-calendar-times-o" style="font-size: 60px; color: rgba(255,255,255,0.05); margin-bottom: 20px;"></i>
-                        <h3 style="font-weight: 700; color: rgba(255,255,255,0.3);">No Journeys Found</h3>
+                    <div id="noBookingsMsg" style="display: none; text-align: center; padding: 80px 20px; background: var(--bg-card); border-radius: 20px; border: 2px dashed var(--border-color);">
+                        <i class="fa fa-calendar-times-o" style="font-size: 60px; color: #e2e8f0; margin-bottom: 20px;"></i>
+                        <h3 style="font-weight: 800; color: var(--text-main);">No Journeys Found</h3>
                     </div>
                 </c:when>
                 <c:otherwise>
-                    <div style="text-align: center; padding: 100px 0; background: rgba(255,255,255,0.03); border-radius: 30px; border: 1px dotted rgba(255,255,255,0.1);">
-                        <i class="fa fa-calendar-times-o" style="font-size: 60px; color: rgba(255,255,255,0.05); margin-bottom: 20px;"></i>
-                        <h3 style="font-weight: 700; color: rgba(255,255,255,0.3);">No Bookings Found</h3>
+                    <div style="text-align: center; padding: 80px 20px; background: var(--bg-card); border-radius: 20px; border: 2px dashed var(--border-color);">
+                        <i class="fa fa-calendar-times-o" style="font-size: 60px; color: #e2e8f0; margin-bottom: 20px;"></i>
+                        <h3 style="font-weight: 800; color: var(--text-main);">No Bookings Found</h3>
                     </div>
                 </c:otherwise>
             </c:choose>
@@ -208,36 +258,34 @@
     <!-- Review Modal -->
     <div class="modal fade" id="reviewModal" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
-            <div class="modal-content" style="background: #0b0f18; border: 1px solid var(--glass-border); border-radius: 30px; box-shadow: 0 25px 50px rgba(0,0,0,0.8); color: #fff; overflow: hidden;">
-                <div class="modal-header" style="border-bottom: 1px solid var(--glass-border); padding: 25px; background: rgba(255,255,255,0.02);">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="color: #fff; opacity: 1; font-size: 28px; margin-top: -5px;"><span aria-hidden="true">&times;</span></button>
-                    <h5 class="modal-title" style="font-weight: 900; text-transform: uppercase; letter-spacing: 2px; color: var(--accent-red);" id="reviewModalTitle">Review Experience</h5>
+            <div class="modal-content" style="background: #0b0f18; border: 1px solid var(--glass-border); border-radius: 30px; box-shadow: 0 25px 50px rgba(0,0,0,0.8); color: #fff;">
+                <div class="modal-header" style="border-bottom: 1px solid var(--glass-border); padding: 25px;">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="color: #fff; opacity: 1;"><span aria-hidden="true">&times;</span></button>
+                    <h5 class="modal-title" style="font-weight: 900; text-transform: uppercase; letter-spacing: 1px;" id="reviewModalTitle">Review Experience</h5>
                 </div>
-                <div class="modal-body" style="padding: 40px;">
-                    <div id="reviewDisplay" style="display: none; text-align: center;">
-                        <div id="reviewStarsDisplay" style="font-size: 32px; color: #fbbf24; margin-bottom: 25px; filter: drop-shadow(0 0 10px rgba(251, 191, 36, 0.3));"></div>
-                        <div style="background: rgba(255,255,255,0.03); padding: 25px; border-radius: 20px; border: 1px solid var(--glass-border);">
-                            <p id="reviewTextDisplay" style="font-size: 17px; line-height: 1.8; color: var(--text-light); margin: 0; font-style: italic;"></p>
-                        </div>
+                <div class="modal-body" style="padding: 30px;">
+                    <div id="reviewDisplay" style="display: none;">
+                        <div id="reviewStarsDisplay" style="font-size: 24px; color: #fbbf24; margin-bottom: 20px;"></div>
+                        <p id="reviewTextDisplay" style="font-size: 16px; line-height: 1.7; color: var(--text-dim);"></p>
                     </div>
                     <form id="reviewForm">
                         <input type="hidden" id="reviewBookingId">
-                        <div class="text-center mb-5">
-                            <label class="form-label" style="font-weight: 800; color: var(--accent-red); text-transform: uppercase; font-size: 11px; letter-spacing: 2px; margin-bottom: 20px; display: block;">How was your journey?</label>
-                            <div class="star-rating" style="display: flex; justify-content: center; gap: 15px; font-size: 40px; color: rgba(255,255,255,0.05);">
-                                <i class="fa fa-star star-item" data-value="1" style="cursor: pointer; transition: 0.3s;"></i>
-                                <i class="fa fa-star star-item" data-value="2" style="cursor: pointer; transition: 0.3s;"></i>
-                                <i class="fa fa-star star-item" data-value="3" style="cursor: pointer; transition: 0.3s;"></i>
-                                <i class="fa fa-star star-item" data-value="4" style="cursor: pointer; transition: 0.3s;"></i>
-                                <i class="fa fa-star star-item" data-value="5" style="cursor: pointer; transition: 0.3s;"></i>
+                        <div class="mb-4">
+                            <label class="form-label" style="font-weight: 700; color: var(--text-dim); text-transform: uppercase; font-size: 12px; letter-spacing: 1px; margin-bottom: 10px;">Rating</label>
+                            <div class="star-rating" style="display: flex; gap: 10px; font-size: 30px; color: rgba(255,255,255,0.1);">
+                                <i class="fa fa-star star-item" data-value="1" style="cursor: pointer;"></i>
+                                <i class="fa fa-star star-item" data-value="2" style="cursor: pointer;"></i>
+                                <i class="fa fa-star star-item" data-value="3" style="cursor: pointer;"></i>
+                                <i class="fa fa-star star-item" data-value="4" style="cursor: pointer;"></i>
+                                <i class="fa fa-star star-item" data-value="5" style="cursor: pointer;"></i>
                             </div>
                             <input type="hidden" id="reviewRatingValue" value="5">
                         </div>
                         <div class="mb-4">
-                            <label class="form-label" style="font-weight: 800; color: var(--text-dim); text-transform: uppercase; font-size: 11px; letter-spacing: 1.5px; margin-bottom: 12px; display: block;">Detailed Feedback</label>
-                            <textarea class="form-control" id="reviewText" rows="5" style="background: rgba(255,255,255,0.02); border: 1px solid var(--glass-border); border-radius: 20px; color: #fff; padding: 20px; font-size: 15px; resize: none; transition: 0.3s;" placeholder="Describe your highlights, challenges, and overall feedback..."></textarea>
+                            <label class="form-label" style="font-weight: 700; color: var(--text-dim); text-transform: uppercase; font-size: 12px; letter-spacing: 1px; margin-bottom: 10px;">Your Memories</label>
+                            <textarea class="form-control" id="reviewText" rows="4" style="background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border); border-radius: 15px; color: #fff; padding: 15px;" placeholder="Share your experience..."></textarea>
                         </div>
-                        <button type="submit" class="btn-submit-reflection" style="width: 100%; background: var(--accent-red); border: none; padding: 18px; border-radius: 20px; font-weight: 900; text-transform: uppercase; letter-spacing: 2px; color: #fff; box-shadow: 0 15px 30px rgba(230, 57, 70, 0.3); transition: 0.3s; margin-top: 10px;">Submit Reflection</button>
+                        <button type="submit" class="btn btn-primary" style="width: 100%; background: var(--accent-red); border: none; padding: 15px; border-radius: 15px; font-weight: 900; text-transform: uppercase; letter-spacing: 1px; box-shadow: 0 10px 20px rgba(230, 57, 70, 0.3);">Submit Reflection</button>
                     </form>
                 </div>
             </div>
@@ -318,23 +366,15 @@
 
             cards.forEach(card => {
                 const dateStr = card.getAttribute('data-date');
-                const status = card.getAttribute('data-status');
-                
                 // Ensure date parsing is robust
                 const tripDate = new Date(dateStr);
                 tripDate.setHours(0, 0, 0, 0);
 
                 let show = false;
-                const lowerStatus = (status || "").toLowerCase();
                 if (type === 'upcoming') {
-                    // Show only confirmed future trips in Upcoming
-                    show = tripDate >= today && lowerStatus === 'confirmed';
-                } else if (type === 'pending') {
-                    // Show only pending trips in Pending
-                    show = lowerStatus === 'pending';
+                    show = tripDate >= today;
                 } else {
-                    // Show past trips or explicitly completed/cancelled trips
-                    show = (tripDate < today && lowerStatus !== 'pending') || lowerStatus === 'completed' || lowerStatus === 'cancelled';
+                    show = tripDate < today;
                 }
 
                 if (show) {
@@ -349,9 +389,7 @@
             if (noMsg) {
                 noMsg.style.display = (visibleCount === 0) ? 'block' : 'none';
                 if (visibleCount === 0) {
-                    if (type === 'completed') noMsg.querySelector('h3').innerText = "No Completed Journeys Yet";
-                    else if (type === 'pending') noMsg.querySelector('h3').innerText = "No Pending Bookings";
-                    else noMsg.querySelector('h3').innerText = "No Upcoming Adventures Found";
+                    noMsg.querySelector('h3').innerText = (type === 'completed') ? "No Completed Journeys Yet" : "No Upcoming Adventures Found";
                 }
             }
         }
@@ -394,21 +432,12 @@
         // Star Rating Logic
         const starItems = document.querySelectorAll('.star-item');
         starItems.forEach(star => {
-            star.onmouseover = () => {
-                const val = star.getAttribute('data-value');
-                starItems.forEach(s => {
-                    s.style.color = (s.getAttribute('data-value') <= val) ? '#fbbf24' : 'rgba(255,255,255,0.1)';
-                });
-            };
-            star.onmouseout = () => {
-                const currentVal = document.getElementById('reviewRatingValue').value;
-                starItems.forEach(s => {
-                    s.style.color = (s.getAttribute('data-value') <= currentVal) ? '#fbbf24' : 'rgba(255,255,255,0.1)';
-                });
-            };
             star.onclick = () => {
                 const val = star.getAttribute('data-value');
                 document.getElementById('reviewRatingValue').value = val;
+                starItems.forEach(s => {
+                    s.style.color = (s.getAttribute('data-value') <= val) ? '#fbbf24' : 'rgba(255,255,255,0.1)';
+                });
             };
         });
 

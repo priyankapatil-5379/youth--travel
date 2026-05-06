@@ -12,13 +12,13 @@
     <link rel="stylesheet" href="<c:url value='/views/assets/css/bootstrap.min.css'/>">
     <link rel="stylesheet" href="<c:url value='/views/assets/css/style.css'/>">
     <link rel="stylesheet" href="<c:url value='/views/assets/css/font-awesome.min.css'/>">
-    <link href="https://fonts.googleapis.com/css?family=Dosis:300,400,500,600,700,800" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     
     <style>
         body {
-            font-family: 'Dosis', sans-serif;
-            background: #002244 url('<c:url value="/views/assets/images/underwater-theme-bg.png"/>') top center/cover no-repeat fixed;
-            color: #ffffff;
+            font-family: 'Inter', sans-serif;
+            background-color: #f1f5f9;
+            color: #0f172a;
         }
         
         .admin-layout {
@@ -138,33 +138,41 @@
         }
         .empty-state i { font-size: 64px; margin-bottom: 20px; }
     </style>
+<link rel="stylesheet" href="<c:url value='/views/assets/css/admin-light.css'/>">
 </head>
 
-<body>
+<body class="admin-light-theme">
     <div class="admin-layout">
         <aside class="admin-sidebar">
             <div class="sidebar-header">
-                <a href="<c:url value='/'/>"><img src="<c:url value='/views/assets/images/logo.png'/>" alt=""></a>
+                <a href="<c:url value='/'/>">
+                    <img src="<c:url value='/views/assets/images/logo.png'/>" alt="Youth Travel">
+                </a>
             </div>
             <nav class="admin-nav">
-                <a href="<c:url value='/admin/dashboard'/>" class="admin-nav-item">
+                <a href="<c:url value='/admin/dashboard'/>" class="admin-nav-item ">
                     <i class="fa fa-th-large"></i> Dashboard
                 </a>
-                <a href="<c:url value='/admin/trips'/>" class="admin-nav-item">
+                <a href="<c:url value='/admin/trips'/>" class="admin-nav-item ">
                     <i class="fa fa-motorcycle"></i> Manage Trips
                 </a>
-                <a href="<c:url value='/admin/users'/>" class="admin-nav-item">
+                <a href="<c:url value='/admin/users'/>" class="admin-nav-item ">
                     <i class="fa fa-users"></i> User Accounts
                 </a>
-                <a href="<c:url value='/admin/vendors'/>" class="admin-nav-item">
+                <a href="<c:url value='/admin/vendors'/>" class="admin-nav-item ">
                     <i class="fa fa-handshake-o"></i> Vendor Requests
                 </a>
-                <a href="<c:url value='/admin/home-images'/>" class="admin-nav-item">
+                <a href="<c:url value='/admin/home-images'/>" class="admin-nav-item ">
                     <i class="fa fa-image"></i> Homepage Photos
                 </a>
                 <a href="<c:url value='/admin/inquiries'/>" class="admin-nav-item active">
                     <i class="fa fa-envelope"></i> Inquiries
                 </a>
+                <div style="margin-top: 50px; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 20px;">
+                    <a href="<c:url value='/'/>" class="admin-nav-item">
+                        <i class="fa fa-sign-out"></i> Back to Site
+                    </a>
+                </div>
             </nav>
         </aside>
 

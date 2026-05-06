@@ -11,9 +11,9 @@
     <link rel="stylesheet" href="<c:url value='/views/assets/css/bootstrap.min.css'/>">
     <link rel="stylesheet" href="<c:url value='/views/assets/css/style.css'/>">
     <link rel="stylesheet" href="<c:url value='/views/assets/css/font-awesome.min.css'/>">
-    <link href="https://fonts.googleapis.com/css?family=Dosis:300,400,500,600,700,800" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Dosis', sans-serif; background-color: #0f1015; color: #fff; }
+        body { font-family: 'Inter', sans-serif; background-color: #f1f5f9; color: #0f172a; }
         .admin-layout { display: flex; min-height: 100vh; }
         .admin-sidebar { width: 260px; background: #000; color: #fff; flex-shrink: 0; box-shadow: 4px 0 15px rgba(0,0,0,0.5); border-right: 1px solid #222; }
         .sidebar-header { padding: 30px 20px; text-align: center; border-bottom: 1px solid #222; }
@@ -24,52 +24,70 @@
         .admin-nav-item:hover, .admin-nav-item.active { background: #1a1a1a; color: #fff; text-decoration: none; }
         .admin-nav-item.active { border-left: 4px solid #ff4d4d; background: rgba(255,77,77,0.1); }
         .admin-main { flex-grow: 1; padding: 40px; overflow-y: auto; }
-        .breadcrumb-bar { color: #888; font-size: 14px; margin-bottom: 30px; }
-        .breadcrumb-bar a { color: #ff4d4d; text-decoration: none; }
+        .breadcrumb-bar { color: #64748b; font-size: 14px; margin-bottom: 30px; }
+        .breadcrumb-bar a { color: #008080; text-decoration: none; font-weight: 600; }
         .breadcrumb-bar a:hover { text-decoration: underline; }
 
         /* User Profile Card */
-        .user-profile-card { background: #1e1e26; border: 1px solid #2a2a35; border-radius: 15px; padding: 30px; margin-bottom: 30px; display: flex; align-items: center; gap: 30px; }
-        .user-avatar-lg { width: 90px; height: 90px; border-radius: 50%; background: rgba(255,77,77,0.15); border: 3px solid rgba(255,77,77,0.3); color: #ff4d4d; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 36px; flex-shrink: 0; }
-        .user-info h2 { color: #fff; font-size: 24px; font-weight: 700; margin: 0 0 8px; }
+        .user-profile-card { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 16px; padding: 30px; margin-bottom: 30px; display: flex; align-items: center; gap: 30px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+        .user-avatar-lg { width: 90px; height: 90px; border-radius: 50%; background: #e0f2f2; border: 3px solid rgba(0,128,128,0.2); color: #008080; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 36px; flex-shrink: 0; }
+        .user-info h2 { color: #0f172a; font-size: 24px; font-weight: 700; margin: 0 0 8px; }
         .user-meta { display: flex; flex-wrap: wrap; gap: 20px; margin-top: 12px; }
-        .user-meta-item { display: flex; align-items: center; gap: 8px; color: #888; font-size: 14px; }
-        .user-meta-item i { color: #ff4d4d; width: 16px; }
+        .user-meta-item { display: flex; align-items: center; gap: 8px; color: #64748b; font-size: 14px; }
+        .user-meta-item i { color: #008080; width: 16px; }
         .stat-pills { display: flex; gap: 15px; margin-top: 15px; }
-        .stat-pill { background: #2a2a35; border-radius: 8px; padding: 10px 20px; text-align: center; }
-        .stat-pill h4 { color: #fff; font-size: 22px; font-weight: 800; margin: 0; }
-        .stat-pill p { color: #888; font-size: 12px; margin: 0; }
+        .stat-pill { background: #f1f5f9; border: 1px solid #e2e8f0; border-radius: 8px; padding: 10px 20px; text-align: center; }
+        .stat-pill h4 { color: #0f172a; font-size: 22px; font-weight: 800; margin: 0; }
+        .stat-pill p { color: #64748b; font-size: 12px; margin: 0; }
 
         /* History Table */
-        .admin-section { background: #1e1e26; padding: 30px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); border: 1px solid #2a2a35; }
-        .section-title { font-size: 18px; font-weight: 700; color: #fff; margin-bottom: 25px; padding-bottom: 15px; border-bottom: 1px solid #2a2a35; display: flex; align-items: center; justify-content: space-between; }
-        .section-title span.count-badge { background: rgba(255,77,77,0.1); color: #ff4d4d; border-radius: 20px; padding: 3px 12px; font-size: 13px; }
+        .admin-section { background: #ffffff; padding: 30px; border-radius: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); border: 1px solid #e2e8f0; }
+        .section-title { font-size: 18px; font-weight: 700; color: #0f172a; margin-bottom: 25px; padding-bottom: 15px; border-bottom: 1px solid #e2e8f0; display: flex; align-items: center; justify-content: space-between; }
+        .section-title span.count-badge { background: #e0f2f2; color: #008080; border-radius: 20px; padding: 3px 12px; font-size: 13px; }
         .table { width: 100%; border-collapse: collapse; }
-        .table thead th { background: #2a2a35; color: #888; font-weight: 600; text-transform: uppercase; font-size: 12px; padding: 15px; border: none; }
-        .table tbody td { padding: 15px; vertical-align: middle; border-top: 1px solid #2a2a35; color: #ddd; }
-        .table tbody tr:hover { background: #252530; }
-        .status-done { background: rgba(76,175,80,0.1); color: #4caf50; padding: 4px 10px; border-radius: 6px; font-weight: 700; font-size: 12px; }
-        .pkg-title { font-weight: 700; color: #fff; }
-        .pkg-vendor { color: #888; font-size: 12px; }
-        .price-badge { background: rgba(255,77,77,0.1); color: #ff4d4d; padding: 3px 9px; border-radius: 5px; font-weight: 700; font-size: 13px; }
-        .empty-state { text-align: center; padding: 50px; color: #555; }
-        .empty-state i { font-size: 48px; display: block; margin-bottom: 15px; color: #333; }
+        .table thead th { background: transparent; color: #64748b; font-weight: 700; text-transform: uppercase; font-size: 12px; padding: 15px; border: none; border-bottom: 2px solid #e2e8f0; }
+        .table tbody td { padding: 15px; vertical-align: middle; border-top: 1px solid #f1f5f9; color: #334155; }
+        .table tbody tr:hover { background: #f8fafc; }
+        .status-done { background: #dcfce7; color: #15803d; padding: 4px 10px; border-radius: 6px; font-weight: 700; font-size: 12px; }
+        .pkg-title { font-weight: 700; color: #0f172a; }
+        .pkg-vendor { color: #64748b; font-size: 12px; }
+        .price-badge { background: #e0f2f2; color: #008080; padding: 3px 9px; border-radius: 5px; font-weight: 700; font-size: 13px; }
+        .empty-state { text-align: center; padding: 50px; color: #94a3b8; }
+        .empty-state i { font-size: 48px; display: block; margin-bottom: 15px; color: #cbd5e1; }
     </style>
+<link rel="stylesheet" href="<c:url value='/views/assets/css/admin-light.css'/>">
 </head>
-<body>
+<body class="admin-light-theme">
     <div class="admin-layout">
         <aside class="admin-sidebar">
             <div class="sidebar-header">
-                <a href="<c:url value='/'/>"><img src="<c:url value='/views/assets/images/logo.png'/>" alt="Youth Travel"></a>
+                <a href="<c:url value='/'/>">
+                    <img src="<c:url value='/views/assets/images/logo.png'/>" alt="Youth Travel">
+                </a>
             </div>
             <nav class="admin-nav">
-                <a href="<c:url value='/admin/dashboard'/>" class="admin-nav-item"><i class="fa fa-th-large"></i> Dashboard</a>
-                <a href="<c:url value='/admin/trips'/>" class="admin-nav-item"><i class="fa fa-suitcase"></i> Manage Trips</a>
-                <a href="<c:url value='/admin/users'/>" class="admin-nav-item active"><i class="fa fa-users"></i> User Accounts</a>
-                <a href="<c:url value='/admin/vendors'/>" class="admin-nav-item"><i class="fa fa-handshake-o"></i> Vendor Requests</a>
-                <a href="<c:url value='/admin/inquiries'/>" class="admin-nav-item"><i class="fa fa-envelope"></i> Inquiries</a>
-                <div style="margin-top: 50px; border-top: 1px solid #222; padding-top: 20px;">
-                    <a href="<c:url value='/'/>" class="admin-nav-item"><i class="fa fa-sign-out"></i> Back to Site</a>
+                <a href="<c:url value='/admin/dashboard'/>" class="admin-nav-item ">
+                    <i class="fa fa-th-large"></i> Dashboard
+                </a>
+                <a href="<c:url value='/admin/trips'/>" class="admin-nav-item ">
+                    <i class="fa fa-motorcycle"></i> Manage Trips
+                </a>
+                <a href="<c:url value='/admin/users'/>" class="admin-nav-item active">
+                    <i class="fa fa-users"></i> User Accounts
+                </a>
+                <a href="<c:url value='/admin/vendors'/>" class="admin-nav-item ">
+                    <i class="fa fa-handshake-o"></i> Vendor Requests
+                </a>
+                <a href="<c:url value='/admin/home-images'/>" class="admin-nav-item ">
+                    <i class="fa fa-image"></i> Homepage Photos
+                </a>
+                <a href="<c:url value='/admin/inquiries'/>" class="admin-nav-item ">
+                    <i class="fa fa-envelope"></i> Inquiries
+                </a>
+                <div style="margin-top: 50px; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 20px;">
+                    <a href="<c:url value='/'/>" class="admin-nav-item">
+                        <i class="fa fa-sign-out"></i> Back to Site
+                    </a>
                 </div>
             </nav>
         </aside>
@@ -82,7 +100,9 @@
 
             <!-- User Profile Card -->
             <div class="user-profile-card">
-                <div class="user-avatar-lg">${fn:toUpperCase(fn:substring(user.name, 0, 1))}</div>
+                <div class="user-avatar-lg">
+                    ${not empty user.name ? fn:toUpperCase(fn:substring(user.name, 0, 1)) : 'U'}
+                </div>
                 <div class="user-info" style="flex-grow:1;">
                     <h2>${user.name}</h2>
                     <div class="user-meta">
@@ -94,7 +114,7 @@
                     </div>
                     <div class="stat-pills">
                         <div class="stat-pill">
-                            <h4>${bookings.size()}</h4>
+                            <h4>${not empty bookings ? bookings.size() : 0}</h4>
                             <p>Trips Taken</p>
                         </div>
                     </div>
@@ -105,7 +125,7 @@
             <div class="admin-section">
                 <div class="section-title">
                     Trip Booking History
-                    <span class="count-badge">${bookings.size()} bookings</span>
+                    <span class="count-badge">${not empty bookings ? bookings.size() : 0} bookings</span>
                 </div>
                 <c:choose>
                     <c:when test="${empty bookings}">

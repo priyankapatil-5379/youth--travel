@@ -1321,9 +1321,9 @@
             <!-- ===== END VERTICAL HERO SLIDESHOW ===== -->
 
             <div class="hero-social">
-                <a href="#"><i class="fa fa-instagram"></i></a>
-                <a href="#"><i class="fa fa-youtube-play"></i></a>
-                <a href="#">
+                <a href="https://www.instagram.com/accounts/login/" target="_blank"><i class="fa fa-instagram"></i></a>
+                <a href="https://www.youtube.com/login" target="_blank"><i class="fa fa-youtube-play"></i></a>
+                <a href="https://www.tiktok.com/login" target="_blank">
                     <!-- TikTok SVG icon since FontAwesome 4 doesn't have it -->
                     <svg viewBox="0 0 448 512" width="16" fill="currentColor" style="display:block;"><path d="M448 209.91a210.06 210.06 0 0 1 -122.77-39.25V349.38A162.55 162.55 0 1 1 185 188.31V278.2a74.62 74.62 0 1 0 52.23 71.18V0l88 0a121.18 121.18 0 0 0 1.86 22.17h0A122.18 122.18 0 0 0 381 102.39a121.43 121.43 0 0 0 67 20.14Z"/></svg>
                 </a>
@@ -1583,7 +1583,7 @@
                     <c:when test="${not empty galleryImages}">
                         <c:forEach var="img" items="${galleryImages}">
                             <div class="col-xs-6 col-sm-3 col-md-3">
-                                <a class="yt-mini-thumb" href="<c:url value='${img.imageUrl}'/>" data-fancybox="home-strip" data-caption="${img.caption}">
+                                <a class="yt-mini-thumb" href="<c:url value='${img.imageUrl}'/>" data-fancybox="home-strip" data-type="image" data-caption="${img.caption}">
                                     <img src="<c:url value='${img.imageUrl}'/>" alt="${img.caption}">
                                     <div class="yt-thumb-caption">${img.caption}</div>
                                 </a>
@@ -1593,25 +1593,25 @@
                     <c:otherwise>
                         <!-- Fallback static images if none uploaded -->
                         <div class="col-xs-6 col-sm-3 col-md-3">
-                            <a class="yt-mini-thumb" href="<c:url value='/views/assets/images/new-gallery-1.jpg'/>" data-fancybox="home-strip" data-caption="Youth Adventure 1">
+                            <a class="yt-mini-thumb" href="<c:url value='/views/assets/images/new-gallery-1.jpg'/>" data-fancybox="home-strip" data-type="image" data-type="image" data-caption="Youth Adventure 1">
                                 <img src="<c:url value='/views/assets/images/new-gallery-1.jpg'/>" alt="Youth Adventure 1">
                                 <div class="yt-thumb-caption">Youth Adventure 1</div>
                             </a>
                         </div>
                         <div class="col-xs-6 col-sm-3 col-md-3">
-                            <a class="yt-mini-thumb" href="<c:url value='/views/assets/images/new-gallery-2.jpg'/>" data-fancybox="home-strip" data-caption="Youth Adventure 2">
+                            <a class="yt-mini-thumb" href="<c:url value='/views/assets/images/new-gallery-2.jpg'/>" data-fancybox="home-strip" data-type="image" data-caption="Youth Adventure 2">
                                 <img src="<c:url value='/views/assets/images/new-gallery-2.jpg'/>" alt="Youth Adventure 2">
                                 <div class="yt-thumb-caption">Youth Adventure 2</div>
                             </a>
                         </div>
                         <div class="col-xs-6 col-sm-3 col-md-3">
-                            <a class="yt-mini-thumb" href="<c:url value='/views/assets/images/new-gallery-3.jpg'/>" data-fancybox="home-strip" data-caption="Youth Adventure 3">
+                            <a class="yt-mini-thumb" href="<c:url value='/views/assets/images/new-gallery-3.jpg'/>" data-fancybox="home-strip" data-type="image" data-caption="Youth Adventure 3">
                                 <img src="<c:url value='/views/assets/images/new-gallery-3.jpg'/>" alt="Youth Adventure 3">
                                 <div class="yt-thumb-caption">Youth Adventure 3</div>
                             </a>
                         </div>
                         <div class="col-xs-6 col-sm-3 col-md-3">
-                            <a class="yt-mini-thumb" href="<c:url value='/views/assets/images/new-gallery-4.jpg'/>" data-fancybox="home-strip" data-caption="Youth Adventure 4">
+                            <a class="yt-mini-thumb" href="<c:url value='/views/assets/images/new-gallery-4.jpg'/>" data-fancybox="home-strip" data-type="image" data-caption="Youth Adventure 4">
                                 <img src="<c:url value='/views/assets/images/new-gallery-4.jpg'/>" alt="Youth Adventure 4">
                                 <div class="yt-thumb-caption">Youth Adventure 4</div>
                             </a>
@@ -1787,7 +1787,7 @@
                     <c:when test="${not empty momentImages}">
                         <c:forEach var="img" items="${momentImages}">
                             <div class="col-xs-6 col-sm-4 col-md-3">
-                                <a class="yt-mini-thumb" href="<c:url value='${img.imageUrl}'/>" data-fancybox="more-moments" data-caption="${img.caption}">
+                                <a class="yt-mini-thumb" href="<c:url value='${img.imageUrl}'/>" data-fancybox="more-moments" data-type="image" data-type="image" data-caption="${img.caption}">
                                     <img src="<c:url value='${img.imageUrl}'/>" alt="${img.caption}">
                                     <div class="yt-thumb-caption">${img.caption}</div>
                                 </a>
@@ -1797,13 +1797,13 @@
                     <c:otherwise>
                         <!-- Fallback static images -->
                         <div class="col-xs-6 col-sm-4 col-md-3">
-                            <a class="yt-mini-thumb" href="<c:url value='/views/assets/images/more-waterpark.png'/>" data-fancybox="more-moments" data-caption="Waterpark fun">
+                            <a class="yt-mini-thumb" href="<c:url value='/views/assets/images/more-waterpark.png'/>" data-fancybox="more-moments" data-type="image" data-caption="Waterpark fun">
                                 <img src="<c:url value='/views/assets/images/more-waterpark.png'/>" alt="Waterpark fun">
                                 <div class="yt-thumb-caption">Waterpark fun</div>
                             </a>
                         </div>
                         <div class="col-xs-6 col-sm-4 col-md-3">
-                            <a class="yt-mini-thumb" href="<c:url value='/views/assets/images/more-scuba.png'/>" data-fancybox="more-moments" data-caption="Scuba diving">
+                            <a class="yt-mini-thumb" href="<c:url value='/views/assets/images/more-scuba.png'/>" data-fancybox="more-moments" data-type="image" data-caption="Scuba diving">
                                 <img src="<c:url value='/views/assets/images/more-scuba.png'/>" alt="Scuba diving">
                                 <div class="yt-thumb-caption">Scuba diving</div>
                             </a>
@@ -2014,26 +2014,20 @@
                             </script>
                             <div class="social-icons">
                                 <ul>
-                                    <li><a href="#"><i class="fa fa-facebook" aria-hidden="true"></i>
-
-                                       FACEBOOK</a></li>
-                                    <li><a href="#"><i class="fa fa-twitter" aria-hidden="true"></i>
-
-                                       TWITTER</a></li>
-                                    <li><a href="#"><i class="fa fa-linkedin" aria-hidden="true"></i>
-
-                                   LINKEDIN</a></li>
+                                    <li><a href="https://www.facebook.com/login" target="_blank"><i class="fa fa-facebook" aria-hidden="true"></i> FACEBOOK</a></li>
+                                    <li><a href="https://twitter.com/login" target="_blank"><i class="fa fa-twitter" aria-hidden="true"></i> TWITTER</a></li>
+                                    <li><a href="https://www.linkedin.com/login" target="_blank"><i class="fa fa-linkedin" aria-hidden="true"></i> LINKEDIN</a></li>
                                 </ul>
                             </div>
                             <div class="yt-footer-stores" aria-label="Download our app">
-                                <a class="yt-store-btn" href="#" aria-label="Get it on Google Play">
+                                <a class="yt-store-btn" href="https://play.google.com/store" target="_blank" aria-label="Get it on Google Play">
                                     <i class="fa fa-android" aria-hidden="true"></i>
                                     <span>
                                         <small>Get it on</small>
                                         <strong>Google Play</strong>
                                     </span>
                                 </a>
-                                <a class="yt-store-btn" href="#" aria-label="Download on the App Store">
+                                <a class="yt-store-btn" href="https://www.apple.com/app-store/" target="_blank" aria-label="Download on the App Store">
                                     <i class="fa fa-apple" aria-hidden="true"></i>
                                     <span>
                                         <small>Download on</small>
@@ -2123,7 +2117,6 @@
         })
     </script>
     <script type="text/javascript">
-        $("[data-fancybox]").fancybox({});
     </script>
     <script>
         jQuery(function() {
@@ -2176,6 +2169,22 @@
         // Close on escape key
         document.addEventListener('keydown', function(e) {
             if (e.key === "Escape") closeWelcomeModal();
+        });
+
+        // Initialize Fancybox
+        $(document).ready(function() {
+            $("[data-fancybox]").fancybox({
+                loop: true,
+                buttons: [
+                    "zoom",
+                    "slideShow",
+                    "fullScreen",
+                    "thumbs",
+                    "close"
+                ],
+                animationEffect: "zoom-in-out",
+                transitionEffect: "fade"
+            });
         });
     </script>
 </body>

@@ -83,7 +83,7 @@
             margin: 40px auto;
             overflow: hidden;
             border: 1px solid var(--border);
-			position:fixed;
+			
         }
 
         .auth-side {
@@ -129,12 +129,25 @@
             position: relative;
             flex-grow: 1;
             min-height: 320px;
+            overflow: hidden;
         }
 
-        .info-image-container img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
+        .info-image-container .slideshow {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+        }
+
+        .info-image-container .slide {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-size: cover;
+            background-position: center;
+            opacity: 0;
+            transition: opacity 1.5s ease-in-out;
+        }
+
+        .info-image-container .slide.active {
+            opacity: 1;
         }
 
         .info-image-container::after {
@@ -145,6 +158,7 @@
             right: 0;
             height: 120px;
             background: linear-gradient(to top, rgba(15, 23, 42, 0.9) 10%, transparent 100%);
+            z-index: 2;
         }
 
         .features-row {
@@ -306,7 +320,12 @@
                 <p>Youth Travel opens doors to unforgettable experiences, lifelong friendships, and personal growth.</p>
             </div>
             <div class="info-image-container">
-                <img src="<c:url value='/views/assets/images/registration-bg.png'/>" alt="Travelers">
+                <div class="slideshow">
+                    <div class="slide active" style="background-image: url('<c:url value='/views/assets/images/gallery-bike.png'/>');"></div>
+                    <div class="slide" style="background-image: url('<c:url value='/views/assets/images/gallery-trek.png'/>');"></div>
+                    <div class="slide" style="background-image: url('<c:url value='/views/assets/images/gallery-camp-sunset.png'/>');"></div>
+                    <div class="slide" style="background-image: url('<c:url value='/views/assets/images/gallery-tent-view.png'/>');"></div>
+                </div>
             </div>
             <div class="features-row">
                 <div class="feature-item">
@@ -372,5 +391,20 @@
         </div>
     </div>
 
+    <script>
+        // Simple Slideshow Script
+        (function() {
+            const slides = document.querySelectorAll('.slide');
+            let current = 0;
+            
+            function nextSlide() {
+                slides[current].classList.remove('active');
+                current = (current + 1) % slides.length;
+                slides[current].classList.add('active');
+            }
+            
+            setInterval(nextSlide, 4000);
+        })();
+    </script>
 </body>
 </html>

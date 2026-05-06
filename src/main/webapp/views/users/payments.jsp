@@ -7,52 +7,102 @@
     <title>Payments | Youth Travel</title>
     <link rel="stylesheet" href="<c:url value='/views/assets/css/bootstrap.min.css'/>">
     <link rel="stylesheet" href="<c:url value='/views/assets/css/font-awesome.min.css'/>">
-    <link rel="stylesheet" href="<c:url value='/views/assets/css/premium-dashboard.css'/>">
-    <link href="https://fonts.googleapis.com/css?family=Dosis:300,400,500,600,700,800" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        :root { --primary-blue: #e63946; --text-muted: #7e8c9a; --transition: all 0.3s ease; }
-        body { font-family: 'Dosis', sans-serif; background-color: #0b0f18; color: rgba(255, 255, 255, 0.92); margin: 0; padding: 0; }
+        :root {
+            --primary: #008080;
+            --primary-hover: #077378;
+            --accent-red: #e63946;
+            --bg-body: #f1f5f9;
+            --bg-card: #ffffff;
+            --border-color: #e2e8f0;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --sidebar-width: 260px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background-color: var(--bg-body); 
+            color: var(--text-main); 
+            margin: 0; padding: 0; 
+            -webkit-font-smoothing: antialiased;
+        }
+
         .wrapper { display: flex; min-height: 100vh; }
-        .main-content { flex: 1; margin-left: 240px; padding: 100px 30px 40px; }
-        .header { position: fixed; top: 0; left: 0; right: 0; height: 70px; background: rgba(0,0,0,0.4); backdrop-filter: blur(10px); display: flex; align-items: center; justify-content: space-between; padding: 0 30px; z-index: 1000; border-bottom: 1px solid rgba(255,255,255,0.05); }
-        .card-white { background: rgba(0,0,0,0.3); backdrop-filter: blur(15px); padding: 40px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 8px 32px 0 rgba(0,0,0,0.3); }
-        .table { color: #fff; margin-bottom: 0; }
-        .table th { color: #fff; font-size: 13px; font-weight: 800; text-transform: uppercase; border: none; text-shadow: 0 2px 4px rgba(0,0,0,0.8); letter-spacing: 1px; padding-bottom: 20px; }
-        .table td { border-color: rgba(255,255,255,0.1); vertical-align: middle; padding: 18px 10px; font-weight: 500; text-shadow: 0 1px 3px rgba(0,0,0,0.5); }
-        .status-badge { padding: 6px 14px; border-radius: 20px; font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; border: 1px solid rgba(255,255,255,0.1); }
-        .status-success { background: rgba(46, 125, 50, 0.2); color: #81c784; }
-        .status-pending { background: rgba(239, 108, 0, 0.2); color: #ffb74d; }
+        .main-content { flex: 1; margin-left: var(--sidebar-width); padding: 40px !important; }
+
+        .page-header { margin-bottom: 32px; }
+        .page-header h1 { font-size: 28px; font-weight: 800; color: var(--text-main); margin: 0; letter-spacing: -0.5px; }
+        .page-header p { color: var(--text-muted); margin: 4px 0 0; font-size: 15px; font-weight: 500; }
+
+        .card-white { 
+            background: var(--bg-card); 
+            padding: 0; 
+            border-radius: 16px; 
+            border: 1px solid var(--border-color); 
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05); 
+            overflow: hidden;
+        }
+
+        .table { width: 100%; margin-bottom: 0; border-collapse: separate; border-spacing: 0; }
+        .table th { 
+            background: #f8fafc; 
+            color: var(--text-muted); 
+            font-size: 12px; 
+            font-weight: 700; 
+            text-transform: uppercase; 
+            letter-spacing: 0.5px; 
+            padding: 16px 24px; 
+            border-bottom: 1px solid var(--border-color); 
+        }
+        .table td { 
+            padding: 20px 24px; 
+            border-bottom: 1px solid var(--border-color); 
+            font-size: 14px; 
+            color: var(--text-main); 
+            vertical-align: middle;
+            font-weight: 500;
+        }
+        .table tr:last-child td { border-bottom: none; }
+
+        .status-badge { 
+            padding: 6px 12px; 
+            border-radius: 100px; 
+            font-size: 11px; 
+            font-weight: 700; 
+            text-transform: uppercase; 
+            letter-spacing: 0.5px; 
+        }
+        .status-success { background: #f0fdf4; color: #166534; }
+        .status-pending { background: #fffbeb; color: #92400e; }
+        .status-failed { background: #fef2f2; color: #991b1b; }
+
+        .amount-text { font-weight: 700; color: var(--accent-red); font-size: 15px; }
+
+        .empty-state {
+            padding: 80px 40px;
+            text-align: center;
+        }
+        .empty-state i { font-size: 60px; color: #e2e8f0; margin-bottom: 24px; }
+        .empty-state p { color: var(--text-muted); font-size: 16px; font-weight: 600; }
+
+        @media (max-width: 991px) {
+            .main-content { margin-left: 0; padding: 80px 20px 40px !important; }
+        }
     </style>
 </head>
-<body class="premium-theme">
-    <!-- Sunlight Rays -->
-    <div class="sun-rays-container">
-        <div class="ray ray-1"></div>
-        <div class="ray ray-2"></div>
-        <div class="ray ray-3"></div>
-        <div class="ray ray-4"></div>
-    </div>
-    <header class="header">
-        <div class="header-logo"><a href="<c:url value='/'/>"><img src="<c:url value='/views/assets/images/logo.png'/>" style="height: 35px;"></a></div>
-        <div style="display: flex; align-items: center; gap: 20px;">
-            <div style="display: flex; align-items: center; gap: 15px;">
-                <span style="font-weight: 700;">Hi, ${user.name}</span>
-                <c:set var="defaultAvatar" value="https://ui-avatars.com/api/?name=${user.name}&background=f04c26&color=fff" />
-                <img src="${not empty user.profilePhoto ? user.profilePhoto : defaultAvatar}" style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover;">
-            </div>
-        </div>
-    </header>
+<body class="light-theme">
     <div class="wrapper">
         <jsp:include page="user-sidebar.jsp">
             <jsp:param name="activePage" value="payments" />
         </jsp:include>
         <main class="main-content">
-            <div class="mb-4">
-                <div>
-                    <h2 style="font-weight: 800; margin: 0; color: #fff; text-shadow: 0 4px 15px rgba(0,0,0,0.8); font-size: 32px;">Payment History</h2>
-                    <p style="color: #fff; margin: 0; font-weight: 600; text-shadow: 0 2px 8px rgba(0,0,0,0.8);">Manage your transaction records</p>
+                <div class="page-header">
+                    <h1>Payment Records</h1>
+                    <p>Transparent tracking of your travel investments</p>
                 </div>
-            </div>
             <div class="card-white">
                 <c:choose>
                     <c:when test="${not empty payments}">
@@ -62,8 +112,8 @@
                                 <tbody>
                                     <c:forEach var="payment" items="${payments}">
                                         <tr>
-                                            <td style="font-weight: 700;">${payment.booking.trip.title}</td>
-                                            <td style="font-weight: 800; color: #ff4d4d; font-size: 16px;">₹${payment.amount}</td>
+                                            <td style="font-weight: 700; color: var(--text-main);">${payment.booking.trip.title}</td>
+                                            <td class="amount-text">₹${payment.amount}</td>
                                             <td><span class="status-badge status-${payment.status.toLowerCase()}">${payment.status}</span></td>
                                             <td>${payment.paymentDate}</td>
                                         </tr>
@@ -73,9 +123,9 @@
                         </div>
                     </c:when>
                     <c:otherwise>
-                        <div class="text-center" style="padding: 60px;">
-                            <i class="fa fa-credit-card" style="font-size: 60px; color: rgba(255,255,255,0.2); margin-bottom: 20px; display: block; text-shadow: 0 0 20px rgba(0,0,0,0.5);"></i>
-                            <p style="color: #fff; font-weight: 700; font-size: 18px; text-shadow: 0 2px 5px rgba(0,0,0,0.8);">No payment records found.</p>
+                        <div class="empty-state">
+                            <i class="fa fa-credit-card"></i>
+                            <p>No payment records found yet.</p>
                         </div>
                     </c:otherwise>
                 </c:choose>

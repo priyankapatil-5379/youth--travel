@@ -9,245 +9,218 @@
     <title>User Dashboard | Youth Travel</title>
     <link rel="stylesheet" href="<c:url value='/views/assets/css/bootstrap.min.css'/>">
     <link rel="stylesheet" href="<c:url value='/views/assets/css/font-awesome.min.css'/>">
-    <link rel="stylesheet" href="<c:url value='/views/assets/css/premium-dashboard.css'/>">
-    <link href="https://fonts.googleapis.com/css?family=Dosis:300,400,500,600,700,800" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --sidebar-teal: #14b8a6;
-            --sidebar-teal-dark: #0f766e;
-            --accent-coral: #ef4444;
-            --accent-coral-dark: #dc2626;
-            --bg-main: #f8fafc;
+            --primary: #008080;
+            --primary-hover: #077378;
+            --accent-red: #e63946;
+            --bg-body: #f1f5f9;
             --bg-card: #ffffff;
-            --border-light: #e5e7eb;
-            --text-main: #1f2937;
-            --text-secondary: #6b7280;
-            --transition: all 0.3s ease;
+            --border-color: #e2e8f0;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --success: #10b981;
+            --sidebar-width: 260px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        body.theme-light-premium {
-            font-family: 'Dosis', sans-serif;
-            background-color: var(--bg-main);
-            color: var(--text-main);
+        body {
+            font-family: 'Inter', sans-serif !important;
+            background-color: var(--bg-body) !important;
+            color: var(--text-main) !important;
             margin: 0;
             padding: 0;
-            min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
         }
 
-        .main-content { flex: 1; margin-left: 240px; padding: 40px 40px 60px; }
+        .wrapper { display: flex; min-height: 100vh; }
+        .main-content { flex: 1; margin-left: var(--sidebar-width); padding: 40px !important; transition: margin-left 0.4s ease; }
 
-        /* Dashboard Console (Clean Style) */
+        /* Unified Dashboard Console */
         .dashboard-console { 
-            background: var(--bg-card); 
-            border-radius: 24px; 
-            border: 1px solid var(--border-light); 
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-            margin-bottom: 40px;
+            background: #ffffff; 
+            border-radius: 16px; 
+            border: 1px solid var(--border-color); 
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+            margin-bottom: 32px;
             overflow: hidden;
         }
 
         .console-top { 
             display: flex; justify-content: space-between; align-items: center; 
-            padding: 30px 40px; 
+            padding: 40px; 
             gap: 20px;
         }
 
         .console-divider { 
             height: 1px; 
-            background: var(--border-light);
+            background: var(--border-color);
             width: 100%;
         }
 
         .console-bottom { 
             display: flex; justify-content: space-between; align-items: center; 
             padding: 20px 40px; 
-            background: #f9fafb;
-            gap: 30px;
+            background: #f8fafc;
         }
 
         .dash-title-luxe {
-            font-size: 32px; font-weight: 800; color: var(--text-main);
-            margin: 0;
+            font-size: 28px; font-weight: 800; letter-spacing: -0.5px;
+            color: var(--text-main);
         }
         .dash-subtitle-luxe {
-            font-size: 14px; font-weight: 500; color: var(--text-secondary);
-            margin-top: 5px;
-        }
-
-        /* Search Container */
-        .search-container { position: relative; width: 400px; }
-        .search-container input { 
-            background: #f1f5f9 !important; 
-            border: 1px solid var(--border-light); 
-            border-radius: 12px; color: var(--text-main) !important; 
-            padding: 14px 50px 14px 20px; width: 100%; 
-            font-weight: 600; font-size: 15px;
-            transition: var(--transition);
-        }
-        .search-container input:focus { border-color: var(--sidebar-teal); background: #fff !important; outline: none; box-shadow: 0 0 0 4px rgba(20, 184, 166, 0.1); }
-        .search-container i { position: absolute; right: 20px; top: 50%; transform: translateY(-50%); color: var(--text-secondary); font-size: 18px; }
-
-        /* Buttons */
-        .btn-luxe-filter { 
-            background: var(--accent-coral) !important; 
-            color: #fff !important; 
-            border: none !important; 
-            padding: 12px 24px; 
-            border-radius: 12px; 
-            font-weight: 700; 
-            font-size: 14px; 
-            text-transform: uppercase; 
-            letter-spacing: 1px; 
-            transition: all 0.3s ease; 
-            cursor: pointer; 
-            display: flex; 
-            align-items: center; 
-            gap: 8px;
-            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2);
-        }
-        .btn-luxe-filter:hover { 
-            background: var(--accent-coral-dark) !important; 
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(239, 68, 68, 0.3);
-        }
-
-        /* Filter Nav */
-        .filter-nav { display: flex; gap: 10px; margin-bottom: 30px; }
-        .filter-item { 
-            padding: 10px 20px; background: #fff; 
-            border: 1px solid var(--border-light); border-radius: 10px; 
-            color: var(--text-secondary); font-weight: 700; font-size: 13px; 
-            text-transform: uppercase; letter-spacing: 1px; cursor: pointer; 
-            transition: var(--transition);
-        }
-        .filter-item:hover { color: var(--sidebar-teal); border-color: var(--sidebar-teal); background: rgba(20, 184, 166, 0.05); }
-        .filter-item.active { background: var(--sidebar-teal); color: #fff; border-color: var(--sidebar-teal); box-shadow: 0 4px 12px rgba(20, 184, 166, 0.2); }
-
-        /* Package Cards */
-        .package-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 30px; }
-        .package-card { 
-            background: var(--bg-card); 
-            border-radius: 20px; overflow: hidden; 
-            border: 1px solid var(--border-light); 
-            transition: var(--transition); position: relative; 
-            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
-        }
-        .package-card:hover { transform: translateY(-8px); border-color: var(--sidebar-teal); box-shadow: 0 20px 40px rgba(0,0,0,0.08); }
-
-        .package-img-wrapper { position: relative; width: 100%; aspect-ratio: 16 / 10; overflow: hidden; background: #eee; }
-        .package-img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s ease; }
-        .package-card:hover .package-img { transform: scale(1.05); }
-
-        .package-info { padding: 25px; }
-        .package-name { font-size: 18px; font-weight: 800; color: var(--text-main); margin-bottom: 12px; line-height: 1.4; }
-        .package-meta { font-size: 14px; color: var(--text-secondary); margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
-        .package-meta i { color: var(--sidebar-teal); }
-
-        .package-footer { display: flex; align-items: center; justify-content: space-between; margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--border-light); }
-        .package-price { font-size: 20px; font-weight: 800; color: var(--text-main); }
-        .package-price span { font-size: 13px; font-weight: 400; color: var(--text-secondary); }
-
-        .btn-view { 
-            display: inline-block;
-            background: #f1f5f9; 
-            color: var(--text-main); 
-            border: 1px solid var(--border-light); 
-            padding: 10px 20px; 
-            border-radius: 10px; 
-            font-size: 13px; 
-            font-weight: 700; 
-            text-decoration: none; 
-            transition: 0.3s; 
-            text-transform: uppercase;
-        }
-        .package-card:hover .btn-view { background: var(--accent-coral); color: #fff; border-color: var(--accent-coral); box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2); }
-
-        /* Filter Sidebar */
-        .filter-sidebar { position: fixed; top: 0; right: -400px; width: 380px; height: 100vh; background: #fff; z-index: 1050; transition: 0.4s ease; padding: 40px; overflow-y: auto; box-shadow: -10px 0 30px rgba(0,0,0,0.05); }
-        .filter-sidebar.show { right: 0; }
-        .filter-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.3); backdrop-filter: blur(4px); z-index: 1040; display: none; }
-        .filter-overlay.show { display: block; }
-
-        .luxe-select { background: #f8fafc; border: 1px solid var(--border-light); border-radius: 12px; color: var(--text-main); padding: 12px 15px; width: 100%; font-weight: 600; margin-bottom: 20px; }
-        .btn-apply-filters { width: 100%; background: var(--accent-coral); color: #fff; border: none; padding: 15px; border-radius: 12px; font-weight: 800; text-transform: uppercase; margin-bottom: 10px; }
-        .btn-reset-filters { width: 100%; background: #f1f5f9; color: var(--text-main); border: 1px solid var(--border-light); padding: 12px; border-radius: 12px; font-weight: 600; }
-        }
-        .dash-subtitle-luxe {
-            font-size: 10px; font-weight: 800; color: rgba(255,255,255,0.6) !important;
-            text-transform: uppercase; letter-spacing: 1.5px; margin-top: 5px;
-            text-shadow: 0 2px 5px rgba(0,0,0,0.5);
+            font-size: 14px; font-weight: 500; color: var(--text-muted);
+            margin-top: 4px;
         }
         
-        .search-container { position: relative; flex: 1; }
+        .search-container { position: relative; width: 400px; }
         .search-container input { 
-            background: #f1f5f9 !important; 
-            border: 1px solid var(--border-light); 
-            border-radius: 12px; color: var(--text-main) !important; 
-            padding: 14px 50px 14px 20px; width: 100%; 
-            font-weight: 600; font-size: 15px;
-            transition: var(--transition);
+            background: #ffffff !important; 
+            border: 1px solid var(--border-color) !important; 
+            border-radius: 10px; color: var(--text-main) !important; 
+            padding: 12px 45px 12px 16px; width: 100%; 
+            font-weight: 500; font-size: 14px;
+            transition: all 0.2s;
         }
-        .search-container input::placeholder { color: var(--text-secondary); opacity: 0.7; }
-        .search-container i { position: absolute; right: 20px; top: 50%; transform: translateY(-50%); color: var(--text-secondary); font-size: 18px; }
+        .search-container input:focus {
+            border-color: var(--primary) !important;
+            box-shadow: 0 0 0 4px rgba(0, 128, 128, 0.1) !important;
+            outline: none;
+        }
+        .search-container input::placeholder { color: var(--text-muted); }
+        .search-container i { 
+            position: absolute; right: 16px; top: 50%; transform: translateY(-50%);
+            color: var(--text-muted); font-size: 18px; 
+        }
+
+        .btn-luxe-filter { 
+            background: #ffffff !important; 
+            border: 1px solid var(--border-color) !important; 
+            color: var(--text-main) !important;
+            padding: 12px 24px; 
+            border-radius: 10px; 
+            font-weight: 600; 
+            font-size: 14px; 
+            transition: all 0.2s;
+            display: flex; align-items: center; gap: 8px;
+        }
+        .btn-luxe-filter:hover { 
+            background: #f8fafc !important;
+            border-color: var(--primary) !important;
+            color: var(--primary) !important;
+        }
 
         .sort-select { 
-            background: #f1f5f9; border: 1px solid var(--border-light); 
-            border-radius: 10px; color: var(--text-main) !important; padding: 8px 15px; 
-            font-size: 13px; font-weight: 700; cursor: pointer; transition: var(--transition);
-            appearance: auto; flex: 1; height: 42px;
+            background: #ffffff !important; border: 1px solid var(--border-color) !important; 
+            color: var(--text-main) !important; padding: 10px 16px; border-radius: 10px; 
+            font-weight: 600; cursor: pointer; font-size: 13px;
         }
-        .sort-select option { background: #fff !important; color: #000 !important; }
-        .results-count-luxe { font-size: 12px; font-weight: 900; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-secondary) !important; opacity: 0.8; }
-        .meta-label-luxe { font-size: 11px; font-weight: 950; color: var(--text-main) !important; text-transform: uppercase; letter-spacing: 2px; }
+
+        .results-count-luxe { font-size: 14px; font-weight: 700; color: var(--text-main); }
+        .meta-label-luxe { font-size: 12px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
+
+        /* Grid & Cards */
+        .package-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 24px; }
+        .package-card { 
+            background: #ffffff; 
+            border-radius: 16px; overflow: hidden; 
+            border: 1px solid var(--border-color); 
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            position: relative;
+        }
+        .package-card:hover { transform: translateY(-4px); box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); border-color: var(--primary); }
+
+        .package-img-wrapper { position: relative; width: 100%; aspect-ratio: 16 / 10; overflow: hidden; background: #f1f5f9; }
+        .package-img, .package-video { width: 100%; height: 100%; object-fit: cover; transition: all 0.5s ease; }
+        .package-card:hover .package-img, .package-card:hover .package-video { transform: scale(1.05); }
+        
+        .expert-badge-container { position: absolute; top: 12px; left: 12px; z-index: 5; display: flex; gap: 6px; }
+        .expert-badge { padding: 4px 10px; border-radius: 6px; font-size: 10px; font-weight: 700; text-transform: uppercase; }
+        .badge-sold-out { background: #fee2e2; color: #ef4444; }
+        .badge-expert { background: #e0f2f2; color: var(--primary); }
+        .badge-trending { background: #fef3c7; color: #d97706; }
+
+        .package-info { padding: 20px; }
+        .package-name { font-size: 18px; font-weight: 700; color: var(--text-main); margin-bottom: 8px; height: 44px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+        .package-meta { font-size: 13px; color: var(--text-muted); margin-bottom: 6px; display: flex; align-items: center; gap: 6px; }
+        .package-meta i { color: var(--primary); width: 14px; }
+
+        .package-footer { display: flex; align-items: center; justify-content: space-between; margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--border-color); }
+        .package-price { font-size: 20px; font-weight: 800; color: var(--text-main); }
+        .package-price span { font-size: 12px; font-weight: 400; color: var(--text-muted); }
+
+        .btn-view { 
+            background: var(--primary); color: #ffffff !important; 
+            padding: 8px 16px; border-radius: 8px; font-size: 13px; font-weight: 600; 
+            text-decoration: none !important; transition: all 0.2s;
+        }
+        .btn-view:hover { background: var(--primary-hover); transform: translateY(-1px); }
+        .btn-view.disabled { background: #e2e8f0; color: #94a3b8 !important; pointer-events: none; }
+
+        /* Filter Sidebar */
+        .filter-sidebar { 
+            position: fixed; top: 0; right: -400px; width: 380px; height: 100vh; 
+            background: #ffffff; z-index: 1050; transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1); 
+            padding: 40px; overflow-y: auto; border-left: 1px solid var(--border-color); 
+            box-shadow: -10px 0 30px rgba(0,0,0,0.1);
+        }
+        .filter-sidebar.show { right: 0; }
+        .filter-overlay { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.5); backdrop-filter: blur(4px); z-index: 1040; display: none; }
+        .filter-overlay.show { display: block; }
+
+        .filter-label { font-size: 12px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; display: block; }
+        .luxe-select { 
+            background: #ffffff !important; border: 1px solid var(--border-color) !important; 
+            border-radius: 10px; color: var(--text-main) !important; padding: 12px 16px; width: 100%; 
+            font-weight: 500; cursor: pointer; transition: 0.3s;
+        }
+        .luxe-select:focus { border-color: var(--primary) !important; box-shadow: 0 0 0 4px rgba(0, 128, 128, 0.1) !important; }
+
+        .btn-apply-filters { width: 100%; background: var(--primary); color: #fff; border: none; padding: 14px; border-radius: 10px; font-weight: 700; font-size: 15px; transition: 0.2s; }
+        .btn-apply-filters:hover { background: var(--primary-hover); }
+
+        .category-header { margin-bottom: 24px; display: flex; align-items: center; gap: 12px; }
+        .category-title { font-size: 20px; font-weight: 800; color: var(--text-main); margin: 0; }
+        .bg-danger-soft { background: #fee2e2 !important; color: #ef4444 !important; border-radius: 6px; padding: 4px 10px; font-size: 12px; }
 
         @media (max-width: 991px) {
             .main-content { margin-left: 0; padding: 90px 20px 40px; }
-            .dash-header { flex-direction: column; align-items: flex-start; gap: 20px; padding: 30px; }
+            .console-top { flex-direction: column; align-items: flex-start; gap: 24px; padding: 30px; }
             .search-container { width: 100%; }
         }
     </style>
-<body class="theme-light-premium">
-    <div class="ocean-bg"></div>
-    <div class="sun-rays">
-        <div class="ray" style="left: 10%; animation-delay: 0s;"></div>
-        <div class="ray" style="left: 35%; animation-delay: 2s;"></div>
-        <div class="ray" style="left: 65%; animation-delay: 1s;"></div>
-        <div class="ray" style="left: 85%; animation-delay: 3s;"></div>
-    </div>
-
+</head>
+<body class="light-theme">
     <div class="wrapper">
         <jsp:include page="user-sidebar.jsp"><jsp:param name="activePage" value="dashboard" /></jsp:include>
         
         <main class="main-content">
             <form action="<c:url value='/user/dashboard'/>" method="GET" id="filterForm">
                 <div class="dashboard-console">
-                    <!-- Elegant Centered Subheading -->
                     <div class="px-5 pt-4 pb-3 text-center">
-                        <p class="dash-subtitle-luxe m-0" style="font-size: 14px; letter-spacing: 4px; color: var(--text-secondary);">Curated Expeditions for the Modern Adventurer</p>
+                        <p class="dash-subtitle-luxe m-0" style="font-size: 14px; letter-spacing: 4px; color: var(--text-muted);">Curated Expeditions for the Modern Adventurer</p>
                     </div>
 
-                    <!-- Row 1: Search Controls -->
                     <div class="console-top">
                         <div class="search-container">
                             <input type="text" name="search" id="searchInput" value="${currentParams.search}" placeholder="Search destinations..." oninput="searchTrips()">
                             <i class="fa fa-search"></i>
                         </div>
-                        <button type="button" class="btn-luxe-filter" onclick="toggleFilter()" style="height: 42px;">
+                        <button type="button" class="btn-luxe-filter" onclick="toggleFilter()">
                             <i class="fa fa-sliders me-2"></i> REFINE
                         </button>
                     </div>
 
                     <div class="console-divider"></div>
 
-                    <!-- Row 2: Stats & Filters -->
                     <div class="console-bottom">
-                        <div class="results-count-luxe">
-                            EXPLORING <span class="fw-bold" style="color: var(--accent-coral);">${totalCount}</span> ADVENTURES
-                        </div>
-                        <div class="d-flex gap-4 align-items-center flex-nowrap flex-direction:row">
-                            <div class="d-flex align-items-center gap-2">
-                                <span class="meta-label-luxe" style="white-space: nowrap;  ">Group by:</span>
-                                <select name="groupBy" class="sort-select" onchange="this.form.submit()" style="min-width: 140px;">
+                        <div class="results-count-luxe">EXPLORING <span style="color: var(--accent-red);">${totalCount}</span> ADVENTURES</div>
+                        <div class="d-flex gap-5 align-items-center">
+                            <div class="d-flex align-items-center gap-3">
+                                <span class="meta-label-luxe">Group by:</span>
+                                <select name="groupBy" class="sort-select" onchange="this.form.submit()">
                                     <option value="none" ${currentParams.groupBy == 'none' ? 'selected' : ''}>No Grouping</option>
                                     <option value="category" ${currentParams.groupBy == 'category' ? 'selected' : ''}>Activity</option>
                                     <option value="adventure" ${currentParams.groupBy == 'adventure' ? 'selected' : ''}>Adventures</option>
@@ -256,10 +229,9 @@
                                     <option value="travelerType" ${currentParams.groupBy == 'travelerType' ? 'selected' : ''}>Audience</option>
                                 </select>
                             </div>
-						 <br>
                             <div class="d-flex align-items-center gap-2">
                                 <span class="meta-label-luxe" style="white-space: nowrap;">Sort by:</span>
-                                <select name="sortBy" class="sort-select" onchange="this.form.submit()" style="min-width: 140px;">
+                                <select name="sortBy" class="sort-select" onchange="this.form.submit()">
                                     <option value="latest" ${currentParams.sortBy == 'latest' ? 'selected' : ''}>Latest Arrivals</option>
                                     <option value="priceLow" ${currentParams.sortBy == 'priceLow' ? 'selected' : ''}>Value: Low to High</option>
                                     <option value="priceHigh" ${currentParams.sortBy == 'priceHigh' ? 'selected' : ''}>Luxe: High to Low</option>
@@ -272,23 +244,23 @@
                 <!-- Active Filters Context -->
                 <c:if test="${not empty currentParams.search || currentParams.destination != 'All' || currentParams.category != 'All' || currentParams.duration != 'All' || currentParams.departureCity != 'All' || currentParams.month != 'All'}">
                     <div class="d-flex align-items-center gap-3 mb-4 ps-2">
-                        <span class="meta-label-luxe" style="color: var(--text-secondary) !important;">Active Filters:</span>
+                        <span class="meta-label-luxe">Active Filters:</span>
                         <c:if test="${not empty currentParams.search}">
                             <span class="badge bg-danger text-white px-3 py-2 rounded-pill shadow-sm" style="font-size: 11px; font-weight: 800; letter-spacing: 1px;">
                                 SEARCH: "${currentParams.search}" 
                                 <a href="<c:url value='/user/dashboard?search='/>" class="text-white ms-2"><i class="fa fa-times-circle"></i></a>
                             </span>
                         </c:if>
-                        <a href="<c:url value='/user/dashboard'/>" class="text-muted small fw-bold text-decoration-none border-bottom border-secondary ms-2 pb-1">Clear All</a>
+                        <a href="<c:url value='/user/dashboard'/>" class="text-muted small fw-bold text-decoration-none border-bottom border-light ms-2 pb-1">Clear All</a>
                     </div>
                 </c:if>
 
-                <!-- Filter Sidebar (Photo Sync) -->
+                <!-- Filter Sidebar -->
                 <div class="filter-overlay" id="filterOverlay" onclick="toggleFilter()"></div>
                 <div class="filter-sidebar" id="filterSidebar">
                     <div class="d-flex justify-content-between align-items-center mb-5">
-                        <h2 class="fw-black m-0" style="font-size: 24px; letter-spacing: -1px;">Filters</h2>
-                        <button type="button" class="btn-close btn-close-white" onclick="toggleFilter()"></button>
+                        <h2 class="fw-black m-0" style="font-size: 24px; letter-spacing: -1px; color: var(--text-main);">Filters</h2>
+                        <button type="button" class="btn-close" onclick="toggleFilter()"></button>
                     </div>
 
                     <div class="filter-group mb-4">
@@ -344,12 +316,12 @@
                     <div class="filter-group mb-5">
                         <label class="filter-label d-flex justify-content-between">
                             PRICE RANGE
-                            <span id="priceVal" class="text-white-50">₹0 - ₹${not empty currentParams.maxPrice ? currentParams.maxPrice : '100000'}+</span>
+                            <span id="priceVal" class="text-muted">₹0 - ₹${not empty currentParams.maxPrice ? currentParams.maxPrice : '100000'}+</span>
                         </label>
-                        <input type="range" class="luxe-range" name="maxPrice" id="filterPrice" min="0" max="100000" step="1000" value="${not empty currentParams.maxPrice ? currentParams.maxPrice : '100000'}" oninput="updatePriceLabel(this.value)">
-                        <div class="d-flex justify-content-between small mt-2 text-white-50">
+                        <input type="range" class="form-range" name="maxPrice" id="filterPrice" min="0" max="100000" step="1000" value="${not empty currentParams.maxPrice ? currentParams.maxPrice : '100000'}" oninput="updatePriceLabel(this.value)">
+                        <div class="d-flex justify-content-between small mt-2 text-muted">
                             <span>₹0</span>
-                            <span>₹100000.0+</span>
+                            <span>₹100,000+</span>
                         </div>
                     </div>
 
@@ -360,7 +332,7 @@
                 <c:choose>
                     <c:when test="${not empty groupedPackages}">
                         <c:forEach var="entry" items="${groupedPackages}">
-                            <section class="category-section">
+                            <section class="category-section mb-5">
                                 <div class="category-header">
                                     <h2 class="category-title">${entry.key}</h2>
                                     <span class="badge bg-danger-soft text-danger fw-bold">${entry.value.size()} Packages</span>
@@ -380,24 +352,21 @@
                                             <div class="package-img-wrapper">
                                                 <img src="${trip.imageUrl}" class="package-img">
                                                 <c:if test="${hasVideo && !trip.soldOut}">
-                                                    <video class="package-video" muted loop playsinline><source src="${videoUrl}" type="video/mp4"></video>
+                                                    <video class="package-video" muted loop playsinline style="position: absolute; inset: 0; opacity: 0; transition: 0.3s;"><source src="${videoUrl}" type="video/mp4"></video>
                                                 </c:if>
                                                 <div class="expert-badge-container">
                                                     <c:choose>
                                                         <c:when test="${trip.soldOut}"><span class="expert-badge badge-sold-out">SOLD OUT</span></c:when>
                                                         <c:otherwise>
                                                             <span class="expert-badge badge-expert">EXPERT PICK</span>
-                                                            <span class="expert-badge badge-trending" style="background: #f59e0b; color: #000; margin-left: 5px;">TRENDING</span>
+                                                            <span class="expert-badge badge-trending">TRENDING</span>
                                                         </c:otherwise>
                                                     </c:choose>
                                                 </div>
-                                                <div class="wishlist-btn-overlay" style="position: absolute; top: 15px; right: 15px; z-index: 10;">
+                                                <div class="wishlist-btn-overlay" style="position: absolute; top: 12px; right: 12px; z-index: 10;">
                                                     <button type="button" onclick="toggleWishlist(${trip.id}, this)" class="btn btn-link p-0" style="font-size: 20px; text-shadow: 0 2px 10px rgba(0,0,0,0.5); border: none; outline: none; box-shadow: none;">
                                                         <i class="fa ${savedTripIds.contains(trip.id) ? 'fa-heart text-danger' : 'fa-heart-o text-white'}"></i>
                                                     </button>
-                                                </div>
-                                                <div class="quick-view-overlay">
-                                                    <a href="<c:url value='/user/package/${trip.id}'/>" class="btn-quick-view">QUICK VIEW</a>
                                                 </div>
                                             </div>
                                             <div class="package-info">
@@ -420,11 +389,11 @@
                     <c:otherwise>
                         <div class="text-center py-5 mt-5">
                             <div class="mb-5">
-                                <i class="fa fa-compass fa-5x text-white-50 opacity-25"></i>
+                                <i class="fa fa-compass fa-5x text-muted opacity-25"></i>
                             </div>
-                            <h2 class="fw-black text-white" style="font-size: 32px; letter-spacing: 2px;">NO ADVENTURES FOUND</h2>
-                            <p class="text-white-50 mb-4">We couldn't find any trips matching your current search criteria.</p>
-                            <a href="<c:url value='/user/dashboard'/>" class="btn-luxe-filter d-inline-flex">
+                            <h2 class="fw-black" style="font-size: 32px; letter-spacing: -1px; color: var(--text-main);">NO ADVENTURES FOUND</h2>
+                            <p class="text-muted mb-4">We couldn't find any trips matching your current search criteria.</p>
+                            <a href="<c:url value='/user/dashboard'/>" class="btn-luxe-filter d-inline-flex" style="background: var(--primary) !important; color: white !important; border:none !important;">
                                 EXPLORE ALL PACKAGES
                             </a>
                         </div>
@@ -435,35 +404,13 @@
     </div>
 
     <script>
-        function filterBy(category) {
-            document.querySelectorAll('.filter-item').forEach(el => el.classList.remove('active'));
-            if(event) event.target.classList.add('active');
-
-            const cards = document.querySelectorAll('.col-package');
-            let found = 0;
-
-            cards.forEach(card => {
-                const tripCategory = card.getAttribute('data-category');
-                if (category === 'All' || tripCategory === category) {
-                    card.style.display = 'block';
-                    card.style.opacity = '1';
-                    found++;
-                } else {
-                    card.style.display = 'none';
-                }
-            });
-
-            const noResult = document.getElementById('noResultsMessage');
-            if (noResult) noResult.style.display = (found === 0) ? 'block' : 'none';
-        }
-
         function searchTrips() {
             const query = document.getElementById('searchInput').value.toLowerCase();
-            const cards = document.querySelectorAll('.col-package');
+            const cards = document.querySelectorAll('.package-card');
             let found = 0;
 
             cards.forEach(card => {
-                const title = card.querySelector('.package-title').innerText.toLowerCase();
+                const title = card.querySelector('.package-name').innerText.toLowerCase();
                 const dest = card.querySelector('.package-meta').innerText.toLowerCase();
 
                 if (title.includes(query) || dest.includes(query)) {
@@ -474,18 +421,21 @@
                 }
             });
             
-            const noResult = document.getElementById('noResultsMessage');
-            if (noResult) noResult.style.display = (found === 0) ? 'block' : 'none';
+            // Note: Section headers might need to be hidden too if empty, but for client-side search this is basic.
         }
 
         function playVideo(card) {
             const video = card.querySelector('.package-video');
-            if (video) video.play();
+            if (video) {
+                video.style.opacity = '1';
+                video.play();
+            }
         }
 
         function pauseVideo(card) {
             const video = card.querySelector('.package-video');
             if (video) {
+                video.style.opacity = '0';
                 video.pause();
                 video.currentTime = 0;
             }
@@ -507,8 +457,6 @@
 
         function toggleWishlist(tripId, btn) {
             const icon = btn.querySelector('i');
-            
-            // Visual feedback before request
             icon.style.transform = 'scale(1.3)';
             setTimeout(() => icon.style.transform = 'scale(1)', 200);
 
@@ -540,7 +488,6 @@
         }
 
         function showToast(message) {
-            // Check if toast container exists
             let container = document.getElementById('toast-container');
             if (!container) {
                 container = document.createElement('div');
@@ -550,10 +497,9 @@
             }
 
             const toast = document.createElement('div');
-            toast.className = 'glass-toast';
             toast.innerHTML = message;
             toast.style.cssText = `
-                background: rgba(0, 0, 0, 0.8);
+                background: rgba(0, 0, 0, 0.85);
                 backdrop-filter: blur(10px);
                 color: white;
                 padding: 15px 30px;
@@ -561,20 +507,18 @@
                 margin-top: 10px;
                 font-weight: 700;
                 border: 1px solid rgba(255,255,255,0.1);
-                box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+                box-shadow: 0 10px 30px rgba(0,0,0,0.3);
                 transform: translateX(100px);
                 opacity: 0;
                 transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             `;
             container.appendChild(toast);
 
-            // Animate in
             setTimeout(() => {
                 toast.style.transform = 'translateX(0)';
                 toast.style.opacity = '1';
             }, 100);
 
-            // Animate out
             setTimeout(() => {
                 toast.style.transform = 'translateX(100px)';
                 toast.style.opacity = '0';
