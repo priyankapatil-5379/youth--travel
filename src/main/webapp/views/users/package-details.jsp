@@ -17,10 +17,11 @@
         :root {
             --bg-deep: #000a12;
             --accent-red: #e63946;
-            --glass-card: rgba(255, 255, 255, 0.03);
-            --glass-border: rgba(255, 255, 255, 0.08);
+            --glass-card: rgba(255, 255, 255, 0.04);
+            --glass-border: rgba(255, 255, 255, 0.12);
             --text-light: #f8fafc;
             --text-dim: #94a3b8;
+            --accent-glow: rgba(230, 57, 70, 0.5);
         }
 
         body { font-family: 'Outfit', sans-serif; background-color: var(--bg-dark); color: var(--text-light); margin: 0; padding: 0; }
@@ -124,130 +125,172 @@
 
         /* MMT Style Sticky Nav with Glass Effect */
         .glass-nav {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(25px);
-            -webkit-backdrop-filter: blur(25px);
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
             border-bottom: 1px solid var(--glass-border);
             position: sticky;
             top: 0;
             z-index: 1000;
-            padding: 0 60px;
+            padding: 0 80px;
             display: flex;
-            gap: 40px;
+            gap: 50px;
         }
         .nav-link-mmt {
-            padding: 20px 0;
-            font-weight: 800;
-            font-size: 13px;
+            padding: 25px 0;
+            font-weight: 900;
+            font-size: 14px;
             color: var(--text-dim);
             text-decoration: none;
             text-transform: uppercase;
-            letter-spacing: 2px;
-            border-bottom: 3px solid transparent;
+            letter-spacing: 3px;
+            border-bottom: 4px solid transparent;
             cursor: pointer;
-            transition: 0.3s;
+            transition: 0.4s;
         }
-        .nav-link-mmt.active, .nav-link-mmt:hover { color: #fff; border-bottom-color: var(--accent-red); }
+        .nav-link-mmt.active, .nav-link-mmt:hover { color: #fff; border-bottom-color: var(--accent-red); text-shadow: 0 0 10px rgba(255,255,255,0.3); }
 
-        /* Hero Banner */
-        .hero-banner { height: 60vh; background: url('${trip.imageUrl}') center center/cover no-repeat; position: relative; }
-        .hero-overlay { position: absolute; inset: 0; background: linear-gradient(to top, var(--bg-deep) 0%, transparent 100%); }
-        .hero-info { position: absolute; bottom: 60px; left: 60px; z-index: 10; max-width: 800px; }
-        .hero-title { font-size: 4.5rem; font-weight: 900; letter-spacing: -3px; line-height: 0.9; margin-bottom: 15px; }
-
-        .layout-container { max-width: 1400px; margin: 40px auto; padding: 0 60px; display: grid; grid-template-columns: 2fr 1fr; gap: 40px; }
-
-        /* MMT Content Cards with Super Glass Styling */
-        .glass-card { 
-            background: var(--glass-card); 
-            backdrop-filter: blur(30px); 
-            border: 1px solid var(--glass-border); 
-            border-radius: 24px; 
-            padding: 40px; 
-            margin-bottom: 30px; 
-            transition: 0.3s;
-        }
-        .section-title { font-size: 20px; font-weight: 900; margin-bottom: 25px; color: var(--accent-red); text-transform: uppercase; letter-spacing: 2px; }
-
-        /* Dynamic Chips */
-        .chip { background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border); border-radius: 100px; padding: 6px 16px; font-size: 12px; font-weight: 700; display: inline-flex; align-items: center; gap: 8px; margin-right: 10px; margin-bottom: 10px; color: var(--text-light); }
-        .chip i { color: var(--accent-red); }
-
-        /* Itinerary Timeline */
-        .day-box { position: relative; padding-left: 50px; border-left: 1px solid var(--glass-border); margin-left: 15px; margin-bottom: 40px; }
-        .day-indicator { position: absolute; left: -16px; top: 0; background: var(--accent-red); color: #fff; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 12px; box-shadow: 0 0 15px var(--accent-red); }
-
-        /* Booking Instrument - Diamond Polish */
-        .sticky-booking { position: sticky; top: 110px; }
-        .booking-panel { 
-            background: rgba(230, 57, 70, 0.05); 
-            backdrop-filter: blur(50px); 
-            border: 1px solid rgba(230, 57, 70, 0.3); 
-            border-radius: 40px; 
-            padding: 45px; 
-            box-shadow: 0 40px 100px rgba(0,0,0,0.7), inset 0 0 20px rgba(230, 57, 70, 0.1);
-            position: relative;
+        /* Cinematic Hero Banner (90vh) */
+        .hero-parallax { 
+            height: 90vh; 
+            width: 100%;
+            position: relative; 
             overflow: hidden;
+            display: flex;
+            align-items: flex-end;
+            padding-bottom: 100px;
         }
-        .booking-panel::before {
-            content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
-            background: conic-gradient(from 180deg at 50% 50%, transparent 0deg, rgba(230, 57, 70, 0.1) 180deg, transparent 360deg);
-            animation: rotate-glow 10s linear infinite;
+        .hero-img-luxe {
+            position: absolute; top: 0; left: 0; width: 100%; height: 120%;
+            background: url('${trip.imageUrl}') center center/cover no-repeat;
             z-index: -1;
+            transform: translateY(0);
+            transition: transform 0.1s ease-out;
         }
-        @keyframes rotate-glow { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        .hero-overlay { 
+            position: absolute; inset: 0; 
+            background: linear-gradient(to top, var(--bg-deep) 10%, transparent 50%, rgba(0,0,0,0.4) 100%); 
+            z-index: 0;
+        }
+        .hero-content { position: relative; z-index: 10; padding: 0 80px; width: 100%; }
+        .hero-title { 
+            font-size: 8rem; font-weight: 950; letter-spacing: -6px; line-height: 0.8; 
+            margin-bottom: 25px; color: #fff;
+            text-shadow: 0 20px 80px rgba(0,0,0,0.8), 0 0 40px rgba(255,255,255,0.1);
+            text-transform: uppercase;
+        }
+        .hero-meta-grid { display: flex; gap: 40px; align-items: center; }
+        .meta-item-luxe { display: flex; align-items: center; gap: 15px; }
+        .meta-icon-luxe { width: 50px; height: 50px; background: rgba(230, 57, 70, 0.2); border: 1px solid var(--accent-red); border-radius: 15px; display: flex; align-items: center; justify-content: center; color: var(--accent-red); font-size: 20px; box-shadow: 0 0 20px rgba(230, 57, 70, 0.3); }
+        .meta-text-luxe { display: flex; flex-direction: column; }
+        .meta-label-luxe { font-size: 11px; font-weight: 900; color: var(--accent-red); text-transform: uppercase; letter-spacing: 2px; }
+        .meta-val-luxe { font-size: 18px; font-weight: 800; color: #fff; }
 
-        .price-hero-luxe { margin-bottom: 40px; }
-        .price-big { font-size: 4rem; font-weight: 900; line-height: 1; color: #fff; text-shadow: 0 0 30px var(--accent-glow); }
-        .price-label { font-size: 11px; font-weight: 800; letter-spacing: 2px; color: var(--accent-red); margin-bottom: 8px; text-transform: uppercase; }
+        .layout-container { max-width: 1500px; margin: 60px auto; padding: 0 80px; display: grid; grid-template-columns: 1fr 420px; gap: 60px; }
+
+        /* Storyboard Itinerary */
+        .story-card { 
+            background: var(--glass-card); border: 1px solid var(--glass-border); border-radius: 30px; 
+            padding: 45px; margin-bottom: 40px; transition: 0.4s;
+            position: relative; overflow: hidden;
+        }
+        .story-card:hover { border-color: rgba(230, 57, 70, 0.3); transform: translateY(-10px); background: rgba(255,255,255,0.06); }
+        .day-badge { position: absolute; top: 0; left: 0; background: var(--accent-red); color: #fff; padding: 15px 30px; font-weight: 950; font-size: 14px; letter-spacing: 3px; border-bottom-right-radius: 30px; box-shadow: 0 10px 30px rgba(230, 57, 70, 0.4); }
+        .story-title { font-size: 28px; font-weight: 900; color: #fff; margin-bottom: 20px; margin-top: 20px; }
+        
+        /* Floating Action Console (Diamond Polish) */
+        .action-console { position: sticky; top: 130px; }
+        .booking-card { 
+            background: rgba(10, 15, 25, 0.85); 
+            backdrop-filter: blur(50px); 
+            border: 1px solid rgba(255, 255, 255, 0.15); 
+            border-radius: 40px; 
+            padding: 50px 40px; 
+            box-shadow: 0 50px 100px rgba(0,0,0,0.9);
+            position: relative;
+        }
+        
+        .price-display { margin-bottom: 45px; text-align: center; }
+        .price-amount { font-size: 4.5rem; font-weight: 950; line-height: 1; color: #fff; text-shadow: 0 0 40px rgba(255,255,255,0.2); letter-spacing: -2px; }
+        .price-sub { font-size: 11px; font-weight: 900; color: var(--accent-red); text-transform: uppercase; letter-spacing: 3px; margin-bottom: 12px; }
+
+        .booking-label {
+            display: block;
+            font-size: 10px;
+            font-weight: 950;
+            color: var(--accent-red);
+            text-transform: uppercase;
+            letter-spacing: 2.5px;
+            margin-bottom: 15px;
+            padding-left: 5px;
+        }
 
         .luxe-input {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid var(--glass-border);
-            border-radius: 18px;
-            padding: 18px 20px;
-            color: #fff;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.05) !important;
+            border: 1px solid rgba(255, 255, 255, 0.15) !important;
+            border-radius: 20px;
+            padding: 20px 25px;
+            color: #fff !important;
             font-weight: 700;
             font-size: 14px;
-            width: 100%;
-            transition: 0.4s;
-            appearance: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='white' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: right 20px center;
+            transition: 0.3s;
+            appearance: auto;
         }
-        .luxe-input:focus { outline: none; border-color: var(--accent-red); box-shadow: 0 0 15px var(--accent-glow); background: rgba(255,255,255,0.06); }
+        .luxe-input:focus {
+            background: rgba(255, 255, 255, 0.08) !important;
+            border-color: var(--accent-red) !important;
+            outline: none;
+            box-shadow: 0 0 20px rgba(230, 57, 70, 0.2);
+        }
+        .luxe-input option { background: #0a0f19; color: #fff; }
 
-        .btn-royal-glow {
-            width: 100%;
-            background: linear-gradient(135deg, #e63946 0%, #c1121f 100%);
-            color: #fff;
-            border: none;
-            padding: 25px;
-            border-radius: 22px;
-            font-weight: 900;
-            font-size: 18px;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            box-shadow: 0 15px 40px rgba(230, 57, 70, 0.4);
-            transition: 0.5s;
+        .luxe-btn {
+            width: 100%; background: linear-gradient(135deg, #e63946 0%, #b91c1c 100%);
+            color: #fff; border: none; padding: 25px; border-radius: 24px;
+            font-weight: 950; font-size: 17px; text-transform: uppercase; letter-spacing: 4px;
+            box-shadow: 0 15px 45px rgba(230, 57, 70, 0.5); transition: 0.4s;
             cursor: pointer;
-            position: relative;
-            overflow: hidden;
-            animation: pulse-btn 2s infinite;
+            margin-top: 10px;
         }
-        @keyframes pulse-btn {
-            0% { box-shadow: 0 15px 40px rgba(230, 57, 70, 0.4); }
-            50% { box-shadow: 0 15px 60px rgba(230, 57, 70, 0.6); }
-            100% { box-shadow: 0 15px 40px rgba(230, 57, 70, 0.4); }
+        .luxe-btn:hover { transform: translateY(-5px); box-shadow: 0 25px 60px rgba(230, 57, 70, 0.7); letter-spacing: 6px; }
+
+        .total-display {
+            padding: 30px 5px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            margin-top: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
-        .btn-royal-glow:hover { transform: translateY(-5px) scale(1.02); filter: brightness(1.1); }
+        .total-label { font-size: 12px; font-weight: 950; color: #fff; text-transform: uppercase; letter-spacing: 2px; }
+        .total-amount { font-size: 28px; font-weight: 950; color: var(--accent-red); text-shadow: 0 0 20px rgba(230, 57, 70, 0.3); }
 
-        /* Hotel Card */
-        .mmt-hotel-card { display: grid; grid-template-columns: 220px 1fr; gap: 25px; background: rgba(255,255,255,0.02); border-radius: 20px; padding: 25px; border: 1px solid var(--glass-border); }
-        .hotel-img-luxe { width: 100%; height: 160px; object-fit: cover; border-radius: 15px; }
+        .vendor-badge-luxe {
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+        .vendor-avatar {
+            width: 60px; height: 60px;
+            border-radius: 50%;
+            border: 2px solid var(--accent-red);
+            box-shadow: 0 0 20px rgba(230, 57, 70, 0.3);
+            object-fit: cover;
+        }
+        .vendor-info-text { text-align: center; }
+        .vendor-name-luxe { font-size: 13px; font-weight: 900; color: #fff; margin-bottom: 4px; }
+        .vendor-stars { color: #fbbf24; font-size: 10px; letter-spacing: 2px; }
 
-        @svg-filter: url(#water-rough);
+        @media (max-width: 1200px) {
+            .hero-title { font-size: 5rem; letter-spacing: -3px; }
+            .layout-container { grid-template-columns: 1fr; }
+            .action-console { position: static; margin-top: 40px; }
+        }
     </style>
 </head>
 <body>
@@ -260,6 +303,10 @@
         <div class="ray" style="left: 85%; animation-delay: 3s;"></div>
     </div>
 
+<<<<<<< HEAD
+    <div class="hero-parallax">
+        <div class="hero-img-luxe" id="heroImg"></div>
+=======
     <div class="container-main">
         <div class="content-left">
             <div class="breadcrumb-nav">
@@ -393,13 +440,32 @@
     <svg width="0" height="0" style="position:absolute;z-index:-1;"><filter id="water-rough"><feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="3" result="noise" /><feDisplacementMap in="SourceGraphic" in2="noise" scale="5" xChannelSelector="R" yChannelSelector="G" /></filter></svg>
 
     <div class="hero-banner">
+>>>>>>> 70694c31e39ab00af1555e8b042310beb743f5e8
         <div class="hero-overlay"></div>
-        <div class="hero-info">
-            <div class="hero-title">${trip.title}</div>
-            <div class="d-flex gap-4 align-items-center">
-                <span class="badge bg-danger rounded-pill px-4 py-2 fw-black text-uppercase small">${not empty trip.difficulty ? trip.difficulty : 'Expert Led'}</span>
-                <span class="fw-bold fs-5"><i class="fa fa-map-marker text-danger me-2"></i> ${trip.destination}</span>
-                <span class="fw-bold fs-5"><i class="fa fa-clock-o text-danger me-2"></i> ${trip.days}D / ${trip.nights}N</span>
+        <div class="hero-content">
+            <h1 class="hero-title">${trip.title}</h1>
+            <div class="hero-meta-grid">
+                <div class="meta-item-luxe">
+                    <div class="meta-icon-luxe"><i class="fa fa-map-marker"></i></div>
+                    <div class="meta-text-luxe">
+                        <span class="meta-label-luxe">Destination</span>
+                        <span class="meta-val-luxe">${trip.destination}</span>
+                    </div>
+                </div>
+                <div class="meta-item-luxe">
+                    <div class="meta-icon-luxe"><i class="fa fa-clock-o"></i></div>
+                    <div class="meta-text-luxe">
+                        <span class="meta-label-luxe">Duration</span>
+                        <span class="meta-val-luxe">${trip.days} Days / ${trip.nights} Nights</span>
+                    </div>
+                </div>
+                <div class="meta-item-luxe">
+                    <div class="meta-icon-luxe"><i class="fa fa-shield"></i></div>
+                    <div class="meta-text-luxe">
+                        <span class="meta-label-luxe">Adventure Tier</span>
+                        <span class="meta-val-luxe">${not empty trip.difficulty ? trip.difficulty : 'Elite Explorer'}</span>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -491,29 +557,30 @@
                         <img src="` + url + `" alt="Gallery">
                         ` + (i === 4 ? '<div class="view-all-overlay">+' + (media.length > 5 ? media.length - 5 : 12) + ' Photos</div>' : '') + `
     <div class="glass-nav">
-        <div class="nav-link-mmt active" onclick="scrollToId('overview')">Overview</div>
-        <div class="nav-link-mmt" onclick="scrollToId('itinerary')">Itinerary</div>
-        <div class="nav-link-mmt" onclick="scrollToId('stay')">Hotels</div>
-        <div class="nav-link-mmt" onclick="scrollToId('policies')">Policies</div>
+        <div class="nav-link-mmt active" onclick="scrollToId('overview')">The Experience</div>
+        <div class="nav-link-mmt" onclick="scrollToId('itinerary')">Storyline</div>
+        <div class="nav-link-mmt" onclick="scrollToId('amenities')">Amenities</div>
+        <div class="nav-link-mmt" onclick="scrollToId('stay')">Hospitality</div>
     </div>
 
     <div class="layout-container">
         <div class="main-content">
             
-            <div id="overview" class="glass-card">
-                <h3 class="section-title">The Experience</h3>
-                <p class="text-white-50 lh-lg fs-6">${trip.description}</p>
-                <div class="mt-5">
-                    <h6 class="fw-bold small text-uppercase mb-3 opacity-50">What's Included</h6>
-                    <div class="d-flex flex-wrap">
-                        <c:set var="incs" value="${fn:split(trip.inclusions, ',')}" />
-                        <c:forEach var="inc" items="${incs}">
-                            <div class="chip"><i class="fa fa-check-circle"></i> ${fn:trim(inc)}</div>
-                        </c:forEach>
-                    </div>
+            <!-- Experience Story -->
+            <div id="overview" class="story-card">
+                <div class="day-badge">OVERVIEW</div>
+                <h2 class="story-title">The Cinematic Journey</h2>
+                <p class="text-white-50 lh-lg fs-5" style="font-weight: 500;">${trip.description}</p>
+                <div class="mt-5 p-4 rounded-4" style="background: rgba(230, 57, 70, 0.05); border: 1px solid rgba(230, 57, 70, 0.2);">
+                    <h5 class="fw-black text-danger text-uppercase small letter-spacing-2 mb-3">Expert Curator Note</h5>
+                    <p class="small text-white-50 m-0">"This expedition was curated specifically for those who seek to lose themselves in the raw beauty of ${trip.destination}. From the transportation logistics to the boutique stays, every detail is engineered for high-end discovery."</p>
                 </div>
             </div>
 
+<<<<<<< HEAD
+            <!-- Storyline Itinerary -->
+            <div id="itinerary">
+=======
             // Similar Destinations (Mock)
             const sGrid = document.getElementById('similarGrid');
             if (sGrid) {
@@ -560,113 +627,165 @@
             });
             <div id="itinerary" class="glass-card">
                 <h3 class="section-title">Detailed Journey</h3>
+>>>>>>> 70694c31e39ab00af1555e8b042310beb743f5e8
                 <c:forEach var="i" begin="1" end="${trip.days}">
-                    <div class="day-box">
-                        <div class="day-indicator">${i}</div>
-                        <h4 class="fw-bold text-white mb-2 text-capitalize">${trip.destination} Discovery</h4>
-                        <div class="mb-3">
-                            <span class="chip"><i class="fa fa-car"></i> Private Transfer</span>
-                            <span class="chip"><i class="fa fa-hotel"></i> Check-in</span>
+                    <div class="story-card">
+                        <div class="day-badge">DAY 0${i}</div>
+                        <h2 class="story-title">Entering the Soul of ${trip.destination}</h2>
+                        <div class="d-flex gap-3 mb-4">
+                            <span class="badge bg-white text-dark px-3 py-2 rounded-pill fw-bold small text-uppercase">Logistics: ${trip.transportCategory}</span>
+                            <span class="badge bg-danger text-white px-3 py-2 rounded-pill fw-bold small text-uppercase">Nature Hike</span>
                         </div>
-                        <p class="small text-white-50">Exploring the deep soul of ${trip.destination}. This day is curated for immersive local experiences and cinematic sights.</p>
+                        <p class="text-white-50">Day 0${i} is dedicated to exploring the hidden corners of the region. Experience a private, curated journey through the local landscape, featuring exclusive access to sights reserved for elite travelers.</p>
+                        <div class="mt-4 d-flex gap-3 overflow-auto pb-2" style="scrollbar-width: none;">
+                            <c:set var="galArr" value="${fn:split(trip.mediaUrls, ',')}" />
+                            <img src="${not empty galArr[0] ? galArr[0] : trip.imageUrl}" class="rounded-4" style="height: 180px; width: 280px; object-fit: cover; border: 1px solid var(--glass-border);">
+                            <img src="${not empty galArr[1] ? galArr[1] : trip.imageUrl}" class="rounded-4" style="height: 180px; width: 280px; object-fit: cover; border: 1px solid var(--glass-border);">
+                        </div>
                     </div>
                 </c:forEach>
             </div>
 
-            <div id="stay" class="glass-card">
-                <h3 class="section-title">Luxury Accommodation</h3>
-                <div class="mmt-hotel-card">
-                    <c:set var="galArr" value="${fn:split(trip.mediaUrls, ',')}" />
-                    <img src="${not empty galArr[1] ? galArr[1] : trip.imageUrl}" class="hotel-img-luxe">
-                    <div>
-                        <div class="fs-4 fw-black text-white mb-1">Premium ${trip.stayCategory} Experience</div>
-                        <div class="text-warning small mb-3"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i> (Verified)</div>
-                        <div class="d-flex flex-wrap">
+            <!-- Amenities Mosaic -->
+            <div id="amenities" class="story-card">
+                <div class="day-badge">INCLUSIONS</div>
+                <h2 class="story-title">Elite Hospitality Package</h2>
+                <div class="amenity-mosaic">
+                    <c:set var="incs" value="${fn:split(trip.inclusions, ',')}" />
+                    <c:forEach var="inc" items="${incs}">
+                        <div class="amenity-item">
+                            <i class="fa fa-diamond amenity-icon"></i>
+                            <div class="amenity-label">${fn:trim(inc)}</div>
+                        </div>
+                    </c:forEach>
+                    <div class="amenity-item">
+                        <i class="fa fa-bus amenity-icon"></i>
+                        <div class="amenity-label">Private ${trip.transportCategory}</div>
+                    </div>
+                    <div class="amenity-item">
+                        <i class="fa fa-camera-retro amenity-icon"></i>
+                        <div class="amenity-label">Photography Support</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stay Section -->
+            <div id="stay" class="story-card">
+                <div class="day-badge">STAY</div>
+                <h2 class="story-title">Boutique ${trip.stayCategory} Accommodation</h2>
+                <div class="row g-4 mt-2">
+                    <div class="col-md-5">
+                        <img src="${not empty galArr[2] ? galArr[2] : trip.imageUrl}" class="w-100 rounded-5" style="height: 300px; object-fit: cover; border: 2px solid var(--glass-border);">
+                    </div>
+                    <div class="col-md-7 d-flex flex-direction-column justify-content-center">
+                        <h4 class="fw-black text-white mb-3">Premium ${trip.stayType}</h4>
+                        <p class="text-white-50">Immerse yourself in high-end comfort. Our stays are hand-picked for their unique character, luxury service, and perfect location.</p>
+                        <div class="d-flex flex-wrap gap-2 mt-3">
                             <c:set var="amens" value="${fn:split(trip.stayAmenities, ',')}" />
                             <c:forEach var="amen" items="${amens}">
-                                <div class="chip">${fn:trim(amen)}</div>
+                                <span class="badge border border-secondary px-3 py-2 rounded-pill small fw-bold">${fn:trim(amen)}</span>
                             </c:forEach>
                         </div>
                     </div>
                 </div>
             </div>
-
-            <div id="policies" class="glass-card">
-                <h3 class="section-title">Policies & Essential Info</h3>
-                <div class="row g-4">
-                    <div class="col-md-12">
-                        <h6 class="fw-bold small text-danger text-uppercase mb-2">Cancellation Policy</h6>
-                        <p class="small text-white-50">${not empty trip.cancellationPolicy ? trip.cancellationPolicy : 'Flexible cancellation policy applies.'}</p>
-                    </div>
-                </div>
-            </div>
         </div>
 
+        <!-- Floating Action Sidebar -->
         <div class="sidebar-area">
-            <div class="sticky-booking">
-                <div class="booking-panel">
-                    <div class="price-hero-luxe text-center">
-                        <div class="price-label">Exclusive Explorer Rate</div>
-                        <div class="price-big">₹${trip.price}</div>
-                        <div class="small opacity-50 fw-bold mt-1">per adventurer • all inclusive</div>
+            <div class="action-console">
+                <div class="booking-card">
+                    <div class="price-display">
+                        <div class="price-sub">Exclusive Explorer Fare</div>
+                        <div class="price-amount">₹${trip.price}</div>
+                        <div class="small fw-bold text-white-50 mt-2">Per Traveler • All Logistics Included</div>
                     </div>
 
                     <form action="<c:url value='/user/booking/submit'/>" method="POST" id="luxeBookingForm">
                         <input type="hidden" name="tripId" value="${trip.id}">
                         <input type="hidden" name="tripType" value="Package">
 
-                        <div class="mb-4">
-                            <label class="small fw-black text-white-50 text-uppercase mb-3 letter-spacing-1">1. Choose Your Departure</label>
+                        <div class="mb-5">
+                            <label class="booking-label">1. Select Your Batch</label>
                             <select name="selectedDate" class="luxe-input" required>
                                 <c:forEach var="s" items="${schedules}">
-                                    <option value="${s.startDate}">${s.startDate} (${s.availableSeats} Spots Left)</option>
+                                    <option value="${s.startDate}">${s.startDate} (${s.availableSeats} Seats)</option>
                                 </c:forEach>
                             </select>
                         </div>
                         
-                        <div class="mb-4">
-                            <label class="small fw-black text-white-50 text-uppercase mb-3 letter-spacing-1">2. Traveling Explorers</label>
+                        <div class="mb-5">
+                            <label class="booking-label">2. Total Explorers</label>
                             <select name="travelers" class="luxe-input" onchange="updateLuxePrice()" id="paxSelect">
                                 <c:forEach var="p" begin="1" end="10"><option value="${p}">${p} Adults</option></c:forEach>
                             </select>
                         </div>
 
-                        <div class="mb-4">
-                            <label class="small fw-black text-white-50 text-uppercase mb-3 letter-spacing-1">3. Special Requirements</label>
-                            <textarea name="guestDetails" class="luxe-input" style="height: 80px; resize: none;" placeholder="e.g. Dietary needs, wheelchair access..."></textarea>
+                        <div class="mb-5">
+                            <label class="booking-label">3. Special Concierge Requests</label>
+                            <textarea name="guestDetails" class="luxe-input" style="height: 120px; resize: none;" placeholder="Dietary needs, room preferences, special occasions..."></textarea>
                         </div>
 
-                        <div class="py-4 border-top border-secondary mt-4">
-                            <div class="d-flex justify-content-between mb-2">
-                                <span class="text-white-50 fw-bold">Package Base x <span id="paxDisplay">1</span></span>
-                                <span id="baseTotal" class="fw-bold">₹${trip.price}</span>
-                            </div>
-                            <div class="d-flex justify-content-between mb-3">
-                                <span class="text-white-50 fw-bold">Taxes & Expert Fees</span>
-                                <span class="text-success fw-bold">INCLUDED</span>
-                            </div>
-                            <div class="d-flex justify-content-between fs-4 fw-black text-white pt-4 border-top border-secondary">
-                                <span style="letter-spacing: -1px;">TOTAL JOURNEY</span>
-                                <span id="finalTotal" class="text-danger">₹${trip.price}</span>
-                            </div>
+                        <div class="total-display">
+                            <div class="total-label">Total Journey</div>
+                            <div id="finalTotal" class="total-amount">₹${trip.price}</div>
                         </div>
 
-                        <button type="submit" class="btn-royal-glow" ${trip.soldOut ? 'disabled' : ''}>
-                            ${trip.soldOut ? 'FULLY BOOKED' : 'SECURE MY JOURNEY'}
+                        <button type="submit" class="luxe-btn" ${trip.soldOut ? 'disabled' : ''}>
+                            ${trip.soldOut ? 'BATCH FULL' : 'RESERVE MY SPOT'}
                         </button>
                     </form>
-                </div>
 
-                <div class="mt-4 glass-card p-4 d-flex align-items-center gap-3">
-                    <img src="https://ui-avatars.com/api/?name=${fn:replace(trip.vendor.businessName, ' ', '+')}&background=e63946&color=fff" class="rounded-circle" style="width: 45px; height: 45px; border: 2px solid var(--accent-red);">
-                    <div>
-                        <div class="small fw-bold">Verified Support by ${trip.vendor.businessName}</div>
-                        <div class="small text-white-50">Trusted Luxury Expert</div>
+                    <div class="vendor-badge-luxe">
+                        <img src="https://ui-avatars.com/api/?name=${fn:replace(trip.vendor.businessName, ' ', '+')}&background=e63946&color=fff" class="vendor-avatar">
+                        <div class="vendor-info-text">
+                            <div class="vendor-name-luxe">EXPERT: ${trip.vendor.businessName}</div>
+                            <div class="vendor-stars">
+                                <i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i>
+                                <span class="ms-2 opacity-50" style="font-size: 8px;">VERIFIED</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+    <script>
+        const basePrice = ${trip.price};
+        
+        // Parallax Effect
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const heroImg = document.getElementById('heroImg');
+            heroImg.style.transform = 'translateY(' + (scrolled * 0.4) + 'px)';
+        });
+
+        function updateLuxePrice() {
+            const pax = document.getElementById('paxSelect').value;
+            const total = basePrice * pax;
+            document.getElementById('finalTotal').innerText = '₹' + total.toLocaleString('en-IN');
+        }
+
+        function scrollToId(id) {
+            const element = document.getElementById(id);
+            const offset = 100;
+            const bodyRect = document.body.getBoundingClientRect().top;
+            const elementRect = element.getBoundingClientRect().top;
+            const elementPosition = elementRect - bodyRect;
+            const offsetPosition = elementPosition - offset;
+
+            window.scrollTo({
+                top: offsetPosition,
+                behavior: 'smooth'
+            });
+
+            document.querySelectorAll('.nav-link-mmt').forEach(el => el.classList.remove('active'));
+            event.target.classList.add('active');
+        }
+    </script>
+</body>
+</html>
 
     <script>
         const basePrice = ${trip.price};

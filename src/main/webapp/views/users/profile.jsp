@@ -12,13 +12,12 @@
     <link href="https://fonts.googleapis.com/css2?family=Dosis:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root { 
-            --bg-gradient: transparent;
-            --glass-bg: rgba(255, 255, 255, 0.05);
-            --glass-border: rgba(255, 255, 255, 0.1);
-            --accent-blue: #0095f6;
+            --bg-deep: #000a12;
             --accent-orange: #e63946;
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.1);
             --text-main: #ffffff;
-            --text-dim: #b0b0b0;
+            --text-dim: #94a3b8;
         }
 
         /* Force Modals to Front & Premium Styling */
@@ -47,19 +46,43 @@
         .btn-primary:hover { transform: translateY(-2px) !important; box-shadow: 0 8px 20px rgba(255,159,67,0.4) !important; }
 
         body { 
-            font-family: 'Dosis', sans-serif; 
-            background: #1a2a2a; /* Deep dark teal base */
-            background: linear-gradient(180deg, #243b3b 0%, #121212 100%);
+            font-family: 'Outfit', sans-serif; 
+            background-color: var(--bg-deep);
+            background: radial-gradient(circle at 50% 0%, #001f3f, #000a12);
             color: var(--text-main);
             margin: 0;
             min-height: 100vh;
             padding-bottom: 80px;
+            overflow-x: hidden;
         }
 
-        .main-container { max-width: 1200px; margin: 0 auto; padding: 40px 20px; }
+        /* Immersive Background System */
+        .sun-rays { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; opacity: 0.3; }
+        .ray { position: absolute; top: -20%; width: 100px; height: 150%; background: linear-gradient(180deg, rgba(255,255,255,0.1) 0%, transparent 80%); filter: blur(50px); transform-origin: top center; animation: ray-swing 10s ease-in-out infinite alternate; }
+        @keyframes ray-swing { 0% { transform: rotate(-8deg) scaleX(1); opacity: 0.3; } 100% { transform: rotate(8deg) scaleX(0.8); opacity: 0.6; } }
+
+        .main-container { max-width: 1200px; margin: 0 auto; padding: 120px 20px 40px; position: relative; z-index: 1; }
+
+        .header { 
+            position: fixed; top: 0; left: 0; right: 0; height: 75px; 
+            background: rgba(0, 0, 0, 0.4); 
+            backdrop-filter: blur(15px); 
+            -webkit-backdrop-filter: blur(15px);
+            display: flex; align-items: center; justify-content: space-between; 
+            padding: 0 40px; z-index: 1000; 
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08); 
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+        }
 
         /* Premium Header */
-        .profile-header { display: flex; align-items: flex-start; gap: 80px; margin-bottom: 60px; padding: 40px; background: rgba(0,0,0,0.3); backdrop-filter: blur(15px); border-radius: 30px; border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 15px 35px rgba(0,0,0,0.4); }
+        .profile-header { 
+            display: flex; align-items: flex-start; gap: 80px; margin-bottom: 60px; padding: 50px; 
+            background: rgba(0,0,0,0.4); 
+            backdrop-filter: blur(20px); 
+            border-radius: 40px; 
+            border: 1px solid rgba(255,255,255,0.1); 
+            box-shadow: 0 25px 60px rgba(0,0,0,0.5); 
+        }
         
         .avatar-column { display: flex; flex-direction: column; align-items: center; width: 180px; }
         .avatar-wrapper { 
@@ -127,7 +150,7 @@
         .tab-trigger.active { color: white; transform: scale(1.1); text-shadow: 0 2px 15px rgba(255,255,255,0.5); }
 
         /* Tab Content Layout */
-        .content-grid { display: block; min-height: 400px; }
+        .content-grid { display: block; min-height: 400px; margin-right: 100px;}
         
         #postsSection, #adviceSection { width: 100%; transition: 0.3s; }
         #adviceSection { display: none; } /* Hidden by default */
@@ -243,7 +266,7 @@
         <div class="ray ray-4"></div>
     </div>
 
-    <header class="header" style="position: fixed; top: 0; left: 0; right: 0; height: 70px; background: rgba(0,0,0,0.4); backdrop-filter: blur(10px); display: flex; align-items: center; justify-content: space-between; padding: 0 30px; z-index: 1000; border-bottom: 1px solid rgba(255,255,255,0.05);">
+    <header class="header">
         <div class="header-logo"><a href="<c:url value='/'/>"><img src="<c:url value='/views/assets/images/logo.png'/>" style="height: 35px;"></a></div>
         <div style="display: flex; align-items: center; gap: 20px;">
             <div style="display: flex; align-items: center; gap: 15px; cursor: pointer;" onclick="showMyPoints()">
@@ -502,7 +525,7 @@
             <div id="postsSection">
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <h5 class="mb-0" style="color: var(--text-dim); text-transform: uppercase; font-size: 14px; letter-spacing: 1px;">My Memories</h5>
-                    <button class="btn btn-sm" style="background: #ff9f43; color: white; border-radius: 10px; font-weight: 600; font-size: 12px; padding: 6px 15px; border: none;" onclick="prepareNewPost()">
+                    <button class="btn btn-sm" style="background: #ff9f43; color: white; border-radius: 10px; font-weight: 600; font-size: 12px; padding: 6px 15px; border: none; gap:20px ; margin-bottom: 25px;" onclick="prepareNewPost()">
                         <i class="fa fa-plus"></i> New Memory
                     </button>
                 </div>

@@ -29,68 +29,125 @@
             min-height: 100vh;
         }
 
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: url('<c:url value="/views/assets/images/underwater-theme-bg.png"/>') top center/cover no-repeat;
-            z-index: -2;
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--bg-deep);
+            color: var(--text-light);
+            margin: 0; padding: 0;
+            overflow-x: hidden;
         }
 
-        /* Sunlight Rays Sync */
-        .sun-rays-container {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -1;
-            pointer-events: none;
+        /* Immersive Background System */
+        .ocean-bg { position: fixed; inset: 0; background: radial-gradient(circle at 50% 0%, #001f3f, #000a12); z-index: -2; }
+        .sun-rays { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; opacity: 0.3; }
+        .ray { position: absolute; top: -20%; width: 100px; height: 150%; background: linear-gradient(180deg, rgba(255,255,255,0.1) 0%, transparent 80%); filter: blur(50px); transform-origin: top center; animation: ray-swing 10s ease-in-out infinite alternate; }
+        @keyframes ray-swing { 0% { transform: rotate(-8deg) scaleX(1); opacity: 0.3; } 100% { transform: rotate(8deg) scaleX(0.8); opacity: 0.6; } }
+
+        .wrapper { display: flex; min-height: 100vh; position: relative; z-index: 1; }
+
+        /* Floating Super-Glass Header */
+        .header { 
+            position: fixed; top: 0; left: 0; right: 0; height: 75px; 
+            background: rgba(0, 0, 0, 0.4); 
+            backdrop-filter: blur(15px); 
+            -webkit-backdrop-filter: blur(15px);
+            display: flex; align-items: center; justify-content: space-between; 
+            padding: 0 40px; z-index: 1000; 
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08); 
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .main-content { flex: 1; margin-left: 240px; padding: 130px 40px 60px; }
+
+        /* Dashboard Hero Section (High Contrast Fix) */
+        .dash-header { 
+            display: flex; justify-content: space-between; align-items: center; 
+            margin-bottom: 60px; 
+            padding: 60px 50px; 
+            background: linear-gradient(180deg, rgba(0,0,0,0.6) 0%, transparent 100%);
+            border-radius: 32px; 
+            border: 1px solid rgba(255,255,255,0.15);
+            position: relative;
             overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.4);
         }
 
-        .ray {
-            position: absolute;
-            top: -10%;
-            width: 80px;
-            height: 150%;
-            background: linear-gradient(180deg, rgba(255, 230, 120, 0.15) 0%, rgba(255, 220, 80, 0.08) 40%, rgba(255, 255, 255, 0) 100%);
-            filter: blur(20px);
-            transform-origin: top center;
-            border-radius: 50%;
-            animation: ray-swing 6s ease-in-out infinite alternate;
+        .dash-title-luxe {
+            font-size: 68px; font-weight: 950; letter-spacing: -3px; line-height: 0.8;
+            color: #fff;
+            text-shadow: 0 10px 40px rgba(0,0,0,0.9), 0 0 20px rgba(255,255,255,0.2);
+            text-transform: uppercase;
+        }
+        .dash-subtitle-luxe {
+            font-size: 13px; font-weight: 900; color: rgba(255,255,255,1);
+            text-transform: uppercase; letter-spacing: 2.5px;
+            margin-top: 15px;
+            text-shadow: 0 4px 15px rgba(0,0,0,0.9);
         }
 
-        .ray-1 { left: 5%; width: 60px; animation-duration: 7s; animation-delay: 0s; opacity: 0.6; }
-        .ray-2 { left: 18%; width: 100px; animation-duration: 9s; animation-delay: 1s; opacity: 0.4; }
-        .ray-3 { left: 33%; width: 70px; animation-duration: 6s; animation-delay: 2s; opacity: 0.7; }
-        .ray-4 { left: 52%; width: 90px; animation-duration: 8s; animation-delay: 0.5s; opacity: 0.5; }
-        .ray-5 { left: 68%; width: 65px; animation-duration: 7.5s; animation-delay: 1.5s; opacity: 0.65; }
-        .ray-6 { left: 82%; width: 110px; animation-duration: 10s; animation-delay: 3s; opacity: 0.4; }
-
-        @keyframes ray-swing {
-            0% { transform: rotate(-6deg) scaleX(0.9); opacity: 0.1; }
-            50% { opacity: 0.8; }
-            100% { transform: rotate(8deg) scaleX(0.85); opacity: 0.15; }
+        /* Search & Filter Luxe (High Visibility) */
+        .search-container { position: relative; width: 440px; }
+        .search-container input { 
+            background: rgba(0, 0, 0, 0.7) !important; 
+            backdrop-filter: blur(15px);
+            border: 2px solid rgba(255, 255, 255, 0.3); 
+            border-radius: 100px; color: #fff !important; 
+            padding: 22px 60px 22px 30px; width: 100%; 
+            font-weight: 700; font-size: 16px;
+            transition: var(--transition);
         }
+        .search-container input::placeholder { color: rgba(255,255,255,0.6); }
+        .search-container i { position: absolute; right: 25px; top: 50%; transform: translateY(-50%); color: #fff; font-size: 22px; text-shadow: 0 0 15px var(--accent-red); }
 
-        .wrapper { display: flex; min-height: 100vh; }
-        .header { position: fixed; top: 0; left: 0; right: 0; height: 70px; background: #161c28; display: flex; align-items: center; justify-content: space-between; padding: 0 30px; z-index: 1000; border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
+        .btn-luxe-filter { 
+            background: linear-gradient(135deg, #e63946 0%, #b91c1c 100%) !important; 
+            color: #fff !important; 
+            border: 1px solid rgba(255, 255, 255, 0.3) !important; 
+            padding: 16px 40px; 
+            border-radius: 100px; 
+            font-weight: 900; 
+            font-size: 14px; 
+            text-transform: uppercase; 
+            letter-spacing: 3px; 
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+            cursor: pointer; 
+            display: flex; 
+            align-items: center; 
+            box-shadow: 0 10px 30px rgba(230, 57, 70, 0.5), inset 0 0 10px rgba(255,255,255,0.2);
+            backdrop-filter: blur(5px);
+			gap:5px;
+			margin-left: 250px;
+			margin-top: 30px;
+        }
+        .btn-luxe-filter:hover { 
+            transform: translateY(-5px) scale(1.05); 
+            box-shadow: 0 20px 50px rgba(230, 57, 70, 0.8); 
+            border-color: #fff !important;
+            letter-spacing: 4px;
+        }
+        .btn-luxe-filter i { font-size: 16px; text-shadow: 0 0 10px rgba(255,255,255,0.5); }
 
-        .main-content { flex: 1; margin-left: 240px; padding: 100px 30px 40px; transition: margin-left 0.3s; }
+        /* Modern Filter Nav */
+        .filter-nav { display: flex; gap: 15px; margin-bottom: 40px; overflow-x: auto; padding-bottom: 10px; scrollbar-width: none; }
+        .filter-item { 
+            padding: 12px 30px; background: rgba(255,255,255,0.03); 
+            border: 1px solid var(--glass-border); border-radius: 100px; 
+            color: var(--text-dim); font-weight: 800; font-size: 12px; 
+            text-transform: uppercase; letter-spacing: 2px; cursor: pointer; 
+            transition: var(--transition); white-space: nowrap;
+        }
+        .filter-item:hover { color: #fff; background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.2); }
+        .filter-item.active { background: var(--accent-red); color: #fff; border-color: var(--accent-red); box-shadow: 0 10px 20px rgba(230, 57, 70, 0.3); }
 
-        /* Dashboard Components */
-        .dash-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(15px); padding: 40px 50px; border-radius: 24px; border: 1px solid rgba(255, 255, 255, 0.1); }
-
-        .search-container { position: relative; width: 350px; }
-        .search-container input { background: rgba(0, 0, 0, 0.4); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 12px; color: #fff; padding: 12px 40px 12px 20px; width: 100%; transition: var(--transition); }
-        .search-container i { position: absolute; right: 15px; top: 50%; transform: translateY(-50%); color: var(--text-muted); }
-
-        /* Grid & Cards */
-        .category-section { margin-bottom: 50px; }
-        .category-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 25px; border-left: 4px solid var(--primary-blue); padding-left: 15px; }
-        .category-title { font-size: 24px; font-weight: 800; margin: 0; text-transform: uppercase; letter-spacing: 1px; }
-        
-        .package-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px; }
-        .package-card { background: var(--dark-card); backdrop-filter: blur(20px); border-radius: 20px; overflow: hidden; border: 1px solid rgba(255,255,255,0.08); transition: var(--transition); position: relative; display: flex; flex-direction: column; }
-        .package-card:hover { transform: translateY(-8px); border-color: rgba(230, 57, 70, 0.5); box-shadow: 0 15px 40px rgba(230, 57, 70, 0.2); }
+        /* Grid & Cards (Elite Style) */
+        .package-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 35px; }
+        .package-card { 
+            background: rgba(255, 255, 255, 0.02); 
+            backdrop-filter: blur(25px); 
+            border-radius: 30px; overflow: hidden; 
+            border: 1px solid var(--glass-border); 
+            transition: var(--transition); position: relative; 
+        }
+        .package-card:hover { transform: translateY(-12px) scale(1.02); border-color: rgba(230, 57, 70, 0.4); box-shadow: 0 30px 60px rgba(0,0,0,0.5); }
 
         .package-img-wrapper { position: relative; width: 100%; aspect-ratio: 16 / 10; overflow: hidden; background: #000; }
         .package-img, .package-video { width: 100%; height: 100%; object-fit: cover; transition: 0.5s ease; position: absolute; top: 0; left: 0; }
@@ -140,9 +197,70 @@
         .btn-reset-filters { width: 100%; background: rgba(255,255,255,0.05); color: #fff; border: 1px solid rgba(255,255,255,0.1); padding: 15px; border-radius: 14px; font-weight: 700; font-size: 14px; transition: 0.3s; }
         .btn-reset-filters:hover { background: rgba(255,255,255,0.1); }
 
-        /* Results Meta */
-        .results-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; padding-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.05); }
-        .sort-select { background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 8px 15px; border-radius: 10px; font-weight: 700; cursor: pointer; }
+        .btn-luxe-filter { background: rgba(255,255,255,0.05); border: 1px solid var(--accent-red); color: #fff; padding: 12px 25px; border-radius: 100px; font-weight: 800; font-size: 14px; transition: 0.3s; cursor: pointer; display: flex; align-items: center; }
+        .btn-luxe-filter:hover { background: var(--accent-red); box-shadow: 0 0 20px rgba(230, 57, 70, 0.4); transform: translateY(-2px); }
+
+        /* Unified Dashboard Console (High Visibility Ignite) */
+        .dashboard-console { 
+            background: rgba(0, 0, 0, 0.5); 
+            backdrop-filter: blur(50px);
+            border-radius: 35px; 
+            border: 2px solid rgba(255, 255, 255, 0.3); 
+            box-shadow: 0 40px 120px rgba(0,0,0,0.8), inset 0 0 20px rgba(255,255,255,0.05);
+            margin-bottom: 50px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .console-top { 
+            display: flex; justify-content: space-between; align-items: center; 
+            padding: 60px 60px 45px; 
+        }
+
+        .console-divider { 
+            height: 2px; 
+            background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.4) 50%, transparent 100%);
+            width: 100%;
+        }
+
+        .console-bottom { 
+            display: flex; justify-content: space-between; align-items: center; 
+            padding: 30px 60px; 
+            background: rgba(255,255,255,0.04);
+        }
+
+        .dash-title-luxe {
+            font-size: 72px; font-weight: 950; letter-spacing: -4px; line-height: 0.8;
+            color: #fff !important; 
+            text-shadow: 0 0 30px rgba(255,255,255,0.4), 0 10px 40px rgba(0,0,0,0.9); 
+            text-transform: uppercase;
+        }
+        .dash-subtitle-luxe {
+            font-size: 14px; font-weight: 900; color: #fff !important;
+            text-transform: uppercase; letter-spacing: 3px; margin-top: 18px;
+            text-shadow: 0 4px 15px rgba(0,0,0,1);
+        }
+        
+        .search-container { position: relative; width: 460px; }
+        .search-container input { 
+            background: rgba(255, 255, 255, 0.1) !important; 
+            border: 2px solid rgba(255, 255, 255, 0.4) !important; 
+            border-radius: 100px; color: #fff !important; padding: 22px 60px 22px 35px; width: 100%; 
+            font-weight: 800; font-size: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+        }
+        .search-container input::placeholder { color: rgba(255,255,255,0.7); }
+        .search-container i { color: #fff !important; font-size: 22px; text-shadow: 0 0 15px rgba(230, 57, 70, 0.8); }
+
+        .sort-select { 
+            background: #0f172a !important; border: 2px solid rgba(255,255,255,0.3) !important; 
+            color: #fff !important; padding: 14px 25px; border-radius: 14px; 
+            font-weight: 950; cursor: pointer; min-width: 200px; font-size: 14px;
+            appearance: auto;
+        }
+        .sort-select option { background: #0f172a !important; color: #fff !important; }
+        .results-count-luxe { font-size: 18px; font-weight: 950; letter-spacing: 3px; text-transform: uppercase; color: #fff !important; text-shadow: 0 4px 20px rgba(0,0,0,0.8); }
+        .meta-label-luxe { font-size: 11px; font-weight: 950; color: rgba(255,255,255,0.9) !important; text-transform: uppercase; letter-spacing: 2px; text-shadow: 0 2px 10px rgba(0,0,0,1); }
 
         @media (max-width: 991px) {
             .main-content { margin-left: 0; padding: 90px 20px 40px; }
@@ -153,31 +271,25 @@
 </head>
 
 <body class="premium-theme">
-    <!-- Sunlight Rays Sync -->
-    <div class="sun-rays-container">
-        <div class="ray ray-1"></div>
-        <div class="ray ray-2"></div>
-        <div class="ray ray-3"></div>
-        <div class="ray ray-4"></div>
-        <div class="ray ray-5"></div>
-        <div class="ray ray-6"></div>
+    <div class="ocean-bg"></div>
+    <div class="sun-rays">
+        <div class="ray" style="left: 10%; animation-delay: 0s;"></div>
+        <div class="ray" style="left: 35%; animation-delay: 2s;"></div>
+        <div class="ray" style="left: 65%; animation-delay: 1s;"></div>
+        <div class="ray" style="left: 85%; animation-delay: 3s;"></div>
     </div>
 
     <!-- Rough Edge Filter -->
-    <svg width="0" height="0" style="position:absolute;z-index:-1;">
-        <filter id="rough-edge">
-            <feTurbulence type="fractalNoise" baseFrequency="0.05" numOctaves="3" result="noise" />
-            <feDisplacementMap in="SourceGraphic" in2="noise" scale="8" xChannelSelector="R" yChannelSelector="G" />
-        </filter>
-    </svg>
+    <svg width="0" height="0" style="position:absolute;z-index:-1;"><filter id="water-rough"><feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="3" result="noise" /><feDisplacementMap in="SourceGraphic" in2="noise" scale="5" xChannelSelector="R" yChannelSelector="G" /></filter></svg>
+
     <header class="header">
         <div class="header-logo">
             <a href="<c:url value='/'/>"><img src="<c:url value='/views/assets/images/logo.png'/>" style="height: 35px;"></a>
         </div>
         <div class="d-flex align-items-center gap-3">
-            <span class="fw-bold">Hi, ${user.name}</span>
+            <span class="fw-bold">EXPLORER: ${user.name}</span>
             <c:set var="defaultAvatar" value="https://ui-avatars.com/api/?name=${user.name}&background=e63946&color=fff" />
-            <img src="${not empty user.profilePhoto ? user.profilePhoto : defaultAvatar}" style="width: 32px; height: 32px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.2);">
+            <img src="${not empty user.profilePhoto ? user.profilePhoto : defaultAvatar}" style="width: 38px; height: 38px; border-radius: 12px; border: 2px solid var(--accent-red); box-shadow: 0 0 15px rgba(230, 57, 70, 0.3);">
         </div>
     </header>
 
@@ -186,21 +298,67 @@
         
         <main class="main-content">
             <form action="<c:url value='/user/dashboard'/>" method="GET" id="filterForm">
-                <div class="dash-header">
-                    <div>
-                        <h1 class="fw-bold m-0" style="font-size: 38px;">Dashboard</h1>
-                        <p class="text-white-50 m-0">Discover amazing travel packages and plan your next adventure.</p>
-                    </div>
-                    <div class="d-flex gap-3 align-items-center">
-                        <div class="search-container">
-                            <input type="text" name="search" value="${currentParams.search}" placeholder="Search trips..." oninput="handleSearch(this.value)">
-                            <i class="fa fa-search"></i>
+                <div class="dashboard-console">
+                    <!-- Top Deck -->
+                    <div class="console-top">
+                        <div>
+                            <h1 class="dash-title-luxe m-0">DASHBOARD</h1>
+                            <p class="dash-subtitle-luxe m-0">Curated Expeditions for the Modern Adventurer</p>
                         </div>
-                        <button type="button" class="btn btn-outline-light rounded-pill px-4" onclick="toggleFilter()">
-                            <i class="fa fa-sliders me-2"></i> Filters
-                        </button>
+                        <div class="d-flex gap-4 align-items-center">
+                            <div class="search-container">
+                                <input type="text" name="search" id="searchInput" value="${currentParams.search}" placeholder="Search destinations..." oninput="searchTrips()">
+                                <i class="fa fa-search"></i>
+                            </div>
+                            <button type="button" class="btn-luxe-filter" onclick="toggleFilter()">
+                                <i class="fa fa-sliders me-2"></i> REFINE
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Diamond Divider -->
+                    <div class="console-divider"></div>
+
+                    <!-- Bottom Deck -->
+                    <div class="console-bottom">
+                        <div class="results-count-luxe">EXPLORING <span class="text-danger">${totalCount}</span> ADVENTURES</div>
+                        <div class="d-flex gap-5 align-items-center">
+                            <div class="d-flex align-items-center gap-3">
+                                <span class="meta-label-luxe">Group by:</span>
+                                <select name="groupBy" class="sort-select" onchange="this.form.submit()">
+                                    <option value="none" ${currentParams.groupBy == 'none' ? 'selected' : ''}>No Grouping</option>
+                                    <option value="category" ${currentParams.groupBy == 'category' ? 'selected' : ''}>Activity</option>
+                                    <option value="adventure" ${currentParams.groupBy == 'adventure' ? 'selected' : ''}>Adventures</option>
+                                    <option value="stay" ${currentParams.groupBy == 'stay' ? 'selected' : ''}>Stay Type</option>
+                                    <option value="transport" ${currentParams.groupBy == 'transport' ? 'selected' : ''}>Transport</option>
+                                    <option value="travelerType" ${currentParams.groupBy == 'travelerType' ? 'selected' : ''}>Audience</option>
+                                </select>
+                            </div>
+                            <div class="d-flex align-items-center gap-3">
+                                <span class="meta-label-luxe">Sort by:</span>
+                                <select name="sortBy" class="sort-select" onchange="this.form.submit()">
+                                    <option value="latest" ${currentParams.sortBy == 'latest' ? 'selected' : ''}>Latest Arrivals</option>
+                                    <option value="priceLow" ${currentParams.sortBy == 'priceLow' ? 'selected' : ''}>Value: Low to High</option>
+                                    <option value="priceHigh" ${currentParams.sortBy == 'priceHigh' ? 'selected' : ''}>Luxe: High to Low</option>
+                                </select>
+                            </div>
+                        </div>
                     </div>
                 </div>
+
+                <!-- Active Filters Context -->
+                <c:if test="${not empty currentParams.search || currentParams.destination != 'All' || currentParams.category != 'All' || currentParams.duration != 'All' || currentParams.departureCity != 'All' || currentParams.month != 'All'}">
+                    <div class="d-flex align-items-center gap-3 mb-4 ps-2">
+                        <span class="meta-label-luxe opacity-50">Active Filters:</span>
+                        <c:if test="${not empty currentParams.search}">
+                            <span class="badge bg-danger text-white px-3 py-2 rounded-pill shadow-sm" style="font-size: 11px; font-weight: 800; letter-spacing: 1px;">
+                                SEARCH: "${currentParams.search}" 
+                                <a href="<c:url value='/user/dashboard?search='/>" class="text-white ms-2"><i class="fa fa-times-circle"></i></a>
+                            </span>
+                        </c:if>
+                        <a href="<c:url value='/user/dashboard'/>" class="text-white-50 small fw-bold text-decoration-none border-bottom border-secondary ms-2 pb-1">Clear All</a>
+                    </div>
+                </c:if>
 
                 <!-- Filter Sidebar (Photo Sync) -->
                 <div class="filter-overlay" id="filterOverlay" onclick="toggleFilter()"></div>
@@ -276,22 +434,6 @@
                     <button type="button" class="btn-reset-filters" onclick="window.location.href='/user/dashboard'">Reset</button>
                 </div>
 
-                <div class="results-meta">
-                    <div class="fw-bold">EXPLORING <span class="text-danger">${totalCount}</span> ADVENTURES</div>
-                    <div class="d-flex gap-3 align-items-center">
-                        <div class="small fw-bold text-white-50">Group by:</div>
-                        <select name="groupBy" class="sort-select" onchange="this.form.submit()">
-                            <option value="travelerType" ${currentParams.groupBy == 'travelerType' ? 'selected' : ''}>Traveler Type</option>
-                            <option value="activity" ${currentParams.groupBy == 'activity' ? 'selected' : ''}>Activity</option>
-                        </select>
-                        <div class="small fw-bold text-white-50">Sort by:</div>
-                        <select name="sortBy" class="sort-select" onchange="this.form.submit()">
-                            <option value="latest" ${currentParams.sortBy == 'latest' ? 'selected' : ''}>Latest</option>
-                            <option value="priceLow" ${currentParams.sortBy == 'priceLow' ? 'selected' : ''}>Price: Low to High</option>
-                        </select>
-                    </div>
-                </div>
-
                 <c:choose>
                     <c:when test="${not empty groupedPackages}">
                         <c:forEach var="entry" items="${groupedPackages}">
@@ -351,9 +493,15 @@
                         </c:forEach>
                     </c:when>
                     <c:otherwise>
-                        <div class="text-center py-5 opacity-50">
-                            <i class="fa fa-search fa-4x mb-3"></i>
-                            <h3>No Adventures Found</h3>
+                        <div class="text-center py-5 mt-5">
+                            <div class="mb-5">
+                                <i class="fa fa-compass fa-5x text-white-50 opacity-25"></i>
+                            </div>
+                            <h2 class="fw-black text-white" style="font-size: 32px; letter-spacing: 2px;">NO ADVENTURES FOUND</h2>
+                            <p class="text-white-50 mb-4">We couldn't find any trips matching your current search criteria.</p>
+                            <a href="<c:url value='/user/dashboard'/>" class="btn-luxe-filter d-inline-flex">
+                                EXPLORE ALL PACKAGES
+                            </a>
                         </div>
                     </c:otherwise>
                 </c:choose>

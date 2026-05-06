@@ -14,7 +14,18 @@
         :root { --primary-blue: #e63946; --text-muted: #7e8c9a; --transition: all 0.3s ease; }
         body.yt-dark { background: #0b0f18; color: #fff; font-family: 'Dosis', sans-serif; margin: 0; padding: 0; overflow: hidden; height: 100vh; }
 
-        .main-content { margin-left: 240px; height: 100vh; display: flex; flex-direction: column; padding: 0; background: transparent; }
+        .header { 
+            position: fixed; top: 0; left: 0; right: 0; height: 75px; 
+            background: rgba(0, 0, 0, 0.4); 
+            backdrop-filter: blur(15px); 
+            -webkit-backdrop-filter: blur(15px);
+            display: flex; align-items: center; justify-content: space-between; 
+            padding: 0 40px; z-index: 1000; 
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08); 
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .main-content { margin-left: 240px; height: calc(100vh - 75px); display: flex; flex-direction: column; padding: 0; background: transparent; margin-top: 75px; }
 
         /* Top Header */
         .page-header { padding: 25px 40px; border-bottom: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.3); backdrop-filter: blur(10px); display: flex; align-items: center; justify-content: space-between; box-shadow: 0 4px 20px rgba(0,0,0,0.2); }
@@ -66,6 +77,17 @@
 </head>
 
 <body class="yt-dark premium-theme">
+    <header class="header">
+        <div class="header-logo"><a href="<c:url value='/'/>"><img src="<c:url value='/views/assets/images/logo.png'/>" style="height: 35px;"></a></div>
+        <div style="display: flex; align-items: center; gap: 20px;">
+                <div style="display: flex; align-items: center; gap: 15px; cursor: pointer;">
+                    <span style="font-weight: 700;">Hi, ${user.name}</span>
+                    <c:set var="defaultAvatar" value="https://ui-avatars.com/api/?name=${user.name}&background=f04c26&color=fff" />
+                    <img src="${not empty user.profilePhoto ? user.profilePhoto : defaultAvatar}" style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover; border: 2px solid rgba(255,255,255,0.2);">
+                </div>
+        </div>
+    </header>
+
     <!-- Sunlight Rays -->
     <div class="sun-rays-container">
         <div class="ray ray-1"></div>
@@ -81,7 +103,7 @@
     <!-- Main Content -->
     <div class="main-content">
         <div class="page-header">
-            <h2>My Messages</h2>
+            <h2>Messaging Center</h2>
             <span class="badge" style="background: rgba(34, 197, 94, 0.1); color: #22c55e; padding: 8px 15px; border-radius: 20px; font-weight: 700;">Global Inbox</span>
         </div>
 

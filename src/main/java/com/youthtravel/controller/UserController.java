@@ -13,6 +13,10 @@ import com.youthtravel.service.SavedPackageService;
 import com.youthtravel.service.TripService;
 import com.youthtravel.service.UserService;
 import com.youthtravel.repository.UserRepository;
+import com.youthtravel.entity.Review;
+import com.youthtravel.repository.ReviewRepository;
+import com.youthtravel.repository.TripScheduleRepository;
+import org.springframework.http.ResponseEntity;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -261,21 +265,22 @@ public class UserController {
     @GetMapping("/dashboard")
     public String showDashboard(
             @RequestParam(required = false) String destination,
-            @RequestParam(required = false) String tripType,
+            @RequestParam(required = false) String category,
             @RequestParam(required = false) String departureCity,
-            @RequestParam(required = false) String travelMonth,
+            @RequestParam(required = false) String month,
             @RequestParam(required = false) String budget,
             @RequestParam(required = false) String duration,
             @RequestParam(required = false, defaultValue = "0") Double minPrice,
-            @RequestParam(required = false, defaultValue = "100000") Double maxPrice,
+            @RequestParam(required = false, defaultValue = "1000000") Double maxPrice,
             @RequestParam(required = false) String search,
             @RequestParam(required = false, defaultValue = "latest") String sortBy,
-            @RequestParam(required = false, defaultValue = "travelerType") String groupBy,
+            @RequestParam(required = false, defaultValue = "none") String groupBy,
             HttpSession session, Model model) {
         User user = (User) session.getAttribute("user");
         if (user == null) {
             return "redirect:/user/login";
         }
+        
         Map<String, Object> dashboardData = new HashMap<>();
         dashboardData.put("fullName", user.getFullName());
         dashboardData.put("profilePct", 85);
@@ -299,42 +304,51 @@ public class UserController {
             calculateTripAvailability(trip);
         }
 
-        // Apply Filters
+        // Apply Filters with Smart "All" detection
         List<Trip> filteredTrips = allTrips.stream()
                 .filter(t -> t != null && "Active".equalsIgnoreCase(t.getStatus()))
                 .filter(t -> {
                     boolean match = true;
-                    if (destination != null && !destination.isEmpty()
-                            && !"All Destinations".equalsIgnoreCase(destination)) {
-                        match = match && t.getDestination().toLowerCase().contains(destination.toLowerCase());
+                    
+                    // Destination Filter
+                    if (destination != null && !destination.isEmpty() && !"All".equalsIgnoreCase(destination) && !"All Destinations".equalsIgnoreCase(destination)) {
+                        match = match && t.getDestination() != null && t.getDestination().toLowerCase().contains(destination.toLowerCase());
                     }
-                    if (tripType != null && !tripType.isEmpty() && !"All Types".equalsIgnoreCase(tripType)) {
-                        String tt = tripType.toLowerCase();
-                        boolean catMatch = t.getTravelerCategory() != null && t.getTravelerCategory().toLowerCase().contains(tt);
-                        boolean subMatch = t.getTravelerSubCategory() != null && t.getTravelerSubCategory().toLowerCase().contains(tt);
-                        match = match && (catMatch || subMatch);
+                    
+                    // Category/Type Filter
+                    if (category != null && !category.isEmpty() && !"All".equalsIgnoreCase(category) && !"All Types".equalsIgnoreCase(category)) {
+                        String cat = category.toLowerCase();
+                        boolean mainCat = t.getCategory() != null && t.getCategory().toLowerCase().contains(cat);
+                        boolean subCat = t.getSubCategory() != null && t.getSubCategory().toLowerCase().contains(cat);
+                        boolean travelerCat = t.getTravelerCategory() != null && t.getTravelerCategory().toLowerCase().contains(cat);
+                        match = match && (mainCat || subCat || travelerCat);
                     }
-                    if (departureCity != null && !departureCity.isEmpty() && !"Any".equalsIgnoreCase(departureCity) && !"Any City".equalsIgnoreCase(departureCity)) {
+                    
+                    // Departure City Filter
+                    if (departureCity != null && !departureCity.isEmpty() && !"All".equalsIgnoreCase(departureCity) && !"Any".equalsIgnoreCase(departureCity)) {
                         match = match && t.getPickupPoints() != null && t.getPickupPoints().toLowerCase().contains(departureCity.toLowerCase());
                     }
-                    if (travelMonth != null && !travelMonth.isEmpty() && !"Any".equalsIgnoreCase(travelMonth) && !"Any Month".equalsIgnoreCase(travelMonth)) {
-                        // Backend logic for Travel Month filtering to be implemented via TripScheduleRepository
+                    
+                    // Month Filter (Implementation check)
+                    if (month != null && !month.isEmpty() && !"All".equalsIgnoreCase(month) && !"Any".equalsIgnoreCase(month)) {
+                        // For now, matching against any specific month text in description or custom fields if exists
                         // match = match && ...
                     }
-                    if (duration != null && !duration.isEmpty() && !"All Durations".equalsIgnoreCase(duration)) {
+                    
+                    // Duration Filter
+                    if (duration != null && !duration.isEmpty() && !"All".equalsIgnoreCase(duration) && !"All Durations".equalsIgnoreCase(duration)) {
                         int days = t.getDays() != null ? t.getDays() : 0;
-                        if (duration.contains("1-3"))
-                            match = match && (days >= 1 && days <= 3);
-                        else if (duration.contains("4-7"))
-                            match = match && (days >= 4 && days <= 7);
-                        else if (duration.contains("7+"))
-                            match = match && (days > 7);
+                        if (duration.contains("1-3")) match = match && (days >= 1 && days <= 3);
+                        else if (duration.contains("4-7")) match = match && (days >= 4 && days <= 7);
+                        else if (duration.contains("7+")) match = match && (days > 7);
                     }
+                    
+                    // Search Logic
                     if (search != null && !search.isEmpty()) {
                         String s = search.toLowerCase();
-                        match = match && (t.getTitle().toLowerCase().contains(s)
-                                || t.getDestination().toLowerCase().contains(s));
+                        match = match && (t.getTitle().toLowerCase().contains(s) || t.getDestination().toLowerCase().contains(s));
                     }
+                    
                     // Price Range
                     match = match && (t.getPrice() != null && t.getPrice() >= minPrice && t.getPrice() <= maxPrice);
 
@@ -357,33 +371,41 @@ public class UserController {
             });
         }
 
-        // Grouping logic
+        // Grouping logic (Diamond Standard - Multi-Logistics)
         Map<String, List<Trip>> groupedPackages = new HashMap<>();
-        for (Trip trip : filteredTrips) {
-            if ("transport".equals(groupBy)) {
-                String cat = trip.getTransportCategory() != null && !trip.getTransportCategory().trim().isEmpty() ? trip.getTransportCategory().trim() : "Other Transport";
-                groupedPackages.computeIfAbsent(cat, k -> new ArrayList<>()).add(trip);
-            } else if ("stay".equals(groupBy)) {
-                String cat = trip.getStayCategory() != null && !trip.getStayCategory().trim().isEmpty() ? trip.getStayCategory().trim() : "Other Stay";
-                groupedPackages.computeIfAbsent(cat, k -> new ArrayList<>()).add(trip);
-            } else if ("activity".equals(groupBy)) {
-                String cat = trip.getCategory() != null && !trip.getCategory().trim().isEmpty() ? trip.getCategory().trim() : "Other Activities";
-                groupedPackages.computeIfAbsent(cat, k -> new ArrayList<>()).add(trip);
-            } else if ("adventure".equals(groupBy)) {
-                String cat = trip.getSubCategory() != null && !trip.getSubCategory().trim().isEmpty() ? trip.getSubCategory().trim() : "Other Adventures";
-                groupedPackages.computeIfAbsent(cat, k -> new ArrayList<>()).add(trip);
-            } else {
-                // Default: travelerType
-                if (trip.getTravelerCategory() != null && !trip.getTravelerCategory().trim().isEmpty()) {
-                    String[] cats = trip.getTravelerCategory().split(",");
-                    for (String cat : cats) {
-                        String trimmedCat = cat.trim();
-                        if (!trimmedCat.isEmpty()) {
-                            groupedPackages.computeIfAbsent(trimmedCat, k -> new ArrayList<>()).add(trip);
+        
+        if ("none".equals(groupBy) || groupBy == null || groupBy.isEmpty()) {
+            groupedPackages.put("All Adventures", filteredTrips);
+        } else {
+            for (Trip trip : filteredTrips) {
+                String groupKey = "Other Expeditions";
+                
+                if ("transport".equals(groupBy)) {
+                    groupKey = trip.getTransportCategory() != null && !trip.getTransportCategory().isEmpty() ? trip.getTransportCategory() : "Local Transport";
+                    groupedPackages.computeIfAbsent(groupKey, k -> new ArrayList<>()).add(trip);
+                } else if ("stay".equals(groupBy)) {
+                    groupKey = trip.getStayCategory() != null && !trip.getStayCategory().isEmpty() ? trip.getStayCategory() : "Standard Stays";
+                    groupedPackages.computeIfAbsent(groupKey, k -> new ArrayList<>()).add(trip);
+                } else if ("adventure".equals(groupBy)) {
+                    groupKey = trip.getSubCategory() != null && !trip.getSubCategory().isEmpty() ? trip.getSubCategory() : "Wild Adventures";
+                    groupedPackages.computeIfAbsent(groupKey, k -> new ArrayList<>()).add(trip);
+                } else if ("category".equals(groupBy) || "activity".equals(groupBy)) {
+                    groupKey = trip.getCategory() != null && !trip.getCategory().isEmpty() ? trip.getCategory() : "General Activity";
+                    groupedPackages.computeIfAbsent(groupKey, k -> new ArrayList<>()).add(trip);
+                } else if ("travelerType".equals(groupBy)) {
+                    if (trip.getTravelerCategory() != null && !trip.getTravelerCategory().trim().isEmpty()) {
+                        String[] cats = trip.getTravelerCategory().split(",");
+                        for (String cat : cats) {
+                            String trimmedCat = cat.trim();
+                            if (!trimmedCat.isEmpty()) {
+                                groupedPackages.computeIfAbsent(trimmedCat, k -> new ArrayList<>()).add(trip);
+                            }
                         }
+                    } else {
+                        groupedPackages.computeIfAbsent("General Audience", k -> new ArrayList<>()).add(trip);
                     }
                 } else {
-                    groupedPackages.computeIfAbsent("General Category", k -> new ArrayList<>()).add(trip);
+                    groupedPackages.computeIfAbsent("All Journeys", k -> new ArrayList<>()).add(trip);
                 }
             }
         }
@@ -403,16 +425,16 @@ public class UserController {
         // Pass back params for UI state
         Map<String, Object> currentParams = new HashMap<>();
         currentParams.put("destination", destination != null ? destination : "");
-        currentParams.put("tripType", tripType != null ? tripType : "");
+        currentParams.put("category", category != null ? category : "");
         currentParams.put("departureCity", departureCity != null ? departureCity : "");
-        currentParams.put("travelMonth", travelMonth != null ? travelMonth : "");
+        currentParams.put("month", month != null ? month : "");
         currentParams.put("budget", budget != null ? budget : "");
         currentParams.put("duration", duration != null ? duration : "");
         currentParams.put("minPrice", minPrice);
         currentParams.put("maxPrice", maxPrice);
         currentParams.put("search", search != null ? search : "");
         currentParams.put("sortBy", sortBy != null ? sortBy : "latest");
-        currentParams.put("groupBy", groupBy != null ? groupBy : "travelerType");
+        currentParams.put("groupBy", groupBy != null ? groupBy : "none");
         
         model.addAttribute("currentParams", currentParams);
 
@@ -769,29 +791,73 @@ public class UserController {
     }
 
     @PostMapping("/booking/{id}/review")
-    public String submitReview(@PathVariable Long id, @RequestParam("rating") Integer rating, 
-            @RequestParam("reviewText") String reviewText, HttpSession session) {
+    @ResponseBody
+    public ResponseEntity<String> submitReview(@PathVariable Long id, @RequestBody Map<String, Object> payload, HttpSession session) {
         User user = (User) session.getAttribute("user");
-        if (user == null) return "redirect:/user/login";
+        if (user == null) return ResponseEntity.status(401).body("Unauthorized");
 
-        java.util.Optional<com.youthtravel.entity.Booking> bookingOpt = bookingService.getBookingById(id);
+        Optional<Booking> bookingOpt = bookingService.getBookingById(id);
         if (bookingOpt.isPresent()) {
-            com.youthtravel.entity.Booking booking = bookingOpt.get();
-            if (booking.getCustomerEmail().equals(user.getEmail()) && "Completed".equals(booking.getStatus()) && !booking.isReviewed()) {
-                com.youthtravel.entity.Review review = new com.youthtravel.entity.Review();
-                review.setUser(user);
-                review.setTrip(booking.getTrip());
-                review.setRating(rating);
-                review.setReviewText(reviewText);
-                
-                reviewRepository.save(review);
-                
-                booking.setReviewed(true);
-                bookingService.saveBooking(booking);
-                
-                return "redirect:/user/my-bookings";
+            Booking booking = bookingOpt.get();
+            if (booking.isReviewed()) return ResponseEntity.status(400).body("Already reviewed");
+
+            Review review = new Review();
+            review.setUser(user);
+            review.setTrip(booking.getTrip());
+            review.setRating(Integer.parseInt(payload.get("rating").toString()));
+            review.setReviewText(payload.get("reviewText").toString());
+            
+            reviewRepository.save(review);
+            booking.setReviewed(true);
+            bookingService.saveBooking(booking);
+            
+            return ResponseEntity.ok("Review saved");
+        }
+        return ResponseEntity.status(404).body("Booking not found");
+    }
+
+    @GetMapping("/booking/{id}/review/data")
+    @ResponseBody
+    public ResponseEntity<Review> getReviewData(@PathVariable Long id, HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        if (user == null) return ResponseEntity.status(401).build();
+
+        Optional<Booking> bookingOpt = bookingService.getBookingById(id);
+        if (bookingOpt.isPresent()) {
+            Booking booking = bookingOpt.get();
+            // Find review by user and trip
+            List<Review> reviews = reviewRepository.findByUserAndTrip(user, booking.getTrip());
+            if (!reviews.isEmpty()) {
+                return ResponseEntity.ok(reviews.get(0));
             }
         }
-        return "redirect:/user/my-bookings";
+        return ResponseEntity.notFound().build();
+    }
+    @PostMapping("/booking/{id}/advice")
+    @ResponseBody
+    public ResponseEntity<String> submitAdvice(@PathVariable Long id, @RequestBody Map<String, Object> payload, HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        if (user == null) return ResponseEntity.status(401).body("Unauthorized");
+
+        Optional<Booking> bookingOpt = bookingService.getBookingById(id);
+        if (bookingOpt.isPresent()) {
+            Booking booking = bookingOpt.get();
+            
+            Advice advice = new Advice();
+            advice.setUser(user);
+            advice.setTitle(payload.get("title").toString());
+            advice.setContent(payload.get("content").toString());
+            advice.setCategories(payload.get("categories") != null ? payload.get("categories").toString() : booking.getTrip().getCategory());
+            
+            // Expert Fields
+            advice.setBestTimeToVisit(payload.get("bestTimeToVisit") != null ? payload.get("bestTimeToVisit").toString() : "");
+            advice.setWhatToPack(payload.get("whatToPack") != null ? payload.get("whatToPack").toString() : "");
+            advice.setSafetyTips(payload.get("safetyTips") != null ? payload.get("safetyTips").toString() : "");
+            advice.setBudgetTips(payload.get("budgetTips") != null ? payload.get("budgetTips").toString() : "");
+            
+            adviceRepository.save(advice);
+            return ResponseEntity.ok("Advice saved");
+        }
+        return ResponseEntity.status(404).body("Booking not found");
     }
 }

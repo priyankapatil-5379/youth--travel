@@ -11,5 +11,6 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
     List<Review> findByUser(User user);
     List<Review> findByUserEmail(String email);
     List<Review> findByTrip(com.youthtravel.entity.Trip trip);
+    List<Review> findByUserAndTrip(com.youthtravel.entity.User user, com.youthtravel.entity.Trip trip);
     List<Review> findByTrip_Vendor(com.youthtravel.entity.Vendor vendor);
 }
