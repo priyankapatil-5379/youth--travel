@@ -14,74 +14,96 @@
             <link rel="stylesheet" href="<c:url value='/views/assets/css/premium-dashboard.css'/>">
             <link href="https://fonts.googleapis.com/css?family=Dosis:300,400,500,600,700,800" rel="stylesheet">
             <style>
-                body.yt-dark {
-                    background: transparent;
-                    color: #fff;
-                    font-family: 'Dosis', sans-serif;
+                :root {
+                    --primary: #008080;
+                    --primary-hover: #077378;
+                    --accent-red: #ef4444;
+                    --bg-body: #f1f5f9;
+                    --bg-card: #ffffff;
+                    --border-color: #e2e8f0;
+                    --text-main: #0f172a;
+                    --text-muted: #64748b;
+                    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                }
+
+                body {
+                    background-color: var(--bg-body);
+                    color: var(--text-main);
+                    font-family: 'Inter', sans-serif;
+                    margin: 0;
+                    padding: 0;
+                    -webkit-font-smoothing: antialiased;
+                }
+
+                .main-content {
+                    flex: 1;
+                    margin-left: 260px;
+                    padding: 40px !important;
+                    min-height: 100vh;
                 }
 
                 .form-card {
-                    background: rgba(0,0,0,0.3);
-                    backdrop-filter: blur(15px);
-                    border: 1px solid rgba(255, 255, 255, 0.1);
-                    border-radius: 24px;
+                    background: var(--bg-card);
+                    border: 1px solid var(--border-color);
+                    border-radius: 20px;
                     padding: 40px;
-                    box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+                    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
                 }
 
                 .section-title {
-                    font-size: 24px;
+                    font-size: 20px;
                     font-weight: 800;
-                    color: #fff;
-                    margin-bottom: 35px;
+                    color: var(--text-main);
+                    margin-bottom: 32px;
                     display: flex;
                     align-items: center;
                     gap: 12px;
-                    text-shadow: 0 4px 15px rgba(0,0,0,0.8);
+                    letter-spacing: -0.5px;
                 }
 
                 .section-title .badge {
-                    background: rgba(240, 76, 38, 0.15);
-                    color: #f04c26;
+                    background: #e0f2f2;
+                    color: var(--primary);
                     padding: 6px 12px;
                     border-radius: 8px;
-                    font-size: 12px;
+                    font-size: 11px;
+                    font-weight: 700;
                 }
 
                 .form-group {
-                    margin-bottom: 32px;
+                    margin-bottom: 24px;
                 }
 
                 .form-group label {
-                    color: #fff;
-                    font-weight: 700;
-                    font-size: 15px;
-                    margin-bottom: 12px;
+                    color: var(--text-main);
+                    font-weight: 600;
+                    font-size: 14px;
+                    margin-bottom: 10px;
                     display: block;
-                    text-shadow: 0 2px 5px rgba(0,0,0,0.8);
                 }
 
                 .form-control {
-                    background: rgba(0,0,0,0.4);
-                    border: 1px solid rgba(255, 255, 255, 0.2);
+                    background: #f8fafc;
+                    border: 1px solid var(--border-color);
                     border-radius: 12px;
-                    color: #fff;
-                    height: 50px;
+                    color: var(--text-main);
+                    height: 48px;
                     padding: 0 16px;
-                    transition: all 0.2s;
-                    backdrop-filter: blur(5px);
+                    transition: var(--transition);
+                    font-size: 14px;
+                    font-weight: 500;
                 }
 
                 .form-control:focus {
-                    background: rgba(255, 255, 255, 0.08);
-                    border-color: #f04c26;
-                    box-shadow: 0 0 0 4px rgba(240, 76, 38, 0.15);
+                    background: #fff;
+                    border-color: var(--primary);
+                    box-shadow: 0 0 0 4px rgba(0, 128, 128, 0.1);
                     outline: none;
                 }
 
                 textarea.form-control {
                     height: auto;
-                    padding-top: 15px;
+                    padding-top: 12px;
                 }
 
                 .select-custom {
@@ -89,46 +111,31 @@
                     -webkit-appearance: none;
                     -moz-appearance: none;
                     appearance: none;
-                    background-image: url('data:image/svg+xml;utf8,<svg fill="white" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
+                    background-image: url('data:image/svg+xml;utf8,<svg fill="%2364748b" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
                     background-repeat: no-repeat;
                     background-position: right 12px center;
                 }
 
                 .form-control option {
-                    background: #1a1f2b;
-                    color: #fff;
-                    padding: 10px;
-                }
-
-                .checkbox-group {
-                    display: flex;
-                    gap: 20px;
-                    flex-wrap: wrap;
-                    margin-top: 10px;
+                    background: #fff;
+                    color: var(--text-main);
                 }
 
                 .custom-checkbox {
                     position: relative;
-                    padding-left: 35px;
+                    padding-left: 32px;
                     margin-bottom: 12px;
                     cursor: pointer;
                     font-size: 14px;
-                    font-weight: 600;
-                    color: #ffffff !important;
+                    font-weight: 500;
+                    color: var(--text-main);
                     user-select: none;
                     display: block;
-                    transition: all 0.2s;
+                    transition: 0.2s;
                     line-height: 20px;
-                    text-shadow: 0 1px 2px rgba(0,0,0,0.5);
                 }
 
-                .custom-checkbox input {
-                    position: absolute;
-                    opacity: 0;
-                    cursor: pointer;
-                    height: 0;
-                    width: 0;
-                }
+                .custom-checkbox input { position: absolute; opacity: 0; cursor: pointer; height: 0; width: 0; }
 
                 .checkmark {
                     position: absolute;
@@ -136,21 +143,17 @@
                     left: 0;
                     height: 20px;
                     width: 20px;
-                    background-color: rgba(255, 255, 255, 0.1);
-                    border: 1px solid rgba(255, 255, 255, 0.2);
+                    background-color: #f1f5f9;
+                    border: 1px solid var(--border-color);
                     border-radius: 6px;
-                    transition: all 0.2s;
+                    transition: 0.2s;
                 }
 
-                .custom-checkbox:hover .checkmark {
-                    background-color: rgba(255, 255, 255, 0.2);
-                    border-color: #f04c26;
-                }
+                .custom-checkbox:hover .checkmark { border-color: var(--primary); }
 
                 .custom-checkbox input:checked ~ .checkmark {
-                    background-color: #f04c26;
-                    border-color: #f04c26;
-                    box-shadow: 0 0 10px rgba(240, 76, 38, 0.3);
+                    background-color: var(--primary);
+                    border-color: var(--primary);
                 }
 
                 .checkmark:after {
@@ -159,13 +162,11 @@
                     display: none;
                 }
 
-                .custom-checkbox input:checked ~ .checkmark:after {
-                    display: block;
-                }
+                .custom-checkbox input:checked ~ .checkmark:after { display: block; }
 
                 .custom-checkbox .checkmark:after {
-                    left: 7px;
-                    top: 3px;
+                    left: 6px;
+                    top: 2px;
                     width: 5px;
                     height: 10px;
                     border: solid white;
@@ -173,405 +174,140 @@
                     transform: rotate(45deg);
                 }
 
-                .dropdown-menu {
-                    background: #1a1f2b !important;
-                    border: 1px solid rgba(255,255,255,0.1) !important;
-                    box-shadow: 0 15px 35px rgba(0,0,0,0.5) !important;
-                    padding: 15px !important;
-                }
-
-                .dropdown-menu label:hover {
-                    color: #f04c26 !important;
-                }
-
                 .btn-submit {
-                    background: #f04c26;
+                    background: var(--accent-red);
                     color: #fff;
-                    font-weight: 800;
+                    font-weight: 700;
                     border: none;
                     border-radius: 12px;
-                    padding: 15px 30px;
-                    font-size: 16px;
-                    margin-top: 20px;
-                    transition: all 0.2s;
-                    box-shadow: 0 10px 20px rgba(240, 76, 38, 0.2);
+                    padding: 14px 28px;
+                    font-size: 15px;
+                    transition: var(--transition);
+                    box-shadow: 0 4px 6px -1px rgba(239, 68, 68, 0.2);
                 }
 
                 .btn-submit:hover {
-                    background: #d93d1a;
-                    transform: translateY(-2px);
-                    box-shadow: 0 15px 30px rgba(240, 76, 38, 0.3);
+                    background: #dc2626;
+                    transform: translateY(-1px);
+                    box-shadow: 0 10px 15px -3px rgba(239, 68, 68, 0.3);
                 }
 
                 .btn-prev {
-                    background: rgba(255, 255, 255, 0.05);
-                    color: #fff;
-                    font-weight: 700;
-                    border: 1px solid rgba(255, 255, 255, 0.1);
+                    background: #f1f5f9;
+                    color: var(--text-main);
+                    font-weight: 600;
+                    border: 1px solid var(--border-color);
                     border-radius: 12px;
-                    padding: 15px 30px;
+                    padding: 14px 28px;
+                    font-size: 15px;
+                    transition: 0.2s;
                 }
 
-                .itinerary-day {
-                    background: rgba(0,0,0,0.3);
-                    backdrop-filter: blur(10px);
-                    border: 1px solid rgba(255, 255, 255, 0.1);
-                    border-radius: 16px;
-                    padding: 30px;
-                    margin-bottom: 25px;
-                    position: relative;
-                    animation: slideDown 0.3s ease-out;
-                    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-                }
-
-                /* Utility Classes */
-                .d-none {
-                    display: none !important;
-                }
-
-                .d-flex {
-                    display: flex !important;
-                }
-
-                .flex-wrap {
-                    flex-wrap: wrap !important;
-                }
-
-                .gap-2 {
-                    gap: 10px !important;
-                }
-
-                .w-100 {
-                    width: 100% !important;
-                }
-
-                .text-start {
-                    text-align: left !important;
-                }
-
-                .p-3 {
-                    padding: 15px !important;
-                }
-
-                .mb-0 {
-                    margin-bottom: 0 !important;
-                }
-
-                .mt-2 {
-                    margin-top: 10px !important;
-                }
-
-                .day-number {
-                    position: absolute;
-                    top: -12px;
-                    left: 20px;
-                    background: #f04c26;
-                    color: #fff;
-                    padding: 4px 15px;
-                    border-radius: 20px;
-                    font-weight: 800;
-                    font-size: 12px;
-                    box-shadow: 0 4px 10px rgba(240, 76, 38, 0.3);
-                }
-
-                .remove-day {
-                    position: absolute;
-                    top: 15px;
-                    right: 15px;
-                    color: rgba(255, 255, 255, 0.3);
-                    cursor: pointer;
-                    transition: all 0.2s;
-                }
-
-                .remove-day:hover {
-                    color: #ef4444;
-                }
-
-                .inclusion-chip {
-                    display: inline-flex;
-                    align-items: center;
-                    gap: 8px;
-                    background: rgba(255, 255, 255, 0.05);
-                    border: 1px solid rgba(255, 255, 255, 0.1);
-                    padding: 8px 16px;
-                    border-radius: 10px;
-                    margin-right: 10px;
-                    margin-bottom: 10px;
-                    cursor: pointer;
-                    transition: all 0.2s;
-                }
-
-                .inclusion-chip.active {
-                    background: rgba(34, 197, 94, 0.1);
-                    border-color: #22c55e;
-                    color: #22c55e;
-                }
-
-                .exclusion-chip.active {
-                    background: rgba(239, 68, 68, 0.1);
-                    border-color: #ef4444;
-                    color: #ef4444;
-                }
+                .btn-prev:hover { background: #e2e8f0; }
 
                 /* Wizard Styles */
-                .form-step {
-                    display: block;
-                    margin-bottom: 60px;
-                    padding-bottom: 40px;
-                    border-bottom: 1px solid rgba(255,255,255,0.05);
-                    animation: fadeIn 0.4s ease-out;
-                }
-
-                .step-indicator {
-                    display: flex;
-                    justify-content: space-between;
-                    margin-bottom: 40px;
-                    position: relative;
-                }
-
-                .step-indicator::before {
-                    content: '';
-                    position: absolute;
-                    top: 15px;
-                    left: 0;
-                    right: 0;
-                    height: 2px;
-                    background: rgba(255, 255, 255, 0.05);
-                    z-index: 1;
-                }
-
-                .step-item {
-                    position: relative;
-                    z-index: 2;
-                    text-align: center;
-                    width: 25%;
+                .step-indicator-container {
+                    background: #fff !important;
+                    border: 1px solid var(--border-color);
+                    border-radius: 20px;
+                    padding: 24px !important;
+                    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
                 }
 
                 .step-dot {
                     width: 32px;
                     height: 32px;
-                    background: #1a1f2b;
-                    border: 2px solid rgba(255, 255, 255, 0.1);
+                    background: #f1f5f9;
+                    border: 1px solid var(--border-color);
                     border-radius: 50%;
-                    margin: 0 auto 10px;
+                    margin: 0 auto 8px;
                     display: flex;
                     align-items: center;
                     justify-content: center;
-                    font-weight: 800;
-                    font-size: 14px;
-                    color: rgba(255, 255, 255, 0.3);
-                    transition: all 0.3s;
+                    font-weight: 700;
+                    font-size: 13px;
+                    color: var(--text-muted);
+                    transition: 0.3s;
                 }
 
-                .step-item.active .step-dot {
-                    border-color: #f04c26;
-                    color: #fff;
-                    background: #f04c26;
-                    box-shadow: 0 0 15px rgba(240, 76, 38, 0.4);
-                }
-
-                .step-item.completed .step-dot {
-                    background: #22c55e;
-                    border-color: #22c55e;
-                    color: #fff;
+                .step-item.active .step-dot, .step-item.completed .step-dot {
+                    background: var(--accent-red) !important;
+                    border-color: var(--accent-red) !important;
+                    color: #fff !important;
+                    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
                 }
 
                 .step-label {
-                    font-size: 13px;
-                    font-weight: 700;
-                    color: rgba(255, 255, 255, 0.3);
-                    transition: all 0.3s;
+                    color: var(--text-muted) !important;
+                    font-size: 11px !important;
+                    text-shadow: none !important;
+                    text-transform: uppercase;
+                    letter-spacing: 0.5px;
                 }
 
-                .step-item.active .step-label {
-                    color: #f04c26;
+                .step-item.active .step-label { color: var(--accent-red) !important; font-weight: 700 !important; }
+
+                /* Sidebar Overrides - MATCHING THE IMAGE */
+                .sidebar {
+                    background: #006d77 !important; /* Dark Sea Green/Teal from image */
+                    border-right: none !important;
+                    width: 260px !important;
                 }
 
-                @media (max-width: 768px) {
-                    .step-indicator {
-                        margin-bottom: 30px;
-                    }
-
-                    .step-label {
-                        font-size: 11px;
-                    }
-
-                    .step-dot {
-                        width: 28px;
-                        height: 28px;
-                        font-size: 12px;
-                        margin-bottom: 5px;
-                    }
-
-                    .step-indicator::before {
-                        top: 13px;
-                    }
+                .sidebar .nav-item a {
+                    color: rgba(255, 255, 255, 0.7) !important;
+                    font-weight: 500 !important;
+                    margin: 4px 16px !important;
+                    border-radius: 12px !important;
+                    padding: 12px 16px !important;
                 }
 
-                @media (max-width: 480px) {
-                    .step-label {
-                        font-size: 10px;
-                        overflow: hidden;
-                        text-overflow: ellipsis;
-                        white-space: nowrap;
-                        max-width: 100%;
-                    }
-
-                    .step-dot {
-                        width: 24px;
-                        height: 24px;
-                        font-size: 11px;
-                    }
-
-                    .step-indicator::before {
-                        top: 11px;
-                    }
+                .sidebar .nav-item.active a {
+                    background: var(--accent-red) !important; /* Solid red pill from image */
+                    color: #ffffff !important;
+                    box-shadow: 0 4px 15px rgba(239, 68, 68, 0.4) !important;
                 }
 
-                @media (max-width: 768px) {
-                    .glass-card {
-                        padding: 20px !important;
-                    }
-
-                    .section-title {
-                        font-size: 1.1rem;
-                    }
-
-                    .btn-submit,
-                    .btn-prev {
-                        padding: 10px 20px;
-                        font-size: 14px;
-                    }
-
-                    .form-control {
-                        font-size: 14px;
-                        padding: 10px 15px;
-                    }
+                .sidebar .nav-item a:hover:not(.active) {
+                    background: rgba(255, 255, 255, 0.1) !important;
+                    color: #ffffff !important;
                 }
 
-                @media (max-width: 480px) {
-                    .glass-card {
-                        padding: 15px !important;
-                    }
+                .sidebar .logout-link { color: var(--accent-red) !important; }
 
-                    .section-title {
-                        font-size: 1rem;
-                    }
-
-                    .badge {
-                        padding: 4px 8px;
-                        font-size: 10px;
-                    }
+                /* Chips & Selection */
+                .chip-label {
+                    background: #f1f5f9 !important;
+                    border: 1px solid var(--border-color) !important;
+                    color: var(--text-muted) !important;
+                    padding: 10px 20px !important;
                 }
 
-                @keyframes fadeIn {
-                    from {
-                        opacity: 0;
-                        transform: translateY(10px);
-                    }
-
-                    to {
-                        opacity: 1;
-                        transform: translateY(0);
-                    }
-                }
-
-                @keyframes slideDown {
-                    from {
-                        opacity: 0;
-                        transform: translateY(-10px);
-                    }
-
-                    to {
-                        opacity: 1;
-                        transform: translateY(0);
-                    }
-                }
-
-                .pricing-toggle {
-                    background: rgba(255, 255, 255, 0.03);
-                    border: 1px solid rgba(255, 255, 255, 0.08);
-                    padding: 15px 25px;
-                    border-radius: 16px;
-                    cursor: pointer;
-                    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-                    font-weight: 700;
-                    color: rgba(255, 255, 255, 0.4);
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    gap: 10px;
-                }
-
-                .pricing-toggle i {
-                    font-size: 18px;
-                }
-
-                .pricing-toggle.active {
-                    background: linear-gradient(135deg, rgba(240, 76, 38, 0.15), rgba(240, 76, 38, 0.05));
-                    border-color: #f04c26;
-                    color: #fff;
-                    box-shadow: 0 8px 20px rgba(240, 76, 38, 0.15);
+                .day-chip input:checked + .chip-label {
+                    background: var(--primary) !important;
+                    border-color: var(--primary) !important;
+                    color: #fff !important;
                 }
 
                 .occ-card {
-                    background: rgba(255, 255, 255, 0.02);
-                    border: 1px solid rgba(255, 255, 255, 0.06);
+                    background: #fff;
+                    border: 1px solid var(--border-color);
                     border-radius: 16px;
-                    padding: 20px;
-                    margin-bottom: 15px;
-                    transition: all 0.2s;
+                    transition: 0.3s;
                 }
+                .occ-card:hover { border-color: var(--primary); transform: translateX(4px); }
 
-                .occ-card:hover {
-                    border-color: rgba(240, 76, 38, 0.3);
-                    background: rgba(255, 255, 255, 0.04);
-                }
+                .text-primary { color: var(--primary) !important; }
+                .text-muted { color: var(--text-muted) !important; }
 
-                .day-chip-group {
-                    display: flex;
-                    gap: 10px;
-                    flex-wrap: wrap;
-                }
-
-                .day-chip {
-                    cursor: pointer;
-                    user-select: none;
-                }
-
-                .day-chip input {
-                    display: none;
-                }
-
-                .day-chip .chip-label {
-                    display: inline-block;
-                    padding: 10px 18px;
-                    background: rgba(255, 255, 255, 0.03);
-                    border: 1px solid rgba(255, 255, 255, 0.08);
-                    border-radius: 12px;
-                    font-weight: 700;
-                    font-size: 13px;
-                    color: rgba(255, 255, 255, 0.5);
-                    transition: all 0.2s;
-                }
-
-                .day-chip input:checked+.chip-label {
-                    background: #f04c26;
-                    color: #fff;
-                    border-color: #f04c26;
-                    box-shadow: 0 4px 12px rgba(240, 76, 38, 0.2);
+                @media (max-width: 991px) {
+                    .main-content { margin-left: 0; padding: 24px !important; }
                 }
             </style>
         </head>
 
-        <body class="yt-dark premium-theme">
-        <div class="sun-rays-container">
-            <div class="ray ray-1"></div>
-            <div class="ray ray-2"></div>
-            <div class="ray ray-3"></div>
-            <div class="ray ray-4"></div>
-        </div>
-                <jsp:include page="vendor-sidebar.jsp">
+    <body class="professional-theme">
+    <jsp:include page="vendor-sidebar.jsp">
         <jsp:param name="activePage" value="tours" />
     </jsp:include>
 
@@ -754,7 +490,7 @@
                                         <div class="dropdown">
                                             <button id="subCategoryBtn" class="form-control text-start select-custom" type="button" data-toggle="dropdown">Select Interests</button>
                                             <div id="subCategoryList" class="dropdown-menu p-3 bg-dark border-secondary w-100" style="background: #1a1f2b; max-height: 250px; overflow-y: auto;">
-                                                <p class="text-white-50 small mb-0">Select Audience first...</p>
+                                                <p class="text-muted small mb-0">Select Audience first...</p>
                                             </div>
                                         </div>
                                         <div id="subOtherInputCont" style="display:none;" class="mt-2">
@@ -840,8 +576,8 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="p-4 bg-dark-subtle rounded-4 mb-4 mt-4 border border-secondary border-opacity-10">
-                                <label class="small text-white-50 mb-3 d-block uppercase tracking-wider">Pickup & Drop Points</label>
+                            <div class="p-4 bg-light rounded-4 mb-4 mt-4 border border-secondary border-opacity-10">
+                                <label class="small text-muted mb-3 d-block uppercase tracking-wider">Pickup & Drop Points</label>
                                 <div id="selectedPickupTimes" class="mb-3"></div>
                                 <button type="button" onclick="addCustomPickup()" class="btn btn-outline-orange btn-sm" style="border-style: dashed;"><i class="fa fa-plus-circle"></i> Add Point</button>
                             </div>
@@ -853,7 +589,7 @@
                             
                             <!-- Duration Presets -->
                             <div class="mb-4">
-                                <label class="small text-white-50 d-block mb-2">Quick Select Presets</label>
+                                <label class="small text-muted d-block mb-2">Quick Select Presets</label>
                                 <div class="d-flex flex-wrap gap-2">
                                     <style>
                                         .duration-preset {
@@ -895,7 +631,7 @@
                                     <div class="form-group">
                                         <label>Duration Label</label>
                                         <input type="text" name="duration" value="${trip.duration}" id="durationLabel" class="form-control" placeholder="e.g. 3D / 2N">
-                                        <small class="text-white-50 mt-1 d-block">Auto-generated, but you can edit.</small>
+                                        <small class="text-muted mt-1 d-block">Auto-generated, but you can edit.</small>
                                     </div>
                                 </div>
                             </div>
@@ -906,7 +642,7 @@
                             <div class="section-title"><span class="badge">04</span> PRICING & BOOKING OPTIONS</div>
                             <div class="row g-3">
                                 <div class="col-md-12">
-                                    <label class="small text-white-50 mb-2">Price Model</label>
+                                    <label class="small text-muted mb-2">Price Model</label>
                                     <div class="d-flex gap-2 mb-3">
                                         <div class="pricing-toggle active w-100 text-center" onclick="setPricingType('perPerson', this)"><i class="fa fa-user"></i> Per Person</div>
                                         <div class="pricing-toggle w-100 text-center" onclick="setPricingType('perGroup', this)"><i class="fa fa-users"></i> Per Group</div>
@@ -930,14 +666,14 @@
                                     <div class="form-group">
                                         <label>Booking Amount (₹)</label>
                                         <input type="number" name="bookingAmount" value="${trip.bookingAmount}" class="form-control" placeholder="Token to block seat">
-                                        <small class="text-white-50">Set 0 for full payment</small>
+                                        <small class="text-muted">Set 0 for full payment</small>
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label>Weekend Surcharge (Extra ₹)</label>
                                         <input type="number" name="weekendPrice" value="${trip.weekendPrice}" class="form-control" placeholder="e.g. 500 (Add-on)">
-                                        <small class="text-white-50">Extra amount added to base price for weekend dates.</small>
+                                        <small class="text-muted">Extra amount added to base price for weekend dates.</small>
                                     </div>
                                 </div>
                                 <div class="col-md-4">
@@ -1015,8 +751,8 @@
                                     </select>
                                 </div>
                                 <div class="col-md-12 mt-3">
-                                    <label class="small text-white-50 mb-3 d-block uppercase tracking-wider">Stay Amenities</label>
-                                    <div class="p-4 bg-dark-subtle rounded-4 border border-secondary border-opacity-10">
+                                    <label class="small text-muted mb-3 d-block uppercase tracking-wider">Stay Amenities</label>
+                                    <div class="p-4 bg-light rounded-4 border border-secondary border-opacity-10">
                                         <div class="row g-3">
                                             <div class="col-md-3"><label class="custom-checkbox"><input type="checkbox" class="stay-amenity" value="WiFi"><span class="checkmark"></span> WiFi</label></div>
                                             <div class="col-md-3"><label class="custom-checkbox"><input type="checkbox" class="stay-amenity" value="Air Conditioning"><span class="checkmark"></span> AC</label></div>
@@ -1042,7 +778,7 @@
                                     </div>
                                 </div>
                                 <div class="col-md-12 mt-3">
-                                    <label class="small text-white-50 mb-3 d-block uppercase tracking-wider">Stay Photos (Multiple)</label>
+                                    <label class="small text-muted mb-3 d-block uppercase tracking-wider">Stay Photos (Multiple)</label>
                                     <div onclick="document.getElementById('stayPhotos').click()" class="p-4 border-2 border-dashed rounded text-center cursor-pointer" style="border: 2px dashed rgba(240, 76, 38, 0.3); background: rgba(240, 76, 38, 0.02);">
                                         <i class="fa fa-university fa-2x text-orange mb-2"></i>
                                         <div class="small">Upload Stay/Hotel Photos</div>
@@ -1104,8 +840,8 @@
                                     </div>
                                 </div>
                                 <div class="col-md-12 mt-3">
-                                    <label class="small text-white-50 mb-3 d-block uppercase tracking-wider">Transport Inclusions</label>
-                                    <div class="p-4 bg-dark-subtle rounded-4 border border-secondary border-opacity-10">
+                                    <label class="small text-muted mb-3 d-block uppercase tracking-wider">Transport Inclusions</label>
+                                    <div class="p-4 bg-light rounded-4 border border-secondary border-opacity-10">
                                         <div class="row g-3">
                                             <div class="col-md-4"><label class="custom-checkbox"><input type="checkbox" name="transportInclusions" value="Fuel Charges"><span class="checkmark"></span> Fuel Charges</label></div>
                                             <div class="col-md-4"><label class="custom-checkbox"><input type="checkbox" name="transportInclusions" value="Driver Allowance"><span class="checkmark"></span> Driver Allowance</label></div>
@@ -1141,8 +877,8 @@
                                     </div>
                                 </div>
                                 <div class="col-md-12 mt-3">
-                                    <label class="small text-white-50 mb-3 d-block uppercase tracking-wider">Inclusions & Refreshments</label>
-                                    <div class="p-4 bg-dark-subtle rounded-4 border border-secondary border-opacity-10">
+                                    <label class="small text-muted mb-3 d-block uppercase tracking-wider">Inclusions & Refreshments</label>
+                                    <div class="p-4 bg-light rounded-4 border border-secondary border-opacity-10">
                                         <div class="row g-3">
                                             <div class="col-md-4"><label class="custom-checkbox"><input type="checkbox" class="meal-check" value="Breakfast" checked><span class="checkmark"></span> Breakfast</label></div>
                                             <div class="col-md-4"><label class="custom-checkbox"><input type="checkbox" class="meal-check" value="Lunch"><span class="checkmark"></span> Lunch</label></div>
@@ -1173,12 +909,12 @@
                                             <div class="row">
                                                 <div class="col-12 mb-3"><input type="text" class="form-control day-title" placeholder="Day Title (e.g. Arrival at Manali) *"></div>
                                                 <div class="col-12 mb-3"><textarea class="form-control day-activities" rows="2" placeholder="Describe activities, sightseeing, etc."></textarea></div>
-                                                <div class="col-6"><div class="form-group"><label class="small text-white-50">Day Stay</label><input type="text" class="form-control day-stay" placeholder="e.g. Hotel / Camp"></div></div>
-                                                <div class="col-6"><div class="form-group"><label class="small text-white-50">Day Meals</label><input type="text" class="form-control day-meals" placeholder="e.g. B + D"></div></div>
+                                                <div class="col-6"><div class="form-group"><label class="small text-muted">Day Stay</label><input type="text" class="form-control day-stay" placeholder="e.g. Hotel / Camp"></div></div>
+                                                <div class="col-6"><div class="form-group"><label class="small text-muted">Day Meals</label><input type="text" class="form-control day-meals" placeholder="e.g. B + D"></div></div>
                                             </div>
                                         </div>
                                         <div class="col-md-4">
-                                            <label class="small text-white-50">Day Photos (Multiple)</label>
+                                            <label class="small text-muted">Day Photos (Multiple)</label>
                                             <div class="day-image-upload" onclick="this.querySelector('input').click()">
                                                 <i class="fa fa-camera"></i>
                                                 <span>Add Photos</span>
@@ -1251,7 +987,7 @@
                                 <div id="occurrenceContainer"></div>
                                 <button type="button" onclick="addOccurrence()" class="btn btn-outline-orange w-100 mb-3" style="border-style: dashed;"><i class="fa fa-plus-circle"></i> Add Date</button>
                             </div>
-                            <div id="recurringCont" style="display:none;" class="p-4 bg-dark-subtle rounded-4 mb-4 border border-secondary border-opacity-10">
+                            <div id="recurringCont" style="display:none;" class="p-4 bg-light rounded-4 mb-4 border border-secondary border-opacity-10">
                                 <div class="day-chip-group mb-4">
                                     <label class="day-chip"><input type="checkbox" name="recurringDays" value="MONDAY"><span class="chip-label">Mon</span></label>
                                     <label class="day-chip"><input type="checkbox" name="recurringDays" value="TUESDAY"><span class="chip-label">Tue</span></label>
@@ -1267,14 +1003,14 @@
                                         <div class="form-group">
                                             <label>Booking Cut-off (Hrs)</label>
                                             <input type="number" name="bookingCutoff" class="form-control" placeholder="e.g. 24" value="24">
-                                            <small class="text-white-50">Stop bookings X hours before trip.</small>
+                                            <small class="text-muted">Stop bookings X hours before trip.</small>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label>Min Batch Size</label>
                                             <input type="number" name="minBatchSize" class="form-control" placeholder="e.g. 5" value="1">
-                                            <small class="text-white-50">Minimum people to run the trip.</small>
+                                            <small class="text-muted">Minimum people to run the trip.</small>
                                         </div>
                                     </div>
                                     <div class="col-md-6"><label>Capacity</label><input type="number" name="recTotalSeats" value="${trip.recTotalSeats}" class="form-control" placeholder="Seats"></div>
@@ -1296,8 +1032,8 @@
                                 </div>
                                 
                                 <div class="col-md-6 mt-3">
-                                    <label class="small text-white-50 mb-3 d-block uppercase tracking-wider">What's Included</label>
-                                    <div class="p-3 bg-dark-subtle rounded-4 border border-secondary border-opacity-10">
+                                    <label class="small text-muted mb-3 d-block uppercase tracking-wider">What's Included</label>
+                                    <div class="p-3 bg-light rounded-4 border border-secondary border-opacity-10">
                                         <div class="row g-2">
                                             <div class="col-12"><label class="custom-checkbox"><input type="checkbox" name="inclusions" value="Entry Fees"><span class="checkmark"></span> Entry Fees / Permits</label></div>
                                             <div class="col-12"><label class="custom-checkbox"><input type="checkbox" name="inclusions" value="Tour Guide"><span class="checkmark"></span> Certified Tour Guide</label></div>
@@ -1311,8 +1047,8 @@
                                     </div>
                                 </div>
                                 <div class="col-md-6 mt-3">
-                                    <label class="small text-white-50 mb-3 d-block uppercase tracking-wider">Things to Carry</label>
-                                    <div class="p-3 bg-dark-subtle rounded-4 border border-secondary border-opacity-10">
+                                    <label class="small text-muted mb-3 d-block uppercase tracking-wider">Things to Carry</label>
+                                    <div class="p-3 bg-light rounded-4 border border-secondary border-opacity-10">
                                         <div class="row g-2">
                                             <div class="col-12"><label class="custom-checkbox"><input type="checkbox" name="essentials" value="Powerbank"><span class="checkmark"></span> Powerbank & Charger</label></div>
                                             <div class="col-12"><label class="custom-checkbox"><input type="checkbox" name="essentials" value="Shoes"><span class="checkmark"></span> Trekking Shoes</label></div>
@@ -1336,29 +1072,29 @@
                         <!-- STEP 12: REVIEW -->
                         <div class="form-step" id="step12">
                             <div class="section-title"><span class="badge">12</span> FINAL REVIEW</div>
-                            <div class="p-4 bg-dark rounded-4 border border-secondary border-opacity-20" id="reviewSummary">
-                                <p class="text-white-50 mb-4">Please review all your details before launching.</p>
+                            <div class="p-4 bg-light rounded-4 border border-secondary border-opacity-10" id="reviewSummary">
+                                <p class="text-muted mb-4">Please review all your details before launching.</p>
                                 <div class="review-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 25px;">
-                                    <div class="rev-item"><small class="text-orange d-block">Trip Title</small><span id="rev_title" class="fw-bold">-</span></div>
-                                    <div class="rev-item"><small class="text-orange d-block">Price</small><span id="rev_price" class="fw-bold">-</span></div>
-                                    <div class="rev-item"><small class="text-orange d-block">Destination</small><span id="rev_dest" class="fw-bold">-</span></div>
-                                    <div class="rev-item"><small class="text-orange d-block">Duration</small><span id="rev_duration" class="fw-bold">-</span></div>
+                                    <div class="rev-item"><small class="text-primary d-block">Trip Title</small><span id="rev_title" class="fw-bold">-</span></div>
+                                    <div class="rev-item"><small class="text-primary d-block">Price</small><span id="rev_price" class="fw-bold">-</span></div>
+                                    <div class="rev-item"><small class="text-primary d-block">Destination</small><span id="rev_dest" class="fw-bold">-</span></div>
+                                    <div class="rev-item"><small class="text-primary d-block">Duration</small><span id="rev_duration" class="fw-bold">-</span></div>
                                     
-                                    <div class="rev-item"><small class="text-orange d-block">Audience</small><span id="rev_audience" class="fw-bold">-</span></div>
-                                    <div class="rev-item"><small class="text-orange d-block">Categories</small><span id="rev_subs" class="fw-bold">-</span></div>
+                                    <div class="rev-item"><small class="text-primary d-block">Audience</small><span id="rev_audience" class="fw-bold">-</span></div>
+                                    <div class="rev-item"><small class="text-primary d-block">Categories</small><span id="rev_subs" class="fw-bold">-</span></div>
                                     
-                                    <div class="rev-item"><small class="text-orange d-block">Stay</small><span id="rev_stay" class="fw-bold">-</span></div>
-                                    <div class="rev-item"><small class="text-orange d-block">Transport</small><span id="rev_trans" class="fw-bold">-</span></div>
-                                    <div class="rev-item"><small class="text-orange d-block">Meal Plan</small><span id="rev_meals" class="fw-bold">-</span></div>
+                                    <div class="rev-item"><small class="text-primary d-block">Stay</small><span id="rev_stay" class="fw-bold">-</span></div>
+                                    <div class="rev-item"><small class="text-primary d-block">Transport</small><span id="rev_trans" class="fw-bold">-</span></div>
+                                    <div class="rev-item"><small class="text-primary d-block">Meal Plan</small><span id="rev_meals" class="fw-bold">-</span></div>
                                     
-                                    <div class="rev-item"><small class="text-orange d-block">Departure Mode</small><span id="rev_mode" class="fw-bold">-</span></div>
-                                    <div class="rev-item"><small class="text-orange d-block">Min Batch</small><span id="rev_batch" class="fw-bold">-</span></div>
+                                    <div class="rev-item"><small class="text-primary d-block">Departure Mode</small><span id="rev_mode" class="fw-bold">-</span></div>
+                                    <div class="rev-item"><small class="text-primary d-block">Min Batch</small><span id="rev_batch" class="fw-bold">-</span></div>
                                     
-                                    <div class="rev-item" style="grid-column: 1 / -1;"><small class="text-orange d-block">Inclusions</small><span id="rev_inclusions" class="small text-white-50">-</span></div>
-                                    <div class="rev-item" style="grid-column: 1 / -1;"><small class="text-orange d-block">Stay Photos Preview</small><div id="rev_stayPhotos" class="d-flex flex-wrap gap-2 mt-1"></div></div>
-                                    <div class="rev-item" style="grid-column: 1 / -1;"><small class="text-orange d-block">Itinerary Photos Preview</small><div id="rev_itinPhotos" class="d-flex flex-wrap gap-2 mt-1"></div></div>
-                                    <div class="rev-item" style="grid-column: 1 / -1;"><small class="text-orange d-block">Things to Carry</small><span id="rev_carry" class="small text-white-50">-</span></div>
-                                    <div class="rev-item" style="grid-column: 1 / -1;"><small class="text-orange d-block">Cancellation Policy</small><span id="rev_policy" class="small text-white-50">-</span></div>
+                                    <div class="rev-item" style="grid-column: 1 / -1;"><small class="text-primary d-block">Inclusions</small><span id="rev_inclusions" class="small text-muted">-</span></div>
+                                    <div class="rev-item" style="grid-column: 1 / -1;"><small class="text-primary d-block">Stay Photos Preview</small><div id="rev_stayPhotos" class="d-flex flex-wrap gap-2 mt-1"></div></div>
+                                    <div class="rev-item" style="grid-column: 1 / -1;"><small class="text-primary d-block">Itinerary Photos Preview</small><div id="rev_itinPhotos" class="d-flex flex-wrap gap-2 mt-1"></div></div>
+                                    <div class="rev-item" style="grid-column: 1 / -1;"><small class="text-primary d-block">Things to Carry</small><span id="rev_carry" class="small text-muted">-</span></div>
+                                    <div class="rev-item" style="grid-column: 1 / -1;"><small class="text-primary d-block">Cancellation Policy</small><span id="rev_policy" class="small text-muted">-</span></div>
                                 </div>
                             </div>
                         </div>
@@ -1573,7 +1309,7 @@
 
                     const list = document.getElementById('subCategoryList');
                     if (checked.length === 0) {
-                        list.innerHTML = '<p class="text-white-50 small mb-0">Select Audience type first...</p>';
+                        list.innerHTML = '<p class="text-muted small mb-0">Select Audience type first...</p>';
                         // Reset sub-category button too
                         document.getElementById('subCategoryBtn').innerText = 'Select Interests / Categories';
                         document.getElementById('subOtherInputCont').style.display = 'none';
@@ -1661,7 +1397,7 @@
                                 </div>
                             </div>
                             <div class="col-md-4">
-                                <label class="small text-white-50">Day Photos (Multiple)</label>
+                                <label class="small text-muted">Day Photos (Multiple)</label>
                                 <div class="day-image-upload" onclick="this.querySelector('input').click()">
                                     <i class="fa fa-camera"></i>
                                     <span>Add Photos</span>
@@ -1790,21 +1526,21 @@
                     const html = `
                         <div class="row g-2 align-items-center mb-3 p-3 bg-dark rounded-3 border border-secondary border-opacity-10 pickup-item" id="row_${id}">
                             <div class="col-md-5">
-                                <label class="small text-white-50 d-block mb-1">Location Name</label>
+                                <label class="small text-muted d-block mb-1">Location Name</label>
                                 <div class="input-group input-group-sm">
                                     <span class="input-group-text bg-dark border-secondary border-opacity-20 text-orange"><i class="fa fa-map-marker"></i></span>
                                     <input type="text" class="form-control pickup-name" value="${savedName}" placeholder="e.g. Silk Board">
                                 </div>
                             </div>
                             <div class="col-md-3">
-                                <label class="small text-white-50 d-block mb-1">Time</label>
+                                <label class="small text-muted d-block mb-1">Time</label>
                                 <div class="input-group input-group-sm">
-                                    <span class="input-group-text bg-dark border-secondary border-opacity-20 text-white-50"><i class="fa fa-clock-o"></i></span>
+                                    <span class="input-group-text bg-dark border-secondary border-opacity-20 text-muted"><i class="fa fa-clock-o"></i></span>
                                     <input type="time" class="form-control pickup-time" value="${savedTime}">
                                 </div>
                             </div>
                             <div class="col-md-3">
-                                <label class="small text-white-50 d-block mb-1">Point Type</label>
+                                <label class="small text-muted d-block mb-1">Point Type</label>
                                 <select class="form-control form-control-sm pickup-type bg-dark border-secondary border-opacity-20 text-white">
                                     <option value="Pickup" \${savedType === 'Pickup' ? 'selected' : ''}>Pickup Point</option>
                                     <option value="Drop" \${savedType === 'Drop' ? 'selected' : ''}>Drop Point</option>
@@ -1853,21 +1589,21 @@
                                     <div class="row g-3 align-items-center">
                                         <div class="col-md-4">
                                             <div class="occ-icon"><i class="fa fa-calendar-check-o"></i></div>
-                                            <label class="small text-white-50 mb-1 d-block">Departure Date <span class="text-danger">*</span></label>
+                                            <label class="small text-muted mb-1 d-block">Departure Date <span class="text-danger">*</span></label>
                                             <div class="input-group input-group-sm">
                                                 <input type="date" class="form-control occ-date" min="\${today}" style="background: rgba(0,0,0,0.2); border-color: rgba(255,255,255,0.1); color: white;">
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="occ-icon" style="background: rgba(59, 130, 246, 0.1); color: #3b82f6;"><i class="fa fa-clock-o"></i></div>
-                                            <label class="small text-white-50 mb-1 d-block">Time</label>
+                                            <label class="small text-muted mb-1 d-block">Time</label>
                                             <div class="input-group input-group-sm">
                                                 <input type="time" class="form-control occ-time" style="background: rgba(0,0,0,0.2); border-color: rgba(255,255,255,0.1); color: white;">
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="occ-icon" style="background: rgba(46, 213, 115, 0.1); color: #2ed573;"><i class="fa fa-users"></i></div>
-                                            <label class="small text-white-50 mb-1 d-block">Batch Size</label>
+                                            <label class="small text-muted mb-1 d-block">Batch Size</label>
                                             <div class="input-group input-group-sm">
                                                 <input type="number" class="form-control occ-seats" placeholder="Seats" value="20" style="background: rgba(0,0,0,0.2); border-color: rgba(255,255,255,0.1); color: white;">
                                             </div>
@@ -2137,7 +1873,7 @@
                                                 </div>
                                             </div>
                                             <div class="col-md-4">
-                                                <label class="small text-white-50">Day Photos (New Only)</label>
+                                                <label class="small text-muted">Day Photos (New Only)</label>
                                                 <div class="day-image-upload" onclick="this.querySelector('input').click()">
                                                     <i class="fa fa-camera"></i>
                                                     <span>Add Photos</span>
@@ -2171,21 +1907,21 @@
                                                             <div class="row g-3 align-items-center">
                                                                 <div class="col-md-4">
                                                                     <div class="occ-icon"><i class="fa fa-calendar-check-o"></i></div>
-                                                                    <label class="small text-white-50 mb-1 d-block">Departure Date</label>
+                                                                    <label class="small text-muted mb-1 d-block">Departure Date</label>
                                                                     <div class="input-group input-group-sm">
                                                                         <input type="date" class="form-control occ-date" value="\${s.date}" min="\${today}" style="background: rgba(0,0,0,0.2); border-color: rgba(255,255,255,0.1); color: white;">
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-md-3">
                                                                     <div class="occ-icon" style="background: rgba(59, 130, 246, 0.1); color: #3b82f6;"><i class="fa fa-clock-o"></i></div>
-                                                                    <label class="small text-white-50 mb-1 d-block">Time</label>
+                                                                    <label class="small text-muted mb-1 d-block">Time</label>
                                                                     <div class="input-group input-group-sm">
                                                                         <input type="time" class="form-control occ-time" value="\${s.time}" style="background: rgba(0,0,0,0.2); border-color: rgba(255,255,255,0.1); color: white;">
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-md-3">
                                                                     <div class="occ-icon" style="background: rgba(46, 213, 115, 0.1); color: #2ed573;"><i class="fa fa-users"></i></div>
-                                                                    <label class="small text-white-50 mb-1 d-block">Batch Size</label>
+                                                                    <label class="small text-muted mb-1 d-block">Batch Size</label>
                                                                     <div class="input-group input-group-sm">
                                                                         <input type="number" class="form-control occ-seats" placeholder="Seats" value="\${s.seats}" style="background: rgba(0,0,0,0.2); border-color: rgba(255,255,255,0.1); color: white;">
                                                                     </div>

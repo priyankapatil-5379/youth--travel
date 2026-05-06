@@ -11,88 +11,49 @@
     <link rel="stylesheet" href="<c:url value='/views/assets/css/premium-dashboard.css'/>">
     <link href="https://fonts.googleapis.com/css?family=Dosis:300,400,500,600,700,800" rel="stylesheet">
     <style>
-        :root { --primary-blue: #ef4444; --text-muted: #7e8c9a; --transition: all 0.3s ease; }
-        body { font-family: 'Dosis', sans-serif; background-color: #0b0f18; color: rgba(255, 255, 255, 0.92); margin: 0; padding: 0; }
+        :root {
+            --primary: #008080;
+            --primary-hover: #077378;
+            --accent-red: #e63946;
+            --bg-body: #f1f5f9;
+            --bg-card: #ffffff;
+            --border-color: #e2e8f0;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+            -webkit-font-smoothing: antialiased;
+        }
+
         .wrapper { display: flex; min-height: 100vh; }
-        .main-content { flex: 1; margin-left: 240px; padding: 100px 30px 40px; }
-        .header { position: fixed; top: 0; left: 0; right: 0; height: 70px; background: rgba(0,0,0,0.4); backdrop-filter: blur(10px); display: flex; align-items: center; justify-content: space-between; padding: 0 30px; z-index: 1000; border-bottom: 1px solid rgba(255,255,255,0.05); }
-        .explore-header { background: rgba(0,0,0,0.3); backdrop-filter: blur(10px); padding: 30px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); margin-bottom: 30px; display: flex; justify-content: space-between; align-items: flex-end; box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3); }
-        .search-container { position: relative; width: 400px; }
-        .search-container input { width: 100%; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.2); padding: 12px 20px 12px 45px; border-radius: 25px; color: #fff; outline: none; transition: var(--transition); backdrop-filter: blur(5px); }
-        .search-container input:focus { border-color: var(--primary-blue); background: rgba(0,0,0,0.6); box-shadow: 0 0 15px rgba(239, 68, 68, 0.2); }
-        .search-container i { position: absolute; left: 18px; top: 50%; transform: translateY(-50%); color: #fff; }
-        .nav-tabs { display: flex; gap: 30px; border-bottom: 1px solid rgba(255,255,255,0.1); margin-bottom: 30px; padding-left: 10px; }
-        .nav-tabs button { background: none; border: none; color: rgba(255,255,255,0.6); padding: 10px 0; font-size: 16px; font-weight: 700; cursor: pointer; border-bottom: 2px solid transparent; transition: var(--transition); text-transform: uppercase; letter-spacing: 1px; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
-        .nav-tabs button.active { color: #fff; border-bottom-color: var(--primary-blue); text-shadow: 0 2px 10px rgba(239, 68, 68, 0.5); }
-        .tab-pane { display: none; }
-        .tab-pane.active { display: block; }
-        
-        .user-card { background: rgba(0,0,0,0.3); backdrop-filter: blur(15px); padding: 30px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); text-align: center; transition: var(--transition); box-shadow: 0 8px 32px 0 rgba(0,0,0,0.3); }
-        .user-card:hover { border-color: var(--primary-blue); transform: translateY(-5px); box-shadow: 0 15px 35px rgba(239, 68, 68, 0.2); }
-        .user-avatar { width: 100px; height: 100px; border-radius: 50%; object-fit: cover; margin-bottom: 20px; border: 4px solid rgba(255,255,255,0.1); box-shadow: 0 5px 15px rgba(0,0,0,0.5); }
-        .user-name { font-size: 20px; font-weight: 800; margin: 0 0 5px; color: #fff; text-shadow: 0 2px 5px rgba(0,0,0,0.8); }
-        .user-username { font-size: 14px; color: var(--primary-blue); margin-bottom: 20px; font-weight: 700; text-shadow: 0 1px 3px rgba(0,0,0,0.3); }
-        .btn-view-profile { background: rgba(255,255,255,0.1); color: #fff; border: 1px solid rgba(255,255,255,0.2); padding: 10px 25px; border-radius: 25px; font-size: 14px; font-weight: 700; transition: var(--transition); text-decoration: none; display: inline-block; backdrop-filter: blur(5px); }
-        .btn-view-profile:hover { background: var(--primary-blue); border-color: var(--primary-blue); color: #fff; transform: scale(1.05); }
-        .users-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 25px; }
-        
-        .posts-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px; }
-        .post-card { position: relative; border-radius: 15px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.3); backdrop-filter: blur(10px); display: flex; flex-direction: column; transition: var(--transition); }
-        .post-card:hover { transform: translateY(-5px); border-color: var(--primary-blue); }
-        .post-card img, .post-card video { width: 100%; aspect-ratio: 1; object-fit: cover; }
-        .post-details { padding: 15px; display: flex; flex-direction: column; gap: 8px; }
-        .post-caption { font-size: 14px; color: #fff; font-weight: 500; text-shadow: 0 1px 3px rgba(0,0,0,0.5); }
-        .post-stats { font-size: 13px; color: rgba(255,255,255,0.7); display: flex; gap: 15px; font-weight: 600; }
-        .post-author { position: absolute; top: 12px; left: 12px; background: rgba(0,0,0,0.5); backdrop-filter: blur(5px); padding: 5px 12px; border-radius: 20px; font-size: 12px; color: #fff; font-weight: 700; border: 1px solid rgba(255,255,255,0.1); }
-        
-        .advices-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 25px; }
-        .advice-card { background: rgba(0,0,0,0.3); backdrop-filter: blur(15px); padding: 25px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 8px 32px 0 rgba(0,0,0,0.3); }
-        .advice-card:hover { border-color: var(--primary-blue); transform: translateY(-5px); }
-        .advice-card h4 { margin: 0 0 12px; font-size: 18px; color: #fff; font-weight: 800; text-shadow: 0 2px 5px rgba(0,0,0,0.8); }
-        .advice-card p { font-size: 15px; color: rgba(255,255,255,0.8); line-height: 1.6; margin: 0; font-weight: 500; text-shadow: 0 1px 3px rgba(0,0,0,0.5); }
-        .advice-author { display: flex; align-items: center; gap: 12px; margin-top: 18px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 18px; }
-        .advice-author img { width: 35px; height: 35px; border-radius: 50%; object-fit: cover; border: 2px solid rgba(255,255,255,0.2); }
-        .advice-author span { font-size: 14px; color: #fff; font-weight: 700; text-shadow: 0 1px 3px rgba(0,0,0,0.5); }
-        .btn-view-profile { background: var(--primary-blue); color: white; padding: 8px 16px; border-radius: 10px; font-weight: 700; font-size: 12px; text-decoration: none; transition: 0.3s; }
-        .btn-view-profile:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(239, 68, 68, 0.3); color: white; }
+        .main-content { 
+            flex: 1; 
+            margin-left: 240px; 
+            padding: 60px 40px !important; 
+            transition: margin-left 0.4s ease;
+        }
 
-        /* Advice Details in Modal */
-        .modal-advice-detail { background: rgba(0,0,0,0.4); border-radius: 15px; padding: 20px; border: 1px solid rgba(255,255,255,0.1); }
-        .modal-tip-box { background: rgba(239, 68, 68, 0.05); border: 1px solid rgba(239, 68, 68, 0.1); border-radius: 12px; padding: 12px; height: 100%; }
-        .modal-tip-label { color: var(--primary-blue); font-weight: 700; font-size: 11px; text-transform: uppercase; margin-bottom: 5px; display: flex; align-items: center; gap: 8px; }
-        
-        /* Modal Fixes */
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 2000; backdrop-filter: blur(8px); }
-        .modal-content-custom { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 90%; max-width: 600px; max-height: 90vh; overflow-y: auto; background: #0b0f18; border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; padding: 25px; color: white; }
-        .modal-close { position: absolute; top: 15px; right: 20px; font-size: 24px; cursor: pointer; color: #7e8c9a; }
-
-        /* Sidebar Overrides - Specific for this page */
-        .sidebar .nav-item.active a {
-            background: rgba(20, 184, 166, 0.15) !important;
-            color: #14b8a6 !important;
-            border: 1px solid rgba(20, 184, 166, 0.3) !important;
-        }
-        .sidebar .nav-item a:hover:not(.active) {
-            color: #14b8a6 !important;
-        }
-        .sidebar {
-            border-right: 1px solid rgba(20, 184, 166, 0.1) !important;
-        }
-        
         @media (max-width: 991px) {
-            .main-content { margin-left: 0; padding: 90px 20px 40px; }
-            .explore-header { flex-direction: column; align-items: flex-start; gap: 20px; padding: 20px; }
+            .main-content { margin-left: 0; padding: 100px 24px 40px !important; }
+            .explore-header { flex-direction: column; align-items: flex-start; gap: 24px; padding: 24px; }
             .search-container { width: 100% !important; }
-            .nav-tabs { overflow-x: auto; padding-bottom: 5px; gap: 20px; }
+            .nav-tabs { overflow-x: auto; padding-bottom: 8px; gap: 20px; border-bottom: 1px solid var(--border-color); }
             .nav-tabs button { white-space: nowrap; }
         }
 
         @media (max-width: 576px) {
-            .users-grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 15px; }
-            .user-card { padding: 20px; }
-            .user-avatar { width: 80px; height: 80px; }
+            .users-grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 16px; }
+            .user-card { padding: 24px; }
+            .user-avatar { width: 70px; height: 70px; }
             .user-name { font-size: 16px; }
-            .posts-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 10px; }
+            .posts-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 12px; }
             .advices-grid { grid-template-columns: 1fr; }
         }
 
@@ -105,38 +66,145 @@
             }
             .wrapper { justify-content: center; }
         }
+
+        .explore-header { 
+            background: var(--bg-card); 
+            padding: 40px; 
+            border-radius: 20px; 
+            border: 1px solid var(--border-color); 
+            margin-bottom: 32px; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: flex-end; 
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1); 
+        }
+
+        .explore-header h1 { font-size: 28px; font-weight: 800; color: var(--text-main); letter-spacing: -0.5px; margin-bottom: 8px; }
+        .explore-header p { color: var(--text-muted); font-weight: 500; font-size: 15px; margin: 0; }
+
+        .search-container { position: relative; width: 400px; }
+        .search-container input { 
+            width: 100%; 
+            background: #f8fafc; 
+            border: 1px solid var(--border-color); 
+            padding: 14px 20px 14px 48px; 
+            border-radius: 12px; 
+            color: var(--text-main); 
+            outline: none; 
+            transition: var(--transition); 
+            font-weight: 500;
+        }
+        .search-container input:focus { border-color: var(--primary); background: #fff; box-shadow: 0 0 0 4px rgba(0, 128, 128, 0.1); }
+        .search-container i { position: absolute; left: 18px; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 18px; }
+
+        /* Tabs Styling */
+        .nav-tabs { display: flex; gap: 32px; border-bottom: 1px solid var(--border-color); margin-bottom: 32px; padding-left: 5px; }
+        .nav-tabs button { 
+            background: none; border: none; 
+            color: var(--text-muted); 
+            padding: 12px 0; font-size: 14px; font-weight: 700; 
+            cursor: pointer; border-bottom: 2px solid transparent; 
+            transition: var(--transition); text-transform: uppercase; letter-spacing: 0.5px; 
+        }
+        .nav-tabs button.active { color: var(--primary); border-bottom-color: var(--primary); }
+        .nav-tabs button:hover:not(.active) { color: var(--text-main); }
+
+        .tab-pane { display: none; }
+        .tab-pane.active { display: block; }
+        
+        /* Grid & Cards */
+        .users-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 24px; }
+        .user-card { 
+            background: var(--bg-card); 
+            padding: 32px; 
+            border-radius: 20px; 
+            border: 1px solid var(--border-color); 
+            text-align: center; 
+            transition: var(--transition); 
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05); 
+        }
+        .user-card:hover { border-color: var(--primary); transform: translateY(-4px); box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); }
+        .user-avatar { width: 90px; height: 90px; border-radius: 50%; object-fit: cover; margin-bottom: 20px; border: 4px solid #f8fafc; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
+        .user-name { font-size: 18px; font-weight: 700; margin: 0 0 4px; color: var(--text-main); }
+        .user-username { font-size: 14px; color: var(--primary); margin-bottom: 20px; font-weight: 600; }
+        
+        .btn-view-profile { 
+            background: #e0f2f2; 
+            color: var(--primary); 
+            border: none;
+            padding: 10px 24px; 
+            border-radius: 12px; 
+            font-size: 13px; font-weight: 700; 
+            transition: var(--transition); 
+            text-decoration: none !important; 
+            display: inline-block; 
+        }
+        .btn-view-profile:hover { background: var(--primary); color: #fff; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0, 128, 128, 0.2); }
+
+        .posts-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 24px; }
+        .post-card { 
+            position: relative; border-radius: 20px; overflow: hidden; 
+            border: 1px solid var(--border-color); 
+            background: var(--bg-card); 
+            display: flex; flex-direction: column; 
+            transition: var(--transition); 
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+        .post-card:hover { transform: translateY(-4px); border-color: var(--primary); box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); }
+        .post-card img, .post-card video { width: 100%; aspect-ratio: 1; object-fit: cover; }
+        .post-details { padding: 16px; display: flex; flex-direction: column; gap: 8px; }
+        .post-caption { font-size: 14px; color: var(--text-main); font-weight: 500; }
+        .post-stats { font-size: 12px; color: var(--text-muted); display: flex; gap: 16px; font-weight: 600; }
+        .post-stats i { color: var(--accent-red); }
+        .post-author { position: absolute; top: 12px; left: 12px; background: rgba(255,255,255,0.85); backdrop-filter: blur(8px); padding: 6px 14px; border-radius: 100px; font-size: 11px; color: var(--text-main); font-weight: 700; border: 1px solid var(--border-color); }
+        
+        .advices-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 24px; }
+        .advice-card { 
+            background: var(--bg-card); 
+            padding: 24px; 
+            border-radius: 20px; 
+            border: 1px solid var(--border-color); 
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05); 
+            transition: var(--transition);
+        }
+        .advice-card:hover { border-color: var(--primary); transform: translateY(-4px); box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); }
+        .advice-card h4 { margin: 0 0 12px; font-size: 17px; color: var(--text-main); font-weight: 700; }
+        .advice-card p { font-size: 14px; color: var(--text-muted); line-height: 1.6; margin: 0; font-weight: 400; }
+        .advice-author { display: flex; align-items: center; gap: 12px; margin-top: 20px; border-top: 1px solid var(--border-color); padding-top: 20px; }
+        .advice-author img { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; border: 2px solid #f8fafc; }
+        .advice-author span { font-size: 13px; color: var(--text-main); font-weight: 600; }
+
+        /* Modal Overhaul */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.5); z-index: 2000; backdrop-filter: blur(4px); }
+        .modal-content-custom { 
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); 
+            width: 95%; max-width: 640px; max-height: 85vh; 
+            overflow-y: auto; background: #ffffff; 
+            border: 1px solid var(--border-color); border-radius: 24px; 
+            padding: 32px; color: var(--text-main); 
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+        .modal-close { position: absolute; top: 20px; right: 24px; font-size: 24px; cursor: pointer; color: var(--text-muted); transition: 0.2s; }
+        .modal-close:hover { color: var(--accent-red); }
+        .modal-advice-detail { background: #f8fafc; border-radius: 16px; padding: 24px; border: 1px solid var(--border-color); }
+        .modal-tip-box { background: #ffffff; border: 1px solid var(--border-color); border-radius: 12px; padding: 16px; height: 100%; transition: 0.2s; }
+        .modal-tip-box:hover { border-color: var(--primary); }
+        .modal-tip-label { color: var(--primary); font-weight: 700; font-size: 11px; text-transform: uppercase; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
     </style>
 </head>
 <body class="premium-theme">
-    <!-- Sunlight Rays -->
-    <div class="sun-rays-container">
-        <div class="ray ray-1"></div>
-        <div class="ray ray-2"></div>
-        <div class="ray ray-3"></div>
-        <div class="ray ray-4"></div>
-    </div>
-    <header class="header">
-        <div class="header-logo"><a href="<c:url value='/'/>"><img src="<c:url value='/views/assets/images/logo.png'/>" style="height: 35px;"></a></div>
-        <div style="display: flex; align-items: center; gap: 20px;">
-                <div style="display: flex; align-items: center; gap: 15px; cursor: pointer;" onclick="showMyPoints()">
-                    <span style="font-weight: 700;">Hi, ${user.name}</span>
-                    <c:set var="defaultAvatar" value="https://ui-avatars.com/api/?name=${user.name}&background=f04c26&color=fff" />
-                    <img src="${not empty user.profilePhoto ? user.profilePhoto : defaultAvatar}" style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover; border: 2px solid rgba(255,255,255,0.2);">
-                </div>
-        </div>
-    </header>
     <div id="pointsModal" class="modal" style="display: none; z-index: 3000;">
         <div class="modal-content-custom" style="max-width: 350px; text-align: center;">
             <span class="modal-close" onclick="hidePoints()">&times;</span>
             <div style="padding: 20px;">
                 <div style="position: relative; width: 100px; height: 100px; margin: 0 auto 20px;">
-                    <img id="modalUserAvatar" src="${not empty user.profilePhoto ? user.profilePhoto : defaultAvatar}" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 3px solid var(--primary-blue); box-shadow: 0 0 25px rgba(230,57,70,0.3);">
-                    <div style="position: absolute; bottom: -5px; right: -5px; width: 40px; height: 40px; background: var(--primary-blue); border: 3px solid #0b0f18; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(0,0,0,0.5);">
+                    <img id="modalUserAvatar" src="${not empty user.profilePhoto ? user.profilePhoto : defaultAvatar}" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 3px solid var(--primary); box-shadow: 0 4px 12px rgba(0,128,128,0.2);">
+                    <div style="position: absolute; bottom: -5px; right: -5px; width: 40px; height: 40px; background: var(--primary); border: 3px solid #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
                         <span id="modalPointsValue" style="font-size: 16px; font-weight: 800; color: #fff;">0</span>
                     </div>
                 </div>
-                <h3 style="font-weight: 700; margin-bottom: 5px; color: #fff; font-size: 18px;">Total Points Earned</h3>
-                <h2 id="modalTotalPointsLabel" style="font-size: 32px; font-weight: 800; color: var(--primary-blue); margin-bottom: 10px;">0</h2>
+                <h3 style="font-weight: 700; margin-bottom: 5px; color: var(--text-main); font-size: 18px;">Total Points Earned</h3>
+                <h2 id="modalTotalPointsLabel" style="font-size: 32px; font-weight: 800; color: var(--primary); margin-bottom: 10px;">0</h2>
                 <p style="color: var(--text-muted); font-size: 13px; margin-bottom: 25px;">Track your traveler influence across the platform!</p>
                 
                 <div style="text-align: left; background: rgba(255,255,255,0.03); padding: 15px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05);">
@@ -164,8 +232,8 @@
         <main class="main-content">
             <div class="explore-header">
                 <div>
-                    <h1 style="font-weight: 800; margin: 0; font-size: 32px; color: #fff; text-shadow: 0 4px 15px rgba(0,0,0,0.8);">Explore Content</h1>
-                    <p style="color: #fff; margin: 0; font-weight: 600; text-shadow: 0 2px 8px rgba(0,0,0,0.8);">Find friends, view memories, and discover travel advice.</p>
+                    <h1 style="font-weight: 800; margin: 0; font-size: 32px; color: var(--text-main);">Explore Content</h1>
+                    <p style="color: var(--text-muted); margin: 0; font-weight: 600;">Find friends, view memories, and discover travel advice.</p>
                 </div>
                 <form action="<c:url value='/user/explore'/>" method="GET">
                     <div class="search-container">
@@ -390,18 +458,18 @@
                     <h2 style="margin:0; font-weight:800; color:var(--primary-blue);">\${adv.title}</h2>
                     <span style="color:var(--text-dim); text-transform:uppercase; font-size:12px; letter-spacing:1px;">\${adv.categories || 'General'}</span>
                 </div>
-                <div style="background: rgba(255,255,255,0.03); padding: 20px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.05); margin-bottom: 20px;">
-                    <p style="font-size:15px; line-height:1.7; color:#eee; margin:0;">\${adv.content}</p>
+                <div style="background: #f8fafc; padding: 24px; border-radius: 16px; border: 1px solid var(--border-color); margin-bottom: 24px;">
+                    <p style="font-size:15px; line-height:1.7; color:var(--text-main); margin:0; font-weight: 500;">\${adv.content}</p>
                 </div>
-                <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px; margin-bottom: 25px;">
+                <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 16px; margin-bottom: 32px;">
                     \${tipsHtml}
                 </div>
-                <div style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px; display: flex; align-items: center; justify-content: space-between;">
+                <div style="border-top: 1px solid var(--border-color); padding-top: 24px; display: flex; align-items: center; justify-content: space-between;">
                     <div style="display: flex; align-items: center; gap: 12px;">
-                        <img src="\${(adv.authorPhoto && adv.authorPhoto !== 'null' && adv.authorPhoto !== '') ? adv.authorPhoto : 'https://ui-avatars.com/api/?name=' + adv.authorName + '&background=random'}" style="width: 40px; height: 40px; border-radius: 50%; border: 2px solid var(--primary-blue);">
+                        <img src="\${(adv.authorPhoto && adv.authorPhoto !== 'null' && adv.authorPhoto !== '') ? adv.authorPhoto : 'https://ui-avatars.com/api/?name=' + adv.authorName + '&background=008080&color=fff'}" style="width: 44px; height: 44px; border-radius: 50%; border: 2px solid var(--primary);">
                         <div>
-                            <div style="font-size: 14px; font-weight: 700; color: #fff;">\${adv.authorName}</div>
-                            <div style="font-size: 12px; color: var(--text-dim);">@\${adv.authorUsername}</div>
+                            <div style="font-size: 14px; font-weight: 700; color: var(--text-main);">\${adv.authorName}</div>
+                            <div style="font-size: 12px; color: var(--text-muted);">@\${adv.authorUsername}</div>
                         </div>
                     </div>
                     <a href="/profile?username=\${adv.authorUsername}" class="btn-view-profile">View Profile</a>
