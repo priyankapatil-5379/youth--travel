@@ -36,8 +36,9 @@
         
         .alert-success { background: rgba(76, 175, 80, 0.1); border: 1px solid #4caf50; color: #4caf50; border-radius: 8px; }
     </style>
+<link rel="stylesheet" href="<c:url value='/views/assets/css/admin-light.css'/>">
 </head>
-<body>
+<body class="admin-light-theme">
     <div class="admin-layout">
         <aside class="admin-sidebar">
             <div class="sidebar-header">

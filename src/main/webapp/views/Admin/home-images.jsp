@@ -38,8 +38,9 @@
         .modal-footer { border-top: 1px solid rgba(255,255,255,0.1); }
         .form-control:focus { background: #222; border-color: #e63946; color: #fff; box-shadow: none; }
     </style>
+<link rel="stylesheet" href="<c:url value='/views/assets/css/admin-light.css'/>">
 </head>
-<body>
+<body class="admin-light-theme">
     <div class="admin-layout">
         <aside class="admin-sidebar">
             <div class="sidebar-header">

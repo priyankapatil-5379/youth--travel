@@ -250,9 +250,10 @@
                         text-decoration: none;
                     }
                 </style>
-            </head>
+            <link rel="stylesheet" href="<c:url value='/views/assets/css/admin-light.css'/>">
+</head>
 
-            <body>
+            <body class="admin-light-theme">
                 <div class="admin-layout">
                     <aside class="admin-sidebar">
             <div class="sidebar-header">
@@ -307,7 +308,7 @@
                                     <span><i class="fa fa-map-marker"></i>${pkg.destination}</span>
                                     <span><i class="fa fa-inr"></i>₹${pkg.price}</span>
                                     <span><i class="fa fa-users"></i><strong
-                                            style="color:#fff;">${bookings.size()}</strong> bookings</span>
+                                            style="color:#fff;">${not empty bookings ? bookings.size() : 0}</strong> bookings</span>
                                 </div>
                             </div>
                         </div>
@@ -316,7 +317,7 @@
                         <div class="admin-section">
                             <div class="section-title">
                                 Users Who Used This Package
-                                <span>${bookings.size()}</span>
+                                <span>${not empty bookings ? bookings.size() : 0}</span>
                             </div>
                             <c:choose>
                                 <c:when test="${empty bookings}">

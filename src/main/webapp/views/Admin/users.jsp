@@ -57,8 +57,9 @@
         .empty-state h2 { color: #666; }
         .reg-date { color: #666; font-size: 13px; }
     </style>
+<link rel="stylesheet" href="<c:url value='/views/assets/css/admin-light.css'/>">
 </head>
-<body class="premium-theme">
+<body class="premium-theme admin-light-theme">
     <div class="sun-rays-container">
         <div class="ray ray-1"></div>
         <div class="ray ray-2"></div>
@@ -129,7 +130,9 @@
                                             <td style="color:#555;">${s.index + 1}</td>
                                             <td>
                                                 <div style="display:flex; align-items:center;">
-                                                    <div class="user-avatar">${fn:toUpperCase(fn:substring(u.name, 0, 1))}</div>
+                                                    <div class="user-avatar">
+                                                        ${not empty u.name ? fn:toUpperCase(fn:substring(u.name, 0, 1)) : 'U'}
+                                                    </div>
                                                     <div>
                                                         <div class="user-name">${u.name}</div>
                                                         <div class="user-email">${u.email}</div>
@@ -138,10 +141,16 @@
                                             </td>
                                             <td>${u.phone != null ? u.phone : '—'}</td>
                                             <td class="reg-date">${u.registeredAt}</td>
-                                            <td>
+                                            <td style="display: flex; gap: 10px;">
                                                 <a href="<c:url value='/admin/users/${u.id}'/>" class="view-btn" onclick="event.stopPropagation()">
                                                     <i class="fa fa-eye"></i> View Profile
                                                 </a>
+                                                <c:set var="blockAction" value="${u.isBlocked ? 'unblock' : 'block'}" />
+                                                <form action="<c:url value='/admin/users/${u.id}/${blockAction}'/>" method="post" onsubmit="event.stopPropagation(); return confirm('Are you sure you want to ${blockAction} this user?');">
+                                                    <button type="submit" class="view-btn" style="background: ${u.isBlocked ? '#28a745' : '#dc3545'}; border: none;">
+                                                        <i class="fa ${u.isBlocked ? 'fa-unlock' : 'fa-lock'}"></i> ${u.isBlocked ? 'Unblock' : 'Block'}
+                                                    </button>
+                                                </form>
                                             </td>
                                         </tr>
                                     </c:forEach>

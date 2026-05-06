@@ -179,6 +179,10 @@ public class UserController {
             HttpSession session, RedirectAttributes redirectAttributes) {
         if (userService.loginUser(email, password)) {
             User user = userService.getUserByEmail(email);
+            if (user.getIsBlocked()) {
+                redirectAttributes.addFlashAttribute("error", "Your account has been blocked by the administrator.");
+                return "redirect:/user/login";
+            }
             session.setAttribute("user", user);
             redirectAttributes.addFlashAttribute("message", "Login successful! Welcome back.");
             return "redirect:/user/dashboard";

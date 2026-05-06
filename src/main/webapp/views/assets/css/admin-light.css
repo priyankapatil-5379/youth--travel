@@ -1,0 +1,151 @@
+/* Light Theme for Admin Dashboard */
+body.admin-light-theme {
+    background-color: #ffffff !important;
+    background-image: none !important;
+    color: #333333 !important;
+    font-family: 'Dosis', sans-serif;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+}
+
+body.admin-light-theme::before,
+body.admin-light-theme .sun-rays-container {
+    display: none !important; /* Remove underwater theme */
+}
+
+/* Sidebar - Dark Blue */
+body.admin-light-theme .admin-sidebar {
+    background-color: #0b1d3a !important; /* Dark Blue */
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    border-right: none !important;
+    box-shadow: 2px 0 10px rgba(0,0,0,0.1) !important;
+}
+
+/* Highlight Logo in Sidebar */
+body.admin-light-theme .sidebar-header {
+    background-color: #ffffff !important;
+    padding: 20px !important;
+    border-bottom: 2px solid #e63946 !important;
+    margin-bottom: 10px;
+}
+
+body.admin-light-theme .sidebar-header img {
+    filter: brightness(0) !important; /* Make the logo completely black so it's visible on white */
+    max-width: 160px;
+}
+
+/* Admin Sidebar Links */
+body.admin-light-theme .admin-nav-item {
+    color: rgba(255,255,255,0.7) !important;
+}
+
+body.admin-light-theme .admin-nav-item:hover, 
+body.admin-light-theme .admin-nav-item.active {
+    background: rgba(255,255,255,0.1) !important;
+    color: #ffffff !important;
+    border-left-color: #e63946 !important;
+}
+
+/* Main Content area */
+body.admin-light-theme .admin-main {
+    background-color: #ffffff !important;
+    color: #333333 !important;
+}
+
+body.admin-light-theme .admin-header h1 {
+    color: #0b1d3a !important;
+    text-shadow: none !important;
+}
+
+body.admin-light-theme .admin-user span {
+    color: #666666 !important;
+}
+
+/* Admin Sections & Cards */
+body.admin-light-theme .admin-section,
+body.admin-light-theme .stat-card,
+body.admin-light-theme .upload-section {
+    background: #ffffff !important;
+    backdrop-filter: none !important;
+    border: 1px solid #e0e0e0 !important;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05) !important;
+}
+
+body.admin-light-theme .admin-section-header h2,
+body.admin-light-theme .section-title {
+    color: #0b1d3a !important;
+}
+
+body.admin-light-theme .stat-info h3 {
+    color: #0b1d3a !important;
+    text-shadow: none !important;
+}
+
+body.admin-light-theme .stat-info p {
+    color: #666666 !important;
+    text-shadow: none !important;
+}
+
+/* Tables */
+body.admin-light-theme .table thead th {
+    color: #0b1d3a !important;
+    text-shadow: none !important;
+    border-bottom: 2px solid #0b1d3a !important;
+}
+
+body.admin-light-theme .table tbody td {
+    color: #444444 !important;
+    border-top: 1px solid #eeeeee !important;
+    text-shadow: none !important;
+}
+
+/* Specific elements for light theme */
+body.admin-light-theme .enquiry-card {
+    background: #ffffff !important;
+    border: 1px solid #e0e0e0 !important;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.02) !important;
+}
+
+body.admin-light-theme .enquiry-header {
+    background: #f8f9fa !important;
+    border-bottom: 1px solid #e0e0e0 !important;
+}
+
+body.admin-light-theme .enquiry-user-info h4 {
+    color: #0b1d3a !important;
+}
+
+body.admin-light-theme .enquiry-body p {
+    color: #444444 !important;
+}
+
+body.admin-light-theme .form-control {
+    background: #ffffff !important;
+    color: #333333 !important;
+    border: 1px solid #cccccc !important;
+}
+
+body.admin-light-theme .image-card {
+    background: #ffffff !important;
+    border: 1px solid #e0e0e0 !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05) !important;
+}
+
+body.admin-light-theme .image-card .info span {
+    color: #333333 !important;
+}
+
+/* Tabs */
+body.admin-light-theme .nav-tabs {
+    border-bottom: 1px solid #ddd !important;
+}
+body.admin-light-theme .nav-tabs > li > a {
+    color: #666 !important;
+}
+body.admin-light-theme .nav-tabs > li.active > a {
+    color: #0b1d3a !important;
+    border-bottom: 2px solid #0b1d3a !important;
+}

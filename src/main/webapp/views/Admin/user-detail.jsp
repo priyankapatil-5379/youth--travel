@@ -55,8 +55,9 @@
         .empty-state { text-align: center; padding: 50px; color: #555; }
         .empty-state i { font-size: 48px; display: block; margin-bottom: 15px; color: #333; }
     </style>
+<link rel="stylesheet" href="<c:url value='/views/assets/css/admin-light.css'/>">
 </head>
-<body>
+<body class="admin-light-theme">
     <div class="admin-layout">
         <aside class="admin-sidebar">
             <div class="sidebar-header">
@@ -99,7 +100,9 @@
 
             <!-- User Profile Card -->
             <div class="user-profile-card">
-                <div class="user-avatar-lg">${fn:toUpperCase(fn:substring(user.name, 0, 1))}</div>
+                <div class="user-avatar-lg">
+                    ${not empty user.name ? fn:toUpperCase(fn:substring(user.name, 0, 1)) : 'U'}
+                </div>
                 <div class="user-info" style="flex-grow:1;">
                     <h2>${user.name}</h2>
                     <div class="user-meta">
@@ -111,7 +114,7 @@
                     </div>
                     <div class="stat-pills">
                         <div class="stat-pill">
-                            <h4>${bookings.size()}</h4>
+                            <h4>${not empty bookings ? bookings.size() : 0}</h4>
                             <p>Trips Taken</p>
                         </div>
                     </div>
@@ -122,7 +125,7 @@
             <div class="admin-section">
                 <div class="section-title">
                     Trip Booking History
-                    <span class="count-badge">${bookings.size()} bookings</span>
+                    <span class="count-badge">${not empty bookings ? bookings.size() : 0} bookings</span>
                 </div>
                 <c:choose>
                     <c:when test="${empty bookings}">

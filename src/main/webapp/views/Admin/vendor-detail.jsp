@@ -38,9 +38,10 @@
         .doc-card a { color: #fff; text-decoration: none; background: #007bff; padding: 5px 15px; border-radius: 5px; font-size: 14px; display: inline-block; }
     </style>
 
+<link rel="stylesheet" href="<c:url value='/views/assets/css/admin-light.css'/>">
 </head>
 
-<body>
+<body class="admin-light-theme">
     <div class="admin-layout">
         <aside class="admin-sidebar">
             <div class="sidebar-header">

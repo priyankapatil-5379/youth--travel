@@ -302,9 +302,10 @@
             }
         }
     </style>
+<link rel="stylesheet" href="<c:url value='/views/assets/css/admin-light.css'/>">
 </head>
 
-<body class="premium-theme">
+<body class="premium-theme admin-light-theme">
     <!-- Sunlight Rays -->
     <div class="sun-rays-container">
         <div class="ray ray-1"></div>

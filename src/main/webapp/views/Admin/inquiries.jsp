@@ -56,8 +56,9 @@
         .badge-new { background: rgba(33, 150, 243, 0.1); color: #2196f3; }
         .badge-replied { background: rgba(76, 175, 80, 0.1); color: #4caf50; }
     </style>
+<link rel="stylesheet" href="<c:url value='/views/assets/css/admin-light.css'/>">
 </head>
-<body class="premium-theme">
+<body class="premium-theme admin-light-theme">
     <div class="sun-rays-container">
         <div class="ray ray-1"></div>
         <div class="ray ray-2"></div>
