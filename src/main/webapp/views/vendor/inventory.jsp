@@ -1,141 +1,250 @@
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
-    <%@ taglib prefix="fmt" uri="jakarta.tags.fmt" %>
-        <!DOCTYPE html>
-        <html lang="en">
+<%@ taglib prefix="fmt" uri="jakarta.tags.fmt" %>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Inventory Management | Youth Travel</title>
+    <link rel="stylesheet" href="<c:url value='/views/assets/css/bootstrap.min.css'/>">
+    <link rel="stylesheet" href="<c:url value='/views/assets/css/font-awesome.min.css'/>">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #008080;
+            --primary-hover: #077378;
+            --accent-red: #e63946;
+            --bg-body: #f1f5f9;
+            --bg-card: #ffffff;
+            --border-color: #e2e8f0;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --info: #3b82f6;
+            --danger: #e63946;
+            --sidebar-width: 260px;
+        }
 
-        <head>
-            <meta charset="utf-8">
-            <title>Inventory Management | Youth Travel</title>
-            <link rel="stylesheet" href="<c:url value='/views/assets/css/bootstrap.min.css'/>">
-            <link rel="stylesheet" href="<c:url value='/views/assets/css/style.css'/>">
-            <link rel="stylesheet" href="<c:url value='/views/assets/css/font-awesome.min.css'/>">
-            <link rel="stylesheet" href="<c:url value='/views/assets/css/premium-dashboard.css'/>">
-            <link href="https://fonts.googleapis.com/css?family=Dosis:300,400,500,600,700,800" rel="stylesheet">
-            <style>
-                body.yt-dark {
-                    background: transparent;
-                    color: #fff;
-                    font-family: 'Dosis', sans-serif;
-                }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+        }
 
-                .inventory-card {
-                    background: rgba(0,0,0,0.4);
-                    backdrop-filter: blur(15px);
-                    border: 1px solid rgba(255, 255, 255, 0.1);
-                    border-radius: 20px;
-                    padding: 30px;
-                    margin-bottom: 25px;
-                    box-shadow: 0 8px 32px 0 rgba(0,0,0,0.3);
-                }
+        .main-content {
+            margin-left: var(--sidebar-width);
+            padding: 40px;
+            min-height: 100vh;
+            transition: 0.3s;
+        }
 
-                .status-badge {
-                    padding: 5px 12px;
-                    border-radius: 20px;
-                    font-size: 12px;
-                    font-weight: 700;
-                }
+        @media (max-width: 991px) {
+            .main-content { margin-left: 0; padding: 20px; }
+        }
 
-                .status-active {
-                    background: rgba(16, 185, 129, 0.1);
-                    color: #10b981;
-                }
+        .page-header {
+            margin-bottom: 40px;
+        }
 
-                .status-full {
-                    background: rgba(239, 68, 68, 0.1);
-                    color: #ef4444;
-                }
+        .page-header h2 {
+            font-weight: 800;
+            font-size: 28px;
+            color: var(--text-main);
+            margin: 0;
+            letter-spacing: -1px;
+        }
 
-                .btn-action {
-                    background: rgba(255, 255, 255, 0.05);
-                    border: 1px solid rgba(255, 255, 255, 0.1);
-                    color: #fff;
-                    border-radius: 8px;
-                    padding: 6px 12px;
-                    font-size: 13px;
-                    transition: 0.2s;
-                }
+        .inventory-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+            transition: 0.2s;
+        }
 
-                .btn-action:hover {
-                    background: #f04c26;
-                    border-color: #f04c26;
-                }
-            </style>
-        </head>
+        .inventory-card:hover {
+            border-color: var(--primary);
+            box-shadow: 0 4px 12px -2px rgba(0, 0, 0, 0.05);
+        }
 
-        <body class="yt-dark premium-theme">
-        <div class="sun-rays-container">
-            <div class="ray ray-1"></div>
-            <div class="ray ray-2"></div>
-            <div class="ray ray-3"></div>
-            <div class="ray ray-4"></div>
-        </div>
-                <jsp:include page="vendor-sidebar.jsp">
+        .trip-title {
+            font-weight: 700;
+            font-size: 18px;
+            color: var(--text-main);
+            margin-bottom: 4px;
+        }
+
+        .trip-meta {
+            font-size: 13px;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .trip-meta i {
+            color: var(--primary);
+        }
+
+        .occupancy-label {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .occupancy-value {
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--primary);
+        }
+
+        .status-badge {
+            padding: 6px 14px;
+            border-radius: 30px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .status-active {
+            background: #e0f2f1;
+            color: var(--primary);
+        }
+
+        .status-full {
+            background: #fee2e2;
+            color: var(--danger);
+        }
+
+        .btn-action {
+            background: #f1f5f9;
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            border-radius: 10px;
+            padding: 8px 16px;
+            font-size: 13px;
+            font-weight: 600;
+            transition: 0.2s;
+        }
+
+        .btn-action:hover {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: #ffffff;
+        }
+
+        .inventory-stats {
+            display: flex;
+            gap: 16px;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .stat-box {
+            background: #f8fafc;
+            padding: 12px 16px;
+            border-radius: 12px;
+            min-width: 140px;
+        }
+
+        .stat-label {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-muted);
+            margin-bottom: 4px;
+        }
+
+        .stat-value {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .text-danger-custom {
+            color: var(--danger);
+        }
+    </style>
+</head>
+
+<body>
+    <jsp:include page="vendor-sidebar.jsp">
         <jsp:param name="activePage" value="inventory" />
     </jsp:include>
 
     <div class="main-content">
-                <h2 style="font-weight: 800; margin-bottom: 40px; color: #fff; text-shadow: 0 4px 15px rgba(0,0,0,0.8); font-size: 36px;">Live Slot & Inventory Management</h2>
+        <div class="page-header">
+            <h2>Live Slot & Inventory Management</h2>
+        </div>
 
-                <c:forEach var="trip" items="${trips}">
-                    <c:set var="occupied" value="${occupiedMap[trip.id] != null ? occupiedMap[trip.id] : 0}" />
-                    <c:set var="total"
-                        value="${trip.maxTravelers != null && trip.maxTravelers > 0 ? trip.maxTravelers : 20}" />
-                    <c:set var="seatsLeft" value="${total - occupied}" />
-                    <c:set var="occupancy" value="${(occupied * 100) / total}" />
+        <c:forEach var="trip" items="${trips}">
+            <c:set var="occupied" value="${occupiedMap[trip.id] != null ? occupiedMap[trip.id] : 0}" />
+            <c:set var="total" value="${trip.maxTravelers != null && trip.maxTravelers > 0 ? trip.maxTravelers : 20}" />
+            <c:set var="seatsLeft" value="${total - occupied}" />
+            <c:set var="occupancy" value="${(occupied * 100) / total}" />
 
-                    <div class="inventory-card">
-                        <div class="row align-items-center">
-                            <div class="col-md-4">
-                                <h4 style="margin: 0; font-weight: 800; color: #fff; text-shadow: 0 2px 8px rgba(0,0,0,0.8);">${trip.title}</h4>
-                                <p style="color: #fff; font-size: 14px; margin-top: 5px; font-weight: 600; text-shadow: 0 1px 3px rgba(0,0,0,0.5);">
-                                    <i class="fa fa-map-marker" style="color: #f04c26;"></i> ${trip.destination}</p>
-                            </div>
-                            <div class="col-md-3">
-                                <div style="font-size: 13px; color: #fff; text-transform: uppercase; letter-spacing: 1px; font-weight: 700; text-shadow: 0 1px 3px rgba(0,0,0,0.5);">Total Occupancy</div>
-                                <div style="font-size: 24px; font-weight: 800; color: #ff9f43; text-shadow: 0 2px 8px rgba(0,0,0,0.5);">
-                                    <fmt:formatNumber value="${occupancy}" maxFractionDigits="0" />%
-                                </div>
-                            </div>
-                            <div class="col-md-3 text-center">
-                                <c:choose>
-                                    <c:when test="${seatsLeft <= 0}">
-                                        <span class="status-badge status-full">FULLY BOOKED</span>
-                                    </c:when>
-                                    <c:otherwise>
-                                        <span class="status-badge status-active">ACTIVE SELLING</span>
-                                    </c:otherwise>
-                                </c:choose>
-                            </div>
-                            <div class="col-md-2 text-end">
-                                <button class="btn-action">Adjust Slots</button>
-                            </div>
-                        </div>
-
-                        <hr style="border-color: rgba(255,255,255,0.05); margin: 20px 0;">
-
-                        <div class="row">
-                            <div class="col-md-12">
-                                <p class="small text-muted">Availability Overview:</p>
-                                <div class="d-flex gap-3">
-                                    <div
-                                        style="background: rgba(255,255,255,0.05); padding: 10px 15px; border-radius: 12px; min-width: 120px;">
-                                        <div class="small">Confirmed Bookings</div>
-                                        <div class="fw-bold">${occupied}</div>
-                                    </div>
-                                    <div
-                                        style="background: rgba(255,255,255,0.05); padding: 10px 15px; border-radius: 12px; min-width: 120px;">
-                                        <div class="small">Remaining Slots</div>
-                                        <div class="fw-bold <c:if test='${seatsLeft <= 5}'>text-danger</c:if>">
-                                            ${seatsLeft > 0 ? seatsLeft : '0'} ${seatsLeft > 0 ? 'Seats Left' : 'SOLD
-                                            OUT'}
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+            <div class="inventory-card">
+                <div class="row align-items-center">
+                    <div class="col-md-4">
+                        <div class="trip-title">${trip.title}</div>
+                        <div class="trip-meta">
+                            <i class="fa fa-map-marker"></i> ${trip.destination}
                         </div>
                     </div>
-                </c:forEach>
-            </div>
-        </body>
+                    <div class="col-md-3">
+                        <div class="occupancy-label">Total Occupancy</div>
+                        <div class="occupancy-value">
+                            <fmt:formatNumber value="${occupancy}" maxFractionDigits="0" />%
+                        </div>
+                    </div>
+                    <div class="col-md-3 text-center">
+                        <c:choose>
+                            <c:when test="${seatsLeft <= 0}">
+                                <span class="status-badge status-full">FULLY BOOKED</span>
+                            </c:when>
+                            <c:otherwise>
+                                <span class="status-badge status-active">ACTIVE SELLING</span>
+                            </c:otherwise>
+                        </c:choose>
+                    </div>
+                    <div class="col-md-2 text-end">
+                        <button class="btn-action">Adjust Slots</button>
+                    </div>
+                </div>
 
-        </html>
+                <div class="inventory-stats">
+                    <div class="stat-box">
+                        <div class="stat-label">Confirmed Bookings</div>
+                        <div class="stat-value">${occupied}</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-label">Remaining Slots</div>
+                        <div class="stat-value ${seatsLeft <= 5 ? 'text-danger-custom' : ''}">
+                            ${seatsLeft > 0 ? seatsLeft : '0'} ${seatsLeft > 0 ? 'Seats Left' : 'SOLD OUT'}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </c:forEach>
+
+        <c:if test="${empty trips}">
+            <div style="text-align: center; padding: 60px; background: white; border-radius: 16px; border: 1px solid var(--border-color);">
+                <i class="fa fa-list-alt" style="font-size: 48px; color: var(--border-color); margin-bottom: 20px;"></i>
+                <h3 style="color: var(--text-muted);">No Active Trips for Inventory</h3>
+                <p style="color: var(--text-muted);">Create a trip to start managing live slots.</p>
+            </div>
+        </c:if>
+    </div>
+
+    <script src="<c:url value='/views/assets/js/jquery.min.js'/>"></script>
+</body>
+</html>

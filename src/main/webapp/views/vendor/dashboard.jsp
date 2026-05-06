@@ -10,165 +10,135 @@
     <title>Vendor Dashboard | Youth Travel</title>
     <link rel="stylesheet" href="<c:url value='/views/assets/css/bootstrap.min.css'/>">
     <link rel="stylesheet" href="<c:url value='/views/assets/css/font-awesome.min.css'/>">
-    <link rel="stylesheet" href="<c:url value='/views/assets/css/premium-dashboard.css'/>">
-    <link href="https://fonts.googleapis.com/css?family=Dosis:300,400,500,600,700,800" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary-color: #e63946;
-            --primary-gradient: linear-gradient(135deg, #e63946 0%, #c1121f 100%);
-            --bg-color: transparent;
-            --card-bg: rgba(30, 30, 35, 0.7);
-            --card-border: rgba(255, 255, 255, 0.1);
-            --text-main: #ffffff;
-            --text-muted: rgba(255, 255, 255, 0.6);
-            --success: #22c55e;
+            --primary: #008080;
+            --primary-hover: #077378;
+            --accent-red: #e63946;
+            --bg-body: #f1f5f9;
+            --bg-card: #ffffff;
+            --border-color: #e2e8f0;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --success: #10b981;
             --warning: #f59e0b;
             --info: #3b82f6;
-            --danger: #ef4444;
+            --danger: #e63946;
+            --sidebar-width: 260px;
         }
 
-        body.yt-dark {
-            background: transparent;
+        body {
+            background-color: var(--bg-body);
             color: var(--text-main);
-            font-family: 'Dosis', sans-serif;
-            overflow-x: hidden;
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+            -webkit-font-smoothing: antialiased;
         }
 
-        /* --- Main Content Area --- */
         .main-content {
-            margin-left: 260px;
-            position: relative;
+            margin-left: var(--sidebar-width);
             min-height: 100vh;
-            padding: 0 !important;
+            padding: 40px !important;
         }
 
-        /* --- Premium Hero Section --- */
-        .hero-section {
-            position: relative;
-            height: 380px;
-            background: linear-gradient(rgba(11, 15, 24, 0.2), var(--bg-color)), url('https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=1920&q=80') center/cover;
-            padding: 60px;
+        /* Professional Header */
+        .dashboard-header {
+            margin-bottom: 32px;
             display: flex;
-            flex-direction: column;
-            justify-content: flex-end;
+            justify-content: space-between;
+            align-items: flex-end;
         }
 
-        .hero-content h1 {
-            font-size: 52px;
+        .header-content h1 {
+            font-size: 28px;
             font-weight: 800;
             margin: 0;
-            letter-spacing: -1.5px;
-            color: #fff;
-            text-shadow: 0 10px 30px rgba(0,0,0,0.8);
+            color: var(--text-main);
+            letter-spacing: -0.5px;
         }
 
-        .hero-content p {
-            font-size: 20px;
-            color: #fff;
-            margin-top: 12px;
-            font-weight: 700;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.8);
+        .header-content p {
+            margin: 4px 0 0;
+            color: var(--text-muted);
+            font-size: 15px;
+            font-weight: 500;
         }
 
-        /* --- Stats Grid (Overlapping Hero) --- */
-        .dashboard-container {
-            padding: 0 60px 60px;
-            margin-top: -80px;
-            position: relative;
-            z-index: 10;
-        }
-
+        /* Stats Grid */
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 25px;
-            margin-bottom: 40px;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 24px;
+            margin-bottom: 32px;
         }
 
         .stat-card {
-            background: rgba(0,0,0,0.4);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 28px;
-            padding: 35px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 24px;
             display: flex;
             align-items: center;
-            gap: 25px;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-            overflow: hidden;
+            gap: 20px;
+            transition: all 0.2s ease;
             text-decoration: none;
-            box-shadow: 0 8px 32px 0 rgba(0,0,0,0.3);
-        }
-
-        .stat-card::after {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 100%);
-            opacity: 0;
-            transition: 0.4s;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
         }
 
         .stat-card:hover {
-            transform: translateY(-10px);
-            border-color: rgba(255,255,255,0.2);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            border-color: var(--primary);
         }
-        .stat-card:hover::after { opacity: 1; }
 
         .stat-icon {
-            width: 70px;
-            height: 70px;
-            border-radius: 20px;
+            width: 56px;
+            height: 56px;
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 30px;
-            position: relative;
-            z-index: 2;
+            font-size: 22px;
         }
 
-        .stat-icon.primary { background: rgba(240, 76, 38, 0.15); color: var(--primary-color); border: 1px solid rgba(240, 76, 38, 0.3); }
-        .stat-icon.success { background: rgba(34, 197, 94, 0.15); color: var(--success); border: 1px solid rgba(34, 197, 94, 0.3); }
-        .stat-icon.warning { background: rgba(245, 158, 11, 0.15); color: var(--warning); border: 1px solid rgba(245, 158, 11, 0.3); }
-        .stat-icon.info { background: rgba(59, 130, 246, 0.15); color: var(--info); border: 1px solid rgba(59, 130, 246, 0.3); }
+        .stat-icon.primary { background: #e0f2f2; color: var(--primary); }
+        .stat-icon.success { background: #dcfce7; color: var(--success); }
+        .stat-icon.warning { background: #fef3c7; color: var(--warning); }
+        .stat-icon.info { background: #dbeafe; color: var(--info); }
 
-        .stat-info { position: relative; z-index: 2; }
         .stat-info h3 {
-            font-size: 38px;
-            font-weight: 800;
+            font-size: 24px;
+            font-weight: 700;
             margin: 0;
-            color: #fff;
+            color: var(--text-main);
             line-height: 1;
-            text-shadow: 0 2px 8px rgba(0,0,0,0.5);
         }
 
         .stat-info p {
-            color: #fff;
-            font-size: 14px;
-            margin: 10px 0 0;
-            font-weight: 800;
+            color: var(--text-muted);
+            font-size: 12px;
+            margin: 6px 0 0;
+            font-weight: 600;
             text-transform: uppercase;
-            letter-spacing: 1px;
-            text-shadow: 0 1px 3px rgba(0,0,0,0.5);
-            text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 0.5px;
         }
 
-        /* --- Charts & Lists Area --- */
+        /* Panels */
         .grid-layout {
             display: grid;
             grid-template-columns: 2fr 1fr;
-            gap: 30px;
-            margin-bottom: 40px;
+            gap: 24px;
+            margin-bottom: 32px;
         }
 
         .panel-box {
-            background: rgba(22, 28, 40, 0.6);
-            border: 1px solid var(--card-border);
-            border-radius: 24px;
-            padding: 30px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
             display: flex;
             flex-direction: column;
         }
@@ -177,300 +147,284 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 25px;
+            margin-bottom: 24px;
         }
 
         .panel-header h4 {
-            font-weight: 800;
-            font-size: 22px;
+            font-weight: 700;
+            font-size: 18px;
             margin: 0;
+            color: var(--text-main);
             display: flex;
             align-items: center;
             gap: 10px;
         }
 
         .panel-header a {
-            color: var(--primary-color);
-            font-weight: 700;
+            color: var(--accent-red);
+            font-weight: 600;
             font-size: 14px;
             text-decoration: none;
-            background: rgba(240, 76, 38, 0.1);
-            padding: 6px 15px;
-            border-radius: 20px;
-            transition: 0.3s;
+            padding: 6px 12px;
+            border-radius: 8px;
+            background: #e0f2f2;
+            transition: 0.2s;
         }
-        .panel-header a:hover { background: var(--primary-color); color: #fff; }
 
-        /* --- Recent Trips List --- */
+        .panel-header a:hover { 
+            background: var(--primary);
+            color: #ffffff;
+        }
+
+        /* Recent Trips */
         .recent-trip-item {
             display: flex;
             align-items: center;
-            gap: 20px;
-            padding: 15px;
-            background: rgba(255,255,255,0.02);
-            border: 1px solid transparent;
-            border-radius: 16px;
-            transition: 0.3s;
+            gap: 16px;
+            padding: 12px;
+            border-radius: 12px;
+            transition: 0.2s;
             text-decoration: none;
-            margin-bottom: 15px;
+            margin-bottom: 8px;
+            border: 1px solid transparent;
         }
+
         .recent-trip-item:last-child { margin-bottom: 0; }
 
         .recent-trip-item:hover {
-            background: rgba(255,255,255,0.05);
-            border-color: var(--card-border);
-            transform: translateX(5px);
+            background: #f8fafc;
+            border-color: var(--border-color);
         }
 
         .rt-img {
-            width: 70px;
-            height: 70px;
-            border-radius: 14px;
+            width: 44px;
+            height: 44px;
+            border-radius: 10px;
             object-fit: cover;
-            background: rgba(255,255,255,0.05);
+            background: #f1f5f9;
             display: flex;
             align-items: center;
             justify-content: center;
             color: var(--text-muted);
-            font-size: 24px;
+            font-size: 18px;
         }
 
-        .rt-details { flex-grow: 1; }
-        .rt-title { font-weight: 800; font-size: 16px; color: #fff; margin: 0 0 5px; }
+        .rt-details { flex-grow: 1; min-width: 0; }
+        .rt-title { 
+            font-weight: 600; 
+            font-size: 14px; 
+            color: var(--text-main); 
+            margin: 0 0 2px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
         .rt-meta { display: flex; justify-content: space-between; align-items: center; }
-        .rt-loc { font-size: 13px; color: var(--text-muted); font-weight: 600; }
+        .rt-loc { font-size: 12px; color: var(--text-muted); }
         
         .status-badge {
-            padding: 4px 10px;
-            border-radius: 8px;
-            font-size: 11px;
-            font-weight: 800;
+            padding: 2px 8px;
+            border-radius: 6px;
+            font-size: 10px;
+            font-weight: 700;
             text-transform: uppercase;
         }
-        .status-active { background: rgba(34,197,94,0.1); color: #22c55e; border: 1px solid rgba(34,197,94,0.2); }
-        .status-inactive { background: rgba(239,68,68,0.1); color: #ef4444; border: 1px solid rgba(239,68,68,0.2); }
+        .status-active { background: #dcfce7; color: #15803d; }
+        .status-inactive { background: #fee2e2; color: #b91c1c; }
 
-        /* --- Quick Actions --- */
+        /* Action Cards */
         .action-cards {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 25px;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
         }
 
         .action-card {
-            background: rgba(22, 28, 40, 0.6);
-            border: 1px solid var(--card-border);
-            border-radius: 24px;
-            padding: 35px;
-            position: relative;
-            overflow: hidden;
-            transition: all 0.4s;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 32px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             text-decoration: none;
-            color: #fff;
             display: flex;
             flex-direction: column;
-        }
-
-        .action-card::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 5px;
-            background: var(--primary-gradient);
-            opacity: 0;
-            transition: 0.4s;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
         }
 
         .action-card:hover {
-            transform: translateY(-8px);
-            border-color: rgba(255,255,255,0.1);
-            background: rgba(255,255,255,0.03);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
-            color: #fff;
+            transform: translateY(-4px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            border-color: var(--primary);
         }
-        .action-card:hover::before { opacity: 1; }
 
         .action-card i.main-icon {
-            font-size: 45px;
-            color: var(--primary-color);
-            margin-bottom: 25px;
-            filter: drop-shadow(0 5px 10px rgba(240,76,38,0.4));
-            transition: 0.4s;
+            font-size: 32px;
+            color: var(--primary);
+            margin-bottom: 24px;
         }
-        .action-card:hover i.main-icon { transform: scale(1.1); }
 
         .action-card h4 {
-            font-size: 24px;
-            font-weight: 800;
+            font-size: 20px;
+            font-weight: 700;
             margin: 0 0 12px;
+            color: var(--text-main);
         }
 
         .action-card p {
             color: var(--text-muted);
-            font-size: 15px;
-            line-height: 1.7;
+            font-size: 14px;
+            line-height: 1.6;
             margin: 0;
-            font-weight: 500;
+            font-weight: 400;
         }
 
         .action-card .arrow-btn {
-            margin-top: auto;
-            padding-top: 25px;
+            margin-top: 24px;
             display: flex;
             align-items: center;
-            gap: 10px;
-            color: var(--primary-color);
+            gap: 8px;
+            color: var(--primary);
             font-weight: 700;
-            font-size: 14px;
+            font-size: 13px;
             text-transform: uppercase;
-            letter-spacing: 1px;
-            transition: 0.3s;
+            letter-spacing: 0.5px;
         }
-        .action-card:hover .arrow-btn { gap: 15px; }
 
         @media (max-width: 991px) {
             .grid-layout { grid-template-columns: 1fr; }
-            .hero-section { height: auto; padding: 100px 20px 60px; text-align: center; }
-            .hero-content h1 { font-size: 38px; }
-            .dashboard-container { padding: 0 20px 40px; margin-top: -30px; }
-            .action-cards { grid-template-columns: 1fr; }
-            .stats-grid { grid-template-columns: 1fr; gap: 15px; }
+            .main-content { margin-left: 0; padding: 24px !important; }
+            .dashboard-header { flex-direction: column; align-items: flex-start; gap: 15px; }
         }
     </style>
 </head>
 
-<body class="yt-dark premium-theme">
-    <!-- Sunlight Rays -->
-    <div class="sun-rays-container">
-        <div class="ray ray-1"></div>
-        <div class="ray ray-2"></div>
-        <div class="ray ray-3"></div>
-        <div class="ray ray-4"></div>
-    </div>
-
+<body>
     <jsp:include page="vendor-sidebar.jsp">
         <jsp:param name="activePage" value="dashboard" />
     </jsp:include>
 
     <div class="main-content">
         
-        <div class="hero-section">
-            <div class="hero-content">
+        <div class="dashboard-header">
+            <div class="header-content">
                 <h1>Welcome back, ${loggedInVendor.businessName != null ? loggedInVendor.businessName : 'Partner'}! 👋</h1>
-                <p>Here is what's happening across your travel ecosystem today.</p>
+                <p>Monitor your performance and manage your travel offerings.</p>
+            </div>
+            <div class="header-actions">
+                <a href="<c:url value='/vendor/add-trip'/>" class="btn btn-danger" style="background-color: var(--accent-red); border: none; border-radius: 10px; padding: 10px 20px; font-weight: 600;">
+                    <i class="fa fa-plus"></i> New Trip
+                </a>
             </div>
         </div>
 
-        <div class="dashboard-container">
-            
-            <div class="stats-grid">
-                <a href="<c:url value='/vendor/tours'/>" class="stat-card">
-                    <div class="stat-icon primary"><i class="fa fa-map"></i></div>
-                    <div class="stat-info">
-                        <h3>${tourCount != null ? tourCount : '0'}</h3>
-                        <p>Total Tours Hosted</p>
-                    </div>
-                </a>
-                <a href="<c:url value='/vendor/tours?filter=ACTIVE'/>" class="stat-card">
-                    <div class="stat-icon success"><i class="fa fa-rocket"></i></div>
-                    <div class="stat-info">
-                        <h3>${activeTourCount != null ? activeTourCount : '0'}</h3>
-                        <p>Active Listings</p>
-                    </div>
-                </a>
-                <a href="<c:url value='/vendor/bookings'/>" class="stat-card">
-                    <div class="stat-icon warning"><i class="fa fa-ticket"></i></div>
-                    <div class="stat-info">
-                        <h3>${bookingCount != null ? bookingCount : '0'}</h3>
-                        <p>Total Bookings</p>
-                    </div>
-                </a>
-                <a href="<c:url value='/vendor/earnings'/>" class="stat-card">
-                    <div class="stat-icon info"><i class="fa fa-inr"></i></div>
-                    <div class="stat-info">
-                        <h3>14.2K</h3>
-                        <p>Est. Revenue (Mock)</p>
-                    </div>
-                </a>
+        <div class="stats-grid">
+            <a href="<c:url value='/vendor/tours'/>" class="stat-card">
+                <div class="stat-icon primary"><i class="fa fa-map"></i></div>
+                <div class="stat-info">
+                    <h3>${tourCount != null ? tourCount : '0'}</h3>
+                    <p>Total Tours</p>
+                </div>
+            </a>
+            <a href="<c:url value='/vendor/tours?filter=ACTIVE'/>" class="stat-card">
+                <div class="stat-icon success"><i class="fa fa-rocket"></i></div>
+                <div class="stat-info">
+                    <h3>${activeTourCount != null ? activeTourCount : '0'}</h3>
+                    <p>Active Listings</p>
+                </div>
+            </a>
+            <a href="<c:url value='/vendor/bookings'/>" class="stat-card">
+                <div class="stat-icon warning"><i class="fa fa-ticket"></i></div>
+                <div class="stat-info">
+                    <h3>${bookingCount != null ? bookingCount : '0'}</h3>
+                    <p>Total Bookings</p>
+                </div>
+            </a>
+            <a href="<c:url value='/vendor/earnings'/>" class="stat-card">
+                <div class="stat-icon info"><i class="fa fa-inr"></i></div>
+                <div class="stat-info">
+                    <h3>14.2K</h3>
+                    <p>Est. Revenue</p>
+                </div>
+            </a>
+        </div>
+
+        <div class="grid-layout">
+            <div class="panel-box">
+                <div class="panel-header">
+                    <h4><i class="fa fa-area-chart" style="color: var(--primary);"></i> Revenue Analytics</h4>
+                </div>
+                <div style="flex-grow: 1; min-height: 350px; display: flex; align-items: center; justify-content: center; position: relative;">
+                    <canvas id="revenueChart" style="width: 100%;"></canvas>
+                </div>
             </div>
 
-            <div class="grid-layout">
-                <div class="panel-box">
-                    <div class="panel-header">
-                        <h4><i class="fa fa-bar-chart" style="color: var(--primary-color);"></i> Performance Analytics</h4>
-                    </div>
-                    <div style="flex-grow: 1; display: flex; align-items: center; justify-content: center; position: relative;">
-                        <canvas id="revenueChart" style="max-height: 350px; width: 100%;"></canvas>
-                    </div>
+            <div class="panel-box">
+                <div class="panel-header">
+                    <h4><i class="fa fa-compass" style="color: var(--warning);"></i> Recent Trips</h4>
+                    <a href="<c:url value='/vendor/tours'/>">View All</a>
                 </div>
-
-                <div class="panel-box">
-                    <div class="panel-header">
-                        <h4><i class="fa fa-compass" style="color: var(--warning);"></i> Latest Trips</h4>
-                        <a href="<c:url value='/vendor/tours'/>">View All</a>
-                    </div>
-                    
-                    <div style="display: flex; flex-direction: column;">
-                        <c:choose>
-                            <c:when test="${not empty recentTrips}">
-                                <c:forEach items="${recentTrips}" var="trip">
-                                    <a href="<c:url value='/vendor/edit-trip/${trip.id}'/>" class="recent-trip-item">
-                                        <c:choose>
-                                            <c:when test="${not empty trip.imageUrl}">
-                                                <img src="<c:url value='${trip.imageUrl}'/>" class="rt-img">
-                                            </c:when>
-                                            <c:otherwise>
-                                                <div class="rt-img"><i class="fa fa-image"></i></div>
-                                            </c:otherwise>
-                                        </c:choose>
-                                        <div class="rt-details">
-                                            <h5 class="rt-title">${trip.title}</h5>
-                                            <div class="rt-meta">
-                                                <span class="rt-loc"><i class="fa fa-map-marker"></i> ${trip.destination}</span>
-                                                <span class="status-badge ${trip.status.equalsIgnoreCase('Active') ? 'status-active' : 'status-inactive'}">${trip.status}</span>
-                                            </div>
+                
+                <div style="display: flex; flex-direction: column;">
+                    <c:choose>
+                        <c:when test="${not empty recentTrips}">
+                            <c:forEach items="${recentTrips}" var="trip">
+                                <a href="<c:url value='/vendor/edit-trip/${trip.id}'/>" class="recent-trip-item">
+                                    <c:choose>
+                                        <c:when test="${not empty trip.imageUrl}">
+                                            <img src="<c:url value='${trip.imageUrl}'/>" class="rt-img">
+                                        </c:when>
+                                        <c:otherwise>
+                                            <div class="rt-img"><i class="fa fa-image"></i></div>
+                                        </c:otherwise>
+                                    </c:choose>
+                                    <div class="rt-details">
+                                        <h5 class="rt-title">${trip.title}</h5>
+                                        <div class="rt-meta">
+                                            <span class="rt-loc"><i class="fa fa-map-marker"></i> ${trip.destination}</span>
+                                            <span class="status-badge ${trip.status.equalsIgnoreCase('Active') ? 'status-active' : 'status-inactive'}">${trip.status}</span>
                                         </div>
-                                    </a>
-                                </c:forEach>
-                            </c:when>
-                            <c:otherwise>
-                                <div style="text-align: center; padding: 50px 20px; opacity: 0.5;">
-                                    <i class="fa fa-folder-open-o" style="font-size: 40px; margin-bottom: 15px;"></i>
-                                    <p style="margin: 0; font-size: 16px; font-weight: 600;">Your portfolio is empty.</p>
-                                </div>
-                            </c:otherwise>
-                        </c:choose>
-                    </div>
+                                    </div>
+                                </a>
+                            </c:forEach>
+                        </c:when>
+                        <c:otherwise>
+                            <div style="text-align: center; padding: 60px 20px; color: var(--text-muted);">
+                                <i class="fa fa-folder-open-o" style="font-size: 40px; margin-bottom: 15px; opacity: 0.3;"></i>
+                                <p style="margin: 0; font-size: 14px; font-weight: 500;">No trips found.</p>
+                            </div>
+                        </c:otherwise>
+                    </c:choose>
                 </div>
             </div>
-
-            <div class="panel-header" style="margin-top: 50px;">
-                <h4 style="font-size: 28px;"><i class="fa fa-bolt" style="color: var(--primary-color);"></i> Command Center</h4>
-            </div>
-            
-            <div class="action-cards">
-                <a href="<c:url value='/vendor/add-trip'/>" class="action-card">
-                    <i class="fa fa-paper-plane-o main-icon"></i>
-                    <h4>Launch Experience</h4>
-                    <p>Create a stunning new travel package. Define itineraries, dynamic pricing slots, and target specific youth demographics.</p>
-                    <div class="arrow-btn">Start Building <i class="fa fa-long-arrow-right"></i></div>
-                </a>
-                
-                <a href="<c:url value='/vendor/inventory'/>" class="action-card">
-                    <i class="fa fa-calendar-check-o main-icon"></i>
-                    <h4>Manage Availability</h4>
-                    <p>Open new batches, manage seating capacities, and adjust dynamic pricing for upcoming long weekends and holidays.</p>
-                    <div class="arrow-btn">View Calendar <i class="fa fa-long-arrow-right"></i></div>
-                </a>
-                
-                <a href="<c:url value='/vendor/guest-list'/>" class="action-card">
-                    <i class="fa fa-users main-icon"></i>
-                    <h4>Traveler Manifests</h4>
-                    <p>Download guest lists for your upcoming departures, verify documents, and ensure everything is ready for the trip.</p>
-                    <div class="arrow-btn">See Travelers <i class="fa fa-long-arrow-right"></i></div>
-                </a>
-            </div>
-
         </div>
+
+        <div class="panel-header" style="margin-top: 24px;">
+            <h4 style="font-size: 22px;"><i class="fa fa-bolt" style="color: var(--primary);"></i> Quick Actions</h4>
+        </div>
+        
+        <div class="action-cards">
+            <a href="<c:url value='/vendor/add-trip'/>" class="action-card">
+                <i class="fa fa-paper-plane-o main-icon"></i>
+                <h4>Launch Experience</h4>
+                <p>Create a stunning new travel package. Define itineraries, dynamic pricing slots, and target specific youth demographics.</p>
+                <div class="arrow-btn">Start Building <i class="fa fa-long-arrow-right"></i></div>
+            </a>
+            
+            <a href="<c:url value='/vendor/inventory'/>" class="action-card">
+                <i class="fa fa-calendar-check-o main-icon"></i>
+                <h4>Manage Availability</h4>
+                <p>Open new batches, manage seating capacities, and adjust dynamic pricing for upcoming long weekends and holidays.</p>
+                <div class="arrow-btn">View Calendar <i class="fa fa-long-arrow-right"></i></div>
+            </a>
+            
+            <a href="<c:url value='/vendor/guest-list'/>" class="action-card">
+                <i class="fa fa-users main-icon"></i>
+                <h4>Traveler Manifests</h4>
+                <p>Download guest lists for your upcoming departures, verify documents, and ensure everything is ready for the trip.</p>
+                <div class="arrow-btn">See Travelers <i class="fa fa-long-arrow-right"></i></div>
+            </a>
+        </div>
+
     </div>
 
     <script src="<c:url value='/views/assets/js/jquery.min.js'/>"></script>
@@ -478,11 +432,12 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            // Premium Gradient for Line Chart
             const revCtx = document.getElementById('revenueChart').getContext('2d');
-            let gradient = revCtx.createLinearGradient(0, 0, 0, 350);
-            gradient.addColorStop(0, 'rgba(240, 76, 38, 0.5)');
-            gradient.addColorStop(1, 'rgba(240, 76, 38, 0.0)');
+            
+            // Refined Gradient
+            let gradient = revCtx.createLinearGradient(0, 0, 0, 300);
+            gradient.addColorStop(0, 'rgba(0, 128, 128, 0.1)');
+            gradient.addColorStop(1, 'rgba(0, 128, 128, 0.0)');
 
             new Chart(revCtx, {
                 type: 'line',
@@ -491,25 +446,48 @@
                     datasets: [{
                         label: 'Revenue (₹)',
                         data: [12000, 19000, 15000, 28000, 22000, 35000, 42000],
-                        borderColor: '#f04c26',
+                        borderColor: '#008080',
                         backgroundColor: gradient,
                         tension: 0.4,
                         fill: true,
-                        borderWidth: 4,
-                        pointBackgroundColor: '#161c28',
-                        pointBorderColor: '#f04c26',
-                        pointBorderWidth: 3,
-                        pointRadius: 6,
-                        pointHoverRadius: 8
+                        borderWidth: 3,
+                        pointBackgroundColor: '#ffffff',
+                        pointBorderColor: '#008080',
+                        pointBorderWidth: 2,
+                        pointRadius: 4,
+                        pointHoverRadius: 6,
+                        pointHoverBackgroundColor: '#008080',
+                        pointHoverBorderColor: '#ffffff',
                     }]
                 },
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
-                    plugins: { legend: { display: false }, tooltip: { backgroundColor: 'rgba(11,15,24,0.9)', titleFont: { size: 14, family: 'Dosis' }, bodyFont: { size: 16, family: 'Dosis', weight: 'bold' }, padding: 15, cornerRadius: 10, displayColors: false } },
+                    interaction: {
+                        intersect: false,
+                        mode: 'index',
+                    },
+                    plugins: { 
+                        legend: { display: false },
+                        tooltip: { 
+                            backgroundColor: '#0f172a',
+                            titleFont: { size: 13, family: 'Inter', weight: '600' },
+                            bodyFont: { size: 14, family: 'Inter' },
+                            padding: 12,
+                            cornerRadius: 8,
+                            displayColors: false
+                        } 
+                    },
                     scales: {
-                        y: { beginAtZero: true, grid: { color: 'rgba(255,255,255,0.05)', drawBorder: false }, ticks: { color: 'rgba(255,255,255,0.5)', font: { family: 'Dosis', size: 13, weight: 'bold' }, padding: 10 } },
-                        x: { grid: { display: false, drawBorder: false }, ticks: { color: 'rgba(255,255,255,0.7)', font: { family: 'Dosis', size: 14, weight: 'bold' }, padding: 10 } }
+                        y: { 
+                            beginAtZero: true, 
+                            grid: { color: '#f1f5f9', drawBorder: false },
+                            ticks: { color: '#64748b', font: { family: 'Inter', size: 12 }, padding: 8 }
+                        },
+                        x: { 
+                            grid: { display: false, drawBorder: false },
+                            ticks: { color: '#64748b', font: { family: 'Inter', size: 12 }, padding: 8 }
+                        }
                     }
                 }
             });
@@ -518,3 +496,4 @@
 </body>
 
 </html>
+html>
