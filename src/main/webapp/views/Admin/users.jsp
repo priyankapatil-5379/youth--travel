@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="<c:url value='/views/assets/css/style.css'/>">
     <link rel="stylesheet" href="<c:url value='/views/assets/css/font-awesome.min.css'/>">
     <link rel="stylesheet" href="<c:url value='/views/assets/css/premium-dashboard.css'/>">
-    <link href="https://fonts.googleapis.com/css?family=Dosis:300,400,500,600,700,800" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Dosis', sans-serif; background-color: transparent; color: #fff; }
         .admin-layout { display: flex; min-height: 100vh; }
@@ -101,7 +101,7 @@
         </aside>
         <main class="admin-main">
             <header class="admin-header">
-                <h1 style="font-weight: 800; font-size: 36px; text-shadow: 0 4px 15px rgba(0,0,0,0.8);">User Accounts</h1>
+                <h1>User Accounts</h1>
             </header>
             <div class="admin-section">
                 <c:choose>

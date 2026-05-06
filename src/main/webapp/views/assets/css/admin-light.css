@@ -1,151 +1,580 @@
-/* Light Theme for Admin Dashboard */
-body.admin-light-theme {
-    background-color: #ffffff !important;
+/* ============================================================
+   ADMIN THEME — Matches Vendor Dashboard (Teal Sidebar)
+   Vendor colors: sidebar #008080 → #077378, accent #e63946
+   Body bg: #f1f5f9, cards: #ffffff, font: Inter
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+/* ── Reset underwater / dark theme ── */
+body.admin-light-theme,
+body.premium-theme.admin-light-theme {
+    background-color: #f1f5f9 !important;
     background-image: none !important;
-    color: #333333 !important;
-    font-family: 'Dosis', sans-serif;
+    color: #0f172a !important;
+    font-family: 'Inter', sans-serif !important;
     min-height: 100vh;
+    height: 100vh;
     margin: 0;
     padding: 0;
-    overflow-x: hidden;
+    overflow: hidden !important;
 }
 
+/* Hide underwater canvas / rays */
 body.admin-light-theme::before,
-body.admin-light-theme .sun-rays-container {
-    display: none !important; /* Remove underwater theme */
+body.admin-light-theme .sun-rays-container,
+body.admin-light-theme canvas {
+    display: none !important;
 }
 
-/* Sidebar - Dark Blue */
+/* ── Layout — full viewport, no body scroll ── */
+body.admin-light-theme .admin-layout {
+    display: flex;
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* ── SIDEBAR — Fixed, never scrolls with content ── */
 body.admin-light-theme .admin-sidebar {
-    background-color: #0b1d3a !important; /* Dark Blue */
+    width: 260px !important;
+    background: linear-gradient(to bottom, #008080, #077378) !important;
     backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;
-    border-right: none !important;
-    box-shadow: 2px 0 10px rgba(0,0,0,0.1) !important;
+    border-right: 1px solid rgba(255, 255, 255, 0.1) !important;
+    box-shadow: 4px 0 20px rgba(0, 128, 128, 0.25) !important;
+    height: 100vh !important;
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    flex-shrink: 0;
+    overflow-y: auto;
+    z-index: 1100;
 }
 
-/* Highlight Logo in Sidebar */
+body.admin-light-theme .admin-sidebar::-webkit-scrollbar {
+    width: 0;
+    background: transparent;
+}
+
+/* ── Sidebar Header / Logo ── */
 body.admin-light-theme .sidebar-header {
-    background-color: #ffffff !important;
-    padding: 20px !important;
-    border-bottom: 2px solid #e63946 !important;
-    margin-bottom: 10px;
+    background-color: transparent !important;
+    padding: 32px 20px !important;
+    text-align: left !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+    margin-bottom: 8px !important;
 }
 
 body.admin-light-theme .sidebar-header img {
-    filter: brightness(0) !important; /* Make the logo completely black so it's visible on white */
-    max-width: 160px;
+    max-width: 140px !important;
+    filter: brightness(0) invert(1) !important;
 }
 
-/* Admin Sidebar Links */
+/* ── Nav Items ── */
+body.admin-light-theme .admin-nav {
+    padding: 8px 16px !important;
+}
+
 body.admin-light-theme .admin-nav-item {
-    color: rgba(255,255,255,0.7) !important;
+    color: rgba(255, 255, 255, 0.7) !important;
+    display: flex !important;
+    align-items: center !important;
+    padding: 12px 16px !important;
+    border-radius: 10px !important;
+    font-size: 14px !important;
+    font-weight: 500 !important;
+    text-decoration: none !important;
+    transition: all 0.2s ease !important;
+    margin-bottom: 4px !important;
+    border-left: none !important;
 }
 
-body.admin-light-theme .admin-nav-item:hover, 
-body.admin-light-theme .admin-nav-item.active {
-    background: rgba(255,255,255,0.1) !important;
+body.admin-light-theme .admin-nav-item i {
+    width: 20px !important;
+    font-size: 16px !important;
+    margin-right: 12px !important;
+    text-align: center !important;
+}
+
+body.admin-light-theme .admin-nav-item:hover {
     color: #ffffff !important;
-    border-left-color: #e63946 !important;
+    background: rgba(255, 255, 255, 0.1) !important;
+    text-decoration: none !important;
+    border-left: none !important;
 }
 
-/* Main Content area */
+/* Active nav item — red pill, matches vendor */
+body.admin-light-theme .admin-nav-item.active {
+    color: #ffffff !important;
+    background: #e63946 !important;
+    font-weight: 600 !important;
+    box-shadow: 0 10px 15px -3px rgba(230, 57, 70, 0.3) !important;
+    border-left: none !important;
+}
+
+/* Logout / back link */
+body.admin-light-theme .admin-nav-item[href*="logout"],
+body.admin-light-theme .admin-nav-item[href="/"] {
+    color: rgba(255, 255, 255, 0.55) !important;
+}
+
+/* ── Main Content — scrolls independently, sidebar stays fixed ── */
 body.admin-light-theme .admin-main {
-    background-color: #ffffff !important;
-    color: #333333 !important;
+    margin-left: 260px !important;   /* push content past fixed sidebar */
+    flex-grow: 1;
+    background-color: #f1f5f9 !important;
+    color: #0f172a !important;
+    padding: 40px !important;
+    height: 100vh !important;         /* fill full viewport height */
+    overflow-y: auto !important;      /* only THIS scrolls */
+    overflow-x: hidden;
+    box-sizing: border-box;
 }
 
-body.admin-light-theme .admin-header h1 {
-    color: #0b1d3a !important;
+/* ── Header / Page Title ── */
+body.admin-light-theme .admin-header h1,
+body.admin-light-theme .admin-header h1[style] {
+    color: #0f172a !important;
     text-shadow: none !important;
+    font-family: 'Inter', sans-serif !important;
+    font-weight: 800 !important;
+    font-size: 28px !important;
+    text-transform: none !important;
+    letter-spacing: -0.5px !important;
 }
 
 body.admin-light-theme .admin-user span {
-    color: #666666 !important;
+    color: #64748b !important;
 }
 
-/* Admin Sections & Cards */
-body.admin-light-theme .admin-section,
-body.admin-light-theme .stat-card,
-body.admin-light-theme .upload-section {
+/* ── Stats Cards ── */
+body.admin-light-theme .stat-card {
     background: #ffffff !important;
     backdrop-filter: none !important;
-    border: 1px solid #e0e0e0 !important;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.05) !important;
+    -webkit-backdrop-filter: none !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 16px !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.04) !important;
+    transition: all 0.2s ease !important;
+}
+
+body.admin-light-theme .stat-card:hover {
+    transform: translateY(-2px) !important;
+    border-color: #008080 !important;
+    box-shadow: 0 10px 15px -3px rgba(0, 128, 128, 0.12) !important;
+}
+
+body.admin-light-theme .stat-info h3 {
+    color: #0f172a !important;
+    text-shadow: none !important;
+    font-family: 'Inter', sans-serif !important;
+    font-weight: 700 !important;
+}
+
+body.admin-light-theme .stat-info p {
+    color: #64748b !important;
+    text-shadow: none !important;
+    font-weight: 600 !important;
+    font-size: 12px !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+}
+
+/* Stat icons — keep vibrant */
+body.admin-light-theme .icon-blue { background: #dbeafe !important; color: #3b82f6 !important; }
+body.admin-light-theme .icon-green { background: #dcfce7 !important; color: #10b981 !important; }
+body.admin-light-theme .icon-orange { background: #fef3c7 !important; color: #f59e0b !important; }
+body.admin-light-theme .icon-red { background: #fee2e2 !important; color: #e63946 !important; }
+
+/* ── Admin Sections / Panels ── */
+body.admin-light-theme .admin-section,
+body.admin-light-theme .upload-section,
+body.admin-light-theme .pkg-card {
+    background: #ffffff !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 16px !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08) !important;
+}
+
+body.admin-light-theme .pkg-card:hover {
+    transform: translateY(-4px) !important;
+    border-color: #008080 !important;
+    box-shadow: 0 10px 20px rgba(0, 128, 128, 0.12) !important;
+}
+
+body.admin-light-theme .admin-section-header {
+    border-bottom: 1px solid #e2e8f0 !important;
 }
 
 body.admin-light-theme .admin-section-header h2,
 body.admin-light-theme .section-title {
-    color: #0b1d3a !important;
+    color: #0f172a !important;
+    font-family: 'Inter', sans-serif !important;
+    font-weight: 700 !important;
 }
 
-body.admin-light-theme .stat-info h3 {
-    color: #0b1d3a !important;
-    text-shadow: none !important;
+body.admin-light-theme .section-title i {
+    color: #008080 !important;
 }
 
-body.admin-light-theme .stat-info p {
-    color: #666666 !important;
-    text-shadow: none !important;
-}
-
-/* Tables */
+/* ── Tables ── */
 body.admin-light-theme .table thead th {
-    color: #0b1d3a !important;
+    background: transparent !important;
+    color: #0f172a !important;
     text-shadow: none !important;
-    border-bottom: 2px solid #0b1d3a !important;
+    border-bottom: 2px solid #e2e8f0 !important;
+    border-top: none !important;
+    font-family: 'Inter', sans-serif !important;
+    font-weight: 700 !important;
+    font-size: 12px !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.8px !important;
+    padding: 14px 15px !important;
 }
 
 body.admin-light-theme .table tbody td {
-    color: #444444 !important;
-    border-top: 1px solid #eeeeee !important;
+    color: #334155 !important;
+    border-top: 1px solid #f1f5f9 !important;
+    text-shadow: none !important;
+    font-family: 'Inter', sans-serif !important;
+    font-weight: 500 !important;
+    padding: 14px 15px !important;
+    vertical-align: middle !important;
+}
+
+body.admin-light-theme .table tbody tr:hover {
+    background: #f8fafc !important;
+    cursor: pointer;
+}
+
+/* ── Trip Cards specific ── */
+body.admin-light-theme .pkg-header {
+    border-bottom: 1px solid #f1f5f9 !important;
+}
+
+body.admin-light-theme .pkg-title {
+    color: #0f172a !important;
     text-shadow: none !important;
 }
 
-/* Specific elements for light theme */
+body.admin-light-theme .pkg-destination {
+    color: #64748b !important;
+}
+
+body.admin-light-theme .pkg-price {
+    background: #e0f2f2 !important;
+    color: #008080 !important;
+}
+
+body.admin-light-theme .vendor-name {
+    color: #0f172a !important;
+}
+
+body.admin-light-theme .vendor-label {
+    color: #64748b !important;
+}
+
+body.admin-light-theme .reviews-container {
+    background: #f8fafc !important;
+    border-radius: 10px;
+}
+
+body.admin-light-theme .review-user { color: #008080 !important; }
+body.admin-light-theme .review-text { color: #475569 !important; }
+body.admin-light-theme .no-reviews { color: #94a3b8 !important; }
+body.admin-light-theme .review-item { border-bottom: 1px solid #e2e8f0 !important; }
+
+/* ── Action Buttons ── */
+body.admin-light-theme .action-btn,
+body.admin-light-theme .view-btn {
+    background: #e63946 !important;
+    color: #ffffff !important;
+    border: none !important;
+    border-radius: 8px !important;
+    font-weight: 600 !important;
+    font-family: 'Inter', sans-serif !important;
+    transition: all 0.2s ease !important;
+}
+
+body.admin-light-theme .action-btn:hover,
+body.admin-light-theme .view-btn:hover {
+    background: #c1121f !important;
+    color: #ffffff !important;
+    text-decoration: none !important;
+}
+
+body.admin-light-theme .user-avatar {
+    background: #e0f2f2 !important;
+    color: #008080 !important;
+}
+
+body.admin-light-theme .user-name { color: #0f172a !important; }
+body.admin-light-theme .user-email { color: #64748b !important; }
+body.admin-light-theme .reg-date { color: #64748b !important; }
+
+/* ── Enquiry Cards ── */
 body.admin-light-theme .enquiry-card {
     background: #ffffff !important;
-    border: 1px solid #e0e0e0 !important;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.02) !important;
+    border: 1px solid #e2e8f0 !important;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06) !important;
+    backdrop-filter: none !important;
+}
+
+body.admin-light-theme .enquiry-card:hover {
+    border-color: #008080 !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 8px 20px rgba(0, 128, 128, 0.1) !important;
 }
 
 body.admin-light-theme .enquiry-header {
-    background: #f8f9fa !important;
-    border-bottom: 1px solid #e0e0e0 !important;
+    background: #f8fafc !important;
+    border-bottom: 1px solid #e2e8f0 !important;
 }
 
 body.admin-light-theme .enquiry-user-info h4 {
-    color: #0b1d3a !important;
+    color: #0f172a !important;
+}
+
+body.admin-light-theme .enquiry-user-info span {
+    color: #64748b !important;
 }
 
 body.admin-light-theme .enquiry-body p {
-    color: #444444 !important;
+    color: #334155 !important;
 }
 
-body.admin-light-theme .form-control {
-    background: #ffffff !important;
-    color: #333333 !important;
-    border: 1px solid #cccccc !important;
+body.admin-light-theme .enquiry-meta {
+    color: #64748b !important;
 }
 
+body.admin-light-theme .enquiry-meta i {
+    color: #008080 !important;
+}
+
+body.admin-light-theme .btn-delete {
+    background: #fee2e2 !important;
+    color: #e63946 !important;
+    border: 1px solid #fca5a5 !important;
+}
+
+body.admin-light-theme .btn-delete:hover {
+    background: #e63946 !important;
+    color: #ffffff !important;
+}
+
+/* ── Image Gallery (home-images) ── */
 body.admin-light-theme .image-card {
     background: #ffffff !important;
-    border: 1px solid #e0e0e0 !important;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.05) !important;
+    border: 1px solid #e2e8f0 !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05) !important;
+    border-radius: 12px !important;
 }
 
 body.admin-light-theme .image-card .info span {
-    color: #333333 !important;
+    color: #334155 !important;
 }
 
-/* Tabs */
+body.admin-light-theme .section-title[class*="section-title"] {
+    color: #008080 !important;
+    border-bottom-color: #e2e8f0 !important;
+}
+
+/* ── Forms ── */
+body.admin-light-theme .form-control {
+    background: #ffffff !important;
+    color: #0f172a !important;
+    border: 1px solid #cbd5e1 !important;
+    border-radius: 8px !important;
+    font-family: 'Inter', sans-serif !important;
+}
+
+body.admin-light-theme .form-control:focus {
+    background: #ffffff !important;
+    border-color: #008080 !important;
+    color: #0f172a !important;
+    box-shadow: 0 0 0 3px rgba(0, 128, 128, 0.12) !important;
+}
+
+body.admin-light-theme .form-control[readonly] {
+    background: #f8fafc !important;
+    color: #94a3b8 !important;
+    border-color: #e2e8f0 !important;
+    cursor: not-allowed !important;
+}
+
+body.admin-light-theme .form-group label {
+    color: #475569 !important;
+    font-weight: 600 !important;
+    font-family: 'Inter', sans-serif !important;
+}
+
+body.admin-light-theme select.form-control option {
+    background: #ffffff !important;
+    color: #0f172a !important;
+}
+
+/* ── Tabs ── */
 body.admin-light-theme .nav-tabs {
-    border-bottom: 1px solid #ddd !important;
+    border-bottom: 1px solid #e2e8f0 !important;
 }
+
 body.admin-light-theme .nav-tabs > li > a {
-    color: #666 !important;
+    color: #64748b !important;
+    font-family: 'Inter', sans-serif !important;
+    font-weight: 600 !important;
+    border: none !important;
 }
-body.admin-light-theme .nav-tabs > li.active > a {
-    color: #0b1d3a !important;
-    border-bottom: 2px solid #0b1d3a !important;
+
+body.admin-light-theme .nav-tabs > li.active > a,
+body.admin-light-theme .nav-tabs > li.active > a:focus,
+body.admin-light-theme .nav-tabs > li.active > a:hover {
+    background: transparent !important;
+    color: #008080 !important;
+    border: none !important;
+    border-bottom: 2px solid #008080 !important;
 }
+
+/* ── Status Badges ── */
+body.admin-light-theme .status-badge,
+body.admin-light-theme .status-pending { background: #fef3c7 !important; color: #b45309 !important; }
+body.admin-light-theme .status-completed { background: #dcfce7 !important; color: #15803d !important; }
+body.admin-light-theme .badge-new { background: #dbeafe !important; color: #1d4ed8 !important; }
+body.admin-light-theme .badge-replied { background: #dcfce7 !important; color: #15803d !important; }
+
+/* Vendor status filter buttons */
+body.admin-light-theme .btn-secondary {
+    background: #f1f5f9 !important;
+    color: #475569 !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 8px !important;
+}
+
+body.admin-light-theme .btn-secondary:hover {
+    background: #e2e8f0 !important;
+    color: #0f172a !important;
+}
+
+/* ── Modal (home-images) ── */
+body.admin-light-theme .modal-content {
+    background: #ffffff !important;
+    border: 1px solid #e2e8f0 !important;
+    color: #0f172a !important;
+    border-radius: 16px !important;
+}
+
+body.admin-light-theme .modal-header {
+    border-bottom: 1px solid #e2e8f0 !important;
+}
+
+body.admin-light-theme .modal-footer {
+    border-top: 1px solid #e2e8f0 !important;
+}
+
+body.admin-light-theme .modal-title {
+    color: #0f172a !important;
+}
+
+/* ── Mobile Toggle ── */
+body.admin-light-theme .mobile-toggle {
+    background: #e0f2f2 !important;
+    border: 1px solid #008080 !important;
+    color: #008080 !important;
+}
+
+/* ── Empty States ── */
+body.admin-light-theme .empty-state {
+    color: #94a3b8 !important;
+}
+
+body.admin-light-theme .empty-state i {
+    color: #cbd5e1 !important;
+}
+
+body.admin-light-theme .empty-state h2 {
+    color: #64748b !important;
+}
+
+/* ── Responsive ── */
+@media (max-width: 991px) {
+    body.admin-light-theme .admin-layout {
+        overflow: hidden;
+        height: 100vh;
+    }
+
+    body.admin-light-theme .admin-sidebar {
+        position: fixed !important;
+        left: -260px !important;
+        top: 0 !important;
+        height: 100vh !important;
+        transition: left 0.3s ease !important;
+        z-index: 1200 !important;
+    }
+
+    body.admin-light-theme .admin-sidebar.active {
+        left: 0 !important;
+    }
+
+    body.admin-light-theme .admin-main {
+        margin-left: 0 !important;   /* no sidebar on mobile */
+        padding: 20px !important;
+        width: 100% !important;
+        height: 100vh !important;
+        overflow-y: auto !important;
+    }
+}
+
+/* ── Detail pages: breadcrumb ── */
+body.admin-light-theme .breadcrumb-bar { color: #64748b !important; }
+body.admin-light-theme .breadcrumb-bar a { color: #008080 !important; font-weight: 600 !important; }
+
+/* ── Detail pages: pkg-info-card (trip-detail) ── */
+body.admin-light-theme .pkg-info-card {
+    background: #ffffff !important;
+    border: 1px solid #e2e8f0 !important;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08) !important;
+}
+body.admin-light-theme .pkg-info-icon { background: #e0f2f2 !important; color: #008080 !important; }
+body.admin-light-theme .pkg-info-text h2 { color: #0f172a !important; }
+body.admin-light-theme .pkg-info-meta { color: #64748b !important; }
+body.admin-light-theme .pkg-info-meta i { color: #008080 !important; }
+
+/* ── Section headings & detail rows ── */
+body.admin-light-theme .admin-section h3 { color: #0f172a !important; border-bottom: 1px solid #f1f5f9 !important; }
+body.admin-light-theme .detail-label { color: #64748b !important; }
+body.admin-light-theme .detail-value { color: #334155 !important; }
+body.admin-light-theme .detail-row { border-bottom-color: #f1f5f9 !important; }
+
+/* ── User profile card (user-detail) ── */
+body.admin-light-theme .user-profile-card {
+    background: #ffffff !important;
+    border: 1px solid #e2e8f0 !important;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08) !important;
+}
+body.admin-light-theme .user-avatar-lg { background: #e0f2f2 !important; border-color: rgba(0,128,128,0.2) !important; color: #008080 !important; }
+body.admin-light-theme .user-info h2 { color: #0f172a !important; }
+body.admin-light-theme .user-meta-item { color: #64748b !important; }
+body.admin-light-theme .user-meta-item i { color: #008080 !important; }
+body.admin-light-theme .stat-pill { background: #f1f5f9 !important; border: 1px solid #e2e8f0 !important; }
+body.admin-light-theme .stat-pill h4 { color: #0f172a !important; }
+body.admin-light-theme .stat-pill p { color: #64748b !important; }
+
+/* ── Price & status on detail tables ── */
+body.admin-light-theme .price-badge { background: #e0f2f2 !important; color: #008080 !important; }
+body.admin-light-theme .status-done { background: #dcfce7 !important; color: #15803d !important; }
+body.admin-light-theme .pkg-title { color: #0f172a !important; }
+body.admin-light-theme .pkg-vendor { color: #64748b !important; }
+
+/* ── Doc card (vendor-detail) ── */
+body.admin-light-theme .doc-card { background: #f8fafc !important; border: 1px solid #e2e8f0 !important; }
+body.admin-light-theme .doc-card a { background: #008080 !important; }
+
+/* ── Section title count badge ── */
+body.admin-light-theme .section-title { color: #0f172a !important; border-bottom-color: #e2e8f0 !important; }
+body.admin-light-theme .section-title span { background: #e0f2f2 !important; color: #008080 !important; }
+body.admin-light-theme .section-title span.count-badge { background: #e0f2f2 !important; color: #008080 !important; }
+
+/* ── Back button ── */
+body.admin-light-theme .back-btn { background: #e0f2f2 !important; color: #008080 !important; border: 1px solid #008080 !important; }
+body.admin-light-theme .back-btn:hover { background: #008080 !important; color: #ffffff !important; }

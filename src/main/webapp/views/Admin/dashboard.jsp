@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="<c:url value='/views/assets/css/style.css'/>">
     <link rel="stylesheet" href="<c:url value='/views/assets/css/font-awesome.min.css'/>">
     <link rel="stylesheet" href="<c:url value='/views/assets/css/premium-dashboard.css'/>">
-    <link href="https://fonts.googleapis.com/css?family=Dosis:300,400,500,600,700,800" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     
     <style>
         body {
@@ -355,11 +355,11 @@
                     <button class="mobile-toggle" onclick="document.querySelector('.admin-sidebar').classList.toggle('active')">
                         <i class="fa fa-bars"></i>
                     </button>
-                    <h1 style="font-weight: 800; font-size: 36px; text-shadow: 0 4px 15px rgba(0,0,0,0.8);">Dashboard Overview</h1>
+                    <h1>Dashboard Overview</h1>
                 </div>
                 <div class="admin-user">
                     <span style="color: #888; margin-right: 10px;">Welcome, <strong>System Admin</strong></span>
-                    <img src="https://ui-avatars.com/api/?name=Admin&background=ff4d4d&color=fff" alt="Admin" style="width: 40px; height: 40px; border-radius: 50%;">
+                    <img src="https://ui-avatars.com/api/?name=Admin&background=008080&color=fff" alt="Admin" style="width: 40px; height: 40px; border-radius: 50%;">
                 </div>
             </header>
 

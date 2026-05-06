@@ -13,10 +13,10 @@
     <link rel="stylesheet" href="<c:url value='/views/assets/css/bootstrap.min.css'/>">
     <link rel="stylesheet" href="<c:url value='/views/assets/css/style.css'/>">
     <link rel="stylesheet" href="<c:url value='/views/assets/css/font-awesome.min.css'/>">
-    <link href="https://fonts.googleapis.com/css?family=Dosis:300,400,500,600,700,800" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     
     <style>
-        body { font-family: 'Dosis', sans-serif; background-color: #0f1015; color: #fff; }
+        body { font-family: 'Inter', sans-serif; background-color: #f1f5f9; color: #0f172a; }
         .admin-layout { display: flex; min-height: 100vh; }
         .admin-sidebar { width: 260px; background: #000; color: #fff; flex-shrink: 0; box-shadow: 4px 0 15px rgba(0,0,0,0.5); border-right: 1px solid #222; }
         .sidebar-header { padding: 30px 20px; text-align: center; border-bottom: 1px solid #222; }
@@ -28,14 +28,15 @@
         .admin-nav-item.active { border-left: 4px solid #ff4d4d; background: rgba(255,77,77,0.1); }
         .admin-main { flex-grow: 1; padding: 40px; overflow-y: auto; }
         .admin-header { margin-bottom: 40px; display: flex; justify-content: space-between; align-items: center; }
-        .admin-header h1 { font-weight: 700; color: #fff; margin: 0; font-size: 28px; text-transform: uppercase; }
-        .admin-section { background: #1e1e26; padding: 30px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); border: 1px solid #2a2a35; margin-bottom: 30px; }
-        .detail-row { display: flex; margin-bottom: 15px; border-bottom: 1px solid #2a2a35; padding-bottom: 10px; }
-        .detail-label { width: 200px; color: #888; font-weight: 600; text-transform: uppercase; font-size: 14px; }
-        .detail-value { flex-grow: 1; color: #ddd; }
-        .doc-card { background: #2a2a35; padding: 15px; border-radius: 8px; text-align: center; margin-bottom: 20px; }
+        .admin-header h1 { font-weight: 800; color: #0f172a; margin: 0; font-size: 28px; }
+        .admin-section { background: #ffffff; padding: 30px; border-radius: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); border: 1px solid #e2e8f0; margin-bottom: 24px; }
+        .admin-section h3 { color: #0f172a; font-size: 16px; font-weight: 700; margin-bottom: 16px; border-bottom: 1px solid #f1f5f9; padding-bottom: 12px; }
+        .detail-row { display: flex; margin-bottom: 14px; border-bottom: 1px solid #f1f5f9; padding-bottom: 10px; }
+        .detail-label { width: 200px; color: #64748b; font-weight: 600; text-transform: uppercase; font-size: 12px; letter-spacing: 0.5px; padding-top: 2px; }
+        .detail-value { flex-grow: 1; color: #334155; font-weight: 500; }
+        .doc-card { background: #f8fafc; padding: 15px; border-radius: 10px; text-align: center; margin-bottom: 20px; border: 1px solid #e2e8f0; }
         .doc-card img { max-width: 100%; height: auto; border-radius: 5px; margin-bottom: 10px; max-height: 150px; object-fit: cover; }
-        .doc-card a { color: #fff; text-decoration: none; background: #007bff; padding: 5px 15px; border-radius: 5px; font-size: 14px; display: inline-block; }
+        .doc-card a { color: #fff; text-decoration: none; background: #008080; padding: 6px 16px; border-radius: 8px; font-size: 13px; font-weight: 600; display: inline-block; }
     </style>
 
 <link rel="stylesheet" href="<c:url value='/views/assets/css/admin-light.css'/>">
@@ -79,7 +80,7 @@
         <main class="admin-main">
             <header class="admin-header">
                 <h1>Vendor Detail</h1>
-                <a href="<c:url value='/admin/vendors'/>" class="btn btn-secondary" style="background:#333; border:none; color:white; padding: 10px 20px; border-radius: 5px; text-decoration: none;">&larr; Back to List</a>
+                <a href="<c:url value='/admin/vendors'/>" class="btn" style="background:#e0f2f2; border:1px solid #008080; color:#008080; padding:9px 20px; border-radius:8px; text-decoration:none; font-weight:600;">&larr; Back to List</a>
             </header>
 
             <c:if test="${empty vendor}">
