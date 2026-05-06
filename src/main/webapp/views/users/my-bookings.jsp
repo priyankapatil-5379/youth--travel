@@ -130,6 +130,7 @@
 
             <div class="tabs-container">
                 <div class="tab-item active" onclick="filterBookings('upcoming', this)">Upcoming</div>
+                <div class="tab-item" onclick="filterBookings('pending', this)">Pending</div>
                 <div class="tab-item" onclick="filterBookings('completed', this)">Completed</div>
             </div>
 
@@ -137,7 +138,7 @@
                 <c:when test="${not empty bookings}">
                     <div class="booking-grid" id="bookingGrid">
                         <c:forEach var="booking" items="${bookings}">
-                            <div class="booking-card" data-date="${booking.selectedDate}">
+                            <div class="booking-card" data-date="${booking.selectedDate}" data-status="${booking.status}">
                                 <div class="card-image">
                                     <img src="${not empty booking.trip.mediaUrls ? booking.trip.mediaUrls.split(',')[0] : 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=800'}" alt="Trip">
                                     <span class="status-badge">${booking.status}</span>
@@ -152,7 +153,7 @@
                                         <div class="card-price">₹${booking.totalPrice}</div>
                                         <c:choose>
                                             <c:when test="${booking.reviewed}">
-                                                <button onclick="event.stopPropagation(); openReviewModal('${booking.id}', '${booking.trip.title}', true)" class="btn-view" style="flex: 1; background: rgba(34, 197, 94, 0.1); border-color: rgba(34, 197, 94, 0.2); color: #22c55e;">Reflection</button>
+                                                 <button onclick="event.stopPropagation(); openReviewModal('${booking.id}', true)" class="btn-view" style="flex: 1; background: rgba(34, 197, 94, 0.1); border-color: rgba(34, 197, 94, 0.2); color: #22c55e;">Reflection</button>
                                             </c:when>
                                             <c:otherwise>
                                                 <div class="btn-group-reflection" style="display: flex; gap: 8px; flex: 1; justify-content: flex-end; position: relative; z-index: 25;">
@@ -163,14 +164,16 @@
                                                             tripDate.setHours(0,0,0,0);
                                                             const today = new Date();
                                                             today.setHours(0,0,0,0);
-                                                            if (tripDate < today) {
+                                                            const status = '${booking.status}'.toLowerCase();
+                                                            
+                                                            if (tripDate < today || status === 'completed') {
                                                                 const parent = document.currentScript.parentElement;
                                                                 const detailsBtn = parent.querySelector('.btn-view');
-                                                                detailsBtn.style.display = "none";
+                                                                if (detailsBtn) detailsBtn.style.display = "none";
                                                                 
                                                                 parent.innerHTML = `
                                                                     <button type="button" onclick="event.stopPropagation(); openReviewModal('${booking.id}', false)" class="btn-view" style="background: var(--accent-red); padding: 8px 12px; font-size: 11px; cursor: pointer; position: relative; z-index: 30;">Review</button>
-                                                                    <button type="button" onclick="event.stopPropagation(); openAdviceModal('${booking.id}')" class="btn-view" style="background: rgba(0, 122, 255, 0.2); border-color: rgba(0, 122, 255, 0.3); color: #007aff; padding: 8px 12px; font-size: 11px; cursor: pointer; position: relative; z-index: 30;">Advice</button>
+                                                                    <a href="/user/booking/${booking.id}/advice" class="btn-view" style="background: rgba(0, 122, 255, 0.2); border-color: rgba(0, 122, 255, 0.3); color: #007aff; padding: 8px 12px; font-size: 11px; cursor: pointer; position: relative; z-index: 30; text-decoration: none; display: inline-block;">Advice</a>
                                                                 `;
                                                             }
                                                         }
@@ -205,34 +208,36 @@
     <!-- Review Modal -->
     <div class="modal fade" id="reviewModal" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
-            <div class="modal-content" style="background: #0b0f18; border: 1px solid var(--glass-border); border-radius: 30px; box-shadow: 0 25px 50px rgba(0,0,0,0.8); color: #fff;">
-                <div class="modal-header" style="border-bottom: 1px solid var(--glass-border); padding: 25px;">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="color: #fff; opacity: 1;"><span aria-hidden="true">&times;</span></button>
-                    <h5 class="modal-title" style="font-weight: 900; text-transform: uppercase; letter-spacing: 1px;" id="reviewModalTitle">Review Experience</h5>
+            <div class="modal-content" style="background: #0b0f18; border: 1px solid var(--glass-border); border-radius: 30px; box-shadow: 0 25px 50px rgba(0,0,0,0.8); color: #fff; overflow: hidden;">
+                <div class="modal-header" style="border-bottom: 1px solid var(--glass-border); padding: 25px; background: rgba(255,255,255,0.02);">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="color: #fff; opacity: 1; font-size: 28px; margin-top: -5px;"><span aria-hidden="true">&times;</span></button>
+                    <h5 class="modal-title" style="font-weight: 900; text-transform: uppercase; letter-spacing: 2px; color: var(--accent-red);" id="reviewModalTitle">Review Experience</h5>
                 </div>
-                <div class="modal-body" style="padding: 30px;">
-                    <div id="reviewDisplay" style="display: none;">
-                        <div id="reviewStarsDisplay" style="font-size: 24px; color: #fbbf24; margin-bottom: 20px;"></div>
-                        <p id="reviewTextDisplay" style="font-size: 16px; line-height: 1.7; color: var(--text-dim);"></p>
+                <div class="modal-body" style="padding: 40px;">
+                    <div id="reviewDisplay" style="display: none; text-align: center;">
+                        <div id="reviewStarsDisplay" style="font-size: 32px; color: #fbbf24; margin-bottom: 25px; filter: drop-shadow(0 0 10px rgba(251, 191, 36, 0.3));"></div>
+                        <div style="background: rgba(255,255,255,0.03); padding: 25px; border-radius: 20px; border: 1px solid var(--glass-border);">
+                            <p id="reviewTextDisplay" style="font-size: 17px; line-height: 1.8; color: var(--text-light); margin: 0; font-style: italic;"></p>
+                        </div>
                     </div>
                     <form id="reviewForm">
                         <input type="hidden" id="reviewBookingId">
-                        <div class="mb-4">
-                            <label class="form-label" style="font-weight: 700; color: var(--text-dim); text-transform: uppercase; font-size: 12px; letter-spacing: 1px; margin-bottom: 10px;">Rating</label>
-                            <div class="star-rating" style="display: flex; gap: 10px; font-size: 30px; color: rgba(255,255,255,0.1);">
-                                <i class="fa fa-star star-item" data-value="1" style="cursor: pointer;"></i>
-                                <i class="fa fa-star star-item" data-value="2" style="cursor: pointer;"></i>
-                                <i class="fa fa-star star-item" data-value="3" style="cursor: pointer;"></i>
-                                <i class="fa fa-star star-item" data-value="4" style="cursor: pointer;"></i>
-                                <i class="fa fa-star star-item" data-value="5" style="cursor: pointer;"></i>
+                        <div class="text-center mb-5">
+                            <label class="form-label" style="font-weight: 800; color: var(--accent-red); text-transform: uppercase; font-size: 11px; letter-spacing: 2px; margin-bottom: 20px; display: block;">How was your journey?</label>
+                            <div class="star-rating" style="display: flex; justify-content: center; gap: 15px; font-size: 40px; color: rgba(255,255,255,0.05);">
+                                <i class="fa fa-star star-item" data-value="1" style="cursor: pointer; transition: 0.3s;"></i>
+                                <i class="fa fa-star star-item" data-value="2" style="cursor: pointer; transition: 0.3s;"></i>
+                                <i class="fa fa-star star-item" data-value="3" style="cursor: pointer; transition: 0.3s;"></i>
+                                <i class="fa fa-star star-item" data-value="4" style="cursor: pointer; transition: 0.3s;"></i>
+                                <i class="fa fa-star star-item" data-value="5" style="cursor: pointer; transition: 0.3s;"></i>
                             </div>
                             <input type="hidden" id="reviewRatingValue" value="5">
                         </div>
                         <div class="mb-4">
-                            <label class="form-label" style="font-weight: 700; color: var(--text-dim); text-transform: uppercase; font-size: 12px; letter-spacing: 1px; margin-bottom: 10px;">Your Memories</label>
-                            <textarea class="form-control" id="reviewText" rows="4" style="background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border); border-radius: 15px; color: #fff; padding: 15px;" placeholder="Share your experience..."></textarea>
+                            <label class="form-label" style="font-weight: 800; color: var(--text-dim); text-transform: uppercase; font-size: 11px; letter-spacing: 1.5px; margin-bottom: 12px; display: block;">Detailed Feedback</label>
+                            <textarea class="form-control" id="reviewText" rows="5" style="background: rgba(255,255,255,0.02); border: 1px solid var(--glass-border); border-radius: 20px; color: #fff; padding: 20px; font-size: 15px; resize: none; transition: 0.3s;" placeholder="Describe your highlights, challenges, and overall feedback..."></textarea>
                         </div>
-                        <button type="submit" class="btn btn-primary" style="width: 100%; background: var(--accent-red); border: none; padding: 15px; border-radius: 15px; font-weight: 900; text-transform: uppercase; letter-spacing: 1px; box-shadow: 0 10px 20px rgba(230, 57, 70, 0.3);">Submit Reflection</button>
+                        <button type="submit" class="btn-submit-reflection" style="width: 100%; background: var(--accent-red); border: none; padding: 18px; border-radius: 20px; font-weight: 900; text-transform: uppercase; letter-spacing: 2px; color: #fff; box-shadow: 0 15px 30px rgba(230, 57, 70, 0.3); transition: 0.3s; margin-top: 10px;">Submit Reflection</button>
                     </form>
                 </div>
             </div>
@@ -313,15 +318,23 @@
 
             cards.forEach(card => {
                 const dateStr = card.getAttribute('data-date');
+                const status = card.getAttribute('data-status');
+                
                 // Ensure date parsing is robust
                 const tripDate = new Date(dateStr);
                 tripDate.setHours(0, 0, 0, 0);
 
                 let show = false;
+                const lowerStatus = (status || "").toLowerCase();
                 if (type === 'upcoming') {
-                    show = tripDate >= today;
+                    // Show only confirmed future trips in Upcoming
+                    show = tripDate >= today && lowerStatus === 'confirmed';
+                } else if (type === 'pending') {
+                    // Show only pending trips in Pending
+                    show = lowerStatus === 'pending';
                 } else {
-                    show = tripDate < today;
+                    // Show past trips or explicitly completed/cancelled trips
+                    show = (tripDate < today && lowerStatus !== 'pending') || lowerStatus === 'completed' || lowerStatus === 'cancelled';
                 }
 
                 if (show) {
@@ -336,7 +349,9 @@
             if (noMsg) {
                 noMsg.style.display = (visibleCount === 0) ? 'block' : 'none';
                 if (visibleCount === 0) {
-                    noMsg.querySelector('h3').innerText = (type === 'completed') ? "No Completed Journeys Yet" : "No Upcoming Adventures Found";
+                    if (type === 'completed') noMsg.querySelector('h3').innerText = "No Completed Journeys Yet";
+                    else if (type === 'pending') noMsg.querySelector('h3').innerText = "No Pending Bookings";
+                    else noMsg.querySelector('h3').innerText = "No Upcoming Adventures Found";
                 }
             }
         }
@@ -379,12 +394,21 @@
         // Star Rating Logic
         const starItems = document.querySelectorAll('.star-item');
         starItems.forEach(star => {
-            star.onclick = () => {
+            star.onmouseover = () => {
                 const val = star.getAttribute('data-value');
-                document.getElementById('reviewRatingValue').value = val;
                 starItems.forEach(s => {
                     s.style.color = (s.getAttribute('data-value') <= val) ? '#fbbf24' : 'rgba(255,255,255,0.1)';
                 });
+            };
+            star.onmouseout = () => {
+                const currentVal = document.getElementById('reviewRatingValue').value;
+                starItems.forEach(s => {
+                    s.style.color = (s.getAttribute('data-value') <= currentVal) ? '#fbbf24' : 'rgba(255,255,255,0.1)';
+                });
+            };
+            star.onclick = () => {
+                const val = star.getAttribute('data-value');
+                document.getElementById('reviewRatingValue').value = val;
             };
         });
 
