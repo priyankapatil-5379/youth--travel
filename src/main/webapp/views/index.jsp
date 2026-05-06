@@ -1583,7 +1583,7 @@
                     <c:when test="${not empty galleryImages}">
                         <c:forEach var="img" items="${galleryImages}">
                             <div class="col-xs-6 col-sm-3 col-md-3">
-                                <a class="yt-mini-thumb" href="<c:url value='${img.imageUrl}'/>" data-fancybox="home-strip" data-caption="${img.caption}">
+                                <a class="yt-mini-thumb" href="<c:url value='${img.imageUrl}'/>" data-fancybox="home-strip" data-type="image" data-caption="${img.caption}">
                                     <img src="<c:url value='${img.imageUrl}'/>" alt="${img.caption}">
                                     <div class="yt-thumb-caption">${img.caption}</div>
                                 </a>
@@ -1593,25 +1593,25 @@
                     <c:otherwise>
                         <!-- Fallback static images if none uploaded -->
                         <div class="col-xs-6 col-sm-3 col-md-3">
-                            <a class="yt-mini-thumb" href="<c:url value='/views/assets/images/new-gallery-1.jpg'/>" data-fancybox="home-strip" data-caption="Youth Adventure 1">
+                            <a class="yt-mini-thumb" href="<c:url value='/views/assets/images/new-gallery-1.jpg'/>" data-fancybox="home-strip" data-type="image" data-type="image" data-caption="Youth Adventure 1">
                                 <img src="<c:url value='/views/assets/images/new-gallery-1.jpg'/>" alt="Youth Adventure 1">
                                 <div class="yt-thumb-caption">Youth Adventure 1</div>
                             </a>
                         </div>
                         <div class="col-xs-6 col-sm-3 col-md-3">
-                            <a class="yt-mini-thumb" href="<c:url value='/views/assets/images/new-gallery-2.jpg'/>" data-fancybox="home-strip" data-caption="Youth Adventure 2">
+                            <a class="yt-mini-thumb" href="<c:url value='/views/assets/images/new-gallery-2.jpg'/>" data-fancybox="home-strip" data-type="image" data-caption="Youth Adventure 2">
                                 <img src="<c:url value='/views/assets/images/new-gallery-2.jpg'/>" alt="Youth Adventure 2">
                                 <div class="yt-thumb-caption">Youth Adventure 2</div>
                             </a>
                         </div>
                         <div class="col-xs-6 col-sm-3 col-md-3">
-                            <a class="yt-mini-thumb" href="<c:url value='/views/assets/images/new-gallery-3.jpg'/>" data-fancybox="home-strip" data-caption="Youth Adventure 3">
+                            <a class="yt-mini-thumb" href="<c:url value='/views/assets/images/new-gallery-3.jpg'/>" data-fancybox="home-strip" data-type="image" data-caption="Youth Adventure 3">
                                 <img src="<c:url value='/views/assets/images/new-gallery-3.jpg'/>" alt="Youth Adventure 3">
                                 <div class="yt-thumb-caption">Youth Adventure 3</div>
                             </a>
                         </div>
                         <div class="col-xs-6 col-sm-3 col-md-3">
-                            <a class="yt-mini-thumb" href="<c:url value='/views/assets/images/new-gallery-4.jpg'/>" data-fancybox="home-strip" data-caption="Youth Adventure 4">
+                            <a class="yt-mini-thumb" href="<c:url value='/views/assets/images/new-gallery-4.jpg'/>" data-fancybox="home-strip" data-type="image" data-caption="Youth Adventure 4">
                                 <img src="<c:url value='/views/assets/images/new-gallery-4.jpg'/>" alt="Youth Adventure 4">
                                 <div class="yt-thumb-caption">Youth Adventure 4</div>
                             </a>
@@ -1787,7 +1787,7 @@
                     <c:when test="${not empty momentImages}">
                         <c:forEach var="img" items="${momentImages}">
                             <div class="col-xs-6 col-sm-4 col-md-3">
-                                <a class="yt-mini-thumb" href="<c:url value='${img.imageUrl}'/>" data-fancybox="more-moments" data-caption="${img.caption}">
+                                <a class="yt-mini-thumb" href="<c:url value='${img.imageUrl}'/>" data-fancybox="more-moments" data-type="image" data-type="image" data-caption="${img.caption}">
                                     <img src="<c:url value='${img.imageUrl}'/>" alt="${img.caption}">
                                     <div class="yt-thumb-caption">${img.caption}</div>
                                 </a>
@@ -1797,13 +1797,13 @@
                     <c:otherwise>
                         <!-- Fallback static images -->
                         <div class="col-xs-6 col-sm-4 col-md-3">
-                            <a class="yt-mini-thumb" href="<c:url value='/views/assets/images/more-waterpark.png'/>" data-fancybox="more-moments" data-caption="Waterpark fun">
+                            <a class="yt-mini-thumb" href="<c:url value='/views/assets/images/more-waterpark.png'/>" data-fancybox="more-moments" data-type="image" data-caption="Waterpark fun">
                                 <img src="<c:url value='/views/assets/images/more-waterpark.png'/>" alt="Waterpark fun">
                                 <div class="yt-thumb-caption">Waterpark fun</div>
                             </a>
                         </div>
                         <div class="col-xs-6 col-sm-4 col-md-3">
-                            <a class="yt-mini-thumb" href="<c:url value='/views/assets/images/more-scuba.png'/>" data-fancybox="more-moments" data-caption="Scuba diving">
+                            <a class="yt-mini-thumb" href="<c:url value='/views/assets/images/more-scuba.png'/>" data-fancybox="more-moments" data-type="image" data-caption="Scuba diving">
                                 <img src="<c:url value='/views/assets/images/more-scuba.png'/>" alt="Scuba diving">
                                 <div class="yt-thumb-caption">Scuba diving</div>
                             </a>

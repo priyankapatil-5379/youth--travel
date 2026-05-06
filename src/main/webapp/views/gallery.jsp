@@ -420,22 +420,22 @@
             <div class="yt-gallery-grid">
                 <div class="row">
                     <div class="col-sm-6 col-md-3 yt-gallery-card">
-                        <a class="yt-gallery-thumb" href="<c:url value='/views/assets/images/gallery-bike.png'/>" data-fancybox="yt-gallery" data-caption="Bike ride">
+                        <a class="yt-gallery-thumb" href="<c:url value='/views/assets/images/gallery-bike.png'/>" data-fancybox="yt-gallery" data-type="image" data-caption="Bike ride">
                             <img src="<c:url value='/views/assets/images/gallery-bike.png'/>" alt="Bike ride" />
                         </a>
                     </div>
                     <div class="col-sm-6 col-md-3 yt-gallery-card">
-                        <a class="yt-gallery-thumb" href="<c:url value='/views/assets/images/gallery-dirt-bike.png'/>" data-fancybox="yt-gallery" data-caption="Dirt bike race">
+                        <a class="yt-gallery-thumb" href="<c:url value='/views/assets/images/gallery-dirt-bike.png'/>" data-fancybox="yt-gallery" data-type="image" data-caption="Dirt bike race">
                             <img src="<c:url value='/views/assets/images/gallery-dirt-bike.png'/>" alt="Dirt bike race" />
                         </a>
                     </div>
                     <div class="col-sm-6 col-md-3 yt-gallery-card">
-                        <a class="yt-gallery-thumb" href="<c:url value='/views/assets/images/gallery-trek.png'/>" data-fancybox="yt-gallery" data-caption="Trekking trail">
+                        <a class="yt-gallery-thumb" href="<c:url value='/views/assets/images/gallery-trek.png'/>" data-fancybox="yt-gallery" data-type="image" data-caption="Trekking trail">
                             <img src="<c:url value='/views/assets/images/gallery-trek.png'/>" alt="Trekking trail" />
                         </a>
                     </div>
                     <div class="col-sm-6 col-md-3 yt-gallery-card">
-                        <a class="yt-gallery-thumb" href="<c:url value='/views/assets/images/gallery-camp-sunset.png'/>" data-fancybox="yt-gallery" data-caption="Sunset camping">
+                        <a class="yt-gallery-thumb" href="<c:url value='/views/assets/images/gallery-camp-sunset.png'/>" data-fancybox="yt-gallery" data-type="image" data-caption="Sunset camping">
                             <img src="<c:url value='/views/assets/images/gallery-camp-sunset.png'/>" alt="Sunset camping" />
                         </a>
                     </div>
@@ -443,22 +443,22 @@
 
                 <div class="row">
                     <div class="col-sm-6 col-md-3 yt-gallery-card">
-                        <a class="yt-gallery-thumb" href="<c:url value='/views/assets/images/gallery-tent-gear.png'/>" data-fancybox="yt-gallery" data-caption="Camping gear">
+                        <a class="yt-gallery-thumb" href="<c:url value='/views/assets/images/gallery-tent-gear.png'/>" data-fancybox="yt-gallery" data-type="image" data-caption="Camping gear">
                             <img src="<c:url value='/views/assets/images/gallery-tent-gear.png'/>" alt="Camping gear" />
                         </a>
                     </div>
                     <div class="col-sm-6 col-md-3 yt-gallery-card">
-                        <a class="yt-gallery-thumb" href="<c:url value='/views/assets/images/gallery-tent-view.png'/>" data-fancybox="yt-gallery" data-caption="Tent view">
+                        <a class="yt-gallery-thumb" href="<c:url value='/views/assets/images/gallery-tent-view.png'/>" data-fancybox="yt-gallery" data-type="image" data-caption="Tent view">
                             <img src="<c:url value='/views/assets/images/gallery-tent-view.png'/>" alt="Tent view" />
                         </a>
                     </div>
                     <div class="col-sm-6 col-md-3 yt-gallery-card">
-                        <a class="yt-gallery-thumb" href="<c:url value='/views/assets/images/gallery-couple-tent.png'/>" data-fancybox="yt-gallery" data-caption="Camping together">
+                        <a class="yt-gallery-thumb" href="<c:url value='/views/assets/images/gallery-couple-tent.png'/>" data-fancybox="yt-gallery" data-type="image" data-caption="Camping together">
                             <img src="<c:url value='/views/assets/images/gallery-couple-tent.png'/>" alt="Camping together" />
                         </a>
                     </div>
                     <div class="col-sm-6 col-md-3 yt-gallery-card">
-                        <a class="yt-gallery-thumb" href="<c:url value='/views/assets/images/gallery-van-camp.png'/>" data-fancybox="yt-gallery" data-caption="Van camping">
+                        <a class="yt-gallery-thumb" href="<c:url value='/views/assets/images/gallery-van-camp.png'/>" data-fancybox="yt-gallery" data-type="image" data-caption="Van camping">
                             <img src="<c:url value='/views/assets/images/gallery-van-camp.png'/>" alt="Van camping" />
                         </a>
                     </div>
