@@ -2774,9 +2774,9 @@ img {
 .diver {
     position: absolute;
     width: 450px;
-    height: 225px;
-    opacity: 0.8;
-    filter: drop-shadow(0 10px 15px rgba(0,0,0,0.5));
+    height: 300px;
+    opacity: 1;
+    filter: drop-shadow(0 15px 35px rgba(0,0,0,0.4));
     z-index: -1;
     pointer-events: none;
 }
@@ -2787,15 +2787,10 @@ img {
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
-    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 240 120'><defs><linearGradient id='g1' x1='0%25' y1='0%25' x2='0%25' y2='100%25'><stop offset='0%25' stop-color='%232563eb'/><stop offset='100%25' stop-color='%231e3a8a'/></linearGradient><linearGradient id='g2' x1='0%25' y1='0%25' x2='0%25' y2='100%25'><stop offset='0%25' stop-color='%23ffffff'/><stop offset='100%25' stop-color='%23d1d5db'/></linearGradient></defs><path d='M100,20 L160,40 Q165,45 160,50 L100,30 Z' fill='url(%23g2)' stroke='%234b5563' stroke-width='1'/><path d='M115,25 L117,45 M140,33 L142,53' stroke='%23374151' stroke-width='2' opacity='0.3'/><path d='M30,55 Q60,35 120,45 L170,55 L165,85 L140,75 L80,80 Q40,80 30,55 Z' fill='url(%23g1)' stroke='%231e1b4b' stroke-width='1.5'/><path d='M40,55 Q70,50 110,55' fill='none' stroke='%233b82f6' stroke-width='3' opacity='0.4'/><path d='M170,55 L210,40 L215,60 Z' fill='%231e40af' stroke='%231e3a8a' stroke-width='1'/><path d='M165,85 L205,100 L210,80 Z' fill='%231e40af' stroke='%231e3a8a' stroke-width='1'/><circle cx='38' cy='52' r='14' fill='%230f172a'/><path d='M25,48 Q50,48 50,56 Q50,64 25,64 Z' fill='%23334155'/><rect x='28' y='50' width='18' height='10' rx='3' fill='%23bae6fd' opacity='0.8'/><path d='M110,25 Q80,25 50,55' fill='none' stroke='%23111' stroke-width='2'/></svg>");
-    animation: diverWiggle 5s ease-in-out infinite;
+    background-image: url('../images/scuba-diver-final.png');
 }
 
-.bubble-stream {
-    position: absolute;
-    top: 40%;
-    left: 20%;
-}
+
 
 .bubble-stream span {
     position: absolute;
@@ -2816,12 +2811,41 @@ img {
     100% { transform: translateY(-100px) scale(1.5); opacity: 0; }
 }
 
-.diver-1 { top: 25%; animation: swim-right 48s linear infinite; }
-.diver-2 { top: 65%; animation: swim-left 58s linear infinite; }
+.diver-1 { 
+    top: 25%; 
+    animation: swim-left 48s linear infinite; 
+    animation-delay: -10s; /* Offset so they aren't perfectly stacked */
+}
+.diver-1 .diver-body {
+    animation: diverWiggleFlipped 6s ease-in-out infinite;
+}
+.diver-1 .bubble-stream {
+    position: absolute;
+    top: 42%;
+    left: 15%;
+}
+
+.diver-2 { 
+    top: 65%; 
+    animation: swim-left 58s linear infinite; 
+}
+.diver-2 .diver-body {
+    animation: diverWiggleFlipped 6s ease-in-out infinite;
+}
+.diver-2 .bubble-stream {
+    position: absolute;
+    top: 42%;
+    left: 15%;
+}
 
 @keyframes diverWiggle {
     0%, 100% { transform: translateY(0) rotate(0deg); }
     50% { transform: translateY(-8px) rotate(1deg); }
+}
+
+@keyframes diverWiggleFlipped {
+    0%, 100% { transform: scaleX(-1) translateY(0) rotate(0deg); }
+    50% { transform: scaleX(-1) translateY(-8px) rotate(-1deg); }
 }
 
 @keyframes fishWiggle {
