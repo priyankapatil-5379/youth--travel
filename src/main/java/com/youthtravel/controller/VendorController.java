@@ -194,7 +194,8 @@ public class VendorController {
     private com.youthtravel.repository.ReviewRepository reviewRepository;
 
     @Autowired
-
+    private com.youthtravel.repository.TripScheduleRepository tripScheduleRepository;
+    @Autowired
     private org.springframework.messaging.simp.SimpMessagingTemplate messagingTemplate;
 
     @GetMapping("/dashboard")
