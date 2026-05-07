@@ -88,8 +88,38 @@
         .empty-state i { font-size: 60px; color: #e2e8f0; margin-bottom: 24px; }
         .empty-state p { color: var(--text-muted); font-size: 16px; font-weight: 600; }
 
+        /* Mobile Responsiveness */
+        .mobile-header {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            height: 70px;
+            background: #ffffff;
+            border-bottom: 1px solid var(--border-color);
+            padding: 0 24px;
+            align-items: center;
+            justify-content: space-between;
+            z-index: 900;
+        }
+        .mobile-logo img { height: 45px; width: auto; object-fit: contain; display: block; }
+        .hamburger-menu {
+            font-size: 24px;
+            color: var(--primary);
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 8px;
+        }
+
         @media (max-width: 991px) {
-            .main-content { margin-left: 0; padding: 80px 20px 40px !important; }
+            .mobile-header { display: flex; }
+            .main-content { margin-left: 0; padding: 100px 20px 40px !important; }
+        }
+
+        @media (max-width: 576px) {
+            .main-content { padding: 90px 15px 30px !important; }
+            .page-header h1 { font-size: 22px; }
+            .table th, .table td { padding: 12px 16px; font-size: 13px; }
         }
     </style>
 </head>
@@ -98,6 +128,19 @@
         <jsp:include page="user-sidebar.jsp">
             <jsp:param name="activePage" value="payments" />
         </jsp:include>
+        
+        <!-- Mobile Header -->
+        <header class="mobile-header">
+            <div class="mobile-logo">
+                <a href="<c:url value='/'/>">
+                    <img src="<c:url value='/views/assets/images/logo.png'/>" alt="Youth Travel">
+                </a>
+            </div>
+            <button class="hamburger-menu" onclick="toggleMainSidebar()">
+                <i class="fa fa-bars"></i>
+            </button>
+        </header>
+
         <main class="main-content">
                 <div class="page-header">
                     <h1>Payment Records</h1>

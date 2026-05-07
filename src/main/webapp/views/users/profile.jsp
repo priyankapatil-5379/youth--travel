@@ -171,12 +171,53 @@
         .btn-primary { background: var(--primary); border: none; padding: 14px; border-radius: 12px; font-weight: 700; color: white; width: 100%; transition: var(--transition); }
         .btn-primary:hover { background: var(--primary-hover); transform: translateY(-1px); box-shadow: 0 4px 6px -1px rgba(0, 128, 128, 0.2); }
 
+        /* Mobile Responsiveness */
+        .mobile-header {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            height: 70px;
+            background: #ffffff;
+            border-bottom: 1px solid var(--border-color);
+            padding: 0 24px;
+            align-items: center;
+            justify-content: space-between;
+            z-index: 900;
+        }
+        .mobile-logo img { height: 45px; width: auto; object-fit: contain; display: block; }
+        .hamburger-menu {
+            font-size: 24px;
+            color: var(--primary);
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 8px;
+        }
+
         @media (max-width: 991px) {
-            .main-content { margin-left: 0; padding: 80px 20px 40px !important; }
+            .mobile-header { display: flex; }
+            .main-content { margin-left: 0; padding: 100px 20px 40px !important; }
             .profile-header { flex-direction: column; align-items: center; text-align: center; padding: 32px; gap: 32px; }
             .avatar-column { width: 100%; }
             .info-column { width: 100%; display: flex; flex-direction: column; align-items: center; }
-            .stats-row { justify-content: center; width: 100%; }
+            .stats-row { justify-content: center; width: 100%; gap: 24px; }
+            .username-row { font-size: 22px; margin-bottom: 20px; }
+            .stat-num { font-size: 24px; }
+        }
+
+        @media (max-width: 576px) {
+            .main-content { padding: 90px 15px 30px !important; }
+            .profile-header { padding: 24px 15px; }
+            .avatar-wrapper { width: 140px; height: 140px; }
+            .plus-btn { width: 34px; height: 34px; font-size: 14px; }
+            .display-name { font-size: 18px; }
+            .stats-row { gap: 15px; }
+            .reputation-badge { padding: 12px 16px; }
+            .reputation-value { font-size: 18px; }
+            .tabs-header { gap: 24px; justify-content: center; }
+            .tab-trigger { font-size: 12px; }
+            .posts-side-grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 15px; }
+            .advices-side-grid { grid-template-columns: 1fr; }
         }
     </style>
     <script>
@@ -191,6 +232,18 @@
             <jsp:param name="activePage" value="profile" />
         </jsp:include>
         
+        <!-- Mobile Header -->
+        <header class="mobile-header">
+            <div class="mobile-logo">
+                <a href="<c:url value='/'/>">
+                    <img src="<c:url value='/views/assets/images/logo.png'/>" alt="Youth Travel">
+                </a>
+            </div>
+            <button class="hamburger-menu" onclick="toggleMainSidebar()">
+                <i class="fa fa-bars"></i>
+            </button>
+        </header>
+
         <main class="main-content">
 
 

@@ -37,88 +37,97 @@
         .wrapper { display: flex; min-height: 100vh; }
         .main-content { flex: 1; margin-left: var(--sidebar-width); padding: 40px !important; transition: margin-left 0.4s ease; }
 
-        /* Unified Dashboard Console */
+        /* New Panoramic Banner */
+        .dashboard-banner {
+            width: 100%;
+            height: 240px;
+            border-radius: 20px;
+            overflow: hidden;
+            margin-bottom: 24px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            border: 1px solid var(--border-color);
+        }
+        .dashboard-banner img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center 40%;
+        }
+
+        /* Redesigned Console Bar */
         .dashboard-console { 
             background: #ffffff; 
             border-radius: 16px; 
             border: 1px solid var(--border-color); 
-            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
             margin-bottom: 32px;
-            overflow: hidden;
+            padding: 16px 24px;
         }
 
-        .console-top { 
-            display: flex; justify-content: space-between; align-items: center; 
-            padding: 40px; 
-            gap: 20px;
-        }
-
-        .console-divider { 
-            height: 1px; 
-            background: var(--border-color);
-            width: 100%;
-        }
-
-        .console-bottom { 
-            display: flex; justify-content: space-between; align-items: center; 
-            padding: 20px 40px; 
-            background: #f8fafc;
-        }
-
-        .dash-title-luxe {
-            font-size: 28px; font-weight: 800; letter-spacing: -0.5px;
-            color: var(--text-main);
-        }
-        .dash-subtitle-luxe {
-            font-size: 14px; font-weight: 500; color: var(--text-muted);
-            margin-top: 4px;
+        .console-row {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
         }
         
-        .search-container { position: relative; width: 400px; }
+        .search-container { position: relative; flex: 2; min-width: 280px; }
         .search-container input { 
             background: #ffffff !important; 
             border: 1px solid var(--border-color) !important; 
-            border-radius: 10px; color: var(--text-main) !important; 
-            padding: 12px 45px 12px 16px; width: 100%; 
-            font-weight: 500; font-size: 14px;
+            border-radius: 12px; color: var(--text-main) !important; 
+            padding: 14px 16px 14px 48px; width: 100%; 
+            font-weight: 500; font-size: 15px;
             transition: all 0.2s;
         }
         .search-container input:focus {
             border-color: var(--primary) !important;
-            box-shadow: 0 0 0 4px rgba(0, 128, 128, 0.1) !important;
-            outline: none;
+            box-shadow: 0 0 0 4px rgba(0, 128, 128, 0.05) !important;
         }
-        .search-container input::placeholder { color: var(--text-muted); }
         .search-container i { 
-            position: absolute; right: 16px; top: 50%; transform: translateY(-50%);
+            position: absolute; left: 18px; top: 50%; transform: translateY(-50%);
             color: var(--text-muted); font-size: 18px; 
         }
 
         .btn-luxe-filter { 
             background: #ffffff !important; 
             border: 1px solid var(--border-color) !important; 
-            color: var(--text-main) !important;
-            padding: 12px 24px; 
-            border-radius: 10px; 
-            font-weight: 600; 
+            color: var(--primary) !important;
+            padding: 14px 24px; 
+            border-radius: 12px; 
+            font-weight: 700; 
             font-size: 14px; 
             transition: all 0.2s;
             display: flex; align-items: center; gap: 8px;
+            letter-spacing: 1px;
         }
         .btn-luxe-filter:hover { 
             background: #f8fafc !important;
             border-color: var(--primary) !important;
-            color: var(--primary) !important;
+        }
+
+        .filter-group-inline {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding-left: 15px;
+        }
+
+        .vertical-divider {
+            width: 1px;
+            height: 30px;
+            background: var(--border-color);
+            margin: 0 5px;
         }
 
         .sort-select { 
             background: #ffffff !important; border: 1px solid var(--border-color) !important; 
-            color: var(--text-main) !important; padding: 10px 16px; border-radius: 10px; 
-            font-weight: 600; cursor: pointer; font-size: 13px;
+            color: var(--text-main) !important; padding: 12px 16px; border-radius: 12px; 
+            font-weight: 600; cursor: pointer; font-size: 14px;
+            min-width: 160px;
         }
 
-        .results-count-luxe { font-size: 14px; font-weight: 700; color: var(--text-main); }
-        .meta-label-luxe { font-size: 12px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
+        .meta-label-luxe { font-size: 12px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; white-space: nowrap; }
 
         /* Grid & Cards */
         .package-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 24px; }
@@ -185,10 +194,52 @@
         .category-title { font-size: 20px; font-weight: 800; color: var(--text-main); margin: 0; }
         .bg-danger-soft { background: #fee2e2 !important; color: #ef4444 !important; border-radius: 6px; padding: 4px 10px; font-size: 12px; }
 
+        /* Mobile Responsiveness */
+        .mobile-header {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            height: 70px;
+            background: #ffffff;
+            border-bottom: 1px solid var(--border-color);
+            padding: 0 24px;
+            align-items: center;
+            justify-content: space-between;
+            z-index: 900;
+        }
+        .mobile-logo img { height: 45px; width: auto; object-fit: contain; display: block; }
+        .hamburger-menu {
+            font-size: 24px;
+            color: var(--primary);
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 8px;
+        }
+
+        @media (max-width: 1200px) {
+            .console-row { gap: 10px; }
+            .search-container { min-width: 200px; }
+            .sort-select { min-width: 130px; padding: 12px 10px; }
+        }
+
         @media (max-width: 991px) {
-            .main-content { margin-left: 0; padding: 90px 20px 40px; }
-            .console-top { flex-direction: column; align-items: flex-start; gap: 24px; padding: 30px; }
+            .mobile-header { display: flex; }
+            .main-content { margin-left: 0; padding: 100px 20px 40px !important; }
+            .dashboard-banner { height: 180px; }
+            .console-row { flex-direction: column; align-items: stretch; gap: 15px; }
             .search-container { width: 100%; }
+            .btn-luxe-filter { width: 100%; justify-content: center; }
+            .filter-group-inline { padding: 0; border: none; flex-direction: row; justify-content: space-between; }
+            .vertical-divider { display: none; }
+            .sort-select { flex: 1; }
+        }
+
+        @media (max-width: 576px) {
+            .main-content { padding: 90px 15px 30px !important; }
+            .console-top, .console-bottom { padding: 20px; }
+            .package-grid { grid-template-columns: 1fr; }
+            .dash-subtitle-luxe { font-size: 11px; letter-spacing: 2px !important; }
         }
     </style>
 </head>
@@ -196,47 +247,60 @@
     <div class="wrapper">
         <jsp:include page="user-sidebar.jsp"><jsp:param name="activePage" value="dashboard" /></jsp:include>
         
+        <!-- Mobile Header -->
+        <header class="mobile-header">
+            <div class="mobile-logo">
+                <a href="<c:url value='/'/>">
+                    <img src="<c:url value='/views/assets/images/logo.png'/>" alt="Youth Travel">
+                </a>
+            </div>
+            <button class="hamburger-menu" onclick="toggleMainSidebar()">
+                <i class="fa fa-bars"></i>
+            </button>
+        </header>
+
         <main class="main-content">
             <form action="<c:url value='/user/dashboard'/>" method="GET" id="filterForm">
+                <!-- Panoramic Banner -->
+                <div class="dashboard-banner">
+                    <img src="<c:url value='/views/assets/images/panoramic-hero.png'/>" alt="Mountain Panorama">
+                </div>
+
+                <!-- Console Bar -->
                 <div class="dashboard-console">
-                    <div class="px-5 pt-4 pb-3 text-center">
-                        <p class="dash-subtitle-luxe m-0" style="font-size: 14px; letter-spacing: 4px; color: var(--text-muted);">Curated Expeditions for the Modern Adventurer</p>
-                    </div>
-
-                    <div class="console-top">
+                    <div class="console-row">
                         <div class="search-container">
-                            <input type="text" name="search" id="searchInput" value="${currentParams.search}" placeholder="Search destinations..." oninput="searchTrips()">
                             <i class="fa fa-search"></i>
+                            <input type="text" name="search" id="searchInput" value="${currentParams.search}" placeholder="Search destinations..." oninput="searchTrips()">
                         </div>
+                        
                         <button type="button" class="btn-luxe-filter" onclick="toggleFilter()">
-                            <i class="fa fa-sliders me-2"></i> REFINE
+                            <i class="fa fa-sliders"></i> REFINE
                         </button>
-                    </div>
 
-                    <div class="console-divider"></div>
+                        <div class="vertical-divider d-none d-lg-block"></div>
 
-                    <div class="console-bottom">
-                        <div class="results-count-luxe">EXPLORING <span style="color: var(--accent-red);">${totalCount}</span> ADVENTURES</div>
-                        <div class="d-flex gap-5 align-items-center">
-                            <div class="d-flex align-items-center gap-3">
-                                <span class="meta-label-luxe">Group by:</span>
-                                <select name="groupBy" class="sort-select" onchange="this.form.submit()">
-                                    <option value="none" ${currentParams.groupBy == 'none' ? 'selected' : ''}>No Grouping</option>
-                                    <option value="category" ${currentParams.groupBy == 'category' ? 'selected' : ''}>Activity</option>
-                                    <option value="adventure" ${currentParams.groupBy == 'adventure' ? 'selected' : ''}>Adventures</option>
-                                    <option value="stay" ${currentParams.groupBy == 'stay' ? 'selected' : ''}>Stay Type</option>
-                                    <option value="transport" ${currentParams.groupBy == 'transport' ? 'selected' : ''}>Transport</option>
-                                    <option value="travelerType" ${currentParams.groupBy == 'travelerType' ? 'selected' : ''}>Audience</option>
-                                </select>
-                            </div>
-                            <div class="d-flex align-items-center gap-2">
-                                <span class="meta-label-luxe" style="white-space: nowrap;">Sort by:</span>
-                                <select name="sortBy" class="sort-select" onchange="this.form.submit()">
-                                    <option value="latest" ${currentParams.sortBy == 'latest' ? 'selected' : ''}>Latest Arrivals</option>
-                                    <option value="priceLow" ${currentParams.sortBy == 'priceLow' ? 'selected' : ''}>Value: Low to High</option>
-                                    <option value="priceHigh" ${currentParams.sortBy == 'priceHigh' ? 'selected' : ''}>Luxe: High to Low</option>
-                                </select>
-                            </div>
+                        <div class="filter-group-inline">
+                            <span class="meta-label-luxe">Group by:</span>
+                            <select name="groupBy" class="sort-select" onchange="this.form.submit()">
+                                <option value="none" ${currentParams.groupBy == 'none' ? 'selected' : ''}>No Grouping</option>
+                                <option value="category" ${currentParams.groupBy == 'category' ? 'selected' : ''}>Activity</option>
+                                <option value="adventure" ${currentParams.groupBy == 'adventure' ? 'selected' : ''}>Adventures</option>
+                                <option value="stay" ${currentParams.groupBy == 'stay' ? 'selected' : ''}>Stay Type</option>
+                                <option value="transport" ${currentParams.groupBy == 'transport' ? 'selected' : ''}>Transport</option>
+                                <option value="travelerType" ${currentParams.groupBy == 'travelerType' ? 'selected' : ''}>Audience</option>
+                            </select>
+                        </div>
+
+                        <div class="vertical-divider d-none d-lg-block"></div>
+
+                        <div class="filter-group-inline">
+                            <span class="meta-label-luxe">Sort by:</span>
+                            <select name="sortBy" class="sort-select" onchange="this.form.submit()">
+                                <option value="latest" ${currentParams.sortBy == 'latest' ? 'selected' : ''}>Latest Arrivals</option>
+                                <option value="priceLow" ${currentParams.sortBy == 'priceLow' ? 'selected' : ''}>Value: Low to High</option>
+                                <option value="priceHigh" ${currentParams.sortBy == 'priceHigh' ? 'selected' : ''}>Luxe: High to Low</option>
+                            </select>
                         </div>
                     </div>
                 </div>

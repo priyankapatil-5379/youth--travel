@@ -211,10 +211,43 @@
         .modal-tip-box { background: #f8fafc; border: 1px solid var(--border-color); border-radius: 12px; padding: 16px; }
         .modal-tip-label { color: var(--primary); font-weight: 700; font-size: 11px; text-transform: uppercase; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
         
+        /* Mobile Responsiveness */
+        .mobile-header {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            height: 70px;
+            background: #ffffff;
+            border-bottom: 1px solid var(--border-color);
+            padding: 0 24px;
+            align-items: center;
+            justify-content: space-between;
+            z-index: 900;
+        }
+        .mobile-logo img { height: 45px; width: auto; object-fit: contain; display: block; }
+        .hamburger-menu {
+            font-size: 24px;
+            color: var(--primary);
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 8px;
+        }
+
         @media (max-width: 991px) {
-            .main-content { margin-left: 0; padding: 80px 20px 40px !important; }
-            .explore-header { flex-direction: column; align-items: flex-start; gap: 24px; padding: 24px; }
+            .mobile-header { display: flex; }
+            .main-content { margin-left: 0; padding: 100px 20px 40px !important; }
+            .explore-header { flex-direction: column; align-items: stretch; gap: 24px; padding: 24px; }
             .search-container { width: 100% !important; }
+            .nav-tabs { width: 100%; overflow-x: auto; white-space: nowrap; padding-bottom: 8px; -webkit-overflow-scrolling: touch; }
+            .nav-tabs button { flex: 0 0 auto; }
+        }
+
+        @media (max-width: 576px) {
+            .main-content { padding: 90px 15px 30px !important; }
+            .explore-header h1 { font-size: 22px; }
+            .users-grid, .posts-grid, .advices-grid { grid-template-columns: 1fr; }
+            .user-card { padding: 24px 16px; }
         }
     </style>
 </head>
@@ -256,6 +289,19 @@
         <jsp:include page="user-sidebar.jsp">
             <jsp:param name="activePage" value="explore" />
         </jsp:include>
+        
+        <!-- Mobile Header -->
+        <header class="mobile-header">
+            <div class="mobile-logo">
+                <a href="<c:url value='/'/>">
+                    <img src="<c:url value='/views/assets/images/logo.png'/>" alt="Youth Travel">
+                </a>
+            </div>
+            <button class="hamburger-menu" onclick="toggleMainSidebar()">
+                <i class="fa fa-bars"></i>
+            </button>
+        </header>
+
         <main class="main-content">
             <div class="explore-header">
                 <div>

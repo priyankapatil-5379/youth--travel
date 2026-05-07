@@ -136,12 +136,52 @@
         }
         .btn-send:hover { background: var(--primary-hover); transform: translateY(-1px); }
 
+        /* Mobile Responsiveness */
+        .mobile-header {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            height: 70px;
+            background: #ffffff;
+            border-bottom: 1px solid var(--border-color);
+            padding: 0 24px;
+            align-items: center;
+            justify-content: space-between;
+            z-index: 900;
+        }
+        .mobile-logo img { height: 45px; width: auto; object-fit: contain; display: block; }
+        .hamburger-menu {
+            font-size: 24px;
+            color: var(--primary);
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 8px;
+        }
+
         @media (max-width: 991px) {
-            .main-content { margin-left: 0; }
+            .mobile-header { display: flex; }
+            .main-content { margin-left: 0; padding-top: 70px; height: calc(100vh - 70px); }
+            .page-header { padding: 15px 24px; }
+            .chat-container { margin: 10px; border-radius: 12px; height: calc(100% - 100px); }
             .inbox-list { width: 100%; }
             .chat-view { display: none; }
-            .chat-view.active { display: flex; position: fixed; inset: 0; z-index: 2000; }
+            .chat-view.mobile-active { 
+                display: flex; 
+                position: fixed; 
+                top: 0; left: 0; right: 0; bottom: 0; 
+                z-index: 2000; 
+                height: 100vh;
+            }
+            .mobile-back-btn { display: flex !important; }
         }
+
+        @media (max-width: 576px) {
+            .page-header h2 { font-size: 18px; }
+            .chat-messages { padding: 20px; }
+            .chat-input-area { padding: 15px 20px; }
+        }
+        .mobile-back-btn { display: none; align-items: center; gap: 8px; color: var(--primary); font-weight: 700; cursor: pointer; border: none; background: none; padding: 0; font-size: 14px; }
     </style>
 </head>
 
@@ -151,6 +191,18 @@
         <jsp:include page="user-sidebar.jsp">
             <jsp:param name="activePage" value="messages" />
         </jsp:include>
+        
+        <!-- Mobile Header -->
+        <header class="mobile-header">
+            <div class="mobile-logo">
+                <a href="<c:url value='/'/>">
+                    <img src="<c:url value='/views/assets/images/logo.png'/>" alt="Youth Travel">
+                </a>
+            </div>
+            <button class="hamburger-menu" onclick="toggleMainSidebar()">
+                <i class="fa fa-bars"></i>
+            </button>
+        </header>
 
     <!-- Main Content -->
     <div class="main-content">
@@ -204,6 +256,9 @@
                         <!-- Active Chat Header -->
                         <div class="chat-header">
                             <div style="display: flex; align-items: center; gap: 15px;">
+                                <button class="mobile-back-btn" onclick="closeChatMobile()">
+                                    <i class="fa fa-chevron-left"></i>
+                                </button>
                                 <div style="width: 45px; height: 45px; border-radius: 12px; background: #f0fdfa; display: flex; align-items: center; justify-content: center; font-size: 20px; color: var(--primary); border: 1px solid #ccfbf1;">
                                     <i class="fa fa-building"></i>
                                 </div>
@@ -267,6 +322,23 @@
         const chatBox = document.getElementById('chatBox');
         if (chatBox) {
             chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        // Mobile Chat View Management
+        window.onload = function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.has('chatWith') && window.innerWidth < 991) {
+                document.querySelector('.chat-view').classList.add('mobile-active');
+            }
+            
+            // Re-scroll if chatBox exists after potential load
+            if (chatBox) chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        function closeChatMobile() {
+            document.querySelector('.chat-view').classList.remove('mobile-active');
+            // Optional: update URL to remove chatWith without reload
+            window.history.pushState({}, '', '/user/messages');
         }
     </script>
 </body>

@@ -171,7 +171,44 @@
         .star-rating i { cursor: pointer; transition: 0.2s; }
         .star-rating i:hover { transform: scale(1.1); }
 
-        @media (max-width: 991px) { .main-content { margin-left: 0; padding: 80px 20px 40px !important; } }
+        /* Mobile Responsiveness */
+        .mobile-header {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            height: 70px;
+            background: #ffffff;
+            border-bottom: 1px solid var(--border-color);
+            padding: 0 24px;
+            align-items: center;
+            justify-content: space-between;
+            z-index: 900;
+        }
+        .mobile-logo img { height: 45px; width: auto; object-fit: contain; display: block; }
+        .hamburger-menu {
+            font-size: 24px;
+            color: var(--primary);
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 8px;
+        }
+
+        @media (max-width: 991px) {
+            .mobile-header { display: flex; }
+            .main-content { margin-left: 0; padding: 100px 20px 40px !important; }
+            .tabs-container { width: 100%; overflow-x: auto; white-space: nowrap; -webkit-overflow-scrolling: touch; }
+            .tab-item { flex: 0 0 auto; }
+        }
+
+        @media (max-width: 576px) {
+            .main-content { padding: 90px 15px 30px !important; }
+            .page-title { font-size: 22px; }
+            .booking-grid { grid-template-columns: 1fr; }
+            .card-footer { flex-direction: column; align-items: stretch !important; gap: 15px; }
+            .btn-group-reflection { justify-content: stretch !important; }
+            .btn-group-reflection .btn-view { flex: 1; text-align: center; }
+        }
     </style>
 </head>
 <body>
@@ -181,6 +218,18 @@
         <jsp:include page="user-sidebar.jsp">
             <jsp:param name="activePage" value="bookings" />
         </jsp:include>
+
+        <!-- Mobile Header -->
+        <header class="mobile-header">
+            <div class="mobile-logo">
+                <a href="<c:url value='/'/>">
+                    <img src="<c:url value='/views/assets/images/logo.png'/>" alt="Youth Travel">
+                </a>
+            </div>
+            <button class="hamburger-menu" onclick="toggleMainSidebar()">
+                <i class="fa fa-bars"></i>
+            </button>
+        </header>
 
         <main class="main-content">
             <h1 class="page-title">My Journeys</h1>
