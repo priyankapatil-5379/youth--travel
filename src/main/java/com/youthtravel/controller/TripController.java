@@ -342,7 +342,7 @@ public class TripController {
     }
 
     @PostMapping("/edit-trip")
-    @Transactional
+    @Transactional 
     public String editTrip(@ModelAttribute Trip trip,
             @RequestParam(value = "travelerCategories", required = false) List<String> categories,
             @RequestParam(value = "travelerSubCategories", required = false) List<String> subCategories,
@@ -623,9 +623,13 @@ public class TripController {
                 List<Map<String, String>> slots = mapper.readValue(json, new TypeReference<>() {
                 });
                 for (Map<String, String> slot : slots) {
+                    String dateStr = slot.get("date");
+                    if (dateStr == null || dateStr.trim().isEmpty()) {
+                        continue;
+                    }
                     TripSchedule ts = new TripSchedule();
                     ts.setTrip(trip);
-                    ts.setStartDate(LocalDate.parse(slot.get("date")));
+                    ts.setStartDate(LocalDate.parse(dateStr));
                     if (slot.get("time") != null && !slot.get("time").isEmpty()) {
                         ts.setStartTime(LocalTime.parse(slot.get("time")));
                     }
@@ -636,26 +640,30 @@ public class TripController {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        } else if ("recurring".equals(mode) && recurringDays != null && recEndDate != null) {
-            LocalDate start = LocalDate.now();
-            LocalDate end = LocalDate.parse(recEndDate);
-            LocalTime time = (recStartTime != null && !recStartTime.isEmpty())
-                    ? LocalTime.parse(recStartTime)
-                    : null;
+        } else if ("recurring".equals(mode) && recurringDays != null && recEndDate != null && !recEndDate.trim().isEmpty()) {
+            try {
+                LocalDate start = LocalDate.now();
+                LocalDate end = LocalDate.parse(recEndDate);
+                LocalTime time = (recStartTime != null && !recStartTime.isEmpty())
+                        ? LocalTime.parse(recStartTime)
+                        : null;
 
-            while (!start.isAfter(end)) {
-                if (recurringDays.contains(start.getDayOfWeek().name())) {
-                    TripSchedule ts = new TripSchedule();
-                    ts.setTrip(trip);
-                    ts.setStartDate(start);
-                    ts.setStartTime(time);
-                    ts.setTotalSeats(recTotalSeats);
-                    ts.setAvailableSeats(recTotalSeats);
-                    ts.setRecurring(true);
-                    ts.setRecurringPattern("WEEKLY");
-                    tripScheduleRepository.save(ts);
+                while (!start.isAfter(end)) {
+                    if (recurringDays.contains(start.getDayOfWeek().name())) {
+                        TripSchedule ts = new TripSchedule();
+                        ts.setTrip(trip);
+                        ts.setStartDate(start);
+                        ts.setStartTime(time);
+                        ts.setTotalSeats(recTotalSeats != null ? recTotalSeats : 20);
+                        ts.setAvailableSeats(ts.getTotalSeats());
+                        ts.setRecurring(true);
+                        ts.setRecurringPattern("WEEKLY");
+                        tripScheduleRepository.save(ts);
+                    }
+                    start = start.plusDays(1);
                 }
-                start = start.plusDays(1);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
     }

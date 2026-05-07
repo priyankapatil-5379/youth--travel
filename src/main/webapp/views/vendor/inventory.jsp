@@ -320,11 +320,12 @@
                                         <c:when test="${not empty schedulesMap[trip.id]}">
                                             <div class="batch-scroll-container" style="max-height: 140px; overflow-y: auto; padding-right: 4px;">
                                                 <c:forEach var="sched" items="${schedulesMap[trip.id]}">
-                                                    <c:set var="schedOccupied" value="${sched.totalSeats - sched.availableSeats}" />
+                                                    <c:set var="schedOccupied" value="${scheduleOccupiedMap[sched.id] != null ? scheduleOccupiedMap[sched.id] : 0}" />
+                                                    <c:set var="schedLeft" value="${sched.totalSeats - schedOccupied}" />
                                                     <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid #f1f5f9; font-size: 11px; gap: 8px;">
                                                         <div>
                                                             <div style="font-weight: 700; color: var(--text-main);">${sched.startDate}</div>
-                                                            <div style="font-size: 10px; color: var(--text-muted);">${sched.availableSeats} of ${sched.totalSeats} seats left</div>
+                                                            <div style="font-size: 10px; color: var(--text-muted);">${schedLeft > 0 ? schedLeft : '0'} of ${sched.totalSeats} seats left (${schedOccupied} booked)</div>
                                                         </div>
                                                         <button class="btn btn-xs btn-default adjust-btn" 
                                                                 data-trip-id="${trip.id}" 

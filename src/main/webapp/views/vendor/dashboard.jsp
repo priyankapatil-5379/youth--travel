@@ -344,7 +344,7 @@
         
         <div class="dashboard-header">
             <div class="header-content">
-                <h1>Welcome back, ${loggedInVendor.businessName != null ? loggedInVendor.businessName : 'Partner'}! 👋</h1>
+                <h1>Welcome back, ${loggedInVendor.businessName != null ? loggedInVendor.businessName : 'Partner'}!</h1>
                 <p>Monitor your performance and manage your travel offerings.</p>
             </div>
             <div class="header-actions">

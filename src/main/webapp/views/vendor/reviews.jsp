@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<%@ taglib prefix="fmt" uri="jakarta.tags.fmt" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -99,8 +100,8 @@
         .review-card {
             background: var(--bg-card);
             border: 1px solid var(--border-color);
-            border-radius: 20px;
-            padding: 32px;
+            border-radius: 16px;
+            padding: 20px;
             margin-bottom: 24px;
             transition: 0.3s;
             box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
@@ -117,35 +118,35 @@
         .trip-tag {
             background: #e0f2f2;
             color: var(--primary);
-            padding: 6px 14px;
+            padding: 4px 10px;
             border-radius: 30px;
-            font-size: 11px;
+            font-size: 10px;
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 0.5px;
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            margin-bottom: 20px;
+            margin-bottom: 12px;
         }
 
         .reviewer-info {
             display: flex;
             align-items: center;
-            gap: 12px;
-            margin-bottom: 20px;
+            gap: 10px;
+            margin-bottom: 12px;
         }
 
         .reviewer-info img {
-            width: 48px;
-            height: 48px;
-            border-radius: 12px;
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
             object-fit: cover;
         }
 
         .reviewer-name {
             font-weight: 700;
-            font-size: 16px;
+            font-size: 14px;
             color: var(--text-main);
         }
 
@@ -157,16 +158,16 @@
 
         .stars {
             color: var(--star-gold);
-            font-size: 14px;
-            margin-bottom: 16px;
+            font-size: 12px;
+            margin-bottom: 10px;
             display: flex;
             gap: 2px;
         }
         
         .review-text {
             color: var(--text-main);
-            line-height: 1.7;
-            font-size: 15px;
+            line-height: 1.6;
+            font-size: 13px;
             font-weight: 500;
             font-style: italic;
         }
@@ -197,6 +198,14 @@
         <jsp:param name="activePage" value="reviews" />
     </jsp:include>
 
+    <c:set var="totalRating" value="0.0" />
+    <c:set var="reviewCount" value="0" />
+    <c:forEach var="r" items="${reviews}">
+        <c:set var="totalRating" value="${totalRating + r.rating}" />
+        <c:set var="reviewCount" value="${reviewCount + 1}" />
+    </c:forEach>
+    <c:set var="avgRating" value="${reviewCount > 0 ? totalRating / reviewCount : 0.0}" />
+
     <div class="main-content">
         <div class="page-header">
             <div>
@@ -205,15 +214,23 @@
             </div>
             <div class="rating-summary">
                 <div class="big-star">
-                    <i class="fa fa-star"></i> 4.8
+                    <i class="fa fa-star"></i> 
+                    <c:choose>
+                        <c:when test="${reviewCount > 0}">
+                            <fmt:formatNumber value="${avgRating}" maxFractionDigits="1" minFractionDigits="1" />
+                        </c:when>
+                        <c:otherwise>
+                            0.0
+                        </c:otherwise>
+                    </c:choose>
                 </div>
-                <div style="color: var(--text-muted); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">Average Rating</div>
+                <div style="color: var(--text-muted); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">Average (${reviewCount} Reviews)</div>
             </div>
         </div>
 
         <div class="row">
             <c:forEach var="review" items="${reviews}">
-                <div class="col-md-6 mb-4">
+                <div class="col-md-4 mb-4">
                     <div class="review-card">
                         <div class="trip-tag">
                             <i class="fa fa-map-marker"></i> ${review.trip.title}

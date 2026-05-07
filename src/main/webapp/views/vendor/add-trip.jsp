@@ -78,7 +78,7 @@
                 }
 
                 .form-group {
-                    margin-bottom: 24px;
+                    margin-bottom: 35px !important;
                 }
 
                 .form-group label {
@@ -430,7 +430,7 @@
                     left: 0;
                     right: 0;
                     bottom: 0;
-                    background: rgba(0,0,0,0.5);
+                    background: #008080;
                     z-index: 999;
                     display: none;
                 }
@@ -560,26 +560,26 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label>Country</label>
-                                        <input type="text" name="country" class="form-control" value="India">
+                                        <label>Country <span class="text-danger">*</span></label>
+                                        <input type="text" name="country" class="form-control" value="India" required>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label>Origin City</label>
-                                        <input type="text" name="originCity" class="form-control" placeholder="e.g., Delhi">
+                                        <label>Origin City <span class="text-danger">*</span></label>
+                                        <input type="text" name="originCity" class="form-control" placeholder="e.g., Delhi" required>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label>Origin State</label>
-                                        <input type="text" name="originState" class="form-control" placeholder="e.g., Delhi">
+                                        <label>Origin State <span class="text-danger">*</span></label>
+                                        <input type="text" name="originState" class="form-control" placeholder="e.g., Delhi" required>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label>Region</label>
-                                        <select name="region" class="form-control select-custom">
+                                        <label>Region <span class="text-danger">*</span></label>
+                                        <select name="region" class="form-control select-custom" required>
                                             <option value="">Select region</option>
                                             <optgroup label="Domestic (India)">
                                                 <option value="North India">North India</option>
@@ -613,7 +613,7 @@
                             <div class="p-4 bg-dark-subtle rounded-4 mb-4 mt-4 border border-secondary border-opacity-10">
                                 <label class="small text-white-50 mb-3 d-block uppercase tracking-wider">Pickup & Drop Points</label>
                                 <div id="selectedPickupTimes" class="mb-3"></div>
-                                <button type="button" onclick="addCustomPickup()" class="btn btn-outline-orange btn-sm" style="border-style: dashed;"><i class="fa fa-plus-circle"></i> Add Point</button>
+                                <button type="button" onclick="addCustomPickup()" class="btn btn-outline-orange btn-sm" style="border-style: dashed; margin-top: 20px !important;"><i class="fa fa-plus-circle"></i> Add Point</button>
                             </div>
                         </div>
 
@@ -622,20 +622,23 @@
                             <div class="section-title"><span class="badge">03</span> TRIP DURATION</div>
                             
                             <!-- Duration Presets -->
-                            <div class="mb-4">
-                                <label class="small text-white-50 d-block mb-2">Quick Select Presets</label>
+                            <div class="mb-4" style="margin-bottom: 35px !important;">
+                                <label class="small d-block mb-2" style="color: var(--text-muted); font-weight: 600;">Quick Select Presets</label>
                                 <div class="d-flex flex-wrap gap-2">
                                     <style>
                                         .duration-preset {
-                                            background: rgba(255,255,255,0.1);
-                                            border: 1px solid rgba(255,255,255,0.2);
-                                            color: white !important;
-                                            font-weight: 500;
+                                            background: #f1f5f9;
+                                            border: 1px solid var(--border-color);
+                                            color: var(--text-main) !important;
+                                            font-weight: 600;
+                                            border-radius: 8px;
+                                            padding: 8px 16px;
                                             transition: all 0.2s ease;
                                         }
                                         .duration-preset:hover {
-                                            background: #f04c26;
-                                            border-color: #f04c26;
+                                            background: var(--primary);
+                                            border-color: var(--primary);
+                                            color: white !important;
                                             transform: translateY(-2px);
                                         }
                                     </style>
@@ -676,8 +679,8 @@
                             <div class="section-title"><span class="badge">04</span> PRICING & BOOKING OPTIONS</div>
                             <div class="row g-3">
                                 <div class="col-md-12">
-                                    <label class="small text-white-50 mb-2">Price Model</label>
-                                    <div class="d-flex gap-2 mb-3">
+                                    <label class="small mb-2" style="color: var(--text-muted); font-weight: 600;">Price Model</label>
+                                    <div style="display: flex !important; flex-direction: column !important; gap: 12px !important; margin-bottom: 24px !important;">
                                         <div class="pricing-toggle active w-100 text-center" onclick="setPricingType('perPerson', this)"><i class="fa fa-user"></i> Per Person</div>
                                         <div class="pricing-toggle w-100 text-center" onclick="setPricingType('perGroup', this)"><i class="fa fa-users"></i> Per Group</div>
                                         <input type="hidden" name="pricingType" id="pricingTypeInput" value="perPerson">
@@ -749,43 +752,51 @@
                                     </div>
                                 </div>
                                 <div class="col-md-6">
-                                    <label>Stay Category</label>
-                                    <select name="stayCategory" id="stayCategory" class="form-control select-custom" onchange="updateStayTypes()">
-                                        <option value="">Select Category</option>
-                                        <option value="Hotels">🏢 Hotels</option>
-                                        <option value="Resorts">🏝️ Resorts</option>
-                                        <option value="Homestays">🧑‍🤝‍🧑 Homestays</option>
-                                        <option value="Camping">🏕️ Camping</option>
-                                        <option value="Unique">💎 Unique Stays</option>
-                                    </select>
+                                    <div class="form-group">
+                                        <label>Stay Category</label>
+                                        <select name="stayCategory" id="stayCategory" class="form-control select-custom" onchange="updateStayTypes()">
+                                            <option value="">Select Category</option>
+                                            <option value="Hotels"> Hotels</option>
+                                            <option value="Resorts"> Resorts</option>
+                                            <option value="Homestays"> Homestays</option>
+                                            <option value="Camping"> Camping</option>
+                                            <option value="Unique"> Unique Stays</option>
+                                        </select>
+                                    </div>
                                 </div>
                                 <div class="col-md-6">
-                                    <label>Stay Type</label>
-                                    <select name="stayType" id="stayType" class="form-control select-custom"><option value="">Select Type</option></select>
+                                    <div class="form-group">
+                                        <label>Stay Type</label>
+                                        <select name="stayType" id="stayType" class="form-control select-custom"><option value="">Select Type</option></select>
+                                    </div>
                                 </div>
                                 <div class="col-md-6">
-                                    <label>Stay Variant</label>
-                                    <select name="stayVariant" class="form-control select-custom">
-                                        <option value="Budget">Budget</option>
-                                        <option value="Standard" selected>Standard</option>
-                                        <option value="Premium">Premium</option>
-                                        <option value="Luxury">Luxury</option>
-                                    </select>
+                                    <div class="form-group">
+                                        <label>Stay Variant</label>
+                                        <select name="stayVariant" class="form-control select-custom">
+                                            <option value="Budget">Budget</option>
+                                            <option value="Standard" selected>Standard</option>
+                                            <option value="Premium">Premium</option>
+                                            <option value="Luxury">Luxury</option>
+                                        </select>
+                                    </div>
                                 </div>
                                 <div class="col-md-6">
-                                    <label>Room Sharing</label>
-                                    <select name="roomSharing" class="form-control select-custom">
-                                        <option value="N/A">N/A</option>
-                                        <option value="Single Occupancy">Single Occupancy</option>
-                                        <option value="2 sharing (Double)">2 sharing (Double)</option>
-                                        <option value="3 sharing (Triple)">3 sharing (Triple)</option>
-                                        <option value="4 sharing (Quad)">4 sharing (Quad)</option>
-                                        <option value="Dormitory">Dormitory</option>
-                                        <option value="Tent Sharing">Tent Sharing</option>
-                                    </select>
+                                    <div class="form-group">
+                                        <label>Room Sharing</label>
+                                        <select name="roomSharing" class="form-control select-custom">
+                                            <option value="N/A">N/A</option>
+                                            <option value="Single Occupancy">Single Occupancy</option>
+                                            <option value="2 sharing (Double)">2 sharing (Double)</option>
+                                            <option value="3 sharing (Triple)">3 sharing (Triple)</option>
+                                            <option value="4 sharing (Quad)">4 sharing (Quad)</option>
+                                            <option value="Dormitory">Dormitory</option>
+                                            <option value="Tent Sharing">Tent Sharing</option>
+                                        </select>
+                                    </div>
                                 </div>
                                 <div class="col-md-12 mt-3">
-                                    <label class="small text-white-50 mb-3 d-block uppercase tracking-wider">Stay Amenities</label>
+                                    <label class="small mb-3 d-block uppercase tracking-wider" style="color: var(--text-muted); font-weight: 700; letter-spacing: 0.5px;">Stay Amenities</label>
                                     <div class="p-4 bg-dark-subtle rounded-4 border border-secondary border-opacity-10">
                                         <div class="row g-3">
                                             <div class="col-md-3"><label class="custom-checkbox"><input type="checkbox" class="stay-amenity" value="WiFi"><span class="checkmark"></span> WiFi</label></div>
@@ -812,13 +823,14 @@
                                     </div>
                                 </div>
                                 <div class="col-md-12 mt-3">
-                                    <label class="small text-white-50 mb-3 d-block uppercase tracking-wider">Stay Photos (Multiple)</label>
-                                    <div onclick="document.getElementById('stayPhotos').click()" class="p-4 border-2 border-dashed rounded text-center cursor-pointer" style="border: 2px dashed rgba(240, 76, 38, 0.3); background: rgba(240, 76, 38, 0.02);">
-                                        <i class="fa fa-university fa-2x text-orange mb-2"></i>
-                                        <div class="small">Upload Stay/Hotel Photos</div>
-                                        <input type="file" id="stayPhotos" name="stayPhotos" accept="image/*" multiple class="d-none" onchange="previewStayImage(this)">
+                                    <label class="small mb-3 d-block uppercase tracking-wider" style="color: var(--text-muted); font-weight: 700; letter-spacing: 0.5px;">Stay Photos (Multiple)</label>
+                                    <div onclick="document.getElementById('stayPhotos').click()" class="p-5 rounded-4 text-center cursor-pointer" style="border: 2px dashed rgba(240, 76, 38, 0.4) !important; background: rgba(240, 76, 38, 0.03) !important; transition: all 0.2s ease;">
+                                        <i class="fa fa-university fa-3x text-orange mb-3"></i>
+                                        <div class="small fw-semibold" style="color: var(--text-main);">Upload Stay/Hotel Photos</div>
+                                        <div class="small text-muted mt-1">PNG, JPG, JPEG up to 10MB</div>
+                                        <input type="file" id="stayPhotos" name="stayPhotos" accept="image/*" multiple style="display: none !important;" onchange="previewStayImage(this)">
                                     </div>
-                                    <div id="stayPhotoPreview" class="d-flex flex-wrap gap-2 mt-2"></div>
+                                    <div id="stayPhotoPreview" class="d-flex flex-wrap gap-2 mt-3"></div>
                                 </div>
                             </div>
                         </div>
@@ -828,19 +840,23 @@
                             <div class="section-title"><span class="badge">06</span> TRANSPORTATION</div>
                             <div class="row g-3">
                                 <div class="col-md-6">
-                                    <label>Transport Category</label>
-                                    <select name="transportCategory" id="transportCategory" class="form-control select-custom" onchange="updateTransportTypes()">
-                                        <option value="">Select Category</option>
-                                        <option value="Road">Road 🛣️</option>
-                                        <option value="Rail">Rail 🚆</option>
-                                        <option value="Air">Air ✈️</option>
-                                        <option value="Water">Water 🚢</option>
-                                        <option value="Adventure">Adventure 🚙</option>
-                                    </select>
+                                    <div class="form-group">
+                                        <label>Transport Category</label>
+                                        <select name="transportCategory" id="transportCategory" class="form-control select-custom" onchange="updateTransportTypes()">
+                                            <option value="">Select Category</option>
+                                            <option value="Road">Road ️</option>
+                                            <option value="Rail">Rail </option>
+                                            <option value="Air">Air </option>
+                                            <option value="Water">Water </option>
+                                            <option value="Adventure">Adventure </option>
+                                        </select>
+                                    </div>
                                 </div>
                                 <div class="col-md-6">
-                                    <label>Transport Type</label>
-                                    <select name="transportType" id="transportType" class="form-control select-custom"><option value="">Select Type</option></select>
+                                    <div class="form-group">
+                                        <label>Transport Type</label>
+                                        <select name="transportType" id="transportType" class="form-control select-custom"><option value="">Select Type</option></select>
+                                    </div>
                                 </div>
                                 <div class="col-md-12">
                                     <div class="form-group">
@@ -849,21 +865,25 @@
                                     </div>
                                 </div>
                                 <div class="col-md-6">
-                                    <label>Comfort Level</label>
-                                    <div class="d-flex gap-2">
-                                        <label class="custom-checkbox"><input type="radio" name="acType" value="AC" checked><span class="checkmark"></span> AC</label>
-                                        <label class="custom-checkbox"><input type="radio" name="acType" value="Non-AC"><span class="checkmark"></span> Non-AC</label>
+                                    <div class="form-group">
+                                        <label>Comfort Level</label>
+                                        <div class="d-flex gap-2">
+                                            <label class="custom-checkbox"><input type="radio" name="acType" value="AC" checked><span class="checkmark"></span> AC</label>
+                                            <label class="custom-checkbox"><input type="radio" name="acType" value="Non-AC"><span class="checkmark"></span> Non-AC</label>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
-                                    <label>Transfer Type</label>
-                                    <div class="d-flex gap-2">
-                                        <label class="custom-checkbox"><input type="radio" name="transferType" value="Shared" checked><span class="checkmark"></span> Shared</label>
-                                        <label class="custom-checkbox"><input type="radio" name="transferType" value="Private"><span class="checkmark"></span> Private</label>
+                                    <div class="form-group">
+                                        <label>Transfer Type</label>
+                                        <div class="d-flex gap-2">
+                                            <label class="custom-checkbox"><input type="radio" name="transferType" value="Shared" checked><span class="checkmark"></span> Shared</label>
+                                            <label class="custom-checkbox"><input type="radio" name="transferType" value="Private"><span class="checkmark"></span> Private</label>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="col-md-12 mt-3">
-                                    <label class="small text-white-50 mb-3 d-block uppercase tracking-wider">Transport Inclusions</label>
+                                    <label class="small mb-3 d-block uppercase tracking-wider" style="color: var(--text-muted); font-weight: 700; letter-spacing: 0.5px;">Transport Inclusions</label>
                                     <div class="p-4 bg-dark-subtle rounded-4 border border-secondary border-opacity-10">
                                         <div class="row g-3">
                                             <div class="col-md-4"><label class="custom-checkbox"><input type="checkbox" name="transportInclusions" value="Fuel Charges"><span class="checkmark"></span> Fuel Charges</label></div>
@@ -930,18 +950,36 @@
                                     <div class="row">
                                         <div class="col-md-8">
                                             <div class="row">
-                                                <div class="col-12 mb-3"><input type="text" class="form-control day-title" placeholder="Day Title (e.g. Arrival at Manali) *" required></div>
-                                                <div class="col-12 mb-3"><textarea class="form-control day-activities" rows="2" placeholder="Describe activities, sightseeing, etc."></textarea></div>
-                                                <div class="col-6"><div class="form-group"><label class="small text-white-50">Day Stay</label><input type="text" class="form-control day-stay" placeholder="e.g. Hotel / Camp"></div></div>
-                                                <div class="col-6"><div class="form-group"><label class="small text-white-50">Day Meals</label><input type="text" class="form-control day-meals" placeholder="e.g. B + D"></div></div>
+                                                <div class="col-12">
+                                                    <div class="form-group">
+                                                        <input type="text" class="form-control day-title" placeholder="Day Title (e.g. Arrival at Manali) *" required>
+                                                    </div>
+                                                </div>
+                                                <div class="col-12">
+                                                    <div class="form-group">
+                                                        <textarea class="form-control day-activities" rows="2" placeholder="Describe activities, sightseeing, etc."></textarea>
+                                                    </div>
+                                                </div>
+                                                <div class="col-6">
+                                                    <div class="form-group">
+                                                        <label class="small d-block mb-2" style="color: var(--text-muted); font-weight: 600;">Day Stay</label>
+                                                        <input type="text" class="form-control day-stay" placeholder="e.g. Hotel / Camp">
+                                                    </div>
+                                                </div>
+                                                <div class="col-6">
+                                                    <div class="form-group">
+                                                        <label class="small d-block mb-2" style="color: var(--text-muted); font-weight: 600;">Day Meals</label>
+                                                        <input type="text" class="form-control day-meals" placeholder="e.g. B + D">
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                         <div class="col-md-4">
-                                            <label class="small text-white-50">Day Photos (Multiple)</label>
-                                            <div class="day-image-upload" onclick="this.querySelector('input').click()">
-                                                <i class="fa fa-camera"></i>
-                                                <span>Add Photos</span>
-                                                <input type="file" class="day-photo-input d-none" accept="image/*" multiple onchange="previewDayImage(this)">
+                                            <label class="small d-block mb-2" style="color: var(--text-muted); font-weight: 600;">Day Photos (Multiple)</label>
+                                            <div class="p-4 rounded-3 text-center cursor-pointer" onclick="this.querySelector('input').click()" style="border: 2px dashed rgba(240, 76, 38, 0.4) !important; background: rgba(240, 76, 38, 0.03) !important; transition: all 0.2s ease;">
+                                                <i class="fa fa-camera fa-2x text-orange mb-2"></i>
+                                                <div class="small fw-semibold" style="color: var(--text-main);">Add Photos</div>
+                                                <input type="file" class="day-photo-input" accept="image/*" multiple style="display: none !important;" onchange="previewDayImage(this)">
                                             </div>
                                             <div class="day-image-preview mt-2 d-flex flex-wrap gap-2"></div>
                                         </div>
@@ -954,24 +992,30 @@
                         <!-- STEP 9: MEDIA -->
                         <div class="form-step" id="step9">
                             <div class="section-title"><span class="badge">09</span> MEDIA GALLERY</div>
-                            <div class="row">
+                            <div class="row g-4">
                                 <div class="col-md-6">
-                                    <label>Add Photos</label>
-                                    <div onclick="document.getElementById('photoFiles').click()" class="p-4 border-2 border-dashed rounded text-center cursor-pointer" style="border: 2px dashed rgba(240, 76, 38, 0.3);">
-                                        <i class="fa fa-picture-o fa-2x text-orange mb-2"></i>
-                                        <div class="small">Upload Photos</div>
-                                        <input type="file" id="photoFiles" name="photoFiles" accept="image/*" multiple class="d-none" onchange="previewMedia(this, 'photoPreview')">
+                                    <div class="form-group">
+                                        <label style="color: var(--text-muted); font-weight: 600; margin-bottom: 12px; display: block;">Add Photos</label>
+                                        <div onclick="document.getElementById('photoFiles').click()" class="p-5 rounded-4 text-center cursor-pointer" style="border: 2px dashed rgba(240, 76, 38, 0.3); background: rgba(240, 76, 38, 0.02); transition: all 0.2s ease;">
+                                            <i class="fa fa-picture-o fa-3x text-orange mb-3"></i>
+                                            <div class="small fw-semibold" style="color: var(--text-main);">Upload Photos</div>
+                                            <div class="small text-muted mt-1">PNG, JPG, JPEG up to 10MB</div>
+                                            <input type="file" id="photoFiles" name="photoFiles" accept="image/*" multiple style="display: none !important;" onchange="previewMedia(this, 'photoPreview')">
+                                        </div>
+                                        <div id="photoPreview" class="d-flex flex-wrap gap-2 mt-3"></div>
                                     </div>
-                                    <div id="photoPreview" class="d-flex flex-wrap gap-2 mt-2"></div>
                                 </div>
                                 <div class="col-md-6">
-                                    <label>Add Videos</label>
-                                    <div onclick="document.getElementById('videoFiles').click()" class="p-4 border-2 border-dashed rounded text-center cursor-pointer" style="border: 2px dashed rgba(59, 130, 246, 0.3);">
-                                        <i class="fa fa-video-camera fa-2x text-primary mb-2"></i>
-                                        <div class="small">Upload Videos</div>
-                                        <input type="file" id="videoFiles" name="videoFiles" accept="video/*" multiple class="d-none" onchange="previewMedia(this, 'videoPreview')">
+                                    <div class="form-group">
+                                        <label style="color: var(--text-muted); font-weight: 600; margin-bottom: 12px; display: block;">Add Videos</label>
+                                        <div onclick="document.getElementById('videoFiles').click()" class="p-5 rounded-4 text-center cursor-pointer" style="border: 2px dashed rgba(59, 130, 246, 0.3); background: rgba(59, 130, 246, 0.02); transition: all 0.2s ease;">
+                                            <i class="fa fa-video-camera fa-3x text-primary mb-3"></i>
+                                            <div class="small fw-semibold" style="color: var(--text-main);">Upload Videos</div>
+                                            <div class="small text-muted mt-1">MP4, WEBM up to 50MB</div>
+                                            <input type="file" id="videoFiles" name="videoFiles" accept="video/*" multiple style="display: none !important;" onchange="previewMedia(this, 'videoPreview')">
+                                        </div>
+                                        <div id="videoPreview" class="d-flex flex-wrap gap-2 mt-3"></div>
                                     </div>
-                                    <div id="videoPreview" class="d-flex flex-wrap gap-2 mt-2"></div>
                                 </div>
                             </div>
                         </div>
@@ -979,7 +1023,7 @@
                         <!-- STEP 10: DEPARTURES -->
                         <div class="form-step" id="step10">
                             <div class="section-title"><span class="badge">10</span> DEPARTURE DATES</div>
-                            <div class="d-flex gap-2 mb-4">
+                            <div style="display: flex !important; flex-direction: column !important; gap: 12px !important; margin-bottom: 35px !important;">
                                 <div class="pricing-toggle active w-100 text-center" onclick="setScheduleMode('specific', this)"><i class="fa fa-calendar"></i> Specific</div>
                                 <div class="pricing-toggle w-100 text-center" onclick="setScheduleMode('recurring', this)"><i class="fa fa-refresh"></i> Weekly</div>
                                 <input type="hidden" name="scheduleMode" id="scheduleModeInput" value="specific">
@@ -1022,50 +1066,62 @@
                         <!-- STEP 11: POLICIES & PREPARATION -->
                         <div class="form-step" id="step11">
                             <div class="section-title"><span class="badge">11</span> POLICIES & PREPARATION</div>
-                            <div class="row g-3">
+                            <div class="row g-4">
                                 <div class="col-md-12">
-                                    <label>Cancellation Policy <span class="text-danger">*</span></label>
-                                    <textarea name="cancellationPolicy" class="form-control" rows="4" placeholder="Describe your cancellation tiers (e.g., 100% refund before 10 days, 50% refund before 5 days...)" required></textarea>
-                                </div>
-                                <div class="col-md-6">
-                                    <label>Batch Capacity (Max travelers)</label>
-                                    <input type="number" name="maxTravelers" class="form-control" value="20" required>
+                                    <div class="form-group">
+                                        <label style="color: var(--text-muted); font-weight: 600; margin-bottom: 12px; display: block;">Cancellation Policy <span class="text-danger">*</span></label>
+                                        <textarea name="cancellationPolicy" class="form-control" rows="4" placeholder="Describe your cancellation tiers (e.g., 100% refund before 10 days, 50% refund before 5 days...)" required></textarea>
+                                    </div>
                                 </div>
                                 
-                                <div class="col-md-6 mt-3">
-                                    <label class="small text-white-50 mb-3 d-block uppercase tracking-wider">What's Included</label>
-                                    <div class="p-3 bg-dark-subtle rounded-4 border border-secondary border-opacity-10">
-                                        <div class="row g-2">
-                                            <div class="col-12"><label class="custom-checkbox"><input type="checkbox" name="inclusions" value="Entry Fees" checked><span class="checkmark"></span> Entry Fees / Permits</label></div>
-                                            <div class="col-12"><label class="custom-checkbox"><input type="checkbox" name="inclusions" value="Tour Guide" checked><span class="checkmark"></span> Certified Tour Guide</label></div>
-                                            <div class="col-12"><label class="custom-checkbox"><input type="checkbox" name="inclusions" value="Equipment"><span class="checkmark"></span> Trekking Equipment</label></div>
-                                            <div class="col-12"><label class="custom-checkbox"><input type="checkbox" name="inclusions" value="Insurance"><span class="checkmark"></span> Travel Insurance</label></div>
-                                            <div class="col-12"><label class="custom-checkbox"><input type="checkbox" id="inclOthers" onchange="toggleOtherInput('inclOthers', 'inclOtherInput')"><span class="checkmark"></span> Others</label></div>
-                                            <div class="col-12 mt-2" id="inclOtherInput" style="display:none;">
-                                                <input type="text" name="inclusionsOther" class="form-control form-control-sm" placeholder="Specify other inclusions...">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label style="color: var(--text-muted); font-weight: 600; margin-bottom: 12px; display: block;">Batch Capacity (Max travelers) <span class="text-danger">*</span></label>
+                                        <input type="number" name="maxTravelers" class="form-control" value="20" required>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label style="color: var(--text-muted); font-weight: 600; margin-bottom: 12px; display: block; text-transform: uppercase; letter-spacing: 0.5px;">What's Included</label>
+                                        <div class="p-4 rounded-4" style="background: #f8fafc; border: 1px solid var(--border-color);">
+                                            <div class="row g-3">
+                                                <div class="col-12"><label class="custom-checkbox"><input type="checkbox" name="inclusions" value="Entry Fees" checked><span class="checkmark"></span> Entry Fees / Permits</label></div>
+                                                <div class="col-12"><label class="custom-checkbox"><input type="checkbox" name="inclusions" value="Tour Guide" checked><span class="checkmark"></span> Certified Tour Guide</label></div>
+                                                <div class="col-12"><label class="custom-checkbox"><input type="checkbox" name="inclusions" value="Equipment"><span class="checkmark"></span> Trekking Equipment</label></div>
+                                                <div class="col-12"><label class="custom-checkbox"><input type="checkbox" name="inclusions" value="Insurance"><span class="checkmark"></span> Travel Insurance</label></div>
+                                                <div class="col-12"><label class="custom-checkbox"><input type="checkbox" id="inclOthers" onchange="toggleOtherInput('inclOthers', 'inclOtherInput')"><span class="checkmark"></span> Others</label></div>
+                                                <div class="col-12 mt-2" id="inclOtherInput" style="display:none;">
+                                                    <input type="text" name="inclusionsOther" class="form-control form-control-sm" placeholder="Specify other inclusions...">
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-6 mt-3">
-                                    <label class="small text-white-50 mb-3 d-block uppercase tracking-wider">Things to Carry</label>
-                                    <div class="p-3 bg-dark-subtle rounded-4 border border-secondary border-opacity-10">
-                                        <div class="row g-2">
-                                            <div class="col-12"><label class="custom-checkbox"><input type="checkbox" name="essentials" value="Powerbank"><span class="checkmark"></span> Powerbank & Charger</label></div>
-                                            <div class="col-12"><label class="custom-checkbox"><input type="checkbox" name="essentials" value="Shoes"><span class="checkmark"></span> Trekking Shoes</label></div>
-                                            <div class="col-12"><label class="custom-checkbox"><input type="checkbox" name="essentials" value="Raincoat"><span class="checkmark"></span> Raincoat / Poncho</label></div>
-                                            <div class="col-12"><label class="custom-checkbox"><input type="checkbox" name="essentials" value="ID Proof"><span class="checkmark"></span> Original ID Proof</label></div>
-                                            <div class="col-12"><label class="custom-checkbox"><input type="checkbox" id="essOthers" onchange="toggleOtherInput('essOthers', 'essOtherInput')"><span class="checkmark"></span> Others</label></div>
-                                            <div class="col-12 mt-2" id="essOtherInput" style="display:none;">
-                                                <input type="text" name="essentialsOther" class="form-control form-control-sm" placeholder="Specify other essentials...">
+                                
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label style="color: var(--text-muted); font-weight: 600; margin-bottom: 12px; display: block; text-transform: uppercase; letter-spacing: 0.5px;">Things to Carry</label>
+                                        <div class="p-4 rounded-4" style="background: #f8fafc; border: 1px solid var(--border-color);">
+                                            <div class="row g-3">
+                                                <div class="col-12"><label class="custom-checkbox"><input type="checkbox" name="essentials" value="Powerbank"><span class="checkmark"></span> Powerbank & Charger</label></div>
+                                                <div class="col-12"><label class="custom-checkbox"><input type="checkbox" name="essentials" value="Shoes"><span class="checkmark"></span> Trekking Shoes</label></div>
+                                                <div class="col-12"><label class="custom-checkbox"><input type="checkbox" name="essentials" value="Raincoat"><span class="checkmark"></span> Raincoat / Poncho</label></div>
+                                                <div class="col-12"><label class="custom-checkbox"><input type="checkbox" name="essentials" value="ID Proof"><span class="checkmark"></span> Original ID Proof</label></div>
+                                                <div class="col-12"><label class="custom-checkbox"><input type="checkbox" id="essOthers" onchange="toggleOtherInput('essOthers', 'essOtherInput')"><span class="checkmark"></span> Others</label></div>
+                                                <div class="col-12 mt-2" id="essOtherInput" style="display:none;">
+                                                    <input type="text" name="essentialsOther" class="form-control form-control-sm" placeholder="Specify other essentials...">
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
 
-                                <div class="col-md-12 mt-3">
-                                    <label>Trip Rules & Instructions</label>
-                                    <textarea name="tripRules" class="form-control" rows="3" placeholder="e.g. No smoking during trek, respect local culture..."></textarea>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label style="color: var(--text-muted); font-weight: 600; margin-bottom: 12px; display: block;">Trip Rules & Instructions</label>
+                                        <textarea name="tripRules" class="form-control" rows="3" placeholder="e.g. No smoking during trek, respect local culture..."></textarea>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -1073,29 +1129,31 @@
                         <!-- STEP 12: REVIEW -->
                         <div class="form-step" id="step12">
                             <div class="section-title"><span class="badge">12</span> FINAL REVIEW</div>
-                            <div class="p-4 bg-dark rounded-4 border border-secondary border-opacity-20" id="reviewSummary">
-                                <p class="text-white-50 mb-4">Please review all your details before launching.</p>
-                                <div class="review-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 25px;">
-                                    <div class="rev-item"><small class="text-orange d-block">Trip Title</small><span id="rev_title" class="fw-bold">-</span></div>
-                                    <div class="rev-item"><small class="text-orange d-block">Price</small><span id="rev_price" class="fw-bold">-</span></div>
-                                    <div class="rev-item"><small class="text-orange d-block">Destination</small><span id="rev_dest" class="fw-bold">-</span></div>
-                                    <div class="rev-item"><small class="text-orange d-block">Duration</small><span id="rev_duration" class="fw-bold">-</span></div>
+                            <div class="p-5 rounded-4" id="reviewSummary" style="background: #f8fafc; border: 1px solid var(--border-color);">
+                                <p class="mb-4" style="color: var(--text-muted); font-weight: 500; font-size: 16px;">Please review all your details before launching.</p>
+                                <div class="review-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 30px;">
+                                    <div class="rev-item"><small style="color: var(--primary); font-weight: 700; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 4px;">Trip Title</small><span id="rev_title" class="fw-bold" style="color: var(--text-main); font-size: 16px;">-</span></div>
+                                    <div class="rev-item"><small style="color: var(--primary); font-weight: 700; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 4px;">Price</small><span id="rev_price" class="fw-bold" style="color: var(--text-main); font-size: 16px;">-</span></div>
+                                    <div class="rev-item"><small style="color: var(--primary); font-weight: 700; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 4px;">Destination</small><span id="rev_dest" class="fw-bold" style="color: var(--text-main); font-size: 16px;">-</span></div>
+                                    <div class="rev-item"><small style="color: var(--primary); font-weight: 700; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 4px;">Duration</small><span id="rev_duration" class="fw-bold" style="color: var(--text-main); font-size: 16px;">-</span></div>
                                     
-                                    <div class="rev-item"><small class="text-orange d-block">Audience</small><span id="rev_audience" class="fw-bold">-</span></div>
-                                    <div class="rev-item"><small class="text-orange d-block">Categories</small><span id="rev_subs" class="fw-bold">-</span></div>
+                                    <div class="rev-item"><small style="color: var(--primary); font-weight: 700; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 4px;">Audience</small><span id="rev_audience" class="fw-bold" style="color: var(--text-main); font-size: 16px;">-</span></div>
+                                    <div class="rev-item"><small style="color: var(--primary); font-weight: 700; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 4px;">Categories</small><span id="rev_subs" class="fw-bold" style="color: var(--text-main); font-size: 16px;">-</span></div>
                                     
-                                    <div class="rev-item"><small class="text-orange d-block">Stay</small><span id="rev_stay" class="fw-bold">-</span></div>
-                                    <div class="rev-item"><small class="text-orange d-block">Transport</small><span id="rev_trans" class="fw-bold">-</span></div>
-                                    <div class="rev-item"><small class="text-orange d-block">Meal Plan</small><span id="rev_meals" class="fw-bold">-</span></div>
+                                    <div class="rev-item"><small style="color: var(--primary); font-weight: 700; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 4px;">Stay</small><span id="rev_stay" class="fw-bold" style="color: var(--text-main); font-size: 16px;">-</span></div>
+                                    <div class="rev-item"><small style="color: var(--primary); font-weight: 700; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 4px;">Transport</small><span id="rev_trans" class="fw-bold" style="color: var(--text-main); font-size: 16px;">-</span></div>
+                                    <div class="rev-item"><small style="color: var(--primary); font-weight: 700; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 4px;">Meal Plan</small><span id="rev_meals" class="fw-bold" style="color: var(--text-main); font-size: 16px;">-</span></div>
                                     
-                                    <div class="rev-item"><small class="text-orange d-block">Departure Mode</small><span id="rev_mode" class="fw-bold">-</span></div>
-                                    <div class="rev-item"><small class="text-orange d-block">Min Batch</small><span id="rev_batch" class="fw-bold">-</span></div>
+                                    <div class="rev-item"><small style="color: var(--primary); font-weight: 700; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 4px;">Departure Mode</small><span id="rev_mode" class="fw-bold" style="color: var(--text-main); font-size: 16px;">-</span></div>
+                                    <div class="rev-item"><small style="color: var(--primary); font-weight: 700; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 4px;">Min Batch</small><span id="rev_batch" class="fw-bold" style="color: var(--text-main); font-size: 16px;">-</span></div>
                                     
-                                    <div class="rev-item" style="grid-column: 1 / -1;"><small class="text-orange d-block">Inclusions</small><span id="rev_inclusions" class="small text-white-50">-</span></div>
-                                    <div class="rev-item" style="grid-column: 1 / -1;"><small class="text-orange d-block">Stay Photos Preview</small><div id="rev_stayPhotos" class="d-flex flex-wrap gap-2 mt-1"></div></div>
-                                    <div class="rev-item" style="grid-column: 1 / -1;"><small class="text-orange d-block">Itinerary Photos Preview</small><div id="rev_itinPhotos" class="d-flex flex-wrap gap-2 mt-1"></div></div>
-                                    <div class="rev-item" style="grid-column: 1 / -1;"><small class="text-orange d-block">Things to Carry</small><span id="rev_carry" class="small text-white-50">-</span></div>
-                                    <div class="rev-item" style="grid-column: 1 / -1;"><small class="text-orange d-block">Cancellation Policy</small><span id="rev_policy" class="small text-white-50">-</span></div>
+                                    <div class="rev-item" style="grid-column: 1 / -1;"><small style="color: var(--primary); font-weight: 700; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 4px;">Inclusions</small><span id="rev_inclusions" class="fw-semibold" style="color: var(--text-main); font-size: 14px;">-</span></div>
+                                    <div class="rev-item" style="grid-column: 1 / -1;"><small style="color: var(--primary); font-weight: 700; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 4px;">Media Gallery Photos</small><div id="rev_mediaPhotos" class="d-flex flex-wrap gap-2 mt-2"></div></div>
+                                    <div class="rev-item" style="grid-column: 1 / -1;"><small style="color: var(--primary); font-weight: 700; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 4px;">Media Gallery Videos</small><div id="rev_mediaVideos" class="d-flex flex-wrap gap-2 mt-2"></div></div>
+                                    <div class="rev-item" style="grid-column: 1 / -1;"><small style="color: var(--primary); font-weight: 700; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 4px;">Stay Photos Preview</small><div id="rev_stayPhotos" class="d-flex flex-wrap gap-2 mt-2"></div></div>
+                                    <div class="rev-item" style="grid-column: 1 / -1;"><small style="color: var(--primary); font-weight: 700; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 4px;">Itinerary Photos Preview</small><div id="rev_itinPhotos" class="d-flex flex-wrap gap-2 mt-2"></div></div>
+                                    <div class="rev-item" style="grid-column: 1 / -1;"><small style="color: var(--primary); font-weight: 700; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 4px;">Things to Carry</small><span id="rev_carry" class="fw-semibold" style="color: var(--text-main); font-size: 14px;">-</span></div>
+                                    <div class="rev-item" style="grid-column: 1 / -1;"><small style="color: var(--primary); font-weight: 700; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 4px;">Cancellation Policy</small><span id="rev_policy" class="fw-semibold" style="color: var(--text-main); font-size: 14px;">-</span></div>
                                 </div>
                             </div>
                         </div>
@@ -1108,13 +1166,11 @@
                         <input type="hidden" name="schedulesJson" id="schedulesJson">
 
                         <!-- WIZARD FOOTER -->
-                        <div class="d-flex justify-content-between mt-5 pt-4 border-top border-secondary">
-                            <button type="button" class="btn btn-prev" id="prevBtn"
-                                onclick="nextPrev(-1)">Previous</button>
-                            <div class="d-flex gap-2">
-                                <button type="button" class="btn-submit" id="nextBtn" onclick="nextPrev(1)">Next
-                                    Step</button>
-                                <button type="submit" class="btn-submit d-none" id="launchBtn">Launch Adventure</button>
+                        <div style="display: flex !important; justify-content: space-between !important; align-items: center !important; flex-direction: row !important; margin-top: 40px !important; padding-top: 24px !important; border-top: 1px solid var(--border-color) !important; width: 100% !important;">
+                            <button type="button" class="btn btn-prev" id="prevBtn" onclick="nextPrev(-1)" style="display: inline-block !important; margin: 0 !important; flex-shrink: 0 !important; min-width: 120px !important; height: 48px !important; border-radius: 10px !important; font-weight: 600 !important;">Previous</button>
+                            <div style="display: flex !important; gap: 12px !important; align-items: center !important; margin-left: auto !important;">
+                                <button type="button" class="btn-submit" id="nextBtn" onclick="nextPrev(1)" style="display: inline-block !important; margin: 0 !important; flex-shrink: 0 !important; min-width: 120px !important; height: 48px !important; border-radius: 10px !important; font-weight: 700 !important;">Next Step</button>
+                                <button type="submit" class="btn-submit" id="launchBtn" style="display: none; margin: 0 !important; flex-shrink: 0 !important; min-width: 150px !important; height: 48px !important; border-radius: 10px !important; font-weight: 700 !important;">Launch Adventure</button>
                             </div>
                         </div>
 
@@ -1141,12 +1197,12 @@
                     document.getElementById("prevBtn").style.display = (n == 0) ? "none" : "inline";
                     
                     if (n == (steps.length - 1)) {
-                        document.getElementById("nextBtn").classList.add("d-none");
-                        document.getElementById("launchBtn").classList.remove("d-none");
+                        document.getElementById("nextBtn").style.display = "none";
+                        document.getElementById("launchBtn").style.display = "inline-block";
                         populateReview();
                     } else {
-                        document.getElementById("nextBtn").classList.remove("d-none");
-                        document.getElementById("launchBtn").classList.add("d-none");
+                        document.getElementById("nextBtn").style.display = "inline-block";
+                        document.getElementById("launchBtn").style.display = "none";
                     }
 
                     // Indicators
@@ -1244,14 +1300,51 @@
                     document.getElementById('rev_carry').innerText = getChecked('essentials') + (getVal('essentialsOther') !== 'N/A' ? ', ' + getVal('essentialsOther') : '');
                     document.getElementById('rev_policy').innerText = getVal('cancellationPolicy');
 
+                    // Populate Media Gallery Photos
+                    const mediaPhotosRev = document.getElementById('rev_mediaPhotos');
+                    if (mediaPhotosRev) {
+                        mediaPhotosRev.innerHTML = '';
+                        const photoPreviews = document.querySelectorAll('#photoPreview img');
+                        photoPreviews.forEach(img => {
+                            const clone = img.cloneNode(true);
+                            clone.style.width = '60px';
+                            clone.style.height = '60px';
+                            clone.style.objectFit = 'cover';
+                            clone.style.borderRadius = '8px';
+                            clone.style.border = '1px solid var(--border-color)';
+                            clone.style.marginRight = '8px';
+                            mediaPhotosRev.appendChild(clone);
+                        });
+                    }
+
+                    // Populate Media Gallery Videos
+                    const mediaVideosRev = document.getElementById('rev_mediaVideos');
+                    if (mediaVideosRev) {
+                        mediaVideosRev.innerHTML = '';
+                        const videoPreviews = document.querySelectorAll('#videoPreview > div');
+                        videoPreviews.forEach(div => {
+                            const clone = div.cloneNode(true);
+                            clone.style.width = '60px';
+                            clone.style.height = '60px';
+                            clone.style.borderRadius = '8px';
+                            clone.style.border = '1px solid var(--border-color)';
+                            clone.style.marginRight = '8px';
+                            mediaVideosRev.appendChild(clone);
+                        });
+                    }
+
                     // Populate Stay Photos Preview in Review
                     const stayRev = document.getElementById('rev_stayPhotos');
                     stayRev.innerHTML = '';
                     const stayOriginals = document.querySelectorAll('#stayPhotoPreview img');
                     stayOriginals.forEach(img => {
                         const clone = img.cloneNode(true);
-                        clone.style.width = '50px';
-                        clone.style.height = '50px';
+                        clone.style.width = '60px';
+                        clone.style.height = '60px';
+                        clone.style.objectFit = 'cover';
+                        clone.style.borderRadius = '8px';
+                        clone.style.border = '1px solid var(--border-color)';
+                        clone.style.marginRight = '8px';
                         stayRev.appendChild(clone);
                     });
 
@@ -1261,9 +1354,12 @@
                     const itinOriginals = document.querySelectorAll('.day-image-preview img');
                     itinOriginals.forEach(img => {
                         const clone = img.cloneNode(true);
-                        clone.style.width = '50px';
-                        clone.style.height = '50px';
-                        clone.style.marginRight = '5px';
+                        clone.style.width = '60px';
+                        clone.style.height = '60px';
+                        clone.style.objectFit = 'cover';
+                        clone.style.borderRadius = '8px';
+                        clone.style.border = '1px solid var(--border-color)';
+                        clone.style.marginRight = '8px';
                         itinRev.appendChild(clone);
                     });
                 }
@@ -1456,18 +1552,36 @@
                         <div class="row">
                             <div class="col-md-8">
                                 <div class="row">
-                                    <div class="col-12 mb-3"><input type="text" class="form-control day-title" placeholder="Day Title" required></div>
-                                    <div class="col-12 mb-3"><textarea class="form-control day-activities" rows="2" placeholder="Activities..."></textarea></div>
-                                    <div class="col-6"><input type="text" class="form-control day-stay" placeholder="Stay"></div>
-                                    <div class="col-6"><input type="text" class="form-control day-meals" placeholder="Meals"></div>
+                                    <div class="col-12">
+                                        <div class="form-group">
+                                            <input type="text" class="form-control day-title" placeholder="Day Title (e.g. Arrival at Manali) *" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="form-group">
+                                            <textarea class="form-control day-activities" rows="2" placeholder="Describe activities, sightseeing, etc."></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="form-group">
+                                            <label class="small d-block mb-2" style="color: var(--text-muted); font-weight: 600;">Day Stay</label>
+                                            <input type="text" class="form-control day-stay" placeholder="e.g. Hotel / Camp">
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="form-group">
+                                            <label class="small d-block mb-2" style="color: var(--text-muted); font-weight: 600;">Day Meals</label>
+                                            <input type="text" class="form-control day-meals" placeholder="e.g. B + D">
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-md-4">
-                                <label class="small text-white-50">Day Photos (Multiple)</label>
-                                <div class="day-image-upload" onclick="this.querySelector('input').click()">
-                                    <i class="fa fa-camera"></i>
-                                    <span>Add Photos</span>
-                                    <input type="file" class="day-photo-input d-none" accept="image/*" multiple onchange="previewDayImage(this)">
+                                <label class="small d-block mb-2" style="color: var(--text-muted); font-weight: 600;">Day Photos (Multiple)</label>
+                                <div class="p-4 rounded-3 text-center cursor-pointer" onclick="this.querySelector('input').click()" style="border: 2px dashed rgba(240, 76, 38, 0.4) !important; background: rgba(240, 76, 38, 0.03) !important; transition: all 0.2s ease;">
+                                    <i class="fa fa-camera fa-2x text-orange mb-2"></i>
+                                    <div class="small fw-semibold" style="color: var(--text-main);">Add Photos</div>
+                                    <input type="file" class="day-photo-input" accept="image/*" multiple style="display: none !important;" onchange="previewDayImage(this)">
                                 </div>
                                 <div class="day-image-preview mt-2 d-flex flex-wrap gap-2"></div>
                             </div>
@@ -1590,31 +1704,31 @@
                 function addCustomPickup(savedName = '', savedTime = '', savedType = 'Pickup') {
                     const id = Date.now() + Math.random().toString(36).substr(2, 9);
                     const html = `
-                        <div class="row g-2 align-items-center mb-3 p-3 bg-dark rounded-3 border border-secondary border-opacity-10 pickup-item" id="row_${id}">
+                        <div class="row g-3 align-items-end pickup-item" id="row_${id}" style="background: #f8fafc; border: 1px solid var(--border-color); border-radius: 12px; padding: 20px; margin-bottom: 24px !important; margin-top: 12px !important;">
                             <div class="col-md-5">
-                                <label class="small text-white-50 d-block mb-1">Location Name</label>
-                                <div class="input-group input-group-sm">
-                                    <span class="input-group-text bg-dark border-secondary border-opacity-20 text-orange"><i class="fa fa-map-marker"></i></span>
-                                    <input type="text" class="form-control pickup-name" value="${savedName}" placeholder="e.g. Silk Board" required>
+                                <label class="small mb-2 d-block" style="color: var(--text-muted); font-weight: 600;">Location Name</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-white border-end-0" style="border-color: var(--border-color); color: var(--primary);"><i class="fa fa-map-marker"></i></span>
+                                    <input type="text" class="form-control pickup-name" value="${savedName}" placeholder="e.g. Silk Board" required style="border-left: 0; border-color: var(--border-color); color: var(--text-main); background: #white;">
                                 </div>
                             </div>
                             <div class="col-md-3">
-                                <label class="small text-white-50 d-block mb-1">Time</label>
-                                <div class="input-group input-group-sm">
-                                    <span class="input-group-text bg-dark border-secondary border-opacity-20 text-white-50"><i class="fa fa-clock-o"></i></span>
-                                    <input type="time" class="form-control pickup-time" value="${savedTime}" required>
+                                <label class="small mb-2 d-block" style="color: var(--text-muted); font-weight: 600;">Time</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-white border-end-0" style="border-color: var(--border-color); color: var(--text-muted);"><i class="fa fa-clock-o"></i></span>
+                                    <input type="time" class="form-control pickup-time" value="${savedTime}" required style="border-left: 0; border-color: var(--border-color); color: var(--text-main); background: #white;">
                                 </div>
                             </div>
                             <div class="col-md-3">
-                                <label class="small text-white-50 d-block mb-1">Point Type</label>
-                                <select class="form-control form-control-sm pickup-type bg-dark border-secondary border-opacity-20 text-white">
+                                <label class="small mb-2 d-block" style="color: var(--text-muted); font-weight: 600;">Point Type</label>
+                                <select class="form-control form-select pickup-type" required style="border-color: var(--border-color); color: var(--text-main); background: #white; border-radius: 8px; height: 38px;">
                                     <option value="Pickup" \${savedType === 'Pickup' ? 'selected' : ''}>Pickup Point</option>
                                     <option value="Drop" \${savedType === 'Drop' ? 'selected' : ''}>Drop Point</option>
                                     <option value="Meeting" \${savedType === 'Meeting' ? 'selected' : ''}>Meeting Point</option>
                                 </select>
                             </div>
-                            <div class="col-md-1 text-end">
-                                <button type="button" class="btn btn-link text-danger p-0 mt-3" onclick="$(this).closest('.row').remove()">
+                            <div class="col-md-1 text-center" style="margin-bottom: 8px;">
+                                <button type="button" class="btn btn-link text-danger p-0" onclick="$(this).closest('.row').remove()" style="text-decoration: none;">
                                     <i class="fa fa-trash-o fa-lg"></i>
                                 </button>
                             </div>
@@ -1652,27 +1766,27 @@
                 function addOccurrence() {
                     const today = new Date().toISOString().split('T')[0];
                     const id = Date.now();
-                    const html = `<div class="occ-card animate__animated animate__fadeInUp" id="occ_\${id}">
+                    const html = `<div class="occ-card animate__animated animate__fadeInUp" id="occ_\${id}" style="background: #f8fafc; border: 1px solid var(--border-color); border-radius: 12px; padding: 20px; margin-bottom: 16px;">
                                     <div class="row g-3 align-items-center">
                                         <div class="col-md-4">
                                             <div class="occ-icon"><i class="fa fa-calendar-check-o"></i></div>
-                                            <label class="small text-white-50 mb-1 d-block">Departure Date <span class="text-danger">*</span></label>
+                                            <label class="small mb-1 d-block" style="color: var(--text-muted); font-weight: 600;">Departure Date <span class="text-danger">*</span></label>
                                             <div class="input-group input-group-sm">
-                                                <input type="date" class="form-control occ-date" min="\${today}" required style="background: rgba(0,0,0,0.2); border-color: rgba(255,255,255,0.1); color: white;">
+                                                <input type="date" class="form-control occ-date" min="\${today}" required style="border-radius: 8px;">
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="occ-icon" style="background: rgba(59, 130, 246, 0.1); color: #3b82f6;"><i class="fa fa-clock-o"></i></div>
-                                            <label class="small text-white-50 mb-1 d-block">Time</label>
+                                            <label class="small mb-1 d-block" style="color: var(--text-muted); font-weight: 600;">Time</label>
                                             <div class="input-group input-group-sm">
-                                                <input type="time" class="form-control occ-time" style="background: rgba(0,0,0,0.2); border-color: rgba(255,255,255,0.1); color: white;">
+                                                <input type="time" class="form-control occ-time" style="border-radius: 8px;">
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="occ-icon" style="background: rgba(46, 213, 115, 0.1); color: #2ed573;"><i class="fa fa-users"></i></div>
-                                            <label class="small text-white-50 mb-1 d-block">Batch Size</label>
+                                            <label class="small mb-1 d-block" style="color: var(--text-muted); font-weight: 600;">Batch Size</label>
                                             <div class="input-group input-group-sm">
-                                                <input type="number" class="form-control occ-seats" placeholder="Seats" value="20" style="background: rgba(0,0,0,0.2); border-color: rgba(255,255,255,0.1); color: white;">
+                                                <input type="number" class="form-control occ-seats" placeholder="Seats" value="20" style="border-radius: 8px;">
                                             </div>
                                         </div>
                                         <div class="col-md-2 text-end">

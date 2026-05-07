@@ -414,9 +414,7 @@
                     <h3>No Packages Found</h3>
                     <p>Start expanding your portfolio by adding your first travel package.</p>
                     <div style="margin-top: 24px;">
-                        <a href="<c:url value='/vendor/add-trip'/>" class="btn-create" style="display: inline-flex;">
-                            <i class="fa fa-plus"></i> Create Your First Trip
-                        </a>
+                        
                     </div>
                 </div>
             </c:if>

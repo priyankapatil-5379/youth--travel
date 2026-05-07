@@ -232,15 +232,28 @@ public class VendorController {
         java.util.List<com.youthtravel.entity.Trip> trips = tripService.getTripsByVendor(vendor);
         java.util.Map<Long, Integer> occupiedMap = new java.util.HashMap<>();
         java.util.Map<Long, java.util.List<com.youthtravel.entity.TripSchedule>> schedulesMap = new java.util.HashMap<>();
+        java.util.Map<Long, Integer> scheduleOccupiedMap = new java.util.HashMap<>();
         
         for (com.youthtravel.entity.Trip trip : trips) {
             occupiedMap.put(trip.getId(), bookingService.getOccupiedSlotsByTrip(trip));
-            schedulesMap.put(trip.getId(), tripScheduleRepository.findByTrip(trip));
+            java.util.List<com.youthtravel.entity.TripSchedule> schedules = tripScheduleRepository.findByTrip(trip);
+            schedulesMap.put(trip.getId(), schedules);
+            
+            java.util.List<com.youthtravel.entity.Booking> bookings = bookingService.getBookingsByTrip(trip);
+            for (com.youthtravel.entity.TripSchedule sched : schedules) {
+                int schedOccupied = bookings.stream()
+                        .filter(b -> "Confirmed".equalsIgnoreCase(b.getStatus()) || "Pending".equalsIgnoreCase(b.getStatus()))
+                        .filter(b -> b.getSelectedDate() != null && b.getSelectedDate().equals(sched.getStartDate().toString()))
+                        .mapToInt(b -> b.getNumberOfTravelers() != null ? b.getNumberOfTravelers() : 1)
+                        .sum();
+                scheduleOccupiedMap.put(sched.getId(), schedOccupied);
+            }
         }
 
         model.addAttribute("trips", trips);
         model.addAttribute("occupiedMap", occupiedMap);
         model.addAttribute("schedulesMap", schedulesMap);
+        model.addAttribute("scheduleOccupiedMap", scheduleOccupiedMap);
         return "vendor/inventory";
     }
 

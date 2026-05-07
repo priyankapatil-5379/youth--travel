@@ -151,6 +151,20 @@
             z-index: 1000;
             text-decoration: none;
         }
+		
+		.status-badge{
+			font-size: 20px;
+			           font-weight: 800;
+			           margin-bottom: 25px;
+			           color: #008080;
+			           text-transform: uppercase;
+			           letter-spacing: 1px;
+
+			           display: flex;
+			           align-items: center;
+			           gap: 12px;
+			           letter-spacing: -0.5px;
+		}
 
         .btn-edit-float:hover { transform: scale(1.1) rotate(15deg); color: var(--text-main); }
         .main-content { margin-left: 260px; padding: 40px; }
@@ -168,13 +182,17 @@
             <!-- HEADER -->
             <div class="d-flex justify-content-between align-items-center mb-4">
 
-                <a href="<c:url value='/vendor/tours'/>" class="btn btn-link text-dark text-decoration-none p-0">
-                    <i class="fa fa-arrow-left"></i> Back to Portfolio
-
-                </a>
                 <div class="status-badge">
                     <span class="status-pill ${trip.status == 'ACTIVE' ? '' : 'status-inactive'}">${trip.status}</span>
                 </div>
+				<div style="display: flex; justify-content: flex-end; margin-bottom: 15px;">
+				    <a href="<c:url value='/vendor/tours'/>" 
+				       class="btn"
+				       style="background: #ef4444; color: #ffffff; border-radius: 12px; padding: 10px 22px; font-weight: 700; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2); transition: all 0.2s; text-decoration: none;">
+				        
+				        <i class="fa fa-arrow-left"></i> Back
+				    </a>
+				</div>
             </div>
 
             <!-- HERO -->
