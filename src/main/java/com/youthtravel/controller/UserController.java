@@ -16,6 +16,7 @@ import com.youthtravel.repository.UserRepository;
 import com.youthtravel.entity.Review;
 import com.youthtravel.repository.ReviewRepository;
 import com.youthtravel.repository.TripScheduleRepository;
+import com.youthtravel.repository.FollowerRepository;
 import org.springframework.http.ResponseEntity;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -39,6 +40,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import java.util.UUID;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
@@ -63,16 +65,28 @@ public class UserController {
     private TripService tripService;
 
     @Autowired
+    private FollowerRepository followerRepository;
+
+    @Autowired
     private com.youthtravel.repository.MessageRepository messageRepository;
 
     @Autowired
     private com.youthtravel.repository.VendorRepository vendorRepository;
 
     @Autowired
+    private com.youthtravel.repository.PaymentRepository paymentRepository;
+
+    @Autowired
     private com.youthtravel.repository.ReviewRepository reviewRepository;
 
     @Autowired
     private com.youthtravel.service.MessageService messageService;
+
+    @Autowired
+    private com.youthtravel.service.VendorService vendorService;
+
+    @Autowired
+    private org.springframework.messaging.simp.SimpMessagingTemplate messagingTemplate;
 
     @Autowired
     private JavaMailSender mailSender;
@@ -227,44 +241,69 @@ public class UserController {
     private com.youthtravel.repository.TripScheduleRepository tripScheduleRepository;
 
     @GetMapping("/explore")
-    public String exploreUsers(@RequestParam(value = "search", required = false) String search, HttpSession session, Model model) {
+    public String exploreUsers(
+            @RequestParam(value = "search", required = false) String search,
+            @RequestParam(value = "category", required = false) String category,
+            @RequestParam(value = "country", required = false) String country,
+            @RequestParam(value = "sortBy", required = false, defaultValue = "latest") String sortBy,
+            HttpSession session, Model model) {
         User user = (User) session.getAttribute("user");
         if (user == null) return "redirect:/user/login";
 
-        List<User> users;
-        List<Post> posts;
-        List<Advice> advices;
+        List<User> users = userRepository.findAll();
+        List<Post> posts = postRepository.findAll();
+        List<Advice> advices = adviceRepository.findAll();
 
+        // 1. Exclude logged-in user
+        users.removeIf(u -> u.getId().equals(user.getId()));
+
+        // 2. Search & Filters
         if (search != null && !search.trim().isEmpty()) {
             String s = search.toLowerCase();
-            users = userRepository.findAll().stream()
+            users = users.stream()
                 .filter(u -> u.getFullName().toLowerCase().contains(s) || 
                             (u.getUsername() != null && u.getUsername().toLowerCase().contains(s)))
-                .collect(java.util.stream.Collectors.toList());
-            
-            posts = postRepository.findAll().stream()
+                .collect(Collectors.toList());
+            posts = posts.stream()
                 .filter(p -> p.getCaption() != null && p.getCaption().toLowerCase().contains(s))
-                .collect(java.util.stream.Collectors.toList());
-                
-            advices = adviceRepository.findAll().stream()
+                .collect(Collectors.toList());
+            advices = advices.stream()
                 .filter(a -> (a.getTitle() != null && a.getTitle().toLowerCase().contains(s)) ||
-                             (a.getContent() != null && a.getContent().toLowerCase().contains(s)) ||
-                             (a.getCategories() != null && a.getCategories().toLowerCase().contains(s)))
-                .collect(java.util.stream.Collectors.toList());
-        } else {
-            users = userRepository.findAll();
-            posts = postRepository.findAll();
-            advices = adviceRepository.findAll();
+                             (a.getContent() != null && a.getContent().toLowerCase().contains(s)))
+                .collect(Collectors.toList());
         }
-        
-        // Remove current user from list
-        users.removeIf(u -> u.getId().equals(user.getId()));
+
+        if (country != null && !country.isEmpty() && !"All Countries".equals(country)) {
+            users = users.stream()
+                .filter(u -> u.getCity() != null && u.getCity().toLowerCase().contains(country.toLowerCase()))
+                .collect(Collectors.toList());
+        }
+
+        // 3. Sorting
+        if ("popular".equals(sortBy)) {
+            users.sort((a, b) -> Long.compare(b.getTravelPoints(), a.getTravelPoints()));
+            posts.sort((a, b) -> Integer.compare(b.getLikes(), a.getLikes()));
+            advices.sort((a, b) -> Integer.compare(b.getLikes(), a.getLikes()));
+        } else {
+            // Default latest (if created_at is available)
+            posts.sort((a, b) -> b.getCreatedAt().compareTo(a.getCreatedAt()));
+            advices.sort((a, b) -> b.getCreatedAt().compareTo(a.getCreatedAt()));
+        }
+
+        // Fetch following IDs for the logged-in user
+        List<Long> followingIds = followerRepository.findByFollower(user).stream()
+            .map(f -> f.getFollowing().getId())
+            .collect(Collectors.toList());
 
         model.addAttribute("user", user);
         model.addAttribute("users", users);
         model.addAttribute("posts", posts);
         model.addAttribute("advices", advices);
         model.addAttribute("searchQuery", search);
+        model.addAttribute("selectedCountry", country);
+        model.addAttribute("sortBy", sortBy);
+        model.addAttribute("followingIds", followingIds);
+        
         return "users/explore";
     }
 
@@ -635,6 +674,40 @@ public class UserController {
         return "redirect:/user/dashboard";
     }
 
+    @PostMapping("/payment/success")
+    @ResponseBody
+    public ResponseEntity<?> paymentSuccess(@RequestBody Map<String, String> payload, HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        if (user == null) return ResponseEntity.status(401).build();
+
+        String bookingIdStr = payload.get("bookingId");
+        if (bookingIdStr != null) {
+            try {
+                Long bookingId = Long.parseLong(bookingIdStr);
+                Optional<Booking> bookingOpt = bookingService.getBookingById(bookingId);
+                if (bookingOpt.isPresent()) {
+                    Booking booking = bookingOpt.get();
+                    booking.setStatus("Confirmed");
+                    bookingService.saveBooking(booking);
+
+                    // Create Payment Record
+                    com.youthtravel.entity.Payment payment = new com.youthtravel.entity.Payment();
+                    payment.setUser(user);
+                    payment.setBooking(booking);
+                    payment.setAmount(booking.getTotalPrice());
+                    payment.setStatus("Success");
+                    payment.setPaymentMethod("Razorpay");
+                    paymentRepository.save(payment);
+
+                    return ResponseEntity.ok("Payment recorded");
+                }
+            } catch (Exception e) {
+                return ResponseEntity.status(500).body(e.getMessage());
+            }
+        }
+        return ResponseEntity.badRequest().build();
+    }
+
     @GetMapping("/booking/{id}/chat")
     public String showBookingChat(@PathVariable Long id, HttpSession session, Model model) {
         User user = (User) session.getAttribute("user");
@@ -771,6 +844,77 @@ public class UserController {
         return "users/messages";
     }
 
+    @GetMapping("/api/chat/{vendorId}")
+    @ResponseBody
+    public java.util.List<java.util.Map<String, Object>> getChatApi(@PathVariable Long vendorId, HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        if (user == null) return new java.util.ArrayList<>();
+
+        com.youthtravel.entity.Vendor vendor = vendorRepository.findById(vendorId).orElse(null);
+        if (vendor == null) return new java.util.ArrayList<>();
+
+        // Source 1: messages from bookings where this user is the customer
+        java.util.List<com.youthtravel.entity.Message> fromBookings =
+            messageRepository.findByBookingCustomerEmail(user.getEmail())
+                .stream()
+                .filter(m -> m.getVendor() != null && m.getVendor().getId().equals(vendorId))
+                .collect(java.util.stream.Collectors.toList());
+
+        // Source 2: messages grouped by user email (vendor messages page convention)
+        // These have senderEmail = user's email, isFromVendor = true, no booking
+        java.util.List<com.youthtravel.entity.Message> fromSenderEmail =
+            messageRepository.findBySenderEmailOrderBySentAtAsc(user.getEmail())
+                .stream()
+                .filter(m -> m.getVendor() != null && m.getVendor().getId().equals(vendorId))
+                .collect(java.util.stream.Collectors.toList());
+
+        // Merge and deduplicate by message ID, then sort by time
+        java.util.Map<Long, com.youthtravel.entity.Message> merged = new java.util.LinkedHashMap<>();
+        for (com.youthtravel.entity.Message m : fromBookings) merged.put(m.getId(), m);
+        for (com.youthtravel.entity.Message m : fromSenderEmail) merged.put(m.getId(), m);
+
+        java.util.List<com.youthtravel.entity.Message> messages = merged.values().stream()
+            .sorted(java.util.Comparator.comparing(com.youthtravel.entity.Message::getSentAt))
+            .collect(java.util.stream.Collectors.toList());
+
+        return toDto(messages);
+    }
+
+    @GetMapping("/api/booking-chat/{bookingId}")
+    @ResponseBody
+    public java.util.List<java.util.Map<String, Object>> getBookingChatApi(@PathVariable Long bookingId, HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        if (user == null) return new java.util.ArrayList<>();
+
+        Optional<Booking> bookingOpt = bookingService.getBookingById(bookingId);
+        if (bookingOpt.isEmpty()) return new java.util.ArrayList<>();
+
+        Booking booking = bookingOpt.get();
+        if (!booking.getCustomerEmail().equals(user.getEmail())) return new java.util.ArrayList<>();
+
+        java.util.List<com.youthtravel.entity.Message> messages =
+            messageRepository.findByBookingOrderBySentAtAsc(booking);
+        return toDto(messages);
+    }
+
+    private java.util.List<java.util.Map<String, Object>> toDto(java.util.List<com.youthtravel.entity.Message> messages) {
+        java.util.List<java.util.Map<String, Object>> result = new java.util.ArrayList<>();
+        for (com.youthtravel.entity.Message m : messages) {
+            java.util.LinkedHashMap<String, Object> dto = new java.util.LinkedHashMap<>();
+            dto.put("id", m.getId());
+            dto.put("content", m.getContent());
+            dto.put("senderName", m.getSenderName());
+            dto.put("senderEmail", m.getSenderEmail());
+            dto.put("fromVendor", m.isFromVendor());
+            dto.put("formattedTime", m.getFormattedTime());
+            dto.put("sentAt", m.getSentAt() != null ? m.getSentAt().toString() : "");
+            dto.put("bookingId", m.getBooking() != null ? m.getBooking().getId() : null);
+            dto.put("vendorId", m.getVendor() != null ? m.getVendor().getId() : null);
+            result.add(dto);
+        }
+        return result;
+    }
+
     @PostMapping("/send-reply")
     public String sendReply(@RequestParam("vendorId") Long vendorId,
             @RequestParam("content") String content,
@@ -784,21 +928,48 @@ public class UserController {
         com.youthtravel.entity.Message msg = new com.youthtravel.entity.Message();
         msg.setVendor(vendor);
         msg.setSenderEmail(user.getEmail());
-        msg.setSenderName(user.getName());
+        msg.setSenderName(user.getFullName());
         msg.setContent(content);
         msg.setFromVendor(false);
         msg.setRead(false);
-        
-        // Attach to latest booking if exists
-        java.util.List<com.youthtravel.entity.Message> activeChat = messageService.getChat(vendor, user.getEmail());
-        if (activeChat != null && !activeChat.isEmpty()) {
-            com.youthtravel.entity.Message lastMsg = activeChat.get(activeChat.size() - 1);
-            if (lastMsg.getBooking() != null) {
-                msg.setBooking(lastMsg.getBooking());
-            }
+
+        // Attach to latest booking with this vendor
+        java.util.List<com.youthtravel.entity.Message> allBookingMsgs =
+            messageRepository.findByBookingCustomerEmail(user.getEmail())
+                .stream()
+                .filter(m -> m.getVendor() != null && m.getVendor().getId().equals(vendorId))
+                .sorted(java.util.Comparator.comparing(com.youthtravel.entity.Message::getSentAt).reversed())
+                .collect(java.util.stream.Collectors.toList());
+        if (!allBookingMsgs.isEmpty() && allBookingMsgs.get(0).getBooking() != null) {
+            msg.setBooking(allBookingMsgs.get(0).getBooking());
         }
-        
-        messageRepository.save(msg);
+
+        com.youthtravel.entity.Message savedMsg = messageRepository.save(msg);
+
+        // Broadcast via WebSocket so vendor sees it instantly
+        String time = savedMsg.getSentAt() != null
+            ? savedMsg.getSentAt().format(java.time.format.DateTimeFormatter.ofPattern("hh:mm a, MMM dd")) : "";
+        java.util.Map<String, Object> dto = new java.util.LinkedHashMap<>();
+        dto.put("id", savedMsg.getId());
+        dto.put("content", savedMsg.getContent());
+        dto.put("senderName", savedMsg.getSenderName());
+        dto.put("senderEmail", savedMsg.getSenderEmail());
+        dto.put("fromVendor", false);
+        dto.put("formattedTime", time);
+        dto.put("sentAt", savedMsg.getSentAt() != null ? savedMsg.getSentAt().toString() : "");
+        dto.put("bookingId", savedMsg.getBooking() != null ? savedMsg.getBooking().getId() : null);
+        dto.put("vendorId", vendorId);
+        dto.put("userEmail", user.getEmail());
+
+        // Notify vendor's booking topic (vendor booking-chat page)
+        if (savedMsg.getBooking() != null) {
+            messagingTemplate.convertAndSend("/topic/booking/" + savedMsg.getBooking().getId(), dto);
+        }
+        // Notify vendor general topic (vendor messages page)
+        messagingTemplate.convertAndSend("/topic/vendor/" + vendorId, dto);
+        // Notify user's own topic (user messages page echo confirmation)
+        String safeEmail = user.getEmail().replace("@", "_at_").replace(".", "_dot_");
+        messagingTemplate.convertAndSend("/topic/user/" + safeEmail, dto);
 
         return "redirect:/user/messages?chatWith=" + vendorId;
     }
@@ -834,13 +1005,90 @@ public class UserController {
         Optional<Booking> bookingOpt = bookingService.getBookingById(id);
         if (bookingOpt.isPresent()) {
             Booking booking = bookingOpt.get();
-            if (booking.isReviewed()) return ResponseEntity.status(400).body("Already reviewed");
+            
+            Review review;
+            List<Review> existingReviews = reviewRepository.findByUserAndTrip(user, booking.getTrip());
+            if (!existingReviews.isEmpty()) {
+                review = existingReviews.get(0);
+            } else {
+                review = new Review();
+                review.setUser(user);
+                review.setTrip(booking.getTrip());
+            }
 
-            Review review = new Review();
-            review.setUser(user);
-            review.setTrip(booking.getTrip());
             review.setRating(Integer.parseInt(payload.get("rating").toString()));
             review.setReviewText(payload.get("reviewText").toString());
+            
+            reviewRepository.save(review);
+            booking.setReviewed(true);
+            bookingService.saveBooking(booking);
+            
+            return ResponseEntity.ok("Review saved");
+        }
+        return ResponseEntity.status(404).body("Booking not found");
+    }
+
+    @PostMapping("/booking/{id}/review/submit")
+    @ResponseBody
+    public ResponseEntity<String> submitFullReview(
+            @PathVariable Long id,
+            @RequestParam("rating") Integer rating,
+            @RequestParam("title") String title,
+            @RequestParam("reviewText") String reviewText,
+            @RequestParam(value = "highlights", required = false) String highlights,
+            @RequestParam(value = "suggestions", required = false) String suggestions,
+            @RequestParam(value = "tags", required = false) String tags,
+            @RequestParam(value = "recommend", required = false) Boolean recommend,
+            @RequestParam(value = "photos", required = false) MultipartFile[] photos,
+            HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        if (user == null) return ResponseEntity.status(401).body("Unauthorized");
+
+        Optional<Booking> bookingOpt = bookingService.getBookingById(id);
+        if (bookingOpt.isPresent()) {
+            Booking booking = bookingOpt.get();
+            
+            Review review;
+            List<Review> existingReviews = reviewRepository.findByUserAndTrip(user, booking.getTrip());
+            if (!existingReviews.isEmpty()) {
+                review = existingReviews.get(0);
+            } else {
+                review = new Review();
+                review.setUser(user);
+                review.setTrip(booking.getTrip());
+            }
+
+            review.setRating(rating);
+            review.setTitle(title);
+            review.setReviewText(reviewText);
+            review.setHighlights(highlights);
+            review.setSuggestions(suggestions);
+            review.setTags(tags);
+            review.setRecommended(recommend);
+            review.setTravelDate(booking.getSelectedDate());
+
+            // Handle Photo Uploads
+            if (photos != null && photos.length > 0) {
+                StringBuilder photoUrls = new StringBuilder();
+                String uploadDir = "uploads/reviews/";
+                java.io.File directory = new java.io.File(uploadDir);
+                if (!directory.exists()) directory.mkdirs();
+                
+                try {
+                    for (MultipartFile photo : photos) {
+                        if (photo != null && !photo.isEmpty()) {
+                            String fileName = UUID.randomUUID().toString() + "_" + photo.getOriginalFilename();
+                            java.nio.file.Path path = java.nio.file.Paths.get(uploadDir + fileName);
+                            java.nio.file.Files.copy(photo.getInputStream(), path, java.nio.file.StandardCopyOption.REPLACE_EXISTING);
+                            if (photoUrls.length() > 0) photoUrls.append(",");
+                            photoUrls.append("/uploads/reviews/").append(fileName);
+                        }
+                    }
+                    review.setPhotos(photoUrls.toString());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
             
             reviewRepository.save(review);
             booking.setReviewed(true);
@@ -919,5 +1167,30 @@ public class UserController {
             return ResponseEntity.ok("Advice saved");
         }
         return ResponseEntity.status(404).body("Booking not found");
+    }
+
+    // New API Endpoints for Reviews
+    @GetMapping("/api/reviews/user")
+    @ResponseBody
+    public ResponseEntity<List<Review>> getUserReviews(HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        if (user == null) return ResponseEntity.status(401).build();
+        return ResponseEntity.ok(reviewRepository.findByUser(user));
+    }
+
+    @PostMapping("/api/reviews/create/{bookingId}")
+    @ResponseBody
+    public ResponseEntity<String> createReviewApi(
+            @PathVariable Long bookingId,
+            @RequestParam("rating") Integer rating,
+            @RequestParam("title") String title,
+            @RequestParam("reviewText") String reviewText,
+            @RequestParam(value = "highlights", required = false) String highlights,
+            @RequestParam(value = "suggestions", required = false) String suggestions,
+            @RequestParam(value = "tags", required = false) String tags,
+            @RequestParam(value = "recommend", required = false) Boolean recommend,
+            @RequestParam(value = "photos", required = false) MultipartFile[] photos,
+            HttpSession session) {
+        return submitFullReview(bookingId, rating, title, reviewText, highlights, suggestions, tags, recommend, photos, session);
     }
 }

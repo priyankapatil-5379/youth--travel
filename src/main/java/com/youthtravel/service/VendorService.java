@@ -37,4 +37,8 @@ public class VendorService {
     public Vendor saveVendor(Vendor vendor) {
         return vendorRepository.save(vendor);
     }
+
+    public Optional<Vendor> findById(Long id) {
+        return vendorRepository.findById(id);
+    }
 }

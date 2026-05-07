@@ -79,16 +79,22 @@ public class ProfileController {
         data.put("user", profileUser);
         data.put("isOwnProfile", profileUser.getId().equals(loggedInUser.getId()));
         
+        // Update last active for logged in user
+        loggedInUser.setLastActiveAt(java.time.LocalDateTime.now());
+        userRepository.save(loggedInUser);
+        
         List<Post> posts = postRepository.findByUserOrderByCreatedAtDesc(profileUser);
         data.put("posts", posts);
         
         List<Advice> advices = adviceRepository.findByUserOrderByCreatedAtDesc(profileUser);
         data.put("advices", advices);
         
+        long postsCount = postRepository.countByUser(profileUser);
         data.put("followersCount", followerRepository.countByFollowing(profileUser));
         data.put("followingCount", followerRepository.countByFollower(profileUser));
-        data.put("postsCount", postRepository.countByUser(profileUser));
+        data.put("postsCount", postsCount);
         data.put("advicesCount", adviceRepository.countByUser(profileUser));
+        data.put("badges", profileUser.getDynamicBadges(postsCount));
 
         // Gather liked IDs for the LOGGED-IN user so the frontend knows what to highlight
         List<Long> likedPostIds = posts.stream()
@@ -103,6 +109,13 @@ public class ProfileController {
             
         data.put("likedPostIds", likedPostIds);
         data.put("likedAdviceIds", likedAdviceIds);
+        
+        // Add formatted dates
+        String joinedDate = profileUser.getCreatedAt() != null 
+            ? profileUser.getCreatedAt().format(java.time.format.DateTimeFormatter.ofPattern("MMMM yyyy")) 
+            : "May 2024";
+        data.put("joinedDateFormatted", joinedDate);
+        data.put("lastActiveAtRaw", profileUser.getLastActiveAt());
         
         return ResponseEntity.ok(data);
     }

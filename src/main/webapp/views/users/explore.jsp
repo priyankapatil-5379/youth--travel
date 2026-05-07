@@ -5,22 +5,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Explore Users | Youth Travel</title>
+    <title>Explore Community | Youth Travel</title>
     <link rel="stylesheet" href="<c:url value='/views/assets/css/bootstrap.min.css'/>">
     <link rel="stylesheet" href="<c:url value='/views/assets/css/font-awesome.min.css'/>">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
         :root {
             --primary: #008080;
+            --primary-light: #e0f2f2;
             --primary-hover: #077378;
-            --accent-red: #e63946;
-            --bg-body: #f1f5f9;
+            --accent-coral: #ff9f43;
+            --accent-blue: #4facfe;
+            --bg-body: #f8fafc;
             --bg-card: #ffffff;
             --border-color: #e2e8f0;
-            --text-main: #0f172a;
+            --text-main: #1e293b;
             --text-muted: #64748b;
             --sidebar-width: 260px;
-            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            --glass-bg: rgba(255, 255, 255, 0.8);
+            --glass-border: rgba(255, 255, 255, 0.5);
+            --shadow-premium: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
         }
 
         body { 
@@ -28,500 +33,524 @@
             background-color: var(--bg-body); 
             color: var(--text-main); 
             margin: 0; padding: 0; 
-            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
         }
 
         .wrapper { display: flex; min-height: 100vh; }
-        .main-content { flex: 1; margin-left: var(--sidebar-width); padding: 40px !important; transition: margin-left 0.4s ease; }
+        .main-content { flex: 1; margin-left: var(--sidebar-width); padding: 30px !important; }
 
-        /* Professional Explore Header */
-        .explore-header { 
-            background: var(--bg-card); 
-            padding: 32px; 
-            border-radius: 16px; 
-            border: 1px solid var(--border-color); 
-            margin-bottom: 32px; 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: flex-end; 
-            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1); 
+        .main-container { max-width: 1400px; margin: 0 auto; position: relative; }
+
+        /* Explore Hero Section */
+        .explore-hero {
+            position: relative;
+            background: #ffffff;
+            border-radius: 30px;
+            padding: 40px;
+            margin-bottom: 40px;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-premium);
+            overflow: hidden;
+            min-height: 320px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
 
-        .explore-header h1 { font-size: 28px; font-weight: 800; color: var(--text-main); margin: 0; letter-spacing: -0.5px; }
-        .explore-header p { color: var(--text-muted); margin: 4px 0 0; font-size: 15px; font-weight: 500; }
-
-        .search-container { position: relative; width: 400px; }
-        .search-container input { 
-            width: 100%; 
-            background: #ffffff; 
-            border: 1px solid var(--border-color); 
-            padding: 12px 20px 12px 45px; 
-            border-radius: 12px; 
-            color: var(--text-main); 
-            outline: none; 
-            transition: var(--transition); 
-            font-weight: 500;
+        .hero-bg-visual {
+            position: absolute;
+            right: -10%;
+            top: -20%;
+            height: 140%;
+            width: 60%;
+            opacity: 0.15;
+            pointer-events: none;
+            z-index: 0;
+            background-image: 
+                url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 600'%3E%3Cpath d='M0 600 L300 200 L500 450 L750 50 L1000 400 L1000 600 Z' fill='%23008080'/%3E%3Cpath d='M0 600 L200 400 L400 550 L600 300 L850 500 L1000 400 L1000 600 Z' fill='%23008080' opacity='0.5'/%3E%3Cpath d='M400 50 L410 45 L420 50 M450 70 L460 65 L470 70 M380 90 L390 85 L400 90' fill='none' stroke='%23008080' stroke-width='2'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: contain;
         }
-        .search-container input:focus { border-color: var(--primary); box-shadow: 0 0 0 4px rgba(0, 128, 128, 0.1); }
-        .search-container i { position: absolute; left: 18px; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 16px; }
 
-        /* Modern Tabs */
-        .nav-tabs { 
-            display: flex; 
-            gap: 8px; 
-            background: #e2e8f0; 
-            padding: 4px; 
-            border-radius: 12px; 
-            margin-bottom: 32px; 
-            border: none;
+        .hero-content { position: relative; z-index: 2; max-width: 650px; }
+        .hero-content h1 { font-size: 38px; font-weight: 900; letter-spacing: -1.5px; margin-bottom: 15px; color: var(--text-main); }
+        .hero-content h1 span { color: var(--accent-coral); position: relative; }
+        .hero-content h1 span::after { content: '✨'; position: absolute; top: -10px; right: -30px; font-size: 24px; }
+        .hero-content p { font-size: 16px; color: var(--text-muted); font-weight: 500; line-height: 1.6; margin-bottom: 30px; }
+
+        /* Filter Section */
+        .filter-bar {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            position: relative;
+            z-index: 2;
+        }
+
+        .search-box {
+            position: relative;
+            flex: 1;
+            min-width: 300px;
+        }
+        .search-box input {
+            width: 100%;
+            background: #f8fafc;
+            border: 1px solid var(--border-color);
+            padding: 14px 20px 14px 50px;
+            border-radius: 16px;
+            font-weight: 600;
+            font-size: 14px;
+            transition: var(--transition);
+        }
+        .search-box input:focus { border-color: var(--primary); background: white; box-shadow: 0 0 0 4px var(--primary-light); outline: none; }
+        .search-box i { position: absolute; left: 20px; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 18px; }
+
+        .filter-select {
+            background: #f8fafc;
+            border: 1px solid var(--border-color);
+            padding: 14px 20px;
+            border-radius: 16px;
+            font-weight: 700;
+            font-size: 13px;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            transition: var(--transition);
+            min-width: 160px;
+        }
+        .filter-select:hover { border-color: var(--primary); background: white; }
+        .filter-select select { border: none; background: transparent; font-weight: inherit; font-size: inherit; color: inherit; outline: none; width: 100%; cursor: pointer; }
+
+        /* Tabs Navigation */
+        .tabs-nav {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 35px;
+            background: #ffffff;
+            padding: 8px;
+            border-radius: 20px;
             width: fit-content;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02);
         }
-        .nav-tabs button { 
-            background: none; 
-            border: none; 
-            color: var(--text-muted); 
-            padding: 10px 24px; 
-            font-size: 14px; 
-            font-weight: 600; 
-            cursor: pointer; 
-            border-radius: 10px;
-            transition: var(--transition); 
+
+        .tab-item {
+            padding: 12px 25px;
+            border-radius: 14px;
+            font-weight: 800;
+            font-size: 13px;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
-        .nav-tabs button.active { 
-            background: #ffffff; 
-            color: var(--primary); 
-            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+        .tab-item i { font-size: 16px; }
+        .tab-item:hover { color: var(--primary); background: var(--bg-body); }
+        .tab-item.active { background: var(--primary); color: white; box-shadow: 0 10px 15px -3px rgba(0, 128, 128, 0.3); }
+
+        .tab-count {
+            background: rgba(255,255,255,0.2);
+            padding: 2px 8px;
+            border-radius: 100px;
+            font-size: 10px;
+            font-weight: 900;
         }
-        
-        .tab-pane { display: none; animation: fadeIn 0.4s ease-out; }
+        .tab-item:not(.active) .tab-count { background: var(--primary-light); color: var(--primary); }
+
+        /* Sections Grid */
+        .tab-pane { display: none; animation: slideUp 0.5s ease; }
         .tab-pane.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
         /* Traveler Cards */
-        .users-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 24px; }
-        .user-card { 
-            background: var(--bg-card); 
-            padding: 32px 24px; 
-            border-radius: 16px; 
-            border: 1px solid var(--border-color); 
-            text-align: center; 
-            transition: var(--transition); 
-            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05); 
+        .users-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px; }
+        .user-card {
+            background: white;
+            border-radius: 24px;
+            padding: 30px 20px;
+            border: 1px solid var(--border-color);
+            text-align: center;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
         }
-        .user-card:hover { border-color: var(--primary); transform: translateY(-4px); box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); }
+        .user-card:hover { transform: translateY(-10px); border-color: var(--primary); box-shadow: 0 20px 30px -10px rgba(0,0,0,0.08); }
         
-        .user-avatar { width: 90px; height: 90px; border-radius: 50%; object-fit: cover; margin-bottom: 20px; border: 3px solid #f8fafc; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
-        .user-name { font-size: 18px; font-weight: 700; margin: 0 0 4px; color: var(--text-main); }
-        .user-username { font-size: 13px; color: var(--primary); margin-bottom: 16px; font-weight: 600; }
-        
-        .points-badge { 
-            margin: 0 0 20px; 
-            font-size: 12px; 
-            font-weight: 700; 
-            color: #d97706; 
-            background: #fffbeb; 
-            padding: 6px 16px; 
-            border-radius: 100px; 
-            display: inline-block; 
-            border: 1px solid #fef3c7; 
+        .user-lvl-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: var(--primary);
+            color: white;
+            font-size: 10px;
+            font-weight: 900;
+            padding: 4px 10px;
+            border-radius: 100px;
+            box-shadow: 0 4px 10px rgba(0,128,128,0.2);
         }
 
-        .btn-view-profile { 
-            background: var(--primary); 
-            color: #ffffff !important; 
-            padding: 10px 24px; 
-            border-radius: 10px; 
-            font-size: 13px; 
-            font-weight: 700; 
-            transition: var(--transition); 
-            text-decoration: none !important; 
-            display: inline-block; 
+        .user-card-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            padding: 5px;
+            background: linear-gradient(135deg, var(--primary), var(--accent-blue));
+            margin: 0 auto 20px;
+            position: relative;
         }
-        .btn-view-profile:hover { background: var(--primary-hover); transform: translateY(-1px); }
-
-        /* Memory Cards */
-        .posts-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 24px; }
-        .post-card { 
-            background: var(--bg-card); 
-            border-radius: 16px; 
-            overflow: hidden; 
-            border: 1px solid var(--border-color); 
-            transition: var(--transition); 
-            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05); 
-        }
-        .post-card:hover { transform: translateY(-4px); box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); border-color: var(--primary); }
+        .user-card-avatar img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 4px solid white; }
         
-        .post-media-wrapper { position: relative; width: 100%; aspect-ratio: 1; overflow: hidden; background: #f1f5f9; }
-        .post-card img, .post-card video { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
-        .post-card:hover img, .post-card:hover video { transform: scale(1.05); }
-        
-        .post-author-overlay { 
-            position: absolute; top: 12px; left: 12px; 
-            background: rgba(255, 255, 255, 0.9); 
-            backdrop-filter: blur(4px); 
-            padding: 6px 12px; 
-            border-radius: 100px; 
-            font-size: 11px; 
-            color: var(--text-main); 
-            font-weight: 700; 
-            border: 1px solid rgba(255,255,255,0.2); 
-            z-index: 5;
+        .online-dot {
+            position: absolute;
+            bottom: 5px;
+            right: 5px;
+            width: 14px;
+            height: 14px;
+            background: #10b981;
+            border: 3px solid white;
+            border-radius: 50%;
         }
 
-        .post-info { padding: 16px; }
-        .post-caption { font-size: 13px; color: var(--text-main); font-weight: 500; margin-bottom: 12px; line-height: 1.5; }
-        .post-stats { font-size: 12px; color: var(--text-muted); display: flex; gap: 16px; font-weight: 600; border-top: 1px solid var(--border-color); padding-top: 12px; }
-        .post-stats i { color: var(--primary); }
+        .user-card h3 { font-size: 18px; font-weight: 800; color: var(--text-main); margin-bottom: 4px; }
+        .user-card .username { font-size: 13px; color: var(--primary); font-weight: 700; margin-bottom: 12px; display: block; }
+        .user-card .location { font-size: 12px; color: var(--text-muted); font-weight: 600; margin-bottom: 20px; display: flex; align-items: center; justify-content: center; gap: 5px; }
+
+        .user-tags { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-bottom: 25px; }
+        .tag-pill { font-size: 10px; font-weight: 800; padding: 4px 12px; border-radius: 100px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .tag-green { background: #ecfdf5; color: #059669; }
+        .tag-blue { background: #eff6ff; color: #2563eb; }
+        .tag-orange { background: #fff7ed; color: #ea580c; }
+
+        .user-card-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-top: 20px;
+            border-top: 1px solid #f1f5f9;
+        }
+        .points-box { text-align: left; }
+        .points-box span { font-size: 10px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; display: block; }
+        .points-box strong { font-size: 14px; font-weight: 900; color: var(--accent-coral); }
+
+        .btn-follow {
+            background: var(--primary);
+            color: white !important;
+            padding: 8px 18px;
+            border-radius: 10px;
+            font-size: 12px;
+            font-weight: 800;
+            border: none;
+            transition: var(--transition);
+        }
+        .btn-follow:hover { background: var(--primary-hover); transform: scale(1.05); }
+
+        /* Memory Cards (Instagram style) */
+        .explore-content-layout { display: flex; gap: 30px; }
+        .memories-column { flex: 2; }
+        .sidebar-column { flex: 1; }
+
+        .memory-posts-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 25px; }
         
+        .memory-post-card {
+            background: white;
+            border-radius: 24px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            transition: var(--transition);
+        }
+        .memory-post-card:hover { transform: translateY(-5px); border-color: var(--primary); box-shadow: var(--shadow-premium); }
+
+        .post-header { padding: 15px 20px; display: flex; align-items: center; gap: 12px; }
+        .post-author-img { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; }
+        .post-author-info span { font-size: 13px; font-weight: 800; color: var(--text-main); display: block; }
+        .post-author-info small { font-size: 11px; color: var(--text-muted); font-weight: 600; }
+
+        .post-media { width: 100%; aspect-ratio: 1; position: relative; overflow: hidden; background: #f1f5f9; }
+        .post-media img, .post-media video { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s ease; }
+        .memory-post-card:hover .post-media img { transform: scale(1.05); }
+
+        .post-body { padding: 20px; }
+        .post-caption { font-size: 14px; color: var(--text-main); font-weight: 500; line-height: 1.5; margin-bottom: 15px; }
+        
+        .post-actions { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+        .action-btns { display: flex; gap: 15px; font-size: 20px; }
+        .action-btns i { cursor: pointer; transition: 0.2s; color: var(--text-main); }
+        .action-btns i:hover { color: var(--primary); transform: scale(1.1); }
+        .action-btns i.fa-heart:hover { color: #e63946; }
+
+        .post-stats-text { font-size: 13px; font-weight: 800; color: var(--text-main); }
+
         /* Advice Cards */
-        .advices-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 24px; }
-        .advice-card { 
-            background: var(--bg-card); 
-            padding: 24px; 
-            border-radius: 16px; 
-            border: 1px solid var(--border-color); 
-            transition: var(--transition); 
-            box-shadow: 0 1px 3px 0 rgba(0,0,0,0.05); 
+        .advice-list { display: flex; flex-direction: column; gap: 20px; }
+        .advice-mini-card {
+            background: white;
+            padding: 20px;
+            border-radius: 20px;
+            border: 1px solid var(--border-color);
+            transition: var(--transition);
         }
-        .advice-card:hover { border-color: var(--primary); transform: translateY(-4px); box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); }
-        .advice-card h4 { margin: 0 0 12px; font-size: 18px; color: var(--text-main); font-weight: 700; }
-        .advice-card p { font-size: 14px; color: var(--text-muted); line-height: 1.6; margin: 0; font-weight: 400; height: 66px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; }
+        .advice-mini-card:hover { border-color: var(--primary); transform: translateX(5px); box-shadow: 0 10px 20px rgba(0,0,0,0.03); }
         
-        .advice-meta { margin-top: 16px; font-size: 12px; font-weight: 600; color: var(--text-muted); display: flex; gap: 12px; }
-        .advice-author { display: flex; align-items: center; gap: 12px; margin-top: 20px; border-top: 1px solid var(--border-color); padding-top: 16px; }
-        .advice-author img { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; }
-        .advice-author span { font-size: 13px; color: var(--text-main); font-weight: 600; }
-
-        /* Modal Customization */
-        .modal { 
-            background: rgba(15, 23, 42, 0.5); 
-            backdrop-filter: blur(8px); 
-        }
-        .modal-content-custom { 
-            background: #ffffff; 
-            border: 1px solid var(--border-color); 
-            border-radius: 20px; 
-            padding: 32px; 
-            color: var(--text-main); 
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-        }
-        .modal-close { color: var(--text-muted); transition: 0.2s; cursor: pointer; }
-        .modal-close:hover { color: var(--accent-red); }
-
-        .modal-tip-box { background: #f8fafc; border: 1px solid var(--border-color); border-radius: 12px; padding: 16px; }
-        .modal-tip-label { color: var(--primary); font-weight: 700; font-size: 11px; text-transform: uppercase; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+        .advice-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 15px; }
+        .advice-user { display: flex; align-items: center; gap: 10px; }
+        .advice-user img { width: 30px; height: 30px; border-radius: 50%; object-fit: cover; }
+        .advice-user span { font-size: 12px; font-weight: 800; }
         
-        @media (max-width: 991px) {
-            .main-content { margin-left: 0; padding: 80px 20px 40px !important; }
-            .explore-header { flex-direction: column; align-items: flex-start; gap: 24px; padding: 24px; }
-            .search-container { width: 100% !important; }
+        .advice-time { font-size: 11px; color: var(--text-muted); font-weight: 600; }
+        
+        .advice-title { font-size: 15px; font-weight: 800; color: var(--text-main); margin-bottom: 8px; display: block; }
+        .advice-title:hover { color: var(--primary); text-decoration: none; }
+        .advice-desc { font-size: 13px; color: var(--text-muted); line-height: 1.5; margin-bottom: 15px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+        
+        .advice-footer { display: flex; justify-content: space-between; align-items: center; }
+        .advice-tag { background: var(--primary-light); color: var(--primary); padding: 4px 10px; border-radius: 8px; font-size: 10px; font-weight: 800; }
+        .advice-votes { font-size: 12px; color: var(--text-muted); font-weight: 700; display: flex; align-items: center; gap: 5px; }
+
+        .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
+        .section-header h2 { font-size: 20px; font-weight: 900; margin: 0; color: var(--text-main); }
+        .view-all-link { font-size: 13px; font-weight: 700; color: var(--primary); display: flex; align-items: center; gap: 5px; }
+        .view-all-link:hover { text-decoration: none; color: var(--primary-hover); }
+
+        @media (max-width: 1200px) {
+            .explore-content-layout { flex-direction: column; }
+            .sidebar-column { order: -1; }
+        }
+
+        @media (max-width: 768px) {
+            .main-content { margin-left: 0; padding: 15px !important; }
+            .explore-hero { padding: 30px 20px; text-align: center; }
+            .hero-content { margin: 0 auto; }
+            .filter-bar { flex-direction: column; }
+            .search-box, .filter-select { width: 100%; }
         }
     </style>
 </head>
-<body class="light-theme">
-    <div id="pointsModal" class="modal" style="display: none; z-index: 3000;">
-        <div class="modal-content-custom" style="max-width: 400px; text-align: center; position: relative; top: 50%; left: 50%; transform: translate(-50%, -50%);">
-            <span class="modal-close" onclick="hidePoints()" style="position: absolute; top: 20px; right: 20px; font-size: 24px;">&times;</span>
-            <div style="padding: 10px;">
-                <div style="position: relative; width: 100px; height: 100px; margin: 0 auto 24px;">
-                    <c:set var="defaultAvatar" value="https://ui-avatars.com/api/?name=${user.name}&background=008080&color=fff" />
-                    <img id="modalUserAvatar" src="${not empty user.profilePhoto ? user.profilePhoto : defaultAvatar}" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 4px solid var(--primary); box-shadow: 0 10px 25px rgba(0, 128, 128, 0.15);">
-                    <div style="position: absolute; bottom: -5px; right: -5px; width: 36px; height: 36px; background: var(--primary); border: 3px solid #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
-                        <span id="modalPointsValue" style="font-size: 14px; font-weight: 800; color: #fff;">0</span>
-                    </div>
-                </div>
-                <h3 style="font-weight: 800; margin-bottom: 4px; color: var(--text-main); font-size: 20px;">Influence Points</h3>
-                <h2 id="modalTotalPointsLabel" style="font-size: 36px; font-weight: 800; color: var(--primary); margin-bottom: 8px;">0</h2>
-                <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 24px;">Your traveler impact across the platform</p>
-                
-                <div style="text-align: left; background: #f8fafc; padding: 20px; border-radius: 16px; border: 1px solid var(--border-color);">
-                    <div style="display: flex; justify-content: space-between; margin-bottom: 12px; font-size: 13px;">
-                        <span><i class="fa fa-heart" style="color: var(--accent-red); width: 20px;"></i> Like received</span>
-                        <span style="font-weight: 700; color: #10b981;">+10 pts</span>
-                    </div>
-                    <div style="display: flex; justify-content: space-between; margin-bottom: 12px; font-size: 13px;">
-                        <span><i class="fa fa-eye" style="color: var(--primary); width: 20px;"></i> Memory view</span>
-                        <span style="font-weight: 700; color: #10b981;">+2 pts</span>
-                    </div>
-                    <div style="display: flex; justify-content: space-between; font-size: 13px;">
-                        <span><i class="fa fa-user" style="color: var(--primary); width: 20px;"></i> Profile visit</span>
-                        <span style="font-weight: 700; color: #10b981;">+1 pt</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
+<body>
     <div class="wrapper">
         <jsp:include page="user-sidebar.jsp">
             <jsp:param name="activePage" value="explore" />
         </jsp:include>
+        
         <main class="main-content">
-            <div class="explore-header">
-                <div>
-                    <h1>Explore Community</h1>
-                    <p>Connect with travelers and discover shared memories.</p>
-                </div>
-                <form action="<c:url value='/user/explore'/>" method="GET">
-                    <div class="search-container">
-                        <input type="text" name="search" value="${searchQuery}" placeholder="Search travelers or advice...">
-                        <i class="fa fa-search"></i>
+            <div class="main-container">
+                
+                <!-- Explore Hero Section -->
+                <section class="explore-hero">
+                    <div class="hero-bg-visual"></div>
+                    <div class="hero-content">
+                        <h1>Explore <span>Community</span></h1>
+                        <p>Discover travelers, real stories and helpful advice from around the world. Connect with the global community of explorers.</p>
+                        
+                        <form action="<c:url value='/user/explore'/>" method="GET" class="filter-bar">
+                            <div class="search-box">
+                                <i class="fa fa-search"></i>
+                                <input type="text" name="search" value="${searchQuery}" placeholder="Search travelers, memories, advice, destinations...">
+                            </div>
+                            
+                            <div class="filter-select">
+                                <i class="fa fa-th-large"></i>
+                                <select name="category" onchange="this.form.submit()">
+                                    <option value="">All Categories</option>
+                                    <option value="Solo" ${param.category == 'Solo' ? 'selected' : ''}>Solo Travel</option>
+                                    <option value="Adventure" ${param.category == 'Adventure' ? 'selected' : ''}>Adventure</option>
+                                    <option value="Luxury" ${param.category == 'Luxury' ? 'selected' : ''}>Luxury</option>
+                                    <option value="Budget" ${param.category == 'Budget' ? 'selected' : ''}>Budget</option>
+                                </select>
+                            </div>
+
+                            <div class="filter-select">
+                                <i class="fa fa-globe"></i>
+                                <select name="country" onchange="this.form.submit()">
+                                    <option value="">All Countries</option>
+                                    <option value="India" ${param.country == 'India' ? 'selected' : ''}>India</option>
+                                    <option value="USA" ${param.country == 'USA' ? 'selected' : ''}>USA</option>
+                                    <option value="UK" ${param.country == 'UK' ? 'selected' : ''}>UK</option>
+                                    <option value="Australia" ${param.country == 'Australia' ? 'selected' : ''}>Australia</option>
+                                </select>
+                            </div>
+
+                            <div class="filter-select">
+                                <i class="fa fa-sort-amount-desc"></i>
+                                <select name="sortBy" onchange="this.form.submit()">
+                                    <option value="latest" ${param.sortBy == 'latest' ? 'selected' : ''}>Sort By: Latest</option>
+                                    <option value="popular" ${param.sortBy == 'popular' ? 'selected' : ''}>Sort By: Popular</option>
+                                </select>
+                            </div>
+                        </form>
                     </div>
-                </form>
-            </div>
+                </section>
 
-            <div class="nav-tabs">
-                <button class="active" onclick="switchTab('users')">Travelers (${users.size()})</button>
-                <button onclick="switchTab('posts')">Memories (${posts.size()})</button>
-                <button onclick="switchTab('advices')">Advice (${advices.size()})</button>
-            </div>
-
-            <div id="tab-users" class="tab-pane active">
-                <div class="users-grid">
-                    <c:choose>
-                        <c:when test="${not empty users}">
-                            <c:forEach var="u" items="${users}">
-                                <div class="user-card">
-                                    <img src="${not empty u.profilePhoto ? u.profilePhoto : 'https://ui-avatars.com/api/?name='.concat(u.fullName).concat('&background=random')}" class="user-avatar">
-                                    <h3 class="user-name">${u.fullName}</h3>
-                                    <p class="user-username">@${not empty u.username ? u.username : 'traveler'}</p>
-                                    <div class="points-badge" onclick="showMyPoints()" style="cursor:pointer">
-                                        <i class="fa fa-star"></i> ${u.travelPoints} Points
-                                    </div>
-                                    <a href="<c:url value='/profile?username=${not empty u.username ? u.username : u.fullName}'/>" class="btn-view-profile">View Profile</a>
-                                </div>
-                            </c:forEach>
-                        </c:when>
-                        <c:otherwise>
-                            <div style="grid-column: 1/-1; text-align: center; padding: 80px 20px; background: var(--bg-card); border-radius: 20px; border: 2px dashed var(--border-color);">
-                                <i class="fa fa-users" style="font-size: 60px; color: #e2e8f0; margin-bottom: 20px;"></i>
-                                <h3 style="font-weight: 800; color: var(--text-main);">No travelers found</h3>
-                                <p style="color: var(--text-muted); font-weight: 500;">Try a different search term.</p>
-                            </div>
-                        </c:otherwise>
-                    </c:choose>
+                <!-- Professional Tabs -->
+                <div class="tabs-nav">
+                    <div class="tab-item active" data-tab="travelers">
+                        <i class="fa fa-users"></i> Travelers <span class="tab-count">${users.size()}</span>
+                    </div>
+                    <div class="tab-item" data-tab="memories">
+                        <i class="fa fa-image"></i> Memories <span class="tab-count">${posts.size()}</span>
+                    </div>
+                    <div class="tab-item" data-tab="advice">
+                        <i class="fa fa-lightbulb-o"></i> Advice <span class="tab-count">${advices.size()}</span>
+                    </div>
                 </div>
-            </div>
 
-            <div id="tab-posts" class="tab-pane">
-                <div class="posts-grid">
-                    <c:choose>
-                        <c:when test="${not empty posts}">
-                            <c:forEach var="p" items="${posts}">
-                                <div class="post-card" onclick="window.location.href='<c:url value='/profile?username=${not empty p.user.username ? p.user.username : p.user.fullName}'/>'" style="cursor: pointer;">
-                                    <div class="post-media-wrapper">
-                                        <div class="post-author-overlay">@${p.user.fullName}</div>
-                                        <c:choose>
-                                            <c:when test="${p.mediaType == 'video'}">
-                                                <video src="${p.mediaUrl}" muted loop onmouseover="this.play()" onmouseout="this.pause()"></video>
-                                            </c:when>
-                                            <c:otherwise>
-                                                <img src="${p.mediaUrl}" loading="lazy">
-                                            </c:otherwise>
-                                        </c:choose>
-                                    </div>
-                                    <div class="post-info">
-                                        <c:if test="${not empty p.caption}">
-                                            <div class="post-caption">${p.caption}</div>
-                                        </c:if>
-                                        <div class="post-stats">
-                                            <span><i class="fa fa-heart"></i> ${p.likes}</span>
-                                            <span><i class="fa fa-eye"></i> ${p.views}</span>
+                <!-- Travelers Tab -->
+                <div id="tab-travelers" class="tab-pane active">
+                    <div class="section-header">
+                        <h2>Community Explorers</h2>
+                        <a href="#" class="view-all-link">Discover More <i class="fa fa-arrow-right"></i></a>
+                    </div>
+                    <div class="users-grid">
+                        <c:choose>
+                            <c:when test="${not empty users}">
+                                <c:forEach var="u" items="${users}">
+                                    <div class="user-card">
+                                        <div class="user-lvl-badge">LEVEL ${(u.travelPoints / 250).intValue() + 1}</div>
+                                        <div class="user-card-avatar">
+                                            <c:set var="userAvatar" value="${not empty u.profilePhoto ? u.profilePhoto : 'https://ui-avatars.com/api/?name='.concat(u.fullName).concat('&background=008080&color=fff')}" />
+                                            <img src="${userAvatar}" alt="${u.fullName}">
+                                            <div class="online-dot"></div>
                                         </div>
-                                    </div>
-                                </div>
-                            </c:forEach>
-                        </c:when>
-                        <c:otherwise>
-                            <div style="grid-column: 1/-1; text-align: center; padding: 80px 20px; background: var(--bg-card); border-radius: 20px; border: 2px dashed var(--border-color);">
-                                <i class="fa fa-image" style="font-size: 50px; color: #e2e8f0; margin-bottom: 20px;"></i>
-                                <h3 style="font-weight: 700; color: var(--text-main);">No memories found</h3>
-                            </div>
-                        </c:otherwise>
-                    </c:choose>
-                </div>
-            </div>
+                                        <h3>${u.fullName}</h3>
+                                        <span class="username">@${not empty u.username ? u.username : 'traveler'}</span>
+                                        <div class="location"><i class="fa fa-map-marker"></i> ${not empty u.city ? u.city : 'Explorer'}</div>
+                                        
+                                        <p style="font-size: 12px; color: var(--text-muted); margin: 10px 0 20px; line-height: 1.4; height: 34px; overflow: hidden;">
+                                            ${not empty u.bio ? u.bio : (not empty u.profession ? u.profession : 'Wanderer at heart. Exploring new places and sharing memories.')}
+                                        </p>
 
-            <div id="tab-advices" class="tab-pane">
-                <div class="advices-grid">
-                    <c:choose>
-                        <c:when test="${not empty advices}">
-                            <c:forEach var="a" items="${advices}">
-                                <div class="advice-card" 
-                                     data-title="${a.title}"
-                                     data-content="${a.content}"
-                                     data-categories="${a.categories}"
-                                     data-best="${a.bestTimeToVisit}"
-                                     data-pack="${a.whatToPack}"
-                                     data-safety="${a.safetyTips}"
-                                     data-budget="${a.budgetTips}"
-                                     data-stay="${a.stayFoodAdvice}"
-                                     data-transport="${a.transportTips}"
-                                     data-network="${a.connectivityTips}"
-                                     data-rules="${a.localRules}"
-                                     data-eco="${a.environmentalTips}"
-                                     data-pro="${a.proTips}"
-                                     data-author-name="${a.user.fullName}"
-                                     data-author-username="${not empty a.user.username ? a.user.username : a.user.fullName}"
-                                     data-author-photo="${not empty a.user.profilePhoto ? a.user.profilePhoto : ''}"
-                                     onclick="handleAdviceClick(this)"
-                                     style="cursor: pointer;">
-                                    <h4>${a.title}</h4>
-                                    <p>${a.content}</p>
-                                    
-                                    <div class="advice-meta">
-                                        <span><i class="fa fa-heart"></i> ${a.likes} likes</span>
+                                        <div class="user-tags">
+                                            <c:forEach var="badge" items="${u.getDynamicBadges(0)}" varStatus="st">
+                                                <c:set var="badgeClass" value="${st.index % 3 == 0 ? 'tag-green' : (st.index % 3 == 1 ? 'tag-blue' : 'tag-orange')}" />
+                                                <span class="tag-pill ${badgeClass}">${badge}</span>
+                                            </c:forEach>
+                                        </div>
+                                        
                                     </div>
-                                    <div class="advice-author">
-                                        <c:set var="authorAvatar" value="https://ui-avatars.com/api/?name=${a.user.fullName}&background=random" />
-                                        <img src="${not empty a.user.profilePhoto ? a.user.profilePhoto : authorAvatar}">
-                                        <span>Shared by ${not empty a.user.username ? a.user.username : a.user.fullName}</span>
+                                </c:forEach>
+                            </c:when>
+                            <c:otherwise>
+                                <div style="grid-column: 1/-1; text-align: center; padding: 60px; background: white; border-radius: 24px; border: 2px dashed var(--border-color);">
+                                    <p style="color: var(--text-muted); font-weight: 600;">No community travelers found matching your search.</p>
+                                </div>
+                            </c:otherwise>
+                        </c:choose>
+                    </div>
+                </div>
+
+                <!-- Combined Memories & Advice Tab -->
+                <div id="tab-memories" class="tab-pane">
+                    <div class="section-header">
+                        <h2>Community Stories</h2>
+                        <div class="d-flex gap-3">
+                            <span style="font-size:12px; font-weight:700; color:var(--text-muted);"><i class="fa fa-circle text-success me-1"></i> Live Feed</span>
+                        </div>
+                    </div>
+                    <div class="memory-posts-grid">
+                        <c:forEach var="p" items="${posts}">
+                            <div class="memory-post-card">
+                                <div class="post-header">
+                                    <img src="${not empty p.user.profilePhoto ? p.user.profilePhoto : 'https://ui-avatars.com/api/?name='.concat(p.user.fullName).concat('&background=random')}" class="post-author-img">
+                                    <div class="post-author-info">
+                                        <span>${p.user.fullName}</span>
+                                        <small><i class="fa fa-globe"></i> ${not empty p.user.city ? p.user.city : 'Traveler'}</small>
+                                    </div>
+                                    <div class="ms-auto" style="font-size:10px; color:var(--text-muted); font-weight:700;">2H AGO</div>
+                                </div>
+                                <div class="post-media" onclick="window.location.href='/profile?username=${not empty p.user.username ? p.user.username : p.user.fullName}'" style="cursor:pointer">
+                                    <c:choose>
+                                        <c:when test="${p.mediaType == 'video'}">
+                                            <video src="${p.mediaUrl}" muted loop onmouseover="this.play()" onmouseout="this.pause()"></video>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <img src="${p.mediaUrl}" loading="lazy">
+                                        </c:otherwise>
+                                    </c:choose>
+                                    <div class="category-badge" style="top:15px; left:15px; right:auto;"><i class="fa fa-map-marker"></i> Adventure</div>
+                                </div>
+                                <div class="post-body">
+                                    <p class="post-caption"><strong>${p.user.fullName}</strong> ${p.caption}</p>
+                                    <div class="post-actions">
+                                        <div class="action-btns">
+                                            <i class="fa fa-heart-o" onclick="this.classList.toggle('fa-heart'); this.classList.toggle('fa-heart-o'); this.style.color=this.classList.contains('fa-heart')?'#e63946':''"></i>
+                                            <i class="fa fa-comment-o"></i>
+                                            <i class="fa fa-paper-plane-o"></i>
+                                        </div>
+                                        <i class="fa fa-bookmark-o"></i>
+                                    </div>
+                                    <div class="post-stats-text">${p.likes} likes • ${p.views} views</div>
+                                </div>
+                            </div>
+                        </c:forEach>
+                    </div>
+                </div>
+
+                <div id="tab-advice" class="tab-pane">
+                    <div class="section-header">
+                        <h2>Travel Wisdom</h2>
+                        <button class="filter-select" style="padding: 8px 15px; font-size: 11px;"><i class="fa fa-filter"></i> Filter Tips</button>
+                    </div>
+                    <div class="memory-posts-grid">
+                        <c:forEach var="a" items="${advices}">
+                            <div class="advice-mini-card">
+                                <div class="advice-header">
+                                    <div class="advice-user">
+                                        <img src="${not empty a.user.profilePhoto ? a.user.profilePhoto : 'https://ui-avatars.com/api/?name='.concat(a.user.fullName).concat('&background=random')}">
+                                        <span>${a.user.fullName}</span>
+                                    </div>
+                                    <div class="advice-tag">${not empty a.categories ? a.categories : 'Expert Tip'}</div>
+                                </div>
+                                <a href="#" class="advice-title">${a.title}</a>
+                                <p class="advice-desc">${a.content}</p>
+                                <div class="advice-footer">
+                                    <div class="advice-votes">
+                                        <i class="fa fa-thumbs-up" style="color:var(--primary)"></i> ${a.likes} community helpful
+                                    </div>
+                                    <div class="d-flex gap-3">
+                                        <i class="fa fa-share-alt" style="cursor:pointer; color:var(--text-muted)"></i>
+                                        <i class="fa fa-bookmark-o" style="cursor:pointer; color:var(--text-muted)"></i>
                                     </div>
                                 </div>
-                            </c:forEach>
-                        </c:when>
-                        <c:otherwise>
-                            <div style="grid-column: 1/-1; text-align: center; padding: 80px 20px; background: var(--bg-card); border-radius: 20px; border: 2px dashed var(--border-color);">
-                                <i class="fa fa-lightbulb-o" style="font-size: 50px; color: #e2e8f0; margin-bottom: 20px;"></i>
-                                <h3 style="font-weight: 700; color: var(--text-main);">No advice found</h3>
                             </div>
-                        </c:otherwise>
-                    </c:choose>
+                        </c:forEach>
+                    </div>
                 </div>
+
             </div>
         </main>
     </div>
-    
-    <!-- Advice Detail Modal -->
-    <div id="adviceModal" class="modal" style="display:none; z-index: 2001;">
-        <div class="modal-content-custom" style="max-width: 800px; width: 90%; position: relative; top: 50%; left: 50%; transform: translate(-50%, -50%); max-height: 90vh; overflow-y: auto;">
-            <span class="modal-close" onclick="closeModal()" style="position: absolute; top: 20px; right: 20px; font-size: 24px;">&times;</span>
-            <div id="adviceDetailContent">
-                <!-- Populated by JS -->
-            </div>
-        </div>
-    </div>
-    
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script>
-        function switchTab(tabId) {
-            document.querySelectorAll('.nav-tabs button').forEach(b => b.classList.remove('active'));
-            document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
-            
-            event.target.classList.add('active');
-            document.getElementById('tab-' + tabId).classList.add('active');
-        }
-
-        function showMyPoints() {
-            const modal = document.getElementById('pointsModal');
-            
-            // Fetch latest points
-            fetch('/user/profile/api/data')
-                .then(res => res.json())
-                .then(data => {
-                    const pts = data.user.travelPoints || 0;
-                    document.getElementById('modalPointsValue').innerText = pts;
-                    document.getElementById('modalTotalPointsLabel').innerText = pts;
-                });
-
-            modal.style.display = 'block';
-        }
-
-        function hidePoints() {
-            document.getElementById('pointsModal').style.display = 'none';
-        }
-
-        function handleAdviceClick(el) {
-            const adv = {
-                title: el.getAttribute('data-title'),
-                content: el.getAttribute('data-content'),
-                categories: el.getAttribute('data-categories'),
-                bestTimeToVisit: el.getAttribute('data-best'),
-                whatToPack: el.getAttribute('data-pack'),
-                safetyTips: el.getAttribute('data-safety'),
-                budgetTips: el.getAttribute('data-budget'),
-                stayFoodAdvice: el.getAttribute('data-stay'),
-                transportTips: el.getAttribute('data-transport'),
-                connectivityTips: el.getAttribute('data-network'),
-                localRules: el.getAttribute('data-rules'),
-                environmentalTips: el.getAttribute('data-eco'),
-                proTips: el.getAttribute('data-pro'),
-                authorName: el.getAttribute('data-author-name'),
-                authorUsername: el.getAttribute('data-author-username'),
-                authorPhoto: el.getAttribute('data-author-photo')
-            };
-            showAdviceDetail(adv);
-        }
-
-        function showAdviceDetail(adv) {
-            const detail = document.getElementById('adviceDetailContent');
-            let tipsHtml = '';
-            
-            const tips = [
-                { label: 'Best Time', val: adv.bestTimeToVisit, icon: 'fa-calendar' },
-                { label: 'Packing', val: adv.whatToPack, icon: 'fa-suitcase' },
-                { label: 'Safety', val: adv.safetyTips, icon: 'fa-shield' },
-                { label: 'Budget', val: adv.budgetTips, icon: 'fa-money' },
-                { label: 'Stay & Food', val: adv.stayFoodAdvice, icon: 'fa-bed' },
-                { label: 'Transport', val: adv.transportTips, icon: 'fa-car' },
-                { label: 'Network', val: adv.connectivityTips, icon: 'fa-wifi' },
-                { label: 'Rules', val: adv.localRules, icon: 'fa-gavel' },
-                { label: 'Eco Tips', val: adv.environmentalTips, icon: 'fa-leaf' },
-                { label: 'Pro Tips', val: adv.proTips, icon: 'fa-star' }
-            ];
-
-            tips.forEach(t => {
-                if (t.val && t.val.trim() !== '' && t.val !== 'null') {
-                    tipsHtml += `
-                        <div style="margin-bottom: 15px;">
-                            <div class="modal-tip-box">
-                                <div class="modal-tip-label"><i class="fa \${t.icon}"></i> \${t.label}</div>
-                                <div style="font-size: 13px; color: var(--text-main);">\${t.val}</div>
-                            </div>
-                        </div>
-                    `;
-                }
+        $(document).ready(function() {
+            $('.tab-item').on('click', function() {
+                $('.tab-item').removeClass('active');
+                $(this).addClass('active');
+                
+                const tabId = $(this).data('tab');
+                $('.tab-pane').removeClass('active');
+                $('#tab-' + tabId).addClass('active');
             });
+        });
 
-            detail.innerHTML = `
-                <div style="text-align:center; margin-bottom: 25px;">
-                    <h2 style="margin:0; font-weight:800; color:var(--primary);">\${adv.title}</h2>
-                    <span style="color:var(--text-muted); text-transform:uppercase; font-size:12px; letter-spacing:1px;">\${adv.categories || 'General'}</span>
-                </div>
-                <div style="background: #f8fafc; padding: 24px; border-radius: 16px; border: 1px solid var(--border-color); margin-bottom: 24px;">
-                    <p style="font-size:15px; line-height:1.7; color:var(--text-main); margin:0; font-weight: 500;">\${adv.content}</p>
-                </div>
-                <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 16px; margin-bottom: 32px;">
-                    \${tipsHtml}
-                </div>
-                <div style="border-top: 1px solid var(--border-color); padding-top: 24px; display: flex; align-items: center; justify-content: space-between;">
-                    <div style="display: flex; align-items: center; gap: 12px;">
-                        <img src="\${(adv.authorPhoto && adv.authorPhoto !== 'null' && adv.authorPhoto !== '') ? adv.authorPhoto : 'https://ui-avatars.com/api/?name=' + adv.authorName + '&background=008080&color=fff'}" style="width: 44px; height: 44px; border-radius: 50%; border: 2px solid var(--primary);">
-                        <div>
-                            <div style="font-size: 14px; font-weight: 700; color: var(--text-main);">\${adv.authorName}</div>
-                            <div style="font-size: 12px; color: var(--text-muted);">@\${adv.authorUsername}</div>
-                        </div>
-                    </div>
-                    <a href="/profile?username=\${adv.authorUsername}" class="btn-view-profile">View Profile</a>
-                </div>
-            `;
-            
-            document.getElementById('adviceModal').style.display = 'block';
-        }
-
-        function closeModal() {
-            document.getElementById('adviceModal').style.display = 'none';
-        }
-
-        // Close on click outside
-        window.onclick = function(event) {
-            const modal = document.getElementById('adviceModal');
-            const pointsModal = document.getElementById('pointsModal');
-            if (event.target == modal) {
-                closeModal();
-            }
-            if (event.target == pointsModal) {
-                hidePoints();
-            }
+        function toggleFollow(userId, btn) {
+            $(btn).prop('disabled', true).text('...');
+            $.post('/user/profile/api/follow/' + userId, function(res) {
+                if(res === 'Followed') {
+                    $(btn).text('Following').css('background', '#64748b').prop('disabled', false);
+                } else {
+                    $(btn).text('Follow').css('background', 'var(--primary)').prop('disabled', false);
+                }
+            }).fail(function() {
+                $(btn).text('Follow').prop('disabled', false);
+            });
         }
     </script>
 </body>
