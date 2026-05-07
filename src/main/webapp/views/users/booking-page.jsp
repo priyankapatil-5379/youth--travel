@@ -15,7 +15,7 @@
         
         .header { position: fixed; top: 0; left: 0; right: 0; height: 70px; background: var(--dark-card); display: flex; align-items: center; justify-content: space-between; padding: 0 30px; z-index: 1000; border-bottom: 1px solid rgba(255,255,255,0.05); }
         
-        .page-wrapper { max-width: 1200px; margin: 0 auto; padding: 100px 24px 60px; }
+        .page-wrapper { max-width: 1200px; margin: 0 auto; padding: 40px 24px 60px; }
         
         .booking-grid { display: grid; grid-template-columns: 1fr 400px; gap: 40px; }
         
@@ -82,15 +82,6 @@
     </style>
 </head>
 <body>
-    <header class="header">
-        <div class="header-logo"><a href="<c:url value='/'/>"><img src="<c:url value='/views/assets/images/logo.png'/>" style="height: 35px;"></a></div>
-        <div style="display: flex; align-items: center; gap: 15px;">
-            <span style="font-weight: 700;">Hi, ${user.name}</span>
-            <c:set var="defaultAvatar" value="https://ui-avatars.com/api/?name=${user.name}&background=f04c26&color=fff" />
-            <img src="${not empty user.profilePhoto ? user.profilePhoto : defaultAvatar}" 
-                 style="width: 35px; height: 35px; border-radius: 50%; object-fit: cover;">
-        </div>
-    </header>
 
     <div class="page-wrapper">
         <form action="<c:url value='/user/booking/submit'/>" method="POST" id="bookingForm">

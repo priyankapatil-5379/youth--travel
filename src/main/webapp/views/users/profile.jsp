@@ -8,248 +8,175 @@
     <title>${user.name} | Premium Profile</title>
     <link rel="stylesheet" href="<c:url value='/views/assets/css/bootstrap.min.css'/>">
     <link rel="stylesheet" href="<c:url value='/views/assets/css/font-awesome.min.css'/>">
-    <link rel="stylesheet" href="<c:url value='/views/assets/css/premium-dashboard.css'/>">
-    <link href="https://fonts.googleapis.com/css2?family=Dosis:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        :root { 
-            --bg-deep: #000a12;
-            --accent-orange: #e63946;
-            --glass-bg: rgba(255, 255, 255, 0.03);
-            --glass-border: rgba(255, 255, 255, 0.1);
-            --text-main: #ffffff;
-            --text-dim: #94a3b8;
+        :root {
+            --primary: #008080;
+            --primary-hover: #077378;
+            --accent-red: #e63946;
+            --bg-body: #f1f5f9;
+            --bg-card: #ffffff;
+            --border-color: #e2e8f0;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --sidebar-width: 260px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        /* Force Modals to Front & Premium Styling */
-        .modal { z-index: 10000 !important; }
-        .modal-backdrop { z-index: 9999 !important; background-color: rgba(0,0,0,0.85) !important; }
-        .modal-content { 
-            background: #1a2a2a !important; 
-            border: 1px solid var(--glass-border) !important;
-            border-radius: 20px !important;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.8) !important;
-            color: #fff !important;
-        }
-        .modal-header { border-bottom: 1px solid var(--glass-border) !important; padding: 20px 25px !important; }
-        .modal-body { padding: 25px !important; }
-        .modal-title { font-weight: 700 !important; font-size: 22px !important; }
-        .form-label { font-weight: 600 !important; color: #ff9f43 !important; margin-bottom: 8px !important; font-size: 14px !important; text-transform: uppercase; }
-        .form-control { 
-            background: rgba(255,255,255,0.05) !important; 
-            border: 1px solid var(--glass-border) !important; 
-            color: #fff !important; 
-            border-radius: 12px !important;
-            padding: 12px !important;
-        }
-        .form-control:focus { background: rgba(255,255,255,0.1) !important; border-color: #ff9f43 !important; box-shadow: 0 0 10px rgba(255,159,67,0.2) !important; }
-        .btn-primary { background: #ff9f43 !important; border: none !important; padding: 12px !important; border-radius: 12px !important; font-weight: 700 !important; transition: 0.3s !important; }
-        .btn-primary:hover { transform: translateY(-2px) !important; box-shadow: 0 8px 20px rgba(255,159,67,0.4) !important; }
-
-        body { 
-            font-family: 'Outfit', sans-serif; 
-            background-color: var(--bg-deep);
-            background: radial-gradient(circle at 50% 0%, #001f3f, #000a12);
-            color: var(--text-main);
-            margin: 0;
-            min-height: 100vh;
-            padding-bottom: 80px;
-            overflow-x: hidden;
+        body.light-theme { 
+            font-family: 'Inter', sans-serif; 
+            background-color: var(--bg-body); 
+            color: var(--text-main); 
+            margin: 0; padding: 0; 
+            -webkit-font-smoothing: antialiased;
         }
 
-        /* Immersive Background System */
-        .sun-rays { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; opacity: 0.3; }
-        .ray { position: absolute; top: -20%; width: 100px; height: 150%; background: linear-gradient(180deg, rgba(255,255,255,0.1) 0%, transparent 80%); filter: blur(50px); transform-origin: top center; animation: ray-swing 10s ease-in-out infinite alternate; }
-        @keyframes ray-swing { 0% { transform: rotate(-8deg) scaleX(1); opacity: 0.3; } 100% { transform: rotate(8deg) scaleX(0.8); opacity: 0.6; } }
+        .wrapper { display: flex; min-height: 100vh; }
+        .main-content { flex: 1; margin-left: var(--sidebar-width); padding: 40px !important; }
 
-        .main-container { max-width: 1200px; margin: 0 auto; padding: 120px 20px 40px; position: relative; z-index: 1; }
+        .main-container { max-width: 1100px; margin: 0 auto; }
 
-        .header { 
-            position: fixed; top: 0; left: 0; right: 0; height: 75px; 
-            background: rgba(0, 0, 0, 0.4); 
-            backdrop-filter: blur(15px); 
-            -webkit-backdrop-filter: blur(15px);
-            display: flex; align-items: center; justify-content: space-between; 
-            padding: 0 40px; z-index: 1000; 
-            border-bottom: 1px solid rgba(255, 255, 255, 0.08); 
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
-        }
-
-        /* Premium Header */
+        /* Profile Header Card */
         .profile-header { 
-            display: flex; align-items: flex-start; gap: 80px; margin-bottom: 60px; padding: 50px; 
-            background: rgba(0,0,0,0.4); 
-            backdrop-filter: blur(20px); 
-            border-radius: 40px; 
-            border: 1px solid rgba(255,255,255,0.1); 
-            box-shadow: 0 25px 60px rgba(0,0,0,0.5); 
+            background: var(--bg-card); 
+            border-radius: 24px; 
+            border: 1px solid var(--border-color); 
+            padding: 48px; 
+            margin-bottom: 40px; 
+            display: flex; 
+            gap: 64px; 
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+            position: relative;
         }
         
         .avatar-column { display: flex; flex-direction: column; align-items: center; width: 180px; }
         .avatar-wrapper { 
             position: relative; 
             width: 180px; height: 180px; 
-            padding: 5px; 
-            background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); 
+            padding: 4px; 
+            background: linear-gradient(135deg, var(--primary), var(--accent-red)); 
             border-radius: 50%;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
-        .avatar-img { width: 100%; height: 100%; border-radius: 50%; border: 4px solid #1a2a2a; object-fit: cover; }
+        .avatar-img { width: 100%; height: 100%; border-radius: 50%; border: 4px solid #ffffff; object-fit: cover; }
         .plus-btn { 
-            position: absolute; bottom: 10px; right: 10px; 
-            width: 36px; height: 36px; 
-            background: var(--accent-blue); 
-            border: 3px solid #1a2a2a; 
+            position: absolute; bottom: 8px; right: 8px; 
+            width: 40px; height: 40px; 
+            background: var(--primary); 
+            border: 3px solid #ffffff; 
             border-radius: 50%; 
             display: flex; align-items: center; justify-content: center; 
             color: white; font-size: 16px; cursor: pointer;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            transition: var(--transition);
         }
+        .plus-btn:hover { background: var(--primary-hover); transform: scale(1.1); }
 
-        .user-meta-below { margin-top: 15px; text-align: center; }
-        .display-name { font-size: 20px; font-weight: 700; margin-bottom: 10px; color: #fff; text-shadow: 0 2px 8px rgba(0,0,0,0.8); text-transform: uppercase; }
+        .user-meta-below { margin-top: 24px; text-align: center; }
+        .display-name { font-size: 20px; font-weight: 800; color: var(--text-main); margin-bottom: 12px; letter-spacing: -0.5px; }
         .btn-edit-premium { 
-            background: rgba(255,255,255,0.1); 
-            border: 1px solid var(--glass-border); 
-            color: white; 
-            padding: 8px 25px; 
-            border-radius: 10px; 
-            font-size: 14px; 
+            background: #f1f5f9; 
+            border: 1px solid var(--border-color); 
+            color: var(--text-main); 
+            padding: 10px 24px; 
+            border-radius: 12px; 
+            font-size: 13px; 
             font-weight: 700;
-            backdrop-filter: blur(10px);
-            transition: 0.3s;
-            text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+            transition: var(--transition);
         }
-        .btn-edit-premium:hover { background: rgba(255,255,255,0.2); transform: translateY(-2px); box-shadow: 0 5px 15px rgba(255,255,255,0.1); }
+        .btn-edit-premium:hover { background: #e2e8f0; border-color: #cbd5e1; }
 
-        .info-column { flex: 1; padding-top: 10px; }
-        .username-row { display: flex; align-items: center; gap: 10px; margin-bottom: 25px; font-size: 26px; color: #fff; font-weight: 600; text-shadow: 0 2px 10px rgba(0,0,0,0.8); }
-        .stats-row { display: flex; gap: 40px; margin-bottom: 30px; }
-        .stat-item { display: flex; align-items: baseline; gap: 8px; }
-        .stat-num { font-size: 28px; font-weight: 800; color: #ff9f43; text-shadow: 0 2px 8px rgba(0,0,0,0.5); }
-        .stat-label { font-size: 18px; color: #fff; font-weight: 600; text-shadow: 0 2px 5px rgba(0,0,0,0.5); }
-
-        .icon-metrics { display: flex; gap: 20px; color: var(--text-dim); font-size: 18px; }
-        .metric-item { display: flex; align-items: center; gap: 8px; background: var(--glass-bg); padding: 5px 15px; border-radius: 20px; border: 1px solid var(--glass-border); }
+        .info-column { flex: 1; padding-top: 16px; }
+        .username-row { font-size: 28px; font-weight: 800; color: var(--text-main); margin-bottom: 32px; letter-spacing: -1px; }
+        .stats-row { display: flex; gap: 48px; }
+        .stat-item { display: flex; flex-direction: column; }
+        .stat-num { font-size: 32px; font-weight: 800; color: var(--primary); }
+        .stat-label { font-size: 14px; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
 
         .reputation-badge {
-            background: linear-gradient(135deg, rgba(255, 159, 67, 0.2), rgba(255, 159, 67, 0.05));
-            border: 1px solid rgba(255, 159, 67, 0.3);
-            padding: 10px 20px;
-            border-radius: 15px;
+            background: #f0fdfa;
+            border: 1px solid #ccfbf1;
+            padding: 16px 24px;
+            border-radius: 20px;
             text-align: center;
-            min-width: 100px;
-            box-shadow: 0 4px 15px rgba(255, 159, 67, 0.1);
         }
-        .reputation-value { font-size: 24px; font-weight: 800; color: #ff9f43; line-height: 1; }
-        .reputation-label { font-size: 10px; color: #ff9f43; text-transform: uppercase; letter-spacing: 1px; font-weight: 700; margin-top: 4px; }
+        .reputation-value { font-size: 24px; font-weight: 800; color: var(--primary); }
+        .reputation-label { font-size: 10px; color: var(--primary); text-transform: uppercase; letter-spacing: 1px; font-weight: 700; margin-top: 4px; }
 
-        /* Content Divider */
-        .content-divider { border-top: 1px solid var(--glass-border); margin: 40px 0; display: flex; justify-content: center; position: relative; }
-        .tabs-header { position: absolute; top: -15px; display: flex; gap: 100px; background: transparent; padding: 0 40px; }
-        .tab-trigger { font-size: 16px; font-weight: 800; color: rgba(255,255,255,0.6); cursor: pointer; display: flex; align-items: center; gap: 10px; text-transform: uppercase; letter-spacing: 1.5px; text-shadow: 0 2px 8px rgba(0,0,0,0.8); transition: 0.3s; }
-        .tab-trigger.active { color: white; transform: scale(1.1); text-shadow: 0 2px 15px rgba(255,255,255,0.5); }
+        /* Content Sections */
+        .content-divider { border-bottom: 1px solid var(--border-color); margin-bottom: 40px; }
+        .tabs-header { display: flex; gap: 48px; }
+        .tab-trigger { 
+            padding: 16px 0;
+            font-size: 14px; font-weight: 700; color: var(--text-muted); 
+            cursor: pointer; display: flex; align-items: center; gap: 10px; 
+            text-transform: uppercase; letter-spacing: 1px; 
+            transition: var(--transition);
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+        }
+        .tab-trigger.active { color: var(--primary); border-bottom-color: var(--primary); }
 
-        /* Tab Content Layout */
-        .content-grid { display: block; min-height: 400px; margin-right: 100px;}
-        
-        #postsSection, #adviceSection { width: 100%; transition: 0.3s; }
-        #adviceSection { display: none; } /* Hidden by default */
-        
-        /* Left: Posts */
-        .posts-side-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
-        .post-card { position: relative; border-radius: 8px; overflow: hidden; cursor: pointer; border: 1px solid var(--glass-border); background: var(--glass-bg); display: flex; flex-direction: column; transition: 0.3s; }
-        .post-card:hover { border-color: #ff9f43; background: rgba(255,255,255,0.08); transform: translateY(-3px); }
-        .post-media-container { position: relative; width: 100%; aspect-ratio: 1/1; overflow: hidden; }
-        .post-media-container img, .post-media-container video { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; }
-        .post-card:hover img { transform: scale(1.1); }
-        .post-details { padding: 12px; display: flex; flex-direction: column; gap: 8px; border-top: 1px solid rgba(255,255,255,0.05); }
-        .post-caption { font-size: 13px; color: rgba(255,255,255,0.8); line-height: 1.4; }
-        .post-stats { font-size: 12px; color: var(--text-muted); display: flex; gap: 15px; }
-        .post-like-btn { position: absolute; bottom: 10px; right: 10px; font-size: 22px; color: white; cursor: pointer; z-index: 10; text-shadow: 0 2px 8px rgba(0,0,0,0.8); transition: 0.3s; }
-        .post-like-btn.liked { color: #ff3b30; text-shadow: 0 2px 8px rgba(255, 59, 48, 0.4); }
-        .post-like-btn:hover { transform: scale(1.2); }
+        .posts-side-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 24px; }
+        .post-card { 
+            background: var(--bg-card); 
+            border-radius: 16px; 
+            overflow: hidden; 
+            border: 1px solid var(--border-color); 
+            transition: var(--transition); 
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+        }
+        .post-card:hover { transform: translateY(-4px); border-color: var(--primary); box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); }
+        .post-media-container { position: relative; width: 100%; aspect-ratio: 1; overflow: hidden; background: #f8fafc; }
+        .post-media-container img, .post-media-container video { width: 100%; height: 100%; object-fit: cover; }
+        .post-details { padding: 16px; }
+        .post-caption { font-size: 14px; color: var(--text-main); font-weight: 500; margin-bottom: 12px; line-height: 1.5; }
+        .post-stats { font-size: 12px; color: var(--text-muted); font-weight: 600; }
 
-        /* Right: Advices */
-        .advices-side-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
+        .advices-side-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 24px; }
         .advice-premium-card { 
-            background: var(--glass-bg); 
-            border: 1px solid var(--glass-border); 
-            border-radius: 15px; 
-            padding: 20px; 
-            backdrop-filter: blur(15px);
-            display: flex; flex-direction: column; gap: 10px;
-            transition: 0.3s;
+            background: var(--bg-card); 
+            border: 1px solid var(--border-color); 
+            border-radius: 16px; 
+            padding: 24px; 
+            transition: var(--transition);
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
         }
-        .advice-premium-card:hover { background: rgba(255,255,255,0.08); transform: translateY(-5px); }
-        .advice-icon-box { width: 40px; height: 40px; background: rgba(255,255,255,0.1); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 20px; color: #ff9f43; }
-        .advice-header { display: flex; align-items: center; gap: 12px; }
-        .advice-title { font-size: 16px; font-weight: 700; margin: 0; }
-        .advice-body { font-size: 13px; color: var(--text-dim); line-height: 1.4; margin: 0; }
+        .advice-premium-card:hover { border-color: var(--primary); transform: translateY(-4px); box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); }
+        .advice-icon-box { width: 48px; height: 48px; background: #f0fdfa; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px; color: var(--primary); margin-bottom: 20px; }
+        .advice-title { font-size: 18px; font-weight: 800; color: var(--text-main); margin-bottom: 12px; letter-spacing: -0.3px; }
+        .advice-body { font-size: 14px; color: var(--text-muted); line-height: 1.6; font-weight: 400; }
 
-        /* Bottom Nav */
-        .bottom-nav { 
-            position: fixed; bottom: 0; left: 0; width: 100%; height: 70px; 
-            background: rgba(18, 18, 18, 0.8); 
-            backdrop-filter: blur(20px);
-            border-top: 1px solid var(--glass-border);
-            display: flex; align-items: center; justify-content: space-around;
-            padding: 0 20px; z-index: 1000;
-        }
-        .nav-item { font-size: 24px; color: var(--text-dim); cursor: pointer; transition: 0.3s; }
-        .nav-item:hover { color: white; transform: scale(1.2); }
-        .nav-avatar-small { width: 30px; height: 30px; border-radius: 50%; border: 1px solid white; object-fit: cover; }
-
-        /* Nuclear Option: Unbreakable Modal Styling */
+        /* Modals */
         .unbreakable-modal { 
-            display: none; 
-            position: fixed; 
-            top: 0; left: 0; 
-            width: 100%; height: 100%; 
-            background: rgba(0,0,0,0.85); 
-            z-index: 20000; 
-            backdrop-filter: blur(8px);
+            display: none; position: fixed; inset: 0; 
+            background: rgba(15, 23, 42, 0.5); 
+            backdrop-filter: blur(4px);
+            z-index: 10000; 
         }
         .unbreakable-modal-content {
-            position: absolute;
-            top: 50%; left: 50%;
-            transform: translate(-50%, -50%);
-            width: 90%; max-width: 450px;
-            max-height: 90vh;
-            overflow-y: auto;
-            background: #1a2a2a;
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 20px;
-            padding: 25px;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
-            color: white;
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            width: 90%; max-width: 500px; max-height: 90vh; overflow-y: auto;
+            background: #ffffff; border-radius: 24px; padding: 32px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
         }
-        .modal-close-btn { position: absolute; top: 15px; right: 20px; font-size: 24px; cursor: pointer; color: #7e8c9a; }
-        .modal-close-btn:hover { color: white; }
+        .modal-close-btn { position: absolute; top: 24px; right: 24px; font-size: 24px; cursor: pointer; color: var(--text-muted); transition: var(--transition); }
+        .modal-close-btn:hover { color: var(--text-main); }
 
-        /* Fix Select Visibility */
-        select.form-control { 
-            background-color: #243b3b !important; 
-            color: #ffffff !important; 
-            border: 1px solid rgba(255,255,255,0.2) !important;
-            cursor: pointer;
-            height: 45px !important;
-            line-height: 1.5 !important;
+        .form-label { font-size: 13px; font-weight: 700; color: var(--text-main); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .form-control { 
+            background: #f8fafc; border: 1px solid var(--border-color); 
+            border-radius: 12px; padding: 12px 16px; color: var(--text-main); font-weight: 500;
         }
-        select.form-control option {
-            background-color: #1a2a2a !important;
-            color: #ffffff !important;
-            padding: 15px !important;
-        }
-        /* Ensure the selected value is visible */
-        select.form-control:focus {
-            outline: none !important;
-            border-color: #ff9f43 !important;
-        }
+        .form-control:focus { background: #ffffff; border-color: var(--primary); outline: none; box-shadow: 0 0 0 4px rgba(0, 128, 128, 0.1); }
+        .btn-primary { background: var(--primary); border: none; padding: 14px; border-radius: 12px; font-weight: 700; color: white; width: 100%; transition: var(--transition); }
+        .btn-primary:hover { background: var(--primary-hover); transform: translateY(-1px); box-shadow: 0 4px 6px -1px rgba(0, 128, 128, 0.2); }
 
-        @media (max-width: 992px) {
-            .content-grid { grid-template-columns: 1fr; }
-            .profile-header { flex-direction: column; align-items: center; text-align: center; gap: 30px; }
-            .info-column { display: flex; flex-direction: column; align-items: center; }
+        @media (max-width: 991px) {
+            .main-content { margin-left: 0; padding: 80px 20px 40px !important; }
+            .profile-header { flex-direction: column; align-items: center; text-align: center; padding: 32px; gap: 32px; }
+            .avatar-column { width: 100%; }
+            .info-column { width: 100%; display: flex; flex-direction: column; align-items: center; }
+            .stats-row { justify-content: center; width: 100%; }
         }
     </style>
     <script>
@@ -257,39 +184,21 @@
         function closeModal(id) { document.getElementById(id).style.display = 'none'; }
     </script>
 </head>
-<body class="premium-theme">
-    <!-- Sunlight Rays -->
-    <div class="sun-rays-container">
-        <div class="ray ray-1"></div>
-        <div class="ray ray-2"></div>
-        <div class="ray ray-3"></div>
-        <div class="ray ray-4"></div>
-    </div>
 
-    <header class="header">
-        <div class="header-logo"><a href="<c:url value='/'/>"><img src="<c:url value='/views/assets/images/logo.png'/>" style="height: 35px;"></a></div>
-        <div style="display: flex; align-items: center; gap: 20px;">
-            <div style="display: flex; align-items: center; gap: 15px; cursor: pointer;" onclick="showMyPoints()">
-                <span style="font-weight: 700;">Hi, ${user.name}</span>
-                <c:set var="defaultAvatar" value="https://ui-avatars.com/api/?name=${user.name}&background=f04c26&color=fff" />
-                <img src="${not empty user.profilePhoto ? user.profilePhoto : defaultAvatar}" style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover; border: 2px solid rgba(255,255,255,0.2);">
-            </div>
-        </div>
-    </header>
-
-    <div class="wrapper" style="display: flex; min-height: 100vh;">
+<body class="light-theme">
+    <div class="wrapper">
         <jsp:include page="user-sidebar.jsp">
             <jsp:param name="activePage" value="profile" />
         </jsp:include>
         
-        <main class="main-content" style="flex: 1; margin-left: 240px; padding: 100px 30px 40px;">
+        <main class="main-content">
 
 
     <!-- Nuclear Option Modals (Pure JS/CSS - 100% Reliable) -->
     <div id="adviceModal" class="unbreakable-modal">
         <div class="unbreakable-modal-content">
             <span class="modal-close-btn" onclick="closeModal('adviceModal')">&times;</span>
-            <h3 id="adviceModalTitle" style="margin-top: 0; margin-bottom: 25px; font-weight: 700;">Share Travel Wisdom</h3>
+            <h3 id="adviceModalTitle" style="margin-top: 0; margin-bottom: 24px; font-weight: 800; color: var(--text-main); letter-spacing: -0.5px;">Share Travel Wisdom</h3>
             <form id="uploadAdviceForm">
                 <input type="hidden" name="adviceId" id="adviceId">
                 <div class="form-group">
@@ -353,7 +262,7 @@
                     <textarea name="proTips" class="form-control" rows="2" placeholder="Hidden gems and expert advice..."></textarea>
                 </div>
                 
-                <button type="submit" id="adviceSubmitBtn" class="btn btn-primary" style="margin-top: 25px; width: 100%; font-weight: 700; background: #ff9f43; border: none; padding: 12px; border-radius: 12px;">Post Advice</button>
+                <button type="submit" id="adviceSubmitBtn" class="btn btn-primary">Post Advice</button>
             </form>
         </div>
     </div>
@@ -374,26 +283,26 @@
             <div style="padding: 10px;">
                 <div style="position: relative; width: 100px; height: 100px; margin: 0 auto 20px;">
                     <img id="modalHeaderAvatar" src="${not empty user.profilePhoto ? user.profilePhoto : defaultAvatar}" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 3px solid #ff9f43; box-shadow: 0 0 25px rgba(255,159,67,0.3);">
-                    <div style="position: absolute; bottom: -5px; right: -5px; width: 40px; height: 40px; background: #ff9f43; border: 3px solid #1a2a2a; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(0,0,0,0.5);">
+                    <div style="position: absolute; bottom: -5px; right: -5px; width: 40px; height: 40px; background: var(--primary); border: 3px solid #ffffff; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
                         <span id="headerPointsValue" style="font-size: 16px; font-weight: 800; color: #fff;">0</span>
                     </div>
                 </div>
-                <h3 style="font-weight: 700; margin-bottom: 5px; color: #fff; font-size: 18px;">Total Points Earned</h3>
-                <h2 id="modalTotalPointsLabel" style="font-size: 32px; font-weight: 800; color: #ff9f43; margin-bottom: 10px;">0</h2>
-                <p style="color: var(--text-dim); font-size: 13px; margin-bottom: 25px;">Sharing is earning! Your points reflect your impact on the community.</p>
+                <h3 style="font-weight: 800; margin-bottom: 8px; color: var(--text-main); font-size: 18px; letter-spacing: -0.3px;">Total Points Earned</h3>
+                <h2 id="modalTotalPointsLabel" style="font-size: 36px; font-weight: 800; color: var(--primary); margin-bottom: 12px;">0</h2>
+                <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 24px; font-weight: 500;">Sharing is earning! Your points reflect your impact on the community.</p>
                 
-                <div style="text-align: left; background: rgba(255,255,255,0.03); padding: 15px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05);">
-                    <div style="display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 12px;">
-                        <span><i class="fa fa-heart" style="color: #ff9f43; width: 18px;"></i> Engagement</span>
-                        <span style="font-weight: 700; color: #28a745;">+10 pts</span>
+                <div style="text-align: left; background: #f8fafc; padding: 20px; border-radius: 16px; border: 1px solid var(--border-color);">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 12px; font-size: 13px; font-weight: 600;">
+                        <span style="color: var(--text-main);"><i class="fa fa-heart" style="color: var(--accent-red); width: 20px;"></i> Engagement</span>
+                        <span style="color: #166534;">+10 pts</span>
                     </div>
-                    <div style="display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 12px;">
-                        <span><i class="fa fa-eye" style="color: #ff9f43; width: 18px;"></i> Content reach</span>
-                        <span style="font-weight: 700; color: #28a745;">+2 pts</span>
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 12px; font-size: 13px; font-weight: 600;">
+                        <span style="color: var(--text-main);"><i class="fa fa-eye" style="color: var(--primary); width: 20px;"></i> Content reach</span>
+                        <span style="color: #166534;">+2 pts</span>
                     </div>
-                    <div style="display: flex; justify-content: space-between; font-size: 12px;">
-                        <span><i class="fa fa-user" style="color: #ff9f43; width: 18px;"></i> Platform presence</span>
-                        <span style="font-weight: 700; color: #28a745;">+1 pt</span>
+                    <div style="display: flex; justify-content: space-between; font-size: 13px; font-weight: 600;">
+                        <span style="color: var(--text-main);"><i class="fa fa-user" style="color: var(--primary); width: 20px;"></i> Platform presence</span>
+                        <span style="color: #166534;">+1 pt</span>
                     </div>
                 </div>
             </div>
@@ -403,7 +312,7 @@
     <div id="postModal" class="unbreakable-modal">
         <div class="unbreakable-modal-content">
             <span class="modal-close-btn" onclick="closeModal('postModal')">&times;</span>
-            <h3 id="postModalTitle" style="margin-top: 0; margin-bottom: 25px; font-weight: 700;">New Travel Memory</h3>
+            <h3 id="postModalTitle" style="margin-top: 0; margin-bottom: 24px; font-weight: 800; color: var(--text-main); letter-spacing: -0.5px;">New Travel Memory</h3>
             <form id="uploadPostForm">
                 <input type="hidden" name="postId" id="postId">
                 <div class="form-group">
@@ -414,7 +323,7 @@
                     <label class="form-label">Where did this happen?</label>
                     <textarea name="caption" class="form-control" rows="3" placeholder="Describe your memory..."></textarea>
                 </div>
-                <button type="submit" id="postSubmitBtn" class="btn btn-primary" style="margin-top: 25px; width: 100%; font-weight: 700; background: #ff9f43; border: none; padding: 12px; border-radius: 12px;">Post to Journey</button>
+                <button type="submit" id="postSubmitBtn" class="btn btn-primary">Post to Journey</button>
             </form>
         </div>
     </div>
@@ -422,7 +331,7 @@
     <div id="profileModal" class="unbreakable-modal">
         <div class="unbreakable-modal-content">
             <span class="modal-close-btn" onclick="closeModal('profileModal')">&times;</span>
-            <h3 style="margin-top: 0; margin-bottom: 25px; font-weight: 700;">Update Identity</h3>
+            <h3 style="margin-top: 0; margin-bottom: 24px; font-weight: 800; color: var(--text-main); letter-spacing: -0.5px;">Update Identity</h3>
             <form id="editProfileForm" enctype="multipart/form-data">
                 <div class="form-group" style="margin-bottom: 15px;">
                     <label class="form-label">Profile Photo (Optional)</label>
@@ -440,7 +349,7 @@
                     <label class="form-label">Profession / Bio</label>
                     <input type="text" name="profession" class="form-control" value="${user.profession}">
                 </div>
-                <button type="submit" class="btn btn-primary" style="margin-top: 25px; width: 100%; font-weight: 700; background: #ff9f43; border: none; padding: 12px; border-radius: 12px;">Save Profile</button>
+                <button type="submit" class="btn btn-primary">Save Profile</button>
             </form>
         </div>
     </div>
@@ -449,13 +358,13 @@
     <div id="profilePhotoModal" class="unbreakable-modal">
         <div class="unbreakable-modal-content" style="max-width: 400px;">
             <span class="modal-close-btn" onclick="closeModal('profilePhotoModal')">&times;</span>
-            <h3 style="margin-bottom: 20px; font-weight: 800; color: #ff9f43; text-align: center;">Update Profile Photo</h3>
+            <h3 style="margin-bottom: 24px; font-weight: 800; color: var(--primary); text-align: center; letter-spacing: -0.5px;">Update Profile Photo</h3>
             <form id="profilePhotoForm" onsubmit="handleProfilePhotoUpload(event)">
                 <div class="mb-4">
                     <label class="form-label">Select Image</label>
                     <input type="file" name="photo" id="profilePhotoInput" class="form-control" accept="image/*" required onchange="previewPhoto(this)">
                 </div>
-                <div id="photoPreview" style="width: 150px; height: 150px; border-radius: 50%; overflow: hidden; margin: 0 auto 20px; border: 3px solid #ff9f43; display: none;">
+                <div id="photoPreview" style="width: 150px; height: 150px; border-radius: 50%; overflow: hidden; margin: 0 auto 24px; border: 4px solid var(--primary); display: none;">
                     <img id="photoPreviewImg" src="" style="width: 100%; height: 100%; object-fit: cover;">
                 </div>
                 <button type="submit" class="btn btn-primary" style="width: 100%; font-weight: 700;">Upload & Save</button>
@@ -502,10 +411,6 @@
                     <div class="stat-item">
                         <span class="stat-num" id="countPosts">0</span>
                         <span class="stat-label">Posts</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-num" id="countAdvices">0</span>
-                        <span class="stat-label">Advices</span>
                     </div>
                     <div class="reputation-badge">
                         <div class="reputation-value" id="countPoints">0</div>
@@ -563,20 +468,6 @@
 
         $(document).ready(function() {
             loadProfileData();
-
-            // Handle Tab Switching from URL
-            const urlParams = new URLSearchParams(window.location.search);
-            const activeTab = urlParams.get('tab');
-            if (activeTab === 'advice') {
-                $('.tab-trigger').removeClass('active');
-                $('.tab-trigger').each(function() {
-                    if ($(this).text().includes('ADVICES')) {
-                        $(this).addClass('active');
-                    }
-                });
-                $('#postsSection').hide();
-                $('#adviceSection').show();
-            }
 
             $('.tab-trigger').on('click', function() {
                 $('.tab-trigger').removeClass('active');
@@ -821,7 +712,6 @@
             $.get('/user/profile/api/data?username=' + profileUsername, function(data) {
                 dataCache = data;
                 $('#countPosts').text(data.postsCount || 0);
-                $('#countAdvices').text(data.advicesCount || 0);
                 $('#countPoints').text(data.user.travelPoints || 0);
                 $('#displayUsername').text(data.user.username || 'user');
                 

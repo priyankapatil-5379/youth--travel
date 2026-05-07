@@ -8,8 +8,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Trip Details | Youth Travel</title>
     <link rel="stylesheet" href="<c:url value='/views/assets/css/bootstrap.min.css'/>">
-    <link rel="stylesheet" href="<c:url value='/views/assets/css/style.css'/>">
     <link rel="stylesheet" href="<c:url value='/views/assets/css/font-awesome.min.css'/>">
+
     <link rel="stylesheet" href="<c:url value='/views/assets/css/premium-dashboard.css'/>">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
@@ -19,50 +19,68 @@
         :root { --primary: #008080; --bg-body: #f1f5f9; --bg-card: #ffffff; --border-color: #e2e8f0; --text-main: #0f172a; --text-muted: #64748b; }
         body.yt-dark { background: var(--bg-body) !important; background-image: none !important; color: var(--text-main); font-family: 'Inter', sans-serif; }
         .details-container { padding-bottom: 50px; }
+
         .hero-banner {
-            height: 400px;
-            border-radius: 30px;
+            height: 440px;
+            border-radius: 24px;
             overflow: hidden;
             position: relative;
+
             margin-bottom: 30px;
             border: 1px solid var(--border-color);
+
         }
+
         .hero-banner img { width: 100%; height: 100%; object-fit: cover; }
+
         .hero-overlay {
             position: absolute;
             bottom: 0; left: 0; right: 0;
             padding: 40px;
+
             background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
             color: #ffffff !important;
         }
         .hero-overlay h1, .hero-overlay span, .hero-overlay i {
             color: #ffffff !important;
+
         }
+
         .section-card {
             background: var(--bg-card);
+
             border-radius: 16px;
             padding: 30px;
             margin-bottom: 30px;
             border: 1px solid var(--border-color);
             box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+
         }
+
         .section-title {
-            font-size: 20px;
+            font-size: 18px;
             font-weight: 800;
             margin-bottom: 25px;
             color: #008080;
             text-transform: uppercase;
             letter-spacing: 1px;
+
             display: flex;
             align-items: center;
             gap: 12px;
+            letter-spacing: -0.5px;
         }
+
+        .section-title i { color: var(--primary); }
+
         .info-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 16px;
         }
+
         .info-item {
+
             background: var(--bg-body);
             padding: 20px;
             border-radius: 16px;
@@ -76,12 +94,16 @@
             padding-left: 40px;
             padding-bottom: 30px;
             border-left: 2px dashed rgba(0, 128, 128, 0.3);
+
         }
+
         .itinerary-item:last-child { border-left: none; padding-bottom: 0; }
+
         .itinerary-dot {
             position: absolute;
             left: -9px; top: 0;
             width: 16px; height: 16px;
+
             background: #008080;
             border-radius: 50%;
             box-shadow: 0 0 10px rgba(0, 128, 128, 0.5);
@@ -92,35 +114,51 @@
         .tag {
             background: rgba(0, 128, 128, 0.1);
             color: #008080;
+
             padding: 6px 14px;
-            border-radius: 8px;
-            font-size: 13px;
-            font-weight: 700;
+            border-radius: 30px;
+            font-size: 12px;
+            font-weight: 600;
             margin-right: 8px;
             margin-bottom: 8px;
             display: inline-block;
+            border: 1px solid var(--border-color);
         }
+
+        .tag-accent {
+            background: #e0f2f2;
+            color: var(--primary);
+            border-color: #b2dfdf;
+        }
+
         .btn-edit-float {
             position: fixed;
+
             bottom: 30px;
             right: 30px;
             background: #008080;
             color: var(--text-main);
+
             width: 60px; height: 60px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
+
             box-shadow: 0 10px 25px rgba(0, 128, 128, 0.4);
+
             transition: 0.3s;
             z-index: 1000;
+            text-decoration: none;
         }
+
         .btn-edit-float:hover { transform: scale(1.1) rotate(15deg); color: var(--text-main); }
         .main-content { margin-left: 260px; padding: 40px; }
         @media (max-width: 991px) { .main-content { margin-left: 0; padding: 20px; } }
     </style>
 </head>
 <body class="yt-dark" style="background: #f1f5f9 !important; background-image: none !important;">
+
     <jsp:include page="vendor-sidebar.jsp">
         <jsp:param name="activePage" value="tours" />
     </jsp:include>
@@ -129,11 +167,13 @@
         <div class="details-container">
             <!-- HEADER -->
             <div class="d-flex justify-content-between align-items-center mb-4">
+
                 <a href="<c:url value='/vendor/tours'/>" class="btn btn-link text-dark text-decoration-none p-0">
                     <i class="fa fa-arrow-left"></i> Back to Portfolio
+
                 </a>
                 <div class="status-badge">
-                    <span class="badge rounded-pill px-3 py-2" style="background: ${trip.status == 'ACTIVE' ? '#22c55e' : '#ef4444'}">${trip.status}</span>
+                    <span class="status-pill ${trip.status == 'ACTIVE' ? '' : 'status-inactive'}">${trip.status}</span>
                 </div>
             </div>
 
@@ -147,12 +187,14 @@
                         <img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&q=80&w=1200" alt="Trip">
                     </c:otherwise>
                 </c:choose>
+
                 <div class="hero-overlay text-white">
                     <h1 class="fw-bolder mb-2 text-white" style="font-size: 42px;">${trip.title}</h1>
                     <div class="d-flex align-items-center gap-4 text-white">
                         <span><i class="fa fa-map-marker" style="color: #008080;"></i> ${trip.destination}, ${trip.state}</span>
                         <span><i class="fa fa-clock-o" style="color: #008080;"></i> ${trip.duration}</span>
                         <span><i class="fa fa-users" style="color: #008080;"></i> ${trip.ageGroup}</span>
+
                     </div>
                 </div>
             </div>
@@ -162,22 +204,27 @@
                     <!-- OVERVIEW -->
                     <div class="section-card">
                         <div class="section-title"><i class="fa fa-info-circle"></i> Package Overview</div>
+
                         <p class="text-dark lead" style="font-size: 1.1rem; line-height: 1.8;">${not empty trip.description ? trip.description : 'No description provided.'}</p>
+
                         
-                        <div class="row mt-4">
-                            <div class="col-md-6 mb-3">
+                        <div class="row g-3">
+                            <div class="col-md-6">
                                 <label class="info-label">Covering Places</label>
+
                                 <div class="info-value text-dark">${not empty trip.coveringPlaces ? trip.coveringPlaces : 'N/A'}</div>
+
                             </div>
-                            <div class="col-md-3 mb-3">
+                            <div class="col-md-3">
                                 <label class="info-label">Origin City</label>
                                 <div class="info-value">${not empty trip.originCity ? trip.originCity : 'N/A'}</div>
                             </div>
-                            <div class="col-md-3 mb-3">
-                                <label class="info-label">Region/Country</label>
+                            <div class="col-md-3">
+                                <label class="info-label">Region</label>
                                 <div class="info-value">${not empty trip.region ? trip.region : 'N/A'}, ${not empty trip.country ? trip.country : 'India'}</div>
                             </div>
                         </div>
+
 
                         <hr class="border-secondary  my-4">
                         <div class="info-grid">
@@ -185,6 +232,7 @@
                                 <div class="info-label">Base Price</div>
                                 <div class="info-value">₹${trip.price}</div>
                                 <small class="text-muted">${trip.pricingType == 'perGroup' ? 'Per Group' : 'Per Person'}</small>
+
                             </div>
                             <div class="info-item">
                                 <div class="info-label">Duration</div>
@@ -196,10 +244,11 @@
                             </div>
                             <div class="info-item">
                                 <div class="info-label">Batch Size</div>
-                                <div class="info-value">${trip.minTravelers != null ? trip.minTravelers : '1'} - ${trip.maxTravelers != null ? trip.maxTravelers : '20'} People</div>
+                                <div class="info-value">${trip.minTravelers != null ? trip.minTravelers : '1'} - ${trip.maxTravelers != null ? trip.maxTravelers : '20'}</div>
                             </div>
                         </div>
                     </div>
+
 
                     <!-- LOGISTICS BOX -->
                     <div class="section-card mb-4">
@@ -283,20 +332,25 @@
                     </div>
 
                     <!-- MEDIA GALLERY (Package Photos) -->
+
                     <div class="section-card">
                         <div class="section-title"><i class="fa fa-camera"></i> Package Gallery</div>
                         <div class="d-flex flex-wrap gap-3">
                             <c:if test="${not empty trip.mediaUrls}">
                                 <c:forEach var="url" items="${fn:split(trip.mediaUrls, ',')}">
                                     <c:if test="${!fn:contains(url, 'stay_')}">
+
                                         <div class="gallery-item" style="width: 150px; height: 100px; border-radius: 12px; overflow: hidden; border: 1px solid var(--border-color); cursor: pointer; transition: 0.3s;" onclick="window.open('<c:url value='${url}'/>', '_blank')">
+
                                             <img src="<c:url value='${url}'/>" style="width: 100%; height: 100%; object-fit: cover;">
                                         </div>
                                     </c:if>
                                 </c:forEach>
                             </c:if>
                             <c:if test="${empty trip.mediaUrls}">
+
                                 <p class="">No gallery images uploaded.</p>
+
                             </c:if>
                         </div>
                     </div>
@@ -305,7 +359,9 @@
                     <div class="section-card">
                         <div class="section-title"><i class="fa fa-map-signs"></i> Detailed Itinerary</div>
                         <div id="itineraryContent" class="mt-4">
+
                             <div class="text-center py-4 ">
+
                                 <i class="fa fa-spinner fa-spin fa-2x mb-2"></i>
                                 <p>Loading itinerary...</p>
                             </div>
@@ -314,7 +370,7 @@
 
                     <!-- INCLUSIONS & ESSENTIALS -->
                     <div class="row">
-                        <div class="col-md-6 mb-4 mb-md-0">
+                        <div class="col-md-6 mb-4">
                             <div class="section-card h-100">
                                 <div class="section-title"><i class="fa fa-check-circle"></i> Inclusions</div>
                                 <div id="inclusionsList">
@@ -323,21 +379,23 @@
                                             <c:forEach items="${fn:split(trip.inclusions, ',')}" var="item">
                                                 <div class="mb-3 d-flex align-items-start gap-2">
                                                     <i class="fa fa-check-circle text-success mt-1"></i> 
-                                                    <span>${fn:trim(item)}</span>
+                                                    <span class="small fw-600">${fn:trim(item)}</span>
                                                 </div>
                                             </c:forEach>
                                         </c:when>
+
                                         <c:otherwise><p class="">No inclusions specified.</p></c:otherwise>
                                     </c:choose>
                                     <c:if test="${not empty trip.inclusionsOther}">
                                         <div class="mt-2 pt-2 border-top border-secondary  small">
+
                                             <i class="fa fa-plus-circle me-1"></i> ${trip.inclusionsOther}
                                         </div>
                                     </c:if>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-6 mb-4">
                             <div class="section-card h-100">
                                 <div class="section-title"><i class="fa fa-suitcase"></i> Things to Carry</div>
                                 <div id="essentialsList">
@@ -345,6 +403,7 @@
                                         <c:when test="${not empty trip.essentials}">
                                             <c:forEach items="${fn:split(trip.essentials, ',')}" var="item">
                                                 <div class="mb-3 d-flex align-items-start gap-2">
+
                                                     <i class="fa fa-info-circle text-teal mt-1"></i> 
                                                     <span>${fn:trim(item)}</span>
                                                 </div>
@@ -354,6 +413,7 @@
                                     </c:choose>
                                     <c:if test="${not empty trip.essentialsOther}">
                                         <div class="mt-2 pt-2 border-top border-secondary  small">
+
                                             <i class="fa fa-plus-circle me-1"></i> ${trip.essentialsOther}
                                         </div>
                                     </c:if>
@@ -361,6 +421,7 @@
                             </div>
                         </div>
                     </div>
+
 
                     <!-- SAFETY & RULES -->
                     <div class="section-card mt-4">
@@ -394,9 +455,10 @@
                     
 
                     <!-- PICKUP POINTS -->
-                    <div class="section-card mb-4">
+                    <div class="section-card">
                         <div class="section-title"><i class="fa fa-map-marker"></i> Pickup Points</div>
                         <div id="pickupList">
+
                             <p class=" small">No pickup points added</p>
                         </div>
                     </div>
@@ -423,10 +485,12 @@
                     </div>
 
                     <!-- UPCOMING BATCHES -->
+
                     <div class="section-card">
                         <div class="section-title"><i class="fa fa-calendar"></i> Batch Schedules</div>
                         <div class="batches-list">
                             <c:forEach items="${schedules}" var="s">
+
                                 <div class="p-3 mb-3 rounded-4" style="background: var(--bg-body); border: 1px solid var(--border-color);">
                                     <div class="d-flex justify-content-between align-items-center">
                                         <span class="fw-bold" style="font-size: 1.1rem;">${s.startDate}</span>
@@ -434,13 +498,16 @@
                                     </div>
                                     <div class="d-flex justify-content-between mt-2 small">
                                         <span class="">Availability</span>
+
                                         <span class="${s.availableSeats < 5 ? 'text-danger' : 'text-success'} fw-bold">${s.availableSeats} / ${s.totalSeats} Slots</span>
                                     </div>
                                 </div>
                             </c:forEach>
                             <c:if test="${empty schedules}">
+
                                 <div class="text-center py-4 ">
                                     <i class="fa fa-calendar-times-o fa-2x mb-2"></i>
+
                                     <p class="mb-0">No active batches</p>
                                 </div>
                             </c:if>
@@ -456,7 +523,7 @@
         <i class="fa fa-pencil fa-lg"></i>
     </a>
 
-    <!-- HIDDEN DATA FOR JS -->
+    <!-- HIDDEN DATA -->
     <input type="hidden" id="itineraryRaw" value='${trip.itinerary}'>
     <input type="hidden" id="pickupRaw" value='${trip.pickupPoints}'>
     <input type="hidden" id="amenitiesRaw" value='${trip.stayAmenities}'>
@@ -464,7 +531,7 @@
     <script src="<c:url value='/views/assets/js/jquery.min.js'/>"></script>
     <script>
         $(document).ready(function() {
-            // 1. Render Itinerary with Images
+            // Render Itinerary
             try {
                 const itineraryJson = $('#itineraryRaw').val();
                 if(itineraryJson && itineraryJson !== 'null' && itineraryJson !== '[]') {
@@ -476,7 +543,9 @@
                             if(day.photos && day.photos.length > 0) {
                                 photosHtml = '<div class="d-flex gap-2 mt-3 overflow-auto pb-2">';
                                 day.photos.forEach(p => {
+
                                     photosHtml += `<div style="width:120px; height:80px; flex-shrink:0; border-radius:12px; overflow:hidden; border:1px solid var(--border-color); cursor:pointer;" onclick="window.open('\${p}', '_blank')">
+
                                                      <img src="\${p}" style="width:100%; height:100%; object-fit:cover;">
                                                    </div>`;
                                 });
@@ -488,10 +557,12 @@
                                     <div class="itinerary-dot"></div>
                                     <div class="day-title">\${day.day || 'Day'}: \${day.title || 'TBD'}</div>
                                     <div class="day-content">
+
                                         <p class="mb-2 text-muted">\${day.activities || 'No activities listed for this day.'}</p>
                                         <div class="d-flex gap-4 mt-3">
                                             <div class="small"><i class="fa fa-bed text-teal me-1"></i> <strong>Stay:</strong> \${day.stay || 'N/A'}</div>
                                             <div class="small"><i class="fa fa-cutlery text-teal me-1"></i> <strong>Meals:</strong> \${day.meals || 'N/A'}</div>
+
                                         </div>
                                         \${photosHtml}
                                     </div>
@@ -500,17 +571,16 @@
                         });
                         $('#itineraryContent').html(html);
                     } else {
+
                         $('#itineraryContent').html('<p class="">Itinerary details have not been added yet.</p>');
                     }
                 } else {
                     $('#itineraryContent').html('<p class="">No itinerary planned for this trip.</p>');
-                }
-            } catch(e) { 
-                console.error("Itinerary render error:", e);
-                $('#itineraryContent').html('<p class="text-danger small">Error loading itinerary data.</p>');
-            }
 
-            // 2. Render Pickup Points
+                }
+            } catch(e) { $('#itineraryContent').html('<p class="text-danger small">Error loading itinerary.</p>'); }
+
+            // Render Pickups
             try {
                 const pickupJson = $('#pickupRaw').val();
                 if(pickupJson && pickupJson !== 'null' && pickupJson !== '[]') {
@@ -519,6 +589,7 @@
                         let html = '';
                         pickups.forEach(p => {
                             html += `
+
                                 <div class="mb-3 p-3 rounded-4" style="background: var(--bg-body); border: 1px solid var(--border-color);">
                                     <div class="d-flex justify-content-between align-items-start">
                                         <div>
@@ -526,38 +597,40 @@
                                             <small class=" text-uppercase" style="font-size: 10px; letter-spacing: 0.5px;">Type: \${p.type || 'Standard'}</small>
                                         </div>
                                         <div class="badge bg-teal text-dark" style="font-size: 11px;">\${p.time || '--:--'}</div>
+
                                     </div>
                                 </div>
                             `;
                         });
                         $('#pickupList').html(html);
+
                     } else {
                         $('#pickupList').html('<p class=" small text-center py-3">No pickup points added</p>');
+
                     }
                 }
-            } catch(e) { console.error("Pickup render error:", e); }
+            } catch(e) {}
 
-            // 3. Render Amenities
+            // Render Amenities
             try {
                 const amenitiesJson = $('#amenitiesRaw').val();
                 if(amenitiesJson && amenitiesJson !== 'null' && amenitiesJson !== '[]') {
                     let amenities = [];
-                    if(amenitiesJson.startsWith('[')) {
-                        amenities = JSON.parse(amenitiesJson);
-                    } else {
-                        amenities = amenitiesJson.split(',').map(s => s.trim());
-                    }
+                    if(amenitiesJson.startsWith('[')) { amenities = JSON.parse(amenitiesJson); }
+                    else { amenities = amenitiesJson.split(',').map(s => s.trim()); }
                     
                     if(Array.isArray(amenities) && amenities.length > 0) {
                         let html = '<div class="d-flex flex-wrap gap-2 mt-2 mb-2">';
                         amenities.forEach(a => {
+
                             if(a) html += `<span class="badge rounded-pill" style="font-size: 12px; font-weight: 500; padding: 6px 14px; background: #ffffff; color: var(--text-main); border: 1px solid var(--border-color); box-shadow: 0 1px 2px rgba(0,0,0,0.05);">\${a}</span>`;
+
                         });
                         html += '</div>';
                         $('#amenitiesList').html(html);
                     }
                 }
-            } catch(e) { console.error("Amenities render error:", e); }
+            } catch(e) {}
         });
     </script>
 </body>

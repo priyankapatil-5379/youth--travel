@@ -47,6 +47,10 @@ public class VendorController {
             HttpSession session, RedirectAttributes redirectAttributes) {
         if (vendorService.loginVendor(emailId, password)) {
             Vendor vendor = vendorService.findByEmailId(emailId).orElse(null);
+            if (vendor != null && vendor.getIsBlocked()) {
+                redirectAttributes.addFlashAttribute("error", "Your account has been blocked by the administrator.");
+                return "redirect:/vendor/login";
+            }
             if (vendor != null && !"APPROVED".equals(vendor.getStatus())) {
                 redirectAttributes.addFlashAttribute("error",
                         "Your account is " + vendor.getStatus() + ". You cannot login until approved by Admin.");

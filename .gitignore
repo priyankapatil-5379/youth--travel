@@ -33,10 +33,5 @@ build/
 .vscode/
 
 uploads/
-*.mp4
-*.jpg
-*.png
-*.jpeg
-*.webp
 target/
 bin/

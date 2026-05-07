@@ -7,50 +7,77 @@
     <title>My Reviews | Youth Travel</title>
     <link rel="stylesheet" href="<c:url value='/views/assets/css/bootstrap.min.css'/>">
     <link rel="stylesheet" href="<c:url value='/views/assets/css/font-awesome.min.css'/>">
-    <link rel="stylesheet" href="<c:url value='/views/assets/css/premium-dashboard.css'/>">
-    <link href="https://fonts.googleapis.com/css?family=Dosis:300,400,500,600,700,800" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        :root { --primary-blue: #e63946; --text-muted: #7e8c9a; --transition: all 0.3s ease; }
-        body { font-family: 'Dosis', sans-serif; background-color: #0b0f18; color: rgba(255, 255, 255, 0.92); margin: 0; padding: 0; }
+        :root {
+            --primary: #008080;
+            --primary-hover: #077378;
+            --accent-red: #e63946;
+            --bg-body: #f1f5f9;
+            --bg-card: #ffffff;
+            --border-color: #e2e8f0;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --sidebar-width: 260px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background-color: var(--bg-body); 
+            color: var(--text-main); 
+            margin: 0; padding: 0; 
+            -webkit-font-smoothing: antialiased;
+        }
+
         .wrapper { display: flex; min-height: 100vh; }
-        .main-content { flex: 1; margin-left: 240px; padding: 100px 30px 40px; }
-        .header { position: fixed; top: 0; left: 0; right: 0; height: 70px; background: rgba(0,0,0,0.4); backdrop-filter: blur(10px); display: flex; align-items: center; justify-content: space-between; padding: 0 30px; z-index: 1000; border-bottom: 1px solid rgba(255,255,255,0.05); }
-        .review-card { background: rgba(0,0,0,0.3); backdrop-filter: blur(15px); padding: 30px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); margin-bottom: 25px; transition: var(--transition); box-shadow: 0 8px 32px 0 rgba(0,0,0,0.3); }
-        .review-card:hover { border-color: var(--primary-blue); transform: translateY(-3px); }
-        .stars { color: #ffc107; font-size: 16px; margin-bottom: 12px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5)); }
-        .package-name { font-size: 20px; font-weight: 800; color: #fff; margin-bottom: 8px; text-shadow: 0 2px 5px rgba(0,0,0,0.8); }
-        .review-date { font-size: 13px; color: rgba(255,255,255,0.6); margin-bottom: 15px; font-weight: 500; }
-        .review-text { font-size: 16px; color: #fff; line-height: 1.6; text-shadow: 0 1px 3px rgba(0,0,0,0.5); font-weight: 500; }
+        .main-content { flex: 1; margin-left: var(--sidebar-width); padding: 40px !important; }
+
+        .page-header { margin-bottom: 32px; }
+        .page-header h1 { font-size: 28px; font-weight: 800; color: var(--text-main); margin: 0; letter-spacing: -0.5px; }
+        .page-header p { color: var(--text-muted); margin: 4px 0 0; font-size: 15px; font-weight: 500; }
+
+        .review-card { 
+            background: var(--bg-card); 
+            padding: 32px; 
+            border-radius: 16px; 
+            border: 1px solid var(--border-color); 
+            margin-bottom: 24px; 
+            transition: var(--transition); 
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05); 
+        }
+        .review-card:hover { border-color: var(--primary); transform: translateY(-2px); box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); }
+        
+        .stars { color: #fbbf24; font-size: 16px; margin-bottom: 16px; display: flex; gap: 4px; }
+        .package-name { font-size: 18px; font-weight: 700; color: var(--text-main); margin-bottom: 8px; }
+        .review-date { font-size: 13px; color: var(--text-muted); margin-bottom: 16px; font-weight: 600; }
+        .review-text { font-size: 15px; color: var(--text-main); line-height: 1.6; font-weight: 400; }
+
+        .empty-state {
+            background: var(--bg-card);
+            padding: 80px 40px;
+            border-radius: 20px;
+            text-align: center;
+            border: 2px dashed var(--border-color);
+        }
+        .empty-state i { font-size: 60px; color: #e2e8f0; margin-bottom: 24px; }
+        .empty-state h3 { font-size: 20px; font-weight: 800; color: var(--text-main); margin-bottom: 8px; }
+        .empty-state p { color: var(--text-muted); font-size: 15px; font-weight: 500; }
+
+        @media (max-width: 991px) {
+            .main-content { margin-left: 0; padding: 80px 20px 40px !important; }
+        }
     </style>
 </head>
-<body class="premium-theme">
-    <!-- Sunlight Rays -->
-    <div class="sun-rays-container">
-        <div class="ray ray-1"></div>
-        <div class="ray ray-2"></div>
-        <div class="ray ray-3"></div>
-        <div class="ray ray-4"></div>
-    </div>
-    <header class="header">
-        <div class="header-logo"><a href="<c:url value='/'/>"><img src="<c:url value='/views/assets/images/logo.png'/>" style="height: 35px;"></a></div>
-        <div style="display: flex; align-items: center; gap: 20px;">
-            <div style="display: flex; align-items: center; gap: 15px;">
-                <span style="font-weight: 700;">Hi, ${user.name}</span>
-                <c:set var="defaultAvatar" value="https://ui-avatars.com/api/?name=${user.name}&background=f04c26&color=fff" />
-                <img src="${not empty user.profilePhoto ? user.profilePhoto : defaultAvatar}" style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover;">
-            </div>
-        </div>
-    </header>
+<body class="light-theme">
     <div class="wrapper">
         <jsp:include page="user-sidebar.jsp">
             <jsp:param name="activePage" value="reviews" />
         </jsp:include>
         <main class="main-content">
-            <div class="mb-4">
-                <div>
-                    <h2 style="font-weight: 800; margin: 0; color: #fff; text-shadow: 0 4px 15px rgba(0,0,0,0.8); font-size: 32px;">My Reviews</h2>
-                    <p style="color: #fff; margin: 0; font-weight: 600; text-shadow: 0 2px 8px rgba(0,0,0,0.8);">Feedback you've shared on your adventures</p>
-                </div>
+            <div class="page-header">
+                <h1>My Reflections</h1>
+                <p>The stories you've shared from your journeys</p>
             </div>
             <c:choose>
                 <c:when test="${not empty reviews}">
@@ -67,10 +94,10 @@
                     </c:forEach>
                 </c:when>
                 <c:otherwise>
-                    <div style="background: #161c28; padding: 60px; border-radius: 15px; text-align: center; border: 1px solid rgba(255,255,255,0.05);">
-                        <i class="fa fa-star-o" style="font-size: 50px; color: rgba(255,255,255,0.1); margin-bottom: 20px;"></i>
-                        <h3 style="font-weight: 700;">No reviews yet</h3>
-                        <p style="color: var(--text-muted);">You haven't shared your thoughts on any trips yet.</p>
+                    <div class="empty-state">
+                        <i class="fa fa-star-o"></i>
+                        <h3>No reflections yet</h3>
+                        <p>Share your journey experiences and help other explorers!</p>
                     </div>
                 </c:otherwise>
             </c:choose>

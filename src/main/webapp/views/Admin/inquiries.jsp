@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="<c:url value='/views/assets/css/style.css'/>">
     <link rel="stylesheet" href="<c:url value='/views/assets/css/font-awesome.min.css'/>">
     <link rel="stylesheet" href="<c:url value='/views/assets/css/premium-dashboard.css'/>">
-    <link href="https://fonts.googleapis.com/css?family=Dosis:300,400,500,600,700,800" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Dosis', sans-serif; background-color: transparent; color: #fff; }
         .admin-layout { display: flex; min-height: 100vh; }
@@ -56,8 +56,9 @@
         .badge-new { background: rgba(33, 150, 243, 0.1); color: #2196f3; }
         .badge-replied { background: rgba(76, 175, 80, 0.1); color: #4caf50; }
     </style>
+<link rel="stylesheet" href="<c:url value='/views/assets/css/admin-light.css'/>">
 </head>
-<body class="premium-theme">
+<body class="premium-theme admin-light-theme">
     <div class="sun-rays-container">
         <div class="ray ray-1"></div>
         <div class="ray ray-2"></div>
@@ -67,22 +68,39 @@
     <div class="admin-layout">
         <aside class="admin-sidebar">
             <div class="sidebar-header">
-                <a href="<c:url value='/'/>"><img src="<c:url value='/views/assets/images/logo.png'/>" alt="Youth Travel"></a>
+                <a href="<c:url value='/'/>">
+                    <img src="<c:url value='/views/assets/images/logo.png'/>" alt="Youth Travel">
+                </a>
             </div>
             <nav class="admin-nav">
-                <a href="<c:url value='/admin/dashboard'/>" class="admin-nav-item"><i class="fa fa-th-large"></i> Dashboard</a>
-                <a href="<c:url value='/admin/trips'/>" class="admin-nav-item"><i class="fa fa-motorcycle"></i> Manage Trips</a>
-                <a href="<c:url value='/admin/users'/>" class="admin-nav-item"><i class="fa fa-users"></i> User Accounts</a>
-                <a href="<c:url value='/admin/vendors'/>" class="admin-nav-item"><i class="fa fa-handshake-o"></i> Vendor Requests</a>
-                <a href="<c:url value='/admin/inquiries'/>" class="admin-nav-item active"><i class="fa fa-envelope"></i> Inquiries</a>
-                <div style="margin-top: 50px; border-top: 1px solid #222; padding-top: 20px;">
-                    <a href="<c:url value='/'/>" class="admin-nav-item"><i class="fa fa-sign-out"></i> Back to Site</a>
+                <a href="<c:url value='/admin/dashboard'/>" class="admin-nav-item ">
+                    <i class="fa fa-th-large"></i> Dashboard
+                </a>
+                <a href="<c:url value='/admin/trips'/>" class="admin-nav-item ">
+                    <i class="fa fa-motorcycle"></i> Manage Trips
+                </a>
+                <a href="<c:url value='/admin/users'/>" class="admin-nav-item ">
+                    <i class="fa fa-users"></i> User Accounts
+                </a>
+                <a href="<c:url value='/admin/vendors'/>" class="admin-nav-item ">
+                    <i class="fa fa-handshake-o"></i> Vendor Requests
+                </a>
+                <a href="<c:url value='/admin/home-images'/>" class="admin-nav-item ">
+                    <i class="fa fa-image"></i> Homepage Photos
+                </a>
+                <a href="<c:url value='/admin/inquiries'/>" class="admin-nav-item active">
+                    <i class="fa fa-envelope"></i> Inquiries
+                </a>
+                <div style="margin-top: 50px; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 20px;">
+                    <a href="<c:url value='/'/>" class="admin-nav-item">
+                        <i class="fa fa-sign-out"></i> Back to Site
+                    </a>
                 </div>
             </nav>
         </aside>
         <main class="admin-main">
             <header class="admin-header">
-                <h1 style="font-weight: 800; font-size: 36px; text-shadow: 0 4px 15px rgba(0,0,0,0.8);">Inquiries Management</h1>
+                <h1>Inquiries Management</h1>
             </header>
             
             <div class="admin-section">

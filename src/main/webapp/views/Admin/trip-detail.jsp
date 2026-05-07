@@ -11,12 +11,12 @@
                 <link rel="stylesheet" href="<c:url value='/views/assets/css/bootstrap.min.css'/>">
                 <link rel="stylesheet" href="<c:url value='/views/assets/css/style.css'/>">
                 <link rel="stylesheet" href="<c:url value='/views/assets/css/font-awesome.min.css'/>">
-                <link href="https://fonts.googleapis.com/css?family=Dosis:300,400,500,600,700,800" rel="stylesheet">
+                <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
                 <style>
                     body {
-                        font-family: 'Dosis', sans-serif;
-                        background-color: #0f1015;
-                        color: #fff;
+                        font-family: 'Inter', sans-serif;
+                        background-color: #f1f5f9;
+                        color: #0f172a;
                     }
 
                     .admin-layout {
@@ -111,38 +111,39 @@
                     }
 
                     .pkg-info-card {
-                        background: #1e1e26;
-                        border: 1px solid #2a2a35;
-                        border-radius: 15px;
+                        background: #ffffff;
+                        border: 1px solid #e2e8f0;
+                        border-radius: 16px;
                         padding: 25px 30px;
                         margin-bottom: 30px;
                         display: flex;
                         align-items: center;
                         gap: 25px;
+                        box-shadow: 0 1px 3px rgba(0,0,0,0.08);
                     }
 
                     .pkg-info-icon {
                         width: 64px;
                         height: 64px;
-                        background: rgba(255, 77, 77, 0.1);
+                        background: #e0f2f2;
                         border-radius: 12px;
                         display: flex;
                         align-items: center;
                         justify-content: center;
                         font-size: 28px;
-                        color: #ff4d4d;
+                        color: #008080;
                         flex-shrink: 0;
                     }
 
                     .pkg-info-text h2 {
-                        color: #fff;
+                        color: #0f172a;
                         font-size: 22px;
                         font-weight: 700;
                         margin: 0 0 5px;
                     }
 
                     .pkg-info-meta {
-                        color: #888;
+                        color: #64748b;
                         font-size: 14px;
                     }
 
@@ -152,29 +153,29 @@
 
                     .pkg-info-meta i {
                         margin-right: 5px;
-                        color: #ff4d4d;
+                        color: #008080;
                     }
 
                     .admin-section {
-                        background: #1e1e26;
+                        background: #ffffff;
                         padding: 30px;
-                        border-radius: 15px;
-                        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-                        border: 1px solid #2a2a35;
+                        border-radius: 16px;
+                        box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+                        border: 1px solid #e2e8f0;
                     }
 
                     .section-title {
                         font-size: 18px;
                         font-weight: 700;
-                        color: #fff;
+                        color: #0f172a;
                         margin-bottom: 25px;
                         padding-bottom: 15px;
-                        border-bottom: 1px solid #2a2a35;
+                        border-bottom: 1px solid #e2e8f0;
                     }
 
                     .section-title span {
-                        background: rgba(255, 77, 77, 0.1);
-                        color: #ff4d4d;
+                        background: #e0f2f2;
+                        color: #008080;
                         border-radius: 20px;
                         padding: 3px 12px;
                         font-size: 13px;
@@ -187,29 +188,30 @@
                     }
 
                     .table thead th {
-                        background: #2a2a35;
-                        color: #888;
-                        font-weight: 600;
+                        background: transparent;
+                        color: #64748b;
+                        font-weight: 700;
                         text-transform: uppercase;
                         font-size: 12px;
                         padding: 15px;
                         border: none;
+                        border-bottom: 2px solid #e2e8f0;
                     }
 
                     .table tbody td {
                         padding: 15px;
                         vertical-align: middle;
-                        border-top: 1px solid #2a2a35;
-                        color: #ddd;
+                        border-top: 1px solid #f1f5f9;
+                        color: #334155;
                     }
 
                     .table tbody tr:hover {
-                        background: #252530;
+                        background: #f8fafc;
                     }
 
                     .status-done {
-                        background: rgba(76, 175, 80, 0.1);
-                        color: #4caf50;
+                        background: #dcfce7;
+                        color: #15803d;
                         padding: 4px 10px;
                         border-radius: 6px;
                         font-weight: 700;
@@ -219,20 +221,24 @@
                     .empty-state {
                         text-align: center;
                         padding: 50px;
-                        color: #555;
+                        color: #94a3b8;
                     }
 
                     .empty-state i {
                         font-size: 48px;
                         display: block;
                         margin-bottom: 15px;
-                        color: #333;
+                        color: #cbd5e1;
                     }
 
+                    .breadcrumb-bar { color: #64748b; font-size: 14px; margin-bottom: 30px; }
+                    .breadcrumb-bar a { color: #008080; text-decoration: none; font-weight: 600; }
+                    .breadcrumb-bar a:hover { text-decoration: underline; }
+
                     .back-btn {
-                        background: #2a2a35;
-                        color: #fff;
-                        border: none;
+                        background: #e0f2f2;
+                        color: #008080;
+                        border: 1px solid #008080;
                         padding: 8px 20px;
                         border-radius: 8px;
                         font-weight: 600;
@@ -245,37 +251,48 @@
                     }
 
                     .back-btn:hover {
-                        background: #3a3a45;
+                        background: #008080;
                         color: #fff;
                         text-decoration: none;
                     }
                 </style>
-            </head>
+            <link rel="stylesheet" href="<c:url value='/views/assets/css/admin-light.css'/>">
+</head>
 
-            <body>
+            <body class="admin-light-theme">
                 <div class="admin-layout">
                     <aside class="admin-sidebar">
-                        <div class="sidebar-header">
-                            <a href="<c:url value='/'/>"><img src="<c:url value='/views/assets/images/logo.png'/>"
-                                    alt="Youth Travel"></a>
-                        </div>
-                        <nav class="admin-nav">
-                            <a href="<c:url value='/admin/dashboard'/>" class="admin-nav-item"><i
-                                    class="fa fa-th-large"></i> Dashboard</a>
-                            <a href="<c:url value='/admin/trips'/>" class="admin-nav-item active"><i
-                                    class="fa fa-suitcase"></i> Manage Trips</a>
-                            <a href="<c:url value='/admin/users'/>" class="admin-nav-item"><i class="fa fa-users"></i>
-                                User Accounts</a>
-                            <a href="<c:url value='/admin/vendors'/>" class="admin-nav-item"><i
-                                    class="fa fa-handshake-o"></i> Vendor Requests</a>
-                            <a href="<c:url value='/admin/inquiries'/>" class="admin-nav-item"><i
-                                    class="fa fa-envelope"></i> Inquiries</a>
-                            <div style="margin-top: 50px; border-top: 1px solid #222; padding-top: 20px;">
-                                <a href="<c:url value='/'/>" class="admin-nav-item"><i class="fa fa-sign-out"></i> Back
-                                    to Site</a>
-                            </div>
-                        </nav>
-                    </aside>
+            <div class="sidebar-header">
+                <a href="<c:url value='/'/>">
+                    <img src="<c:url value='/views/assets/images/logo.png'/>" alt="Youth Travel">
+                </a>
+            </div>
+            <nav class="admin-nav">
+                <a href="<c:url value='/admin/dashboard'/>" class="admin-nav-item ">
+                    <i class="fa fa-th-large"></i> Dashboard
+                </a>
+                <a href="<c:url value='/admin/trips'/>" class="admin-nav-item active">
+                    <i class="fa fa-motorcycle"></i> Manage Trips
+                </a>
+                <a href="<c:url value='/admin/users'/>" class="admin-nav-item ">
+                    <i class="fa fa-users"></i> User Accounts
+                </a>
+                <a href="<c:url value='/admin/vendors'/>" class="admin-nav-item ">
+                    <i class="fa fa-handshake-o"></i> Vendor Requests
+                </a>
+                <a href="<c:url value='/admin/home-images'/>" class="admin-nav-item ">
+                    <i class="fa fa-image"></i> Homepage Photos
+                </a>
+                <a href="<c:url value='/admin/inquiries'/>" class="admin-nav-item ">
+                    <i class="fa fa-envelope"></i> Inquiries
+                </a>
+                <div style="margin-top: 50px; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 20px;">
+                    <a href="<c:url value='/'/>" class="admin-nav-item">
+                        <i class="fa fa-sign-out"></i> Back to Site
+                    </a>
+                </div>
+            </nav>
+        </aside>
                     <main class="admin-main">
                         <div class="breadcrumb-bar">
                             <a href="<c:url value='/admin/trips'/>"><i class="fa fa-arrow-left"></i> Back to All
@@ -297,7 +314,7 @@
                                     <span><i class="fa fa-map-marker"></i>${pkg.destination}</span>
                                     <span><i class="fa fa-inr"></i>₹${pkg.price}</span>
                                     <span><i class="fa fa-users"></i><strong
-                                            style="color:#fff;">${bookings.size()}</strong> bookings</span>
+                                            style="color:#fff;">${not empty bookings ? bookings.size() : 0}</strong> bookings</span>
                                 </div>
                             </div>
                         </div>
@@ -306,7 +323,7 @@
                         <div class="admin-section">
                             <div class="section-title">
                                 Users Who Used This Package
-                                <span>${bookings.size()}</span>
+                                <span>${not empty bookings ? bookings.size() : 0}</span>
                             </div>
                             <c:choose>
                                 <c:when test="${empty bookings}">

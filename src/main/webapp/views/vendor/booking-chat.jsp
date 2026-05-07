@@ -15,7 +15,7 @@
         body { font-family: 'Dosis', sans-serif; background-color: #0b0f18; color: rgba(255, 255, 255, 0.92); margin: 0; padding: 0; height: 100vh; overflow: hidden; }
         
         .header { position: fixed; top: 0; left: 0; right: 0; height: 70px; background: #161c28; display: flex; align-items: center; justify-content: space-between; padding: 0 30px; z-index: 1000; border-bottom: 1px solid rgba(255,255,255,0.05); }
-        .chat-container { display: flex; flex-direction: column; height: calc(100vh - 70px); margin-top: 70px; max-width: 900px; margin-left: auto; margin-right: auto; background: #161c28; border-left: 1px solid rgba(255,255,255,0.05); border-right: 1px solid rgba(255,255,255,0.05); }
+        .chat-container { display: flex; flex-direction: column; height: 100vh; margin-top: 0; max-width: 900px; margin-left: auto; margin-right: auto; background: #161c28; border-left: 1px solid rgba(255,255,255,0.05); border-right: 1px solid rgba(255,255,255,0.05); }
         
         .chat-header { padding: 20px 30px; border-bottom: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.02); }
         .chat-header-info { display: flex; align-items: center; gap: 15px; }
@@ -42,12 +42,6 @@
     </style>
 </head>
 <body>
-    <header class="header">
-        <div class="header-logo"><a href="<c:url value='/vendor/dashboard'/>"><img src="<c:url value='/views/assets/images/logo.png'/>" style="height: 35px;"></a></div>
-        <div style="display: flex; align-items: center; gap: 20px;">
-            <a href="<c:url value='/vendor/guest-list'/>" style="color: #fff; text-decoration: none; font-weight: 700; font-size: 14px;"><i class="fa fa-arrow-left"></i> Back to Guest List</a>
-        </div>
-    </header>
 
     <div class="chat-container">
         <div class="chat-header">
