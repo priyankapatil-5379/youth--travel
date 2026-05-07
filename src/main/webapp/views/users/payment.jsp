@@ -77,8 +77,21 @@
             "description": "Booking for ${booking.trip.title}",
             "image": "https://ui-avatars.com/api/?name=YT&background=f04c26&color=fff",
             "handler": function (response){
-                alert("Payment Successful! Payment ID: " + response.razorpay_payment_id);
-                window.location.href = "<c:url value='/user/my-bookings'/>";
+                fetch('<c:url value="/user/payment/success"/>', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        bookingId: '${booking.id}',
+                        paymentId: response.razorpay_payment_id
+                    })
+                }).then(res => {
+                    if (res.ok) {
+                        alert("Payment Successful! Payment ID: " + response.razorpay_payment_id);
+                        window.location.href = "<c:url value='/user/my-bookings'/>";
+                    } else {
+                        alert("Payment recorded by Razorpay, but local sync failed. Please contact support.");
+                    }
+                });
             },
             "prefill": {
                 "name": "${user.name}",

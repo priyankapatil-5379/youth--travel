@@ -439,12 +439,83 @@
         </div>
     </div>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.5.1/sockjs.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
     <script>
-        // Auto-scroll to bottom
         const chatBox = document.getElementById('chatBox');
-        if (chatBox) {
+        if (chatBox) chatBox.scrollTop = chatBox.scrollHeight;
+
+        let stompClient = null;
+        const vendorId = "${loggedInVendor.id}";
+        const vendorName = "${loggedInVendor.businessName}";
+        const activeChatEmail = "${chatWithEmail}";
+
+        function connect() {
+            const socket = new SockJS('/ws');
+            stompClient = Stomp.over(socket);
+            stompClient.connect({}, function (frame) {
+                stompClient.subscribe('/topic/vendor/' + vendorId, function (msg) {
+                    const message = JSON.parse(msg.body);
+                    onMessageReceived(message);
+                });
+            });
+        }
+
+        function onMessageReceived(message) {
+            // Append to chat if it's from the active user OR it's an echo of my own message to this user
+            const isFromActiveUser = !message.fromVendor && message.senderEmail === activeChatEmail;
+            const isMyEchoToActiveUser = message.fromVendor && message.userEmail === activeChatEmail;
+            
+            if (activeChatEmail && (isFromActiveUser || isMyEchoToActiveUser)) {
+                appendMessage(message);
+            }
+            // Update preview in list
+            const previews = document.querySelectorAll('.inbox-preview');
+            previews.forEach(p => {
+                if (p.closest('.inbox-item').href.includes(message.senderEmail)) {
+                    p.innerText = message.content;
+                }
+            });
+        }
+
+        function appendMessage(msg) {
+            if (!chatBox) return;
+            const isMe = msg.fromVendor;
+            const time = new Date(msg.sentAt).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+            
+            const div = document.createElement('div');
+            div.className = 'msg-bubble ' + (isMe ? 'msg-sent' : 'msg-received');
+            div.innerHTML = `
+                \${msg.content}
+                <span class="msg-time">\${time}</span>
+            `;
+            chatBox.appendChild(div);
             chatBox.scrollTop = chatBox.scrollHeight;
         }
+
+        // Intercept form submission to send via WebSocket
+        const chatForm = document.querySelector('.chat-form');
+        if (chatForm) {
+            chatForm.onsubmit = function(e) {
+                e.preventDefault();
+                const input = chatForm.querySelector('input[name="content"]');
+                const content = input.value.trim();
+                if (content && stompClient) {
+                    const msgPayload = {
+                        content: content,
+                        vendorId: vendorId,
+                        senderEmail: activeChatEmail, // Conversation key (user email)
+                        senderName: vendorName,
+                        userEmail: activeChatEmail, // Recipient identification
+                        isFromVendor: true
+                    };
+                    stompClient.send("/app/chat.sendMessage", {}, JSON.stringify(msgPayload));
+                    input.value = '';
+                }
+            };
+        }
+
+        connect();
     </script>
 </body>
 </html>

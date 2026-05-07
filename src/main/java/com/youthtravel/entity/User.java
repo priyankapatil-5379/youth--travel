@@ -37,12 +37,28 @@ package com.youthtravel.entity;
     @Column(name = "created_at", updatable = false)
     private java.time.LocalDateTime createdAt;
 
+    @Column(name = "last_active_at")
+    private java.time.LocalDateTime lastActiveAt;
+
     @Column(nullable = false, columnDefinition = "boolean default false")
     private boolean isBlocked = false;
 
     @PrePersist
     protected void onCreate() {
         createdAt = java.time.LocalDateTime.now();
+        lastActiveAt = java.time.LocalDateTime.now();
+    }
+
+    // Dynamic Badge Logic
+    public java.util.List<String> getDynamicBadges(long postsCount) {
+        java.util.List<String> badges = new java.util.ArrayList<>();
+        if (travelPoints > 100) badges.add("Travel Lover");
+        if (travelPoints > 500) badges.add("Adventure Seeker");
+        if (travelPoints > 1000) badges.add("Master Explorer");
+        if (postsCount > 5) badges.add("Memory Maker");
+        if (postsCount > 15) badges.add("Nature Enthusiast");
+        if (badges.isEmpty()) badges.add("New Traveler");
+        return badges;
     }
  
      // Default Constructor
@@ -173,6 +189,14 @@ package com.youthtravel.entity;
 
      public java.time.LocalDateTime getCreatedAt() {
          return createdAt;
+     }
+
+     public java.time.LocalDateTime getLastActiveAt() {
+         return lastActiveAt;
+     }
+
+     public void setLastActiveAt(java.time.LocalDateTime lastActiveAt) {
+         this.lastActiveAt = lastActiveAt;
      }
 
      public java.time.LocalDateTime getRegisteredAt() {

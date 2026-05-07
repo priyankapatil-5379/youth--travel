@@ -194,7 +194,8 @@ public class VendorController {
     private com.youthtravel.repository.ReviewRepository reviewRepository;
 
     @Autowired
-    private com.youthtravel.repository.TripScheduleRepository tripScheduleRepository;
+
+    private org.springframework.messaging.simp.SimpMessagingTemplate messagingTemplate;
 
     @GetMapping("/dashboard")
     public String showVendorDashboard(HttpSession session, org.springframework.ui.Model model) {
@@ -345,8 +346,31 @@ public class VendorController {
             msg.setContent(content);
             msg.setFromVendor(true);
             msg.setRead(false);
-            messageRepository.save(msg);
-            
+            com.youthtravel.entity.Message savedMsg = messageRepository.save(msg);
+
+            // Broadcast via WebSocket so user sees it instantly
+            String time = savedMsg.getSentAt() != null
+                ? savedMsg.getSentAt().format(java.time.format.DateTimeFormatter.ofPattern("hh:mm a, MMM dd")) : "";
+            java.util.Map<String, Object> dto = new java.util.LinkedHashMap<>();
+            dto.put("id", savedMsg.getId());
+            dto.put("content", savedMsg.getContent());
+            dto.put("senderName", savedMsg.getSenderName());
+            dto.put("senderEmail", savedMsg.getSenderEmail());
+            dto.put("fromVendor", true);
+            dto.put("formattedTime", time);
+            dto.put("sentAt", savedMsg.getSentAt() != null ? savedMsg.getSentAt().toString() : "");
+            dto.put("bookingId", booking.getId());
+            dto.put("vendorId", vendor.getId());
+            dto.put("userEmail", booking.getCustomerEmail());
+
+            // Notify booking-specific room
+            messagingTemplate.convertAndSend("/topic/booking/" + booking.getId(), dto);
+            // Notify user's personal inbox
+            String safeEmail = booking.getCustomerEmail().replace("@", "_at_").replace(".", "_dot_");
+            messagingTemplate.convertAndSend("/topic/user/" + safeEmail, dto);
+            // Notify vendor topic as well
+            messagingTemplate.convertAndSend("/topic/vendor/" + vendor.getId(), dto);
+
             return "redirect:/vendor/booking/" + id + "/chat";
         }
         return "redirect:/vendor/guest-list";
@@ -377,8 +401,8 @@ public class VendorController {
 
         com.youthtravel.entity.Message msg = new com.youthtravel.entity.Message();
         msg.setVendor(vendor);
-        msg.setSenderEmail(recipientEmail); // We use this to group conversations
-        msg.setSenderName("Traveler"); // Ideally fetch from conversation
+        msg.setSenderEmail(recipientEmail); // grouping key — user email
+        msg.setSenderName(vendor.getBusinessName());
         msg.setContent(content);
         msg.setFromVendor(true);
         msg.setRead(false);
@@ -386,13 +410,40 @@ public class VendorController {
         java.util.List<com.youthtravel.entity.Message> activeChat = messageService.getChat(vendor, recipientEmail);
         if (activeChat != null && !activeChat.isEmpty()) {
             com.youthtravel.entity.Message lastMsg = activeChat.get(activeChat.size() - 1);
-            msg.setSenderName(lastMsg.getSenderName() != null ? lastMsg.getSenderName() : "Traveler");
             if (lastMsg.getBooking() != null) {
                 msg.setBooking(lastMsg.getBooking());
             }
         }
         
-        messageRepository.save(msg);
+        com.youthtravel.entity.Message savedMsg = messageRepository.save(msg);
+
+        // ── WebSocket broadcast so user sees message instantly ──────────────
+        String time = savedMsg.getSentAt() != null
+            ? savedMsg.getSentAt().format(java.time.format.DateTimeFormatter.ofPattern("hh:mm a, MMM dd")) : "";
+
+        java.util.Map<String, Object> dto = new java.util.LinkedHashMap<>();
+        dto.put("id", savedMsg.getId());
+        dto.put("content", savedMsg.getContent());
+        dto.put("senderName", vendor.getBusinessName());
+        dto.put("senderEmail", vendor.getEmailId());
+        dto.put("fromVendor", true);
+        dto.put("formattedTime", time);
+        dto.put("sentAt", savedMsg.getSentAt() != null ? savedMsg.getSentAt().toString() : "");
+        dto.put("bookingId", savedMsg.getBooking() != null ? savedMsg.getBooking().getId() : null);
+        dto.put("vendorId", vendor.getId());
+        dto.put("userEmail", recipientEmail);
+
+        // user personal topic — must match what user/messages.jsp subscribes to
+        String safeEmail = recipientEmail.replace("@", "_at_").replace(".", "_dot_");
+        messagingTemplate.convertAndSend("/topic/user/" + safeEmail, dto);
+
+        // also broadcast on booking topic if there's a booking
+        if (savedMsg.getBooking() != null) {
+            messagingTemplate.convertAndSend("/topic/booking/" + savedMsg.getBooking().getId(), dto);
+        }
+
+        // vendor's own topic so other vendor tabs update too
+        messagingTemplate.convertAndSend("/topic/vendor/" + vendor.getId(), dto);
 
         return "redirect:/vendor/messages?chatWith=" + recipientEmail;
     }

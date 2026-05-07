@@ -10,6 +10,8 @@
     <link rel="stylesheet" href="<c:url value='/views/assets/css/bootstrap.min.css'/>">
     <link rel="stylesheet" href="<c:url value='/views/assets/css/font-awesome.min.css'/>">
     <link href="https://fonts.googleapis.com/css?family=Dosis:300,400,500,600,700,800" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.5.1/sockjs.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
     <style>
         :root { --primary-blue: #f04c26; --text-muted: #7e8c9a; --transition: all 0.3s ease; }
         body { font-family: 'Dosis', sans-serif; background-color: #0b0f18; color: rgba(255, 255, 255, 0.92); margin: 0; padding: 0; height: 100vh; overflow: hidden; }
@@ -39,6 +41,10 @@
         .chat-input:focus { border-color: var(--primary-blue); background: rgba(255,255,255,0.08); }
         .btn-send { background: var(--primary-blue); color: #fff; border: none; width: 50px; height: 50px; border-radius: 50%; display: flex; justify-content: center; align-items: center; cursor: pointer; transition: var(--transition); box-shadow: 0 5px 15px rgba(240, 76, 38, 0.3); }
         .btn-send:hover { transform: scale(1.05); }
+
+        .live-badge { display: inline-flex; align-items: center; gap: 5px; background: rgba(34,197,94,0.1); color: #22c55e; padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; }
+        .live-dot { width: 6px; height: 6px; background: #22c55e; border-radius: 50%; animation: pulse 1.5s infinite; }
+        @keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:0.4;} }
     </style>
 </head>
 <body>
@@ -52,9 +58,12 @@
                     <div style="font-size: 13px; color: var(--text-muted);">Trip: <span style="color: #fff;">${booking.trip.title}</span></div>
                 </div>
             </div>
-            <div>
-                <span class="status-badge" style="background: rgba(34, 197, 94, 0.1); color: #22c55e; padding: 5px 12px; border-radius: 20px; font-weight: 700; font-size: 12px;">Booking ID: #${booking.id}</span>
-                <div style="font-size: 11px; color: var(--text-muted); text-align: right; margin-top: 5px;">Travelers: ${booking.numberOfTravelers}</div>
+            <div style="display:flex; align-items:center; gap:15px;">
+                <div class="live-badge"><div class="live-dot"></div> LIVE</div>
+                <div>
+                    <span class="status-badge" style="background: rgba(34, 197, 94, 0.1); color: #22c55e; padding: 5px 12px; border-radius: 20px; font-weight: 700; font-size: 12px;">Booking ID: #${booking.id}</span>
+                    <div style="font-size: 11px; color: var(--text-muted); text-align: right; margin-top: 5px;">Travelers: ${booking.numberOfTravelers}</div>
+                </div>
             </div>
         </div>
 
@@ -83,17 +92,54 @@
         </div>
 
         <div class="chat-input-area">
-            <form class="chat-form" action="<c:url value='/vendor/booking/${booking.id}/chat'/>" method="post">
-                <input type="text" name="content" class="chat-input" placeholder="Type your reply to the customer..." required autocomplete="off">
+            <form class="chat-form" id="chatForm" action="<c:url value='/vendor/booking/${booking.id}/chat'/>" method="post">
+                <input type="text" name="content" id="msgInput" class="chat-input" placeholder="Type your reply to the customer..." required autocomplete="off">
                 <button type="submit" class="btn-send"><i class="fa fa-paper-plane"></i></button>
             </form>
         </div>
     </div>
 
     <script>
-        // Auto-scroll to bottom of messages
+        const bookingId = ${booking.id};
         const messagesArea = document.getElementById('messagesArea');
+
+        // Auto-scroll to bottom
         messagesArea.scrollTop = messagesArea.scrollHeight;
+
+        // WebSocket connection — listen for incoming user replies
+        let stompClient = null;
+
+        function connect() {
+            const socket = new SockJS('/ws');
+            stompClient = Stomp.over(socket);
+            stompClient.debug = null; // suppress console noise
+            stompClient.connect({}, function(frame) {
+                // Subscribe to the booking-specific topic
+                stompClient.subscribe('/topic/booking/' + bookingId, function(msg) {
+                    const data = JSON.parse(msg.body);
+                    // Only append messages FROM USER (not from vendor — those are added by form submit)
+                    if (!data.fromVendor) {
+                        appendMessage(data);
+                    }
+                });
+            });
+        }
+
+        function appendMessage(msg) {
+            const isVendor = msg.fromVendor;
+            const div = document.createElement('div');
+            div.className = 'msg-bubble ' + (isVendor ? 'msg-sent' : 'msg-received');
+            if (!isVendor) {
+                div.innerHTML = '<span class="sender-label">' + (msg.senderName || 'Customer') + ' (Customer)</span>' +
+                    msg.content + '<span class="msg-time">' + (msg.formattedTime || '') + '</span>';
+            } else {
+                div.innerHTML = msg.content + '<span class="msg-time">' + (msg.formattedTime || '') + '</span>';
+            }
+            messagesArea.appendChild(div);
+            messagesArea.scrollTop = messagesArea.scrollHeight;
+        }
+
+        connect();
     </script>
 </body>
 </html>

@@ -56,6 +56,7 @@ public class Trip {
     private LocalDateTime createdAt;
 
     @OneToMany(mappedBy = "trip", fetch = FetchType.LAZY)
+    @com.fasterxml.jackson.annotation.JsonIgnore
     private List<Review> reviews;
 
     @Column(name = "local_vendor", nullable = false)

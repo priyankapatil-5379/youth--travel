@@ -5,476 +5,844 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>${user.name} | Premium Profile</title>
+    <title>${user.fullName} | Youth Travel Profile</title>
     <link rel="stylesheet" href="<c:url value='/views/assets/css/bootstrap.min.css'/>">
     <link rel="stylesheet" href="<c:url value='/views/assets/css/font-awesome.min.css'/>">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
             --primary: #008080;
+            --primary-light: #e0f2f2;
             --primary-hover: #077378;
-            --accent-red: #e63946;
+            --accent-coral: #ff9f43;
             --bg-body: #f1f5f9;
             --bg-card: #ffffff;
             --border-color: #e2e8f0;
-            --text-main: #0f172a;
+            --text-main: #1e293b;
             --text-muted: #64748b;
             --sidebar-width: 260px;
-            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            --glass-bg: rgba(255, 255, 255, 0.7);
+            --glass-border: rgba(255, 255, 255, 0.5);
+            --shadow-premium: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
         }
 
-        body.light-theme { 
+        body { 
             font-family: 'Inter', sans-serif; 
             background-color: var(--bg-body); 
             color: var(--text-main); 
             margin: 0; padding: 0; 
-            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
         }
 
         .wrapper { display: flex; min-height: 100vh; }
         .main-content { flex: 1; margin-left: var(--sidebar-width); padding: 40px !important; }
 
-        .main-container { max-width: 1100px; margin: 0 auto; }
+        .main-container { max-width: 1200px; margin: 0 auto; position: relative; }
 
-        /* Profile Header Card */
-        .profile-header { 
-            background: var(--bg-card); 
-            border-radius: 24px; 
-            border: 1px solid var(--border-color); 
-            padding: 48px; 
-            margin-bottom: 40px; 
-            display: flex; 
-            gap: 64px; 
-            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+        /* Profile Hero Section */
+        .profile-hero {
+            position: relative;
+            background: #ffffff;
+            border-radius: 30px;
+            padding: 40px;
+            margin-bottom: 40px;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-premium);
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            gap: 40px;
+            min-height: 350px;
+        }
+
+        /* Decorative Background elements */
+        .hero-bg-visual {
+            position: absolute;
+            right: 0;
+            top: 0;
+            height: 100%;
+            width: 100%;
+            opacity: 0.12;
+            pointer-events: none;
+            z-index: 0;
+            background-image: 
+                url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 300'%3E%3Cpath d='M800 100 L850 50 L900 100 Z M700 80 L740 40 L780 80 Z' fill='%23008080'/%3E%3Cpath d='M0 300 L200 150 L400 250 L600 50 L850 200 L1000 150 L1000 300 L0 300 Z' fill='%23008080'/%3E%3Ccircle cx='150' cy='50' r='1' fill='%23008080'/%3E%3Ccircle cx='250' cy='80' r='1' fill='%23008080'/%3E%3Cpath d='M400 30 L410 25 L420 30' fill='none' stroke='%23008080' stroke-width='1'/%3E%3Cpath d='M430 40 L440 35 L450 40' fill='none' stroke='%23008080' stroke-width='1'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: bottom right;
+            background-size: contain;
+        }
+
+        .avatar-section {
+            position: relative;
+            z-index: 2;
+            flex-shrink: 0;
+        }
+
+        .avatar-ring {
+            width: 200px;
+            height: 200px;
+            padding: 8px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--accent-coral), #4facfe);
+            box-shadow: 0 10px 30px rgba(0, 128, 128, 0.2);
             position: relative;
         }
-        
-        .avatar-column { display: flex; flex-direction: column; align-items: center; width: 180px; }
-        .avatar-wrapper { 
-            position: relative; 
-            width: 180px; height: 180px; 
-            padding: 4px; 
-            background: linear-gradient(135deg, var(--primary), var(--accent-red)); 
+
+        .avatar-main {
+            width: 100%;
+            height: 100%;
             border-radius: 50%;
+            border: 6px solid #ffffff;
+            object-fit: cover;
+            background: #f8fafc;
         }
-        .avatar-img { width: 100%; height: 100%; border-radius: 50%; border: 4px solid #ffffff; object-fit: cover; }
-        .plus-btn { 
-            position: absolute; bottom: 8px; right: 8px; 
-            width: 40px; height: 40px; 
-            background: var(--primary); 
-            border: 3px solid #ffffff; 
-            border-radius: 50%; 
-            display: flex; align-items: center; justify-content: center; 
-            color: white; font-size: 16px; cursor: pointer;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+
+        .avatar-upload-btn {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            width: 44px;
+            height: 44px;
+            background: var(--primary);
+            color: white;
+            border: 4px solid white;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
             transition: var(--transition);
         }
-        .plus-btn:hover { background: var(--primary-hover); transform: scale(1.1); }
 
-        .user-meta-below { margin-top: 24px; text-align: center; }
-        .display-name { font-size: 20px; font-weight: 800; color: var(--text-main); margin-bottom: 12px; letter-spacing: -0.5px; }
-        .btn-edit-premium { 
-            background: #f1f5f9; 
-            border: 1px solid var(--border-color); 
-            color: var(--text-main); 
-            padding: 10px 24px; 
-            border-radius: 12px; 
-            font-size: 13px; 
+        .avatar-upload-btn:hover { transform: scale(1.1) rotate(5deg); background: var(--primary-hover); }
+
+        .profile-info {
+            flex: 1;
+            z-index: 2;
+        }
+
+        .profile-header-top {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 5px;
+        }
+
+        .profile-name {
+            font-size: 32px;
+            font-weight: 800;
+            letter-spacing: -1px;
+            margin: 0;
+            color: var(--text-main);
+        }
+
+        .verified-badge {
+            color: #3b82f6;
+            font-size: 20px;
+        }
+
+        .profile-username {
+            font-size: 16px;
+            color: var(--primary);
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .profile-location {
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .profile-bio {
+            font-size: 15px;
+            color: var(--text-main);
+            line-height: 1.6;
+            margin-bottom: 24px;
+            max-width: 500px;
+        }
+
+        .profile-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 25px;
+        }
+
+        .tag-pill {
+            padding: 6px 14px;
+            border-radius: 100px;
+            font-size: 11px;
             font-weight: 700;
-            transition: var(--transition);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
-        .btn-edit-premium:hover { background: #e2e8f0; border-color: #cbd5e1; }
 
-        .info-column { flex: 1; padding-top: 16px; }
-        .username-row { font-size: 28px; font-weight: 800; color: var(--text-main); margin-bottom: 32px; letter-spacing: -1px; }
-        .stats-row { display: flex; gap: 48px; }
-        .stat-item { display: flex; flex-direction: column; }
-        .stat-num { font-size: 32px; font-weight: 800; color: var(--primary); }
-        .stat-label { font-size: 14px; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+        .tag-green { background: #ecfdf5; color: #059669; }
+        .tag-blue { background: #eff6ff; color: #2563eb; }
+        .tag-orange { background: #fff7ed; color: #ea580c; }
 
-        .reputation-badge {
-            background: #f0fdfa;
-            border: 1px solid #ccfbf1;
-            padding: 16px 24px;
+        .profile-meta-footer {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .profile-meta-item { display: flex; align-items: center; gap: 8px; }
+        .online-status { width: 8px; height: 8px; border-radius: 50%; background: #10b981; }
+
+        .stats-and-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            z-index: 2;
+        }
+
+        .stats-grid {
+            display: flex;
+            gap: 20px;
+        }
+
+        .stat-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            padding: 20px;
             border-radius: 20px;
+            min-width: 140px;
             text-align: center;
-        }
-        .reputation-value { font-size: 24px; font-weight: 800; color: var(--primary); }
-        .reputation-label { font-size: 10px; color: var(--primary); text-transform: uppercase; letter-spacing: 1px; font-weight: 700; margin-top: 4px; }
-
-        /* Content Sections */
-        .content-divider { border-bottom: 1px solid var(--border-color); margin-bottom: 40px; }
-        .tabs-header { display: flex; gap: 48px; }
-        .tab-trigger { 
-            padding: 16px 0;
-            font-size: 14px; font-weight: 700; color: var(--text-muted); 
-            cursor: pointer; display: flex; align-items: center; gap: 10px; 
-            text-transform: uppercase; letter-spacing: 1px; 
             transition: var(--transition);
-            border-bottom: 2px solid transparent;
-            margin-bottom: -1px;
         }
-        .tab-trigger.active { color: var(--primary); border-bottom-color: var(--primary); }
 
-        .posts-side-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 24px; }
-        .post-card { 
-            background: var(--bg-card); 
-            border-radius: 16px; 
-            overflow: hidden; 
-            border: 1px solid var(--border-color); 
-            transition: var(--transition); 
-            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+        .stat-card:hover { transform: translateY(-5px); background: #ffffff; box-shadow: 0 10px 20px rgba(0,0,0,0.05); }
+
+        .stat-value {
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--text-main);
+            display: block;
         }
-        .post-card:hover { transform: translateY(-4px); border-color: var(--primary); box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); }
-        .post-media-container { position: relative; width: 100%; aspect-ratio: 1; overflow: hidden; background: #f8fafc; }
-        .post-media-container img, .post-media-container video { width: 100%; height: 100%; object-fit: cover; }
-        .post-details { padding: 16px; }
-        .post-caption { font-size: 14px; color: var(--text-main); font-weight: 500; margin-bottom: 12px; line-height: 1.5; }
-        .post-stats { font-size: 12px; color: var(--text-muted); font-weight: 600; }
 
-        .advices-side-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 24px; }
-        .advice-premium-card { 
-            background: var(--bg-card); 
-            border: 1px solid var(--border-color); 
-            border-radius: 16px; 
-            padding: 24px; 
+        .stat-label {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .stat-icon {
+            margin-top: 10px;
+            font-size: 18px;
+            color: var(--primary);
+            opacity: 0.6;
+        }
+
+        .hero-action-box {
+            background: var(--primary);
+            border-radius: 20px;
+            padding: 20px;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            box-shadow: 0 10px 20px rgba(0, 128, 128, 0.2);
+        }
+
+        .action-content h6 { margin: 0; font-weight: 700; font-size: 14px; }
+        .action-content p { margin: 0; font-size: 11px; opacity: 0.8; }
+
+        .action-badge {
+            width: 44px; height: 44px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 20px;
+        }
+
+        .btn-edit-profile {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
             transition: var(--transition);
-            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            width: fit-content;
         }
-        .advice-premium-card:hover { border-color: var(--primary); transform: translateY(-4px); box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); }
-        .advice-icon-box { width: 48px; height: 48px; background: #f0fdfa; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px; color: var(--primary); margin-bottom: 20px; }
-        .advice-title { font-size: 18px; font-weight: 800; color: var(--text-main); margin-bottom: 12px; letter-spacing: -0.3px; }
-        .advice-body { font-size: 14px; color: var(--text-muted); line-height: 1.6; font-weight: 400; }
+
+        .btn-edit-profile:hover { background: var(--primary-hover); transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0, 128, 128, 0.2); }
+
+        /* Tabs Section */
+        .tabs-nav {
+            display: flex;
+            gap: 40px;
+            border-bottom: 2px solid var(--border-color);
+            margin-bottom: 30px;
+            padding-left: 20px;
+        }
+
+        .tab-item {
+            padding: 15px 10px;
+            font-weight: 700;
+            font-size: 14px;
+            color: var(--text-muted);
+            cursor: pointer;
+            position: relative;
+            transition: var(--transition);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .tab-item:hover { color: var(--primary); }
+        .tab-item.active { color: var(--primary); }
+        .tab-item.active::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: var(--primary);
+            border-radius: 3px;
+            box-shadow: 0 -2px 10px rgba(0, 128, 128, 0.4);
+        }
+
+        /* Memory Cards */
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .section-title {
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--text-main);
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title::after {
+            content: '';
+            width: 40px;
+            height: 4px;
+            background: var(--accent-coral);
+            border-radius: 2px;
+            margin-left: 10px;
+        }
+
+        .btn-add-memory {
+            background: var(--accent-coral);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: var(--transition);
+        }
+
+        .btn-add-memory:hover { background: #f39c12; transform: translateY(-2px); box-shadow: 0 5px 15px rgba(255, 159, 67, 0.3); }
+
+        .memory-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 30px;
+        }
+
+        .memory-card {
+            background: white;
+            border-radius: 24px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            transition: var(--transition);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        }
+
+        .memory-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            border-color: var(--primary);
+        }
+
+        .memory-media {
+            position: relative;
+            height: 240px;
+            overflow: hidden;
+        }
+
+        .memory-media img, .memory-media video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s ease;
+        }
+
+        .memory-card:hover .memory-media img { transform: scale(1.05); }
+
+        .category-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(5px);
+            padding: 6px 14px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 800;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            z-index: 2;
+        }
+
+        .memory-actions-overlay {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            display: flex;
+            gap: 8px;
+            opacity: 0;
+            transition: var(--transition);
+            z-index: 2;
+        }
+
+        .memory-card:hover .memory-actions-overlay { opacity: 1; }
+
+        .action-circle-btn {
+            width: 36px; height: 36px;
+            background: rgba(0,0,0,0.5);
+            color: white;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .action-circle-btn:hover { background: var(--primary); transform: scale(1.1); }
+        .action-circle-btn.delete:hover { background: var(--accent-red); }
+
+        .memory-body { padding: 20px; }
+        .memory-title { font-size: 18px; font-weight: 800; color: var(--text-main); margin-bottom: 8px; }
+        .memory-desc { font-size: 14px; color: var(--text-muted); line-height: 1.5; margin-bottom: 15px; }
+
+        .memory-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 15px;
+            border-top: 1px solid #f1f5f9;
+        }
+
+        .memory-stats { display: flex; gap: 15px; font-size: 13px; font-weight: 600; }
+        .stat-icon-text { display: flex; align-items: center; gap: 5px; color: var(--text-muted); transition: 0.2s; }
+        .stat-icon-text.liked { color: var(--accent-coral); }
+        .memory-time { font-size: 12px; color: var(--text-muted); font-weight: 500; }
+
+        /* Advice specific cards */
+        .advice-card {
+            background: white;
+            border-radius: 24px;
+            padding: 25px;
+            border: 1px solid var(--border-color);
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .advice-card:hover { border-color: var(--primary); transform: translateY(-5px); box-shadow: var(--shadow-premium); }
+        
+        .advice-icon-wrap {
+            width: 50px; height: 50px;
+            background: var(--primary-light);
+            color: var(--primary);
+            border-radius: 14px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
 
         /* Modals */
         .unbreakable-modal { 
             display: none; position: fixed; inset: 0; 
-            background: rgba(15, 23, 42, 0.5); 
-            backdrop-filter: blur(4px);
+            background: rgba(15, 23, 42, 0.6); 
+            backdrop-filter: blur(8px);
             z-index: 10000; 
         }
         .unbreakable-modal-content {
             position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            width: 90%; max-width: 500px; max-height: 90vh; overflow-y: auto;
-            background: #ffffff; border-radius: 24px; padding: 32px;
+            width: 90%; max-width: 550px; max-height: 90vh; overflow-y: auto;
+            background: #ffffff; border-radius: 30px; padding: 40px;
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
         }
-        .modal-close-btn { position: absolute; top: 24px; right: 24px; font-size: 24px; cursor: pointer; color: var(--text-muted); transition: var(--transition); }
-        .modal-close-btn:hover { color: var(--text-main); }
+        .modal-close { position: absolute; top: 25px; right: 25px; font-size: 24px; cursor: pointer; color: var(--text-muted); }
 
-        .form-label { font-size: 13px; font-weight: 700; color: var(--text-main); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .form-label { font-size: 12px; font-weight: 800; color: var(--text-main); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; display: block; }
         .form-control { 
-            background: #f8fafc; border: 1px solid var(--border-color); 
-            border-radius: 12px; padding: 12px 16px; color: var(--text-main); font-weight: 500;
+            background: #f8fafc; border: 1.5px solid var(--border-color); 
+            border-radius: 12px; padding: 12px 18px; font-weight: 500; font-family: inherit;
         }
-        .form-control:focus { background: #ffffff; border-color: var(--primary); outline: none; box-shadow: 0 0 0 4px rgba(0, 128, 128, 0.1); }
-        .btn-primary { background: var(--primary); border: none; padding: 14px; border-radius: 12px; font-weight: 700; color: white; width: 100%; transition: var(--transition); }
-        .btn-primary:hover { background: var(--primary-hover); transform: translateY(-1px); box-shadow: 0 4px 6px -1px rgba(0, 128, 128, 0.2); }
+        .form-control:focus { border-color: var(--primary); box-shadow: 0 0 0 4px var(--primary-light); background: white; outline: none; }
+        .btn-submit { background: var(--primary); color: white; border: none; padding: 14px; border-radius: 12px; font-weight: 700; width: 100%; margin-top: 20px; }
+
+        /* Mobile Responsiveness */
+        .mobile-header {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            height: 70px;
+            background: #ffffff;
+            border-bottom: 1px solid var(--border-color);
+            padding: 0 24px;
+            align-items: center;
+            justify-content: space-between;
+            z-index: 900;
+        }
+        .mobile-logo img { height: 45px; width: auto; object-fit: contain; display: block; }
+        .hamburger-menu {
+            font-size: 24px;
+            color: var(--primary);
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 8px;
+        }
 
         @media (max-width: 991px) {
-            .main-content { margin-left: 0; padding: 80px 20px 40px !important; }
-            .profile-header { flex-direction: column; align-items: center; text-align: center; padding: 32px; gap: 32px; }
-            .avatar-column { width: 100%; }
-            .info-column { width: 100%; display: flex; flex-direction: column; align-items: center; }
-            .stats-row { justify-content: center; width: 100%; }
+            .mobile-header { display: flex; }
+            .main-content { margin-left: 0; padding: 100px 20px 40px !important; }
+            .profile-hero { flex-direction: column; align-items: center; text-align: center; padding: 30px; gap: 30px; }
+            .profile-meta-footer { justify-content: center; flex-wrap: wrap; }
+            .stats-grid { flex-wrap: wrap; justify-content: center; }
+            .hero-bg-visual { width: 100%; opacity: 0.1; }
+        }
+
+        @media (max-width: 576px) {
+            .main-content { padding: 90px 15px 30px !important; }
+            .avatar-ring { width: 140px; height: 140px; }
+            .profile-name { font-size: 24px; }
+            .stats-grid { gap: 15px; }
+            .stat-card { min-width: 120px; padding: 15px; }
+            .tabs-nav { gap: 20px; justify-content: center; padding-left: 0; }
+            .tab-item { font-size: 12px; }
+            .memory-grid { grid-template-columns: 1fr; }
+        }
         }
     </style>
-    <script>
-        function openModal(id) { document.getElementById(id).style.display = 'block'; }
-        function closeModal(id) { document.getElementById(id).style.display = 'none'; }
-    </script>
 </head>
-
-<body class="light-theme">
+<body>
     <div class="wrapper">
         <jsp:include page="user-sidebar.jsp">
             <jsp:param name="activePage" value="profile" />
         </jsp:include>
         
+        <!-- Mobile Header -->
+        <header class="mobile-header">
+            <div class="mobile-logo">
+                <a href="<c:url value='/'/>">
+                    <img src="<c:url value='/views/assets/images/logo.png'/>" alt="Youth Travel">
+                </a>
+            </div>
+            <button class="hamburger-menu" onclick="toggleMainSidebar()">
+                <i class="fa fa-bars"></i>
+            </button>
+        </header>
+
         <main class="main-content">
+            <div class="main-container">
+                
+                <!-- Profile Hero Section -->
+                <section class="profile-hero">
+                    <div class="hero-bg-visual"></div>
+                    
+                    <div class="avatar-section">
+                        <div class="avatar-ring">
+                            <c:choose>
+                                <c:when test="${not empty user.profilePhoto}">
+                                    <img src="${user.profilePhoto}" class="avatar-main" id="mainAvatar">
+                                </c:when>
+                                <c:otherwise>
+                                    <div class="avatar-main" id="mainAvatar" style="background: linear-gradient(135deg, #008080, #4facfe); display: flex; align-items: center; justify-content: center; font-size: 50px; color: white; font-weight: 800;">
+                                        ${not empty user.fullName ? user.fullName.substring(0,1).toUpperCase() : 'U'}
+                                    </div>
+                                </c:otherwise>
+                            </c:choose>
+                            <div class="avatar-upload-btn" onclick="openModal('profilePhotoModal')">
+                                <i class="fa fa-camera"></i>
+                            </div>
+                        </div>
+                    </div>
 
+                    <div class="profile-info">
+                        <div class="profile-header-top">
+                            <h1 class="profile-name">${user.fullName}</h1>
+                            <i class="fa fa-check-circle verified-badge" title="Verified Traveler"></i>
+                        </div>
+                        <div class="profile-username">@${user.username}</div>
+                        
+                        <div class="profile-location">
+                            <i class="fa fa-map-marker"></i> <span id="userLocation">${not empty user.city ? user.city : 'India'}</span>
+                        </div>
 
-    <!-- Nuclear Option Modals (Pure JS/CSS - 100% Reliable) -->
-    <div id="adviceModal" class="unbreakable-modal">
+                        <p class="profile-bio">
+                            ${not empty user.profession ? user.profession : 'Wanderer at heart. Exploring new places, collecting memories and inspiring others.'}
+                        </p>
+
+                        <div class="profile-tags" id="dynamicBadges">
+                            <!-- Dynamic Badges -->
+                        </div>
+
+                        <div class="profile-meta-footer">
+                            <div class="profile-meta-item">
+                                <i class="fa fa-calendar-o"></i> Joined <span id="joinedDateDisplay">May 2024</span>
+                            </div>
+                            <div class="profile-meta-item">
+                                <div class="online-status"></div> <span id="lastActiveDisplay">Online now</span>
+                            </div>
+                        </div>
+                         <br>
+                        <div class="mt-4">
+                            <button class="btn-edit-profile" onclick="openModal('profileModal')">
+                                <i class="fa fa-pencil-square-o"></i> Edit Profile
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="stats-and-actions">
+                        <div class="stats-grid">
+                            <div class="stat-card">
+                                <span class="stat-value" id="countPosts">0</span>
+                                <span class="stat-label">Posts</span>
+                                <div class="stat-icon"><i class="fa fa-image"></i></div>
+                            </div>
+                            <div class="stat-card" style="cursor:pointer" onclick="showMyPoints()">
+                                <span class="stat-value" id="countPoints">0</span>
+                                <span class="stat-label">Traveler Points</span>
+                                <div class="stat-icon"><i class="fa fa-trophy"></i></div>
+                            </div>
+                        </div>
+
+                        <div class="hero-action-box">
+                            <div class="action-badge"><i class="fa fa-star"></i></div>
+                            <div class="action-content">
+                                <h6>Keep going, Explorer! 🌟</h6>
+                                <p>You're doing great! Share more memories and earn more traveler points.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Tabs Navigation -->
+                <div class="tabs-nav">
+                    <div class="tab-item active" data-tab="posts">POSTS</div>
+                    <div class="tab-item" data-tab="advice">ADVICES</div>
+                </div>
+
+                <!-- Content Sections -->
+                <div id="postsSection">
+                    <div class="section-header">
+                        <h2 class="section-title">My Memories</h2>
+                        <button class="btn-add-memory" onclick="prepareNewPost()">
+                            <i class="fa fa-plus"></i> New Memory
+                        </button>
+                    </div>
+                    
+                    <!-- Filters/Sort Placeholder -->
+                  <!-- <div class="d-flex justify-content-end mb-4">
+                        <div class="btn-group">
+                            <button class="btn btn-white border dropdown-toggle" style="background:white; border-radius:10px; font-size:12px; font-weight:600;">
+                                <i class="fa fa-sort-amount-desc me-2"></i> Recent First
+                            </button>
+                        </div>
+                    </div>
+					-->
+
+                    <div class="memory-grid" id="postsGrid">
+                        <!-- Dynamically Populated -->
+                    </div>
+                </div>
+
+                <div id="adviceSection" style="display:none;">
+                    <div class="section-header">
+                        <h2 class="section-title">My Advices</h2>
+                        <button class="btn-add-memory" onclick="prepareNewAdvice()">
+                            <i class="fa fa-plus"></i> New Advice
+                        </button>
+                    </div>
+                    <div class="memory-grid" id="adviceGrid">
+                        <!-- Dynamically Populated -->
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- Modals (Functional requirements preserved) -->
+    
+    <!-- Edit Profile Modal -->
+    <div id="profileModal" class="unbreakable-modal">
         <div class="unbreakable-modal-content">
-            <span class="modal-close-btn" onclick="closeModal('adviceModal')">&times;</span>
-            <h3 id="adviceModalTitle" style="margin-top: 0; margin-bottom: 24px; font-weight: 800; color: var(--text-main); letter-spacing: -0.5px;">Share Travel Wisdom</h3>
-            <form id="uploadAdviceForm">
-                <input type="hidden" name="adviceId" id="adviceId">
-                <div class="form-group">
-                    <label class="form-label">Trip Title</label>
-                    <input type="text" name="title" class="form-control" placeholder="e.g., Hiking in Manali" required>
+            <span class="modal-close" onclick="closeModal('profileModal')">&times;</span>
+            <h3 style="font-weight:800; margin-bottom:30px; letter-spacing:-0.5px;">Update Identity</h3>
+            <form id="editProfileForm" enctype="multipart/form-data">
+                <div class="mb-4">
+                    <label class="form-label">Full Name</label>
+                    <input type="text" name="fullName" class="form-control" value="${user.fullName}" required>
                 </div>
-                <div class="form-group" style="margin-top: 15px;">
-                    <label class="form-label">Trip Category</label>
-                    <select name="categories" class="form-control">
-                        <option value="Solo Travel">Solo Travel</option>
-                        <option value="Adventure Trip">Adventure Trip</option>
-                        <option value="Budget Travel">Budget Travel</option>
-                        <option value="Luxury Escape">Luxury Escape</option>
-                        <option value="Food & Culture">Food & Culture</option>
-                        <option value="Road Trip">Road Trip</option>
-                    </select>
+                <div class="mb-4">
+                    <label class="form-label">Username</label>
+                    <input type="text" name="username" class="form-control" value="${user.username}" required>
                 </div>
-                <div class="form-group" style="margin-top: 15px;">
-                    <label class="form-label">Your Review / Experience</label>
-                    <textarea name="content" class="form-control" rows="4" placeholder="Share your experience and tips..." required></textarea>
+                <div class="mb-4">
+                    <label class="form-label">Profession / Bio</label>
+                    <textarea name="profession" class="form-control" rows="3">${user.profession}</textarea>
                 </div>
-                
-                <div class="form-group" style="margin-top: 15px;">
-                    <label class="form-label">Best Time to Visit</label>
-                    <textarea name="bestTimeToVisit" class="form-control" rows="2" placeholder="When should people visit?"></textarea>
-                </div>
-                <div class="form-group" style="margin-top: 15px;">
-                    <label class="form-label">What to Pack</label>
-                    <textarea name="whatToPack" class="form-control" rows="2" placeholder="Essential items to carry..."></textarea>
-                </div>
-                <div class="form-group" style="margin-top: 15px;">
-                    <label class="form-label">Safety Tips</label>
-                    <textarea name="safetyTips" class="form-control" rows="2" placeholder="How to stay safe..."></textarea>
-                </div>
-                <div class="form-group" style="margin-top: 15px;">
-                    <label class="form-label">Money & Budget Tips</label>
-                    <textarea name="budgetTips" class="form-control" rows="2" placeholder="Cost estimates and saving tips..."></textarea>
-                </div>
-                <div class="form-group" style="margin-top: 15px;">
-                    <label class="form-label">Stay & Food Advice</label>
-                    <textarea name="stayFoodAdvice" class="form-control" rows="2" placeholder="Recommended places to stay and eat..."></textarea>
-                </div>
-                <div class="form-group" style="margin-top: 15px;">
-                    <label class="form-label">Transport Tips</label>
-                    <textarea name="transportTips" class="form-control" rows="2" placeholder="How to get around?"></textarea>
-                </div>
-                <div class="form-group" style="margin-top: 15px;">
-                    <label class="form-label">Network & Connectivity</label>
-                    <textarea name="connectivityTips" class="form-control" rows="2" placeholder="SIM cards, WiFi availability..."></textarea>
-                </div>
-                <div class="form-group" style="margin-top: 15px;">
-                    <label class="form-label">Local Rules / Permissions</label>
-                    <textarea name="localRules" class="form-control" rows="2" placeholder="Permits, cultural etiquette..."></textarea>
-                </div>
-                <div class="form-group" style="margin-top: 15px;">
-                    <label class="form-label">Environmental / Responsible Travel Tips</label>
-                    <textarea name="environmentalTips" class="form-control" rows="2" placeholder="How to travel sustainably..."></textarea>
-                </div>
-                <div class="form-group" style="margin-top: 15px;">
-                    <label class="form-label">Pro Tips</label>
-                    <textarea name="proTips" class="form-control" rows="2" placeholder="Hidden gems and expert advice..."></textarea>
-                </div>
-                
-                <button type="submit" id="adviceSubmitBtn" class="btn btn-primary">Post Advice</button>
+                <button type="submit" class="btn-submit">Save Changes</button>
             </form>
         </div>
     </div>
 
-    <div id="adviceDetailModal" class="unbreakable-modal">
+    <!-- Profile Photo Modal -->
+    <div id="profilePhotoModal" class="unbreakable-modal">
+        <div class="unbreakable-modal-content" style="max-width: 400px; text-align: center;">
+            <span class="modal-close" onclick="closeModal('profilePhotoModal')">&times;</span>
+            <h3 style="font-weight:800; margin-bottom:25px;">Profile Photo</h3>
+            <form id="profilePhotoForm" onsubmit="handleProfilePhotoUpload(event)">
+                <div id="photoPreview" style="width: 160px; height: 160px; border-radius: 50%; overflow: hidden; margin: 0 auto 25px; border: 4px solid var(--primary); display: none;">
+                    <img id="photoPreviewImg" src="" style="width: 100%; height: 100%; object-fit: cover;">
+                </div>
+                <div class="mb-4">
+                    <label class="btn btn-outline-primary w-100 py-3" style="border-radius:12px; cursor:pointer;">
+                        <i class="fa fa-cloud-upload me-2"></i> Choose Image
+                        <input type="file" name="photo" id="profilePhotoInput" hidden accept="image/*" required onchange="previewPhoto(this)">
+                    </label>
+                </div>
+                <button type="submit" class="btn-submit">Upload Photo</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Post Modal -->
+    <div id="postModal" class="unbreakable-modal">
+        <div class="unbreakable-modal-content">
+            <span class="modal-close" onclick="closeModal('postModal')">&times;</span>
+            <h3 id="postModalTitle" style="font-weight:800; margin-bottom:30px;">New Travel Memory</h3>
+            <form id="uploadPostForm">
+                <input type="hidden" name="postId" id="postId">
+                <div id="mediaPreview" style="display:none; width: 100%; aspect-ratio: 16/9; border-radius: 15px; overflow: hidden; margin-bottom: 20px; background: #f1f5f9;"></div>
+                <div class="mb-4">
+                    <label class="form-label">Media File</label>
+                    <input type="file" name="media" id="mediaInput" class="form-control" accept="image/*,video/*" required>
+                </div>
+                <div class="mb-4">
+                    <label class="form-label">Caption / Location</label>
+                    <textarea name="caption" class="form-control" rows="3" placeholder="Tell us about this memory..."></textarea>
+                </div>
+                <button type="submit" id="postSubmitBtn" class="btn-submit">Share Memory</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Advice Modal -->
+    <div id="adviceModal" class="unbreakable-modal">
         <div class="unbreakable-modal-content" style="max-width: 600px;">
-            <span class="modal-close-btn" onclick="closeModal('adviceDetailModal')">&times;</span>
-            <div id="adviceDetailContent">
-                <!-- Populated by JS -->
-            </div>
+            <span class="modal-close" onclick="closeModal('adviceModal')">&times;</span>
+            <h3 id="adviceModalTitle" style="font-weight:800; margin-bottom:30px;">Share Travel Wisdom</h3>
+            <form id="uploadAdviceForm">
+                <input type="hidden" name="adviceId" id="adviceId">
+                <div class="row">
+                    <div class="col-md-7 mb-4">
+                        <label class="form-label">Trip Title</label>
+                        <input type="text" name="title" class="form-control" placeholder="e.g., Camping in Kasol" required>
+                    </div>
+                    <div class="col-md-5 mb-4">
+                        <label class="form-label">Category</label>
+                        <select name="categories" class="form-control">
+                            <option value="Solo Travel">Solo Travel</option>
+                            <option value="Adventure Trip">Adventure Trip</option>
+                            <option value="Budget Travel">Budget Travel</option>
+                            <option value="Luxury Escape">Luxury Escape</option>
+                            <option value="Food & Culture">Food & Culture</option>
+                            <option value="Road Trip">Road Trip</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="mb-4">
+                    <label class="form-label">General Advice</label>
+                    <textarea name="content" class="form-control" rows="3" required placeholder="Main takeaways from your trip..."></textarea>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mb-4"><label class="form-label">Best Time</label><input type="text" name="bestTimeToVisit" class="form-control"></div>
+                    <div class="col-md-6 mb-4"><label class="form-label">Packing</label><input type="text" name="whatToPack" class="form-control"></div>
+                </div>
+                <button type="submit" id="adviceSubmitBtn" class="btn-submit">Post Advice</button>
+            </form>
         </div>
     </div>
 
     <!-- Points Detail Modal -->
     <div id="pointsDetailModal" class="unbreakable-modal">
-        <div class="unbreakable-modal-content" style="max-width: 350px; text-align: center;">
-            <span class="modal-close-btn" onclick="closeModal('pointsDetailModal')">&times;</span>
-            <div style="padding: 10px;">
-                <div style="position: relative; width: 100px; height: 100px; margin: 0 auto 20px;">
-                    <img id="modalHeaderAvatar" src="${not empty user.profilePhoto ? user.profilePhoto : defaultAvatar}" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 3px solid #ff9f43; box-shadow: 0 0 25px rgba(255,159,67,0.3);">
-                    <div style="position: absolute; bottom: -5px; right: -5px; width: 40px; height: 40px; background: var(--primary); border: 3px solid #ffffff; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
-                        <span id="headerPointsValue" style="font-size: 16px; font-weight: 800; color: #fff;">0</span>
-                    </div>
+        <div class="unbreakable-modal-content" style="max-width: 400px; text-align: center;">
+            <span class="modal-close" onclick="closeModal('pointsDetailModal')">&times;</span>
+            <div style="font-size: 50px; color: var(--accent-coral); margin-bottom: 20px;"><i class="fa fa-trophy"></i></div>
+            <h2 id="modalTotalPointsLabel" style="font-size: 40px; font-weight: 800; color: var(--text-main);">0</h2>
+            <p style="color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 1px; font-size: 12px; margin-bottom: 30px;">Total Traveler Points</p>
+            
+            <div class="text-start" style="background: #f8fafc; padding: 20px; border-radius: 20px; border: 1px solid var(--border-color);">
+                <div class="d-flex justify-content-between mb-3">
+                    <span style="font-weight: 700; font-size: 13px;"><i class="fa fa-pencil me-2" style="color:var(--primary)"></i> Advices Posted</span>
+                    <span style="color: #059669; font-weight: 800;">+50 pts</span>
                 </div>
-                <h3 style="font-weight: 800; margin-bottom: 8px; color: var(--text-main); font-size: 18px; letter-spacing: -0.3px;">Total Points Earned</h3>
-                <h2 id="modalTotalPointsLabel" style="font-size: 36px; font-weight: 800; color: var(--primary); margin-bottom: 12px;">0</h2>
-                <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 24px; font-weight: 500;">Sharing is earning! Your points reflect your impact on the community.</p>
-                
-                <div style="text-align: left; background: #f8fafc; padding: 20px; border-radius: 16px; border: 1px solid var(--border-color);">
-                    <div style="display: flex; justify-content: space-between; margin-bottom: 12px; font-size: 13px; font-weight: 600;">
-                        <span style="color: var(--text-main);"><i class="fa fa-heart" style="color: var(--accent-red); width: 20px;"></i> Engagement</span>
-                        <span style="color: #166534;">+10 pts</span>
-                    </div>
-                    <div style="display: flex; justify-content: space-between; margin-bottom: 12px; font-size: 13px; font-weight: 600;">
-                        <span style="color: var(--text-main);"><i class="fa fa-eye" style="color: var(--primary); width: 20px;"></i> Content reach</span>
-                        <span style="color: #166534;">+2 pts</span>
-                    </div>
-                    <div style="display: flex; justify-content: space-between; font-size: 13px; font-weight: 600;">
-                        <span style="color: var(--text-main);"><i class="fa fa-user" style="color: var(--primary); width: 20px;"></i> Platform presence</span>
-                        <span style="color: #166534;">+1 pt</span>
-                    </div>
+                <div class="d-flex justify-content-between mb-3">
+                    <span style="font-weight: 700; font-size: 13px;"><i class="fa fa-image me-2" style="color:var(--primary)"></i> Memories Shared</span>
+                    <span style="color: #059669; font-weight: 800;">+20 pts</span>
+                </div>
+                <div class="d-flex justify-content-between">
+                    <span style="font-weight: 700; font-size: 13px;"><i class="fa fa-heart me-2" style="color:var(--accent-coral)"></i> Community Likes</span>
+                    <span style="color: #059669; font-weight: 800;">+5 pts / like</span>
                 </div>
             </div>
         </div>
-    </div>
-
-    <div id="postModal" class="unbreakable-modal">
-        <div class="unbreakable-modal-content">
-            <span class="modal-close-btn" onclick="closeModal('postModal')">&times;</span>
-            <h3 id="postModalTitle" style="margin-top: 0; margin-bottom: 24px; font-weight: 800; color: var(--text-main); letter-spacing: -0.5px;">New Travel Memory</h3>
-            <form id="uploadPostForm">
-                <input type="hidden" name="postId" id="postId">
-                <div class="form-group">
-                    <div id="mediaPreview" style="display:none; width: 100%; aspect-ratio: 1; border-radius: 10px; overflow: hidden; margin-bottom: 15px; background: #000;"></div>
-                    <input type="file" name="media" id="mediaInput" class="form-control" accept="image/*,video/*" required>
-                </div>
-                <div class="form-group" style="margin-top: 15px;">
-                    <label class="form-label">Where did this happen?</label>
-                    <textarea name="caption" class="form-control" rows="3" placeholder="Describe your memory..."></textarea>
-                </div>
-                <button type="submit" id="postSubmitBtn" class="btn btn-primary">Post to Journey</button>
-            </form>
-        </div>
-    </div>
-
-    <div id="profileModal" class="unbreakable-modal">
-        <div class="unbreakable-modal-content">
-            <span class="modal-close-btn" onclick="closeModal('profileModal')">&times;</span>
-            <h3 style="margin-top: 0; margin-bottom: 24px; font-weight: 800; color: var(--text-main); letter-spacing: -0.5px;">Update Identity</h3>
-            <form id="editProfileForm" enctype="multipart/form-data">
-                <div class="form-group" style="margin-bottom: 15px;">
-                    <label class="form-label">Profile Photo (Optional)</label>
-                    <input type="file" name="profilePhoto" class="form-control" accept="image/*">
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Full Name</label>
-                    <input type="text" name="fullName" class="form-control" value="${user.fullName}">
-                </div>
-                <div class="form-group" style="margin-top: 15px;">
-                    <label class="form-label">Username</label>
-                    <input type="text" name="username" class="form-control" value="${user.username}">
-                </div>
-                <div class="form-group" style="margin-top: 15px;">
-                    <label class="form-label">Profession / Bio</label>
-                    <input type="text" name="profession" class="form-control" value="${user.profession}">
-                </div>
-                <button type="submit" class="btn btn-primary">Save Profile</button>
-            </form>
-        </div>
-    </div>
-
-    <!-- Profile Photo Upload Modal -->
-    <div id="profilePhotoModal" class="unbreakable-modal">
-        <div class="unbreakable-modal-content" style="max-width: 400px;">
-            <span class="modal-close-btn" onclick="closeModal('profilePhotoModal')">&times;</span>
-            <h3 style="margin-bottom: 24px; font-weight: 800; color: var(--primary); text-align: center; letter-spacing: -0.5px;">Update Profile Photo</h3>
-            <form id="profilePhotoForm" onsubmit="handleProfilePhotoUpload(event)">
-                <div class="mb-4">
-                    <label class="form-label">Select Image</label>
-                    <input type="file" name="photo" id="profilePhotoInput" class="form-control" accept="image/*" required onchange="previewPhoto(this)">
-                </div>
-                <div id="photoPreview" style="width: 150px; height: 150px; border-radius: 50%; overflow: hidden; margin: 0 auto 24px; border: 4px solid var(--primary); display: none;">
-                    <img id="photoPreviewImg" src="" style="width: 100%; height: 100%; object-fit: cover;">
-                </div>
-                <button type="submit" class="btn btn-primary" style="width: 100%; font-weight: 700;">Upload & Save</button>
-            </form>
-        </div>
-    </div>
-
-    <main class="main-container">
-        <header class="profile-header">
-            <c:choose>
-                <c:when test="${not empty user.coverPhoto}">
-                    <div class="profile-cover" style="background-image: url('${user.coverPhoto}');"></div>
-                </c:when>
-                <c:otherwise>
-                    <div class="profile-cover"></div>
-                </c:otherwise>
-            </c:choose>
-            <div class="avatar-column">
-                <div class="avatar-wrapper">
-                    <c:choose>
-                        <c:when test="${not empty user.profilePhoto}">
-                            <img src="${user.profilePhoto}" class="avatar-img" id="mainAvatar">
-                        </c:when>
-                        <c:otherwise>
-                            <div class="avatar-img" id="mainAvatar" style="background: linear-gradient(135deg, #f04c26, #ff9f43); display: flex; align-items: center; justify-content: center; font-size: 45px; color: white; font-weight: 800; border-radius: 50%;">
-                                ${not empty user.fullName ? user.fullName.substring(0,1).toUpperCase() : 'U'}
-                            </div>
-                        </c:otherwise>
-                    </c:choose>
-                    <div class="plus-btn" onclick="openModal('profilePhotoModal')"><i class="fa fa-camera"></i></div>
-                </div>
-                <div class="user-meta-below">
-                    <div class="display-name">${user.fullName}</div>
-                    <button class="btn-edit-premium" onclick="openModal('profileModal')">Edit profile</button>
-                </div>
-            </div>
-
-            <div class="info-column">
-                <div class="username-row">
-                    <span id="displayUsername">${user.username}</span>
-                </div>
-                
-                <div class="stats-row">
-                    <div class="stat-item">
-                        <span class="stat-num" id="countPosts">0</span>
-                        <span class="stat-label">Posts</span>
-                    </div>
-                    <div class="reputation-badge">
-                        <div class="reputation-value" id="countPoints">0</div>
-                        <div class="reputation-label">Traveler Points</div>
-                    </div>
-                </div>
-            </div>
-        </header>
-
-        <!-- Dynamic Tabs Divider -->
-        <div class="content-divider">
-            <div class="tabs-header">
-                <div class="tab-trigger active"><i class="fa fa-th-large"></i> POSTS</div>
-                <div class="tab-trigger"><i class="fa fa-bullhorn"></i> ADVICES</div>
-            </div>
-        </div>
-
-        <!-- Split Grid Content -->
-        <section class="content-grid">
-            <!-- Left: Media Posts -->
-            <div id="postsSection">
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                    <h5 class="mb-0" style="color: var(--text-dim); text-transform: uppercase; font-size: 14px; letter-spacing: 1px;">My Memories</h5>
-                    <button class="btn btn-sm" style="background: #ff9f43; color: white; border-radius: 10px; font-weight: 600; font-size: 12px; padding: 6px 15px; border: none; gap:20px ; margin-bottom: 25px;" onclick="prepareNewPost()">
-                        <i class="fa fa-plus"></i> New Memory
-                    </button>
-                </div>
-                <div class="posts-side-grid" id="postsGrid">
-                    <!-- Posts dynamic -->
-                </div>
-            </div>
-
-            <!-- Right: Advice Cards -->
-            <div id="adviceSection">
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                    <h5 class="mb-0" style="color: var(--text-dim); text-transform: uppercase; font-size: 14px; letter-spacing: 1px;">My Advices</h5>
-                    <button class="btn btn-sm" style="background: white; color: black; border-radius: 10px; font-weight: 600; font-size: 12px; padding: 6px 12px; border: none;" onclick="prepareNewAdvice()">
-                        <i class="fa fa-plus"></i> New Advice
-                    </button>
-                </div>
-                <div class="advices-side-grid" id="adviceGrid">
-                    <!-- Advices dynamic -->
-                </div>
-            </div>
-        </section>
-    </main>
-
-        </main>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script>
-        const currentUsername = '${user.username}';
+        const profileUsername = '${user.username}';
+        const currentFullName = '${user.fullName}';
+        let dataCache = null;
+
+        function openModal(id) { document.getElementById(id).style.display = 'block'; }
+        function closeModal(id) { document.getElementById(id).style.display = 'none'; }
 
         $(document).ready(function() {
             loadProfileData();
 
-            $('.tab-trigger').on('click', function() {
-                $('.tab-trigger').removeClass('active');
+            // Tab Switching
+            $('.tab-item').on('click', function() {
+                $('.tab-item').removeClass('active');
                 $(this).addClass('active');
                 
-                const isAdviceTab = $(this).text().includes('ADVICES');
-                if (isAdviceTab) {
+                const tab = $(this).data('tab');
+                if (tab === 'advice') {
                     $('#postsSection').hide();
                     $('#adviceSection').fadeIn();
                 } else {
@@ -483,479 +851,297 @@
                 }
             });
 
+            // Media Preview
             $('#mediaInput').on('change', function() {
                 const file = this.files[0];
                 if (file) {
                     const preview = $('#mediaPreview');
                     preview.empty().show();
+                    const url = URL.createObjectURL(file);
                     if (file.type.startsWith('video/')) {
-                        preview.append('<video src="' + URL.createObjectURL(file) + '" style="width:100%;height:100%;object-fit:cover;" autoplay muted loop></video>');
+                        preview.append('<video src="' + url + '" style="width:100%;height:100%;object-fit:cover;" autoplay muted loop></video>');
                     } else {
-                        preview.append('<img src="' + URL.createObjectURL(file) + '" style="width:100%;height:100%;object-fit:cover;">');
+                        preview.append('<img src="' + url + '" style="width:100%;height:100%;object-fit:cover;">');
                     }
                 }
             });
 
+            // Post Submit
             $('#uploadPostForm').on('submit', function(e) {
                 e.preventDefault();
                 const postId = $('#postId').val();
                 const url = postId ? ('/user/profile/api/posts/' + postId + '/update') : '/user/profile/api/posts/upload';
-                
                 let fd = new FormData(this);
                 $.ajax({
-                    url: url,
-                    type: 'POST',
-                    data: fd,
-                    processData: false,
-                    contentType: false,
+                    url: url, type: 'POST', data: fd, processData: false, contentType: false,
                     success: function() { 
                         closeModal('postModal'); 
                         $('#uploadPostForm')[0].reset();
-                        $('#postId').val('');
                         $('#mediaPreview').hide();
                         loadProfileData(); 
-                    },
-                    error: function(err) {
-                        alert('Operation failed: ' + err.responseText);
                     }
                 });
             });
 
+            // Advice Submit
             $('#uploadAdviceForm').on('submit', function(e) {
                 e.preventDefault();
                 const adviceId = $('#adviceId').val();
                 const url = adviceId ? ('/user/profile/api/advices/' + adviceId + '/update') : '/user/profile/api/advices/post';
-                
+                const data = {};
+                $(this).serializeArray().forEach(item => { data[item.name] = item.value; });
                 $.ajax({
-                    url: url,
-                    type: 'POST',
-                    contentType: 'application/json',
-                    data: JSON.stringify({
-                        title: $('#uploadAdviceForm input[name="title"]').val(),
-                        categories: $('#uploadAdviceForm select[name="categories"]').val(),
-                        content: $('#uploadAdviceForm textarea[name="content"]').val(),
-                        bestTimeToVisit: $('#uploadAdviceForm textarea[name="bestTimeToVisit"]').val(),
-                        whatToPack: $('#uploadAdviceForm textarea[name="whatToPack"]').val(),
-                        safetyTips: $('#uploadAdviceForm textarea[name="safetyTips"]').val(),
-                        budgetTips: $('#uploadAdviceForm textarea[name="budgetTips"]').val(),
-                        stayFoodAdvice: $('#uploadAdviceForm textarea[name="stayFoodAdvice"]').val(),
-                        transportTips: $('#uploadAdviceForm textarea[name="transportTips"]').val(),
-                        connectivityTips: $('#uploadAdviceForm textarea[name="connectivityTips"]').val(),
-                        localRules: $('#uploadAdviceForm textarea[name="localRules"]').val(),
-                        environmentalTips: $('#uploadAdviceForm textarea[name="environmentalTips"]').val(),
-                        proTips: $('#uploadAdviceForm textarea[name="proTips"]').val()
-                    }),
+                    url: url, type: 'POST', contentType: 'application/json', data: JSON.stringify(data),
                     success: function() { 
                         closeModal('adviceModal'); 
                         $('#uploadAdviceForm')[0].reset();
-                        $('#adviceId').val('');
                         loadProfileData(); 
                     }
                 });
             });
 
+            // Profile Edit
             $('#editProfileForm').on('submit', function(e) {
                 e.preventDefault();
-                const formData = new FormData(this);
-                const btn = $(this).find('button[type="submit"]');
-                btn.text('Saving...').prop('disabled', true);
-                
                 $.ajax({
                     url: '/user/profile/api/update',
                     type: 'POST',
-                    data: formData,
+                    data: new FormData(this),
                     processData: false,
                     contentType: false,
-                    success: function() { 
-                        closeModal('profileModal');
-                        location.reload(); 
-                    },
-                    error: function() {
-                        alert('Error updating profile');
-                        btn.text('Save Profile').prop('disabled', false);
-                    }
+                    success: function() { location.reload(); }
                 });
             });
         });
 
-        const urlParams = new URLSearchParams(window.location.search);
-        const profileUsername = urlParams.get('username') || '${user.username}';
-
-        function toggleAdviceLike(adviceId, element, event) {
-            event.stopPropagation();
-            const icon = $(element);
-            const countSpan = icon.closest('.advice-premium-card').find('.advice-likes-count');
-            let currentCount = parseInt(countSpan.text().trim()) || 0;
-            
-            if (icon.hasClass('liked')) {
-                icon.removeClass('liked');
-                countSpan.html('<i class="fa fa-heart"></i> ' + (currentCount - 1) + ' likes');
-            } else {
-                icon.addClass('liked');
-                countSpan.html('<i class="fa fa-heart"></i> ' + (currentCount + 1) + ' likes');
-            }
-            $.post('/user/profile/api/advices/' + adviceId + '/like');
-        }
-
-        function prepareNewAdvice() {
-            $('#adviceId').val('');
-            $('#adviceModalTitle').text('Share Travel Wisdom');
-            $('#adviceSubmitBtn').text('Post Advice');
-            $('#uploadAdviceForm')[0].reset();
-            openModal('adviceModal');
-        }
-
-        function editAdvice(adv) {
-            $('#adviceId').val(adv.id);
-            $('#adviceModalTitle').text('Refine Travel Wisdom');
-            $('#adviceSubmitBtn').text('Update Advice');
-            
-            const form = $('#uploadAdviceForm');
-            form.find('input[name="title"]').val(adv.title);
-            form.find('select[name="categories"]').val(adv.categories);
-            form.find('textarea[name="content"]').val(adv.content);
-            form.find('textarea[name="bestTimeToVisit"]').val(adv.bestTimeToVisit);
-            form.find('textarea[name="whatToPack"]').val(adv.whatToPack);
-            form.find('textarea[name="safetyTips"]').val(adv.safetyTips);
-            form.find('textarea[name="budgetTips"]').val(adv.budgetTips);
-            form.find('textarea[name="stayFoodAdvice"]').val(adv.stayFoodAdvice);
-            form.find('textarea[name="transportTips"]').val(adv.transportTips);
-            form.find('textarea[name="connectivityTips"]').val(adv.connectivityTips);
-            form.find('textarea[name="localRules"]').val(adv.localRules);
-            form.find('textarea[name="environmentalTips"]').val(adv.environmentalTips);
-            form.find('textarea[name="proTips"]').val(adv.proTips);
-            
-            openModal('adviceModal');
-        }
-
-        function showAdviceDetail(adv) {
-            const detail = $('#adviceDetailContent');
-            detail.empty();
-            
-            let iconClass = 'fa-lightbulb-o';
-            if (adv.categories === 'Solo Travel') iconClass = 'fa-user';
-            else if (adv.categories === 'Adventure Trip') iconClass = 'fa-mountain';
-            else if (adv.categories === 'Budget Travel') iconClass = 'fa-money';
-            else if (adv.categories === 'Luxury Escape') iconClass = 'fa-diamond';
-            else if (adv.categories === 'Food & Culture') iconClass = 'fa-cutlery';
-            else if (adv.categories === 'Road Trip') iconClass = 'fa-car';
-
-            let html = '<div style="text-align:center; margin-bottom: 25px;">' +
-                       '<div class="advice-icon-box" style="width: 60px; height: 60px; font-size: 30px; margin: 0 auto 15px;"><i class="fa ' + iconClass + '"></i></div>' +
-                       '<h2 style="margin:0; font-weight:800; color:#ff9f43;">' + adv.title + '</h2>' +
-                       '<span style="color:var(--text-dim); text-transform:uppercase; font-size:12px; letter-spacing:1px;">' + (adv.categories || 'General') + '</span>' +
-                       '</div>' +
-                       '<div style="background: rgba(255,255,255,0.03); padding: 20px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.05); margin-bottom: 20px;">' +
-                       '<p style="font-size:15px; line-height:1.7; color:#eee; margin:0;">' + adv.content + '</p>' +
-                       '</div>' +
-                       '<div class="row g-3">';
-            
-            const tips = [
-                { label: 'Best Time to Visit', val: adv.bestTimeToVisit, icon: 'fa-calendar' },
-                { label: 'What to Pack', val: adv.whatToPack, icon: 'fa-suitcase' },
-                { label: 'Safety Tips', val: adv.safetyTips, icon: 'fa-shield' },
-                { label: 'Money & Budget', val: adv.budgetTips, icon: 'fa-money' },
-                { label: 'Stay & Food', val: adv.stayFoodAdvice, icon: 'fa-bed' },
-                { label: 'Transport', val: adv.transportTips, icon: 'fa-car' },
-                { label: 'Network', val: adv.connectivityTips, icon: 'fa-wifi' },
-                { label: 'Rules', val: adv.localRules, icon: 'fa-gavel' },
-                { label: 'Eco Tips', val: adv.environmentalTips, icon: 'fa-leaf' },
-                { label: 'Pro Tips', val: adv.proTips, icon: 'fa-star' }
-            ];
-            
-            tips.forEach(t => {
-                if (t.val && t.val.trim() !== '') {
-                    html += '<div class="col-md-6">' +
-                            '<div style="padding: 12px; background: rgba(255,159,67,0.05); border: 1px solid rgba(255,159,67,0.1); border-radius: 12px; height: 100%;">' +
-                            '<div style="color: #ff9f43; font-weight: 700; font-size: 11px; text-transform: uppercase; margin-bottom: 5px; display: flex; align-items: center; gap: 8px;">' +
-                            '<i class="fa ' + t.icon + '"></i> ' + t.label + '</div>' +
-                            '<div style="font-size: 13px; color: #fff;">' + t.val + '</div>' +
-                            '</div></div>';
-                }
-            });
-
-            html += '</div>';
-            detail.append(html);
-            openModal('adviceDetailModal');
-        }
-
-        function showMyPoints() {
-            // Use existing data if available, or fetch
-            if (dataCache && dataCache.user) {
-                const pts = dataCache.user.travelPoints || 0;
-                $('#headerPointsValue').text(pts);
-                $('#modalTotalPointsLabel').text(pts);
-            } else {
-                $.get('/user/profile/api/data?username=' + profileUsername, function(data) {
-                    const pts = data.user.travelPoints || 0;
-                    $('#headerPointsValue').text(pts);
-                    $('#modalTotalPointsLabel').text(pts);
-                });
-            }
-            openModal('pointsDetailModal');
-        }
-
-        function deleteAdvice(adviceId) {
-            if (confirm('Are you sure you want to delete this advice?')) {
-                $.ajax({
-                    url: '/user/profile/api/advices/' + adviceId,
-                    type: 'DELETE',
-                    success: function() {
-                        loadProfileData();
-                    }
-                });
-            }
-        }
-        
-        let dataCache = null;
         function loadProfileData() {
             $.get('/user/profile/api/data?username=' + profileUsername, function(data) {
                 dataCache = data;
                 $('#countPosts').text(data.postsCount || 0);
                 $('#countPoints').text(data.user.travelPoints || 0);
-                $('#displayUsername').text(data.user.username || 'user');
+                $('#joinedDateDisplay').text(data.joinedDateFormatted || 'May 2024');
+                $('#userLocation').text(data.user.city || 'India');
+                
+                // Last active calculation
+                if (data.lastActiveAtRaw) {
+                    const status = timeAgo(data.lastActiveAtRaw);
+                    if (status.includes('seconds')) {
+                        $('#lastActiveDisplay').text('Online now');
+                        $('.online-status').css('background', '#10b981');
+                    } else {
+                        $('#lastActiveDisplay').text('Last active ' + status);
+                        $('.online-status').css('background', '#64748b');
+                    }
+                }
+
+                // Render Badges
+                const badgeContainer = $('#dynamicBadges');
+                badgeContainer.empty();
+                if (data.badges) {
+                    data.badges.forEach((badge, idx) => {
+                        const types = ['tag-green', 'tag-blue', 'tag-orange'];
+                        const type = types[idx % types.length];
+                        badgeContainer.append(`<span class="tag-pill ${type}">${badge}</span>`);
+                    });
+                }
                 
                 if(!data.isOwnProfile) {
-                    $('.btn-edit-premium').hide();
-                    $('.plus-btn').hide();
-                    $('#adviceSection button').hide();
-                    $('#postsSection button').hide();
+                    $('.btn-edit-profile').hide();
+                    $('.avatar-upload-btn').hide();
+                    $('.btn-add-memory').hide();
                 }
                 
                 renderPosts(data.posts, data.likedPostIds || []);
                 renderAdvices(data.advices, data.likedAdviceIds || []);
             });
-        }
-
-        function previewPhoto(input) {
-            if (input.files && input.files[0]) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    $('#photoPreviewImg').attr('src', e.target.result);
-                    $('#photoPreview').show();
-                }
-                reader.readAsDataURL(input.files[0]);
-            }
-        }
-
-        function handleProfilePhotoUpload(event) {
-            event.preventDefault();
-            const formData = new FormData(event.target);
-            
-            $.ajax({
-                url: '/user/profile/api/upload-photo',
-                type: 'POST',
-                data: formData,
-                processData: false,
-                contentType: false,
-                success: function(response) {
-                    closeModal('profilePhotoModal');
-                    loadProfileData();
-                    // Update header avatar too
-                    if (response.profilePhoto) {
-                        $('header.header img').attr('src', response.profilePhoto);
-                        $('#mainAvatar').replaceWith('<img src="' + response.profilePhoto + '" class="avatar-img" id="mainAvatar">');
-                    }
-                },
-                error: function() {
-                    alert('Failed to upload photo');
-                }
-            });
+                function timeAgo(date) {
+            if (!date) return 'Just now';
+            const seconds = Math.floor((new Date() - new Date(date)) / 1000);
+            let interval = seconds / 31536000;
+            if (interval > 1) return Math.floor(interval) + " years ago";
+            interval = seconds / 2592000;
+            if (interval > 1) return Math.floor(interval) + " months ago";
+            interval = seconds / 86400;
+            if (interval > 1) return Math.floor(interval) + " days ago";
+            interval = seconds / 3600;
+            if (interval > 1) return Math.floor(interval) + " hours ago";
+            interval = seconds / 60;
+            if (interval > 1) return Math.floor(interval) + " minutes ago";
+            return Math.floor(seconds) + " seconds ago";
         }
 
         function renderPosts(posts, likedPostIds) {
             const grid = $('#postsGrid');
             grid.empty();
             if (!posts || posts.length === 0) {
-                grid.append('<div style="grid-column: 1/-1; text-align: center; color: var(--text-dim); padding: 40px;">No memories yet.</div>');
+                grid.append('<div style="grid-column: 1/-1; text-align: center; color: var(--text-muted); padding: 60px;">No memories shared yet.</div>');
                 return;
             }
             posts.forEach(post => {
                 const isVideo = post.mediaUrl.toLowerCase().match(/\.(mp4|webm|mov)$/);
-                let html = '<div class="post-card">';
-                html += '<div class="post-media-container" style="position: relative;">';
-                if (isVideo) {
-                    html += '<video src="' + post.mediaUrl + '" muted loop onmouseover="this.play()" onmouseout="this.pause()"></video>';
-                } else {
-                    html += '<img src="' + post.mediaUrl + '" loading="lazy">';
-                }
+                const isLiked = likedPostIds.includes(post.id);
                 
-                // Action Buttons for own profile
-                if (dataCache && dataCache.isOwnProfile) {
-                    html += '<div style="position: absolute; top: 10px; left: 10px; display: flex; gap: 8px; z-index: 20;">' +
-                            '<i class="fa fa-pencil" style="cursor: pointer; background: rgba(0,0,0,0.6); color: #ff9f43; padding: 6px; border-radius: 50%; font-size: 14px;" onclick="editPost(' + JSON.stringify(post).replace(/"/g, '&quot;') + ', event)"></i>' +
-                            '<i class="fa fa-trash" style="cursor: pointer; background: rgba(0,0,0,0.6); color: #e63946; padding: 6px; border-radius: 50%; font-size: 14px;" onclick="deleteMemory(' + post.id + ', event)"></i>' +
-                            '</div>';
-                }
-                
-                let isLiked = likedPostIds.includes(post.id);
-                let heartClass = isLiked ? 'fa-heart liked' : 'fa-heart';
-                
-                html += '<i class="fa ' + heartClass + ' post-like-btn" onclick="toggleLike(' + post.id + ', this, event)"></i>';
-                html += '</div>';
-                
-                html += '<div class="post-details">';
-                if (post.caption) {
-                    html += '<div class="post-caption">' + post.caption + '</div>';
-                }
-                
-                html += '<div class="post-stats">' +
-                        '<span class="post-likes-count"><i class="fa fa-heart"></i> ' + post.likes + '</span>' +
-                        '<span><i class="fa fa-eye"></i> ' + post.views + '</span>' +
-                        '</div>';
-                        
-                html += '</div>'; // end post-details
-                
-                html += '</div>';
+                let html = `
+                    <div class="memory-card">
+                        <div class="memory-media">
+                            <div class="category-badge"><i class="fa fa-map-marker"></i> Adventure</div>
+                            \${isVideo ? `<video src="\${post.mediaUrl}" muted loop onmouseover="this.play()" onmouseout="this.pause()"></video>` : `<img src="\${post.mediaUrl}" loading="lazy">`}
+                            \${dataCache.isOwnProfile ? `
+                                <div class="memory-actions-overlay">
+                                    <div class="action-circle-btn" onclick="editPost(\${JSON.stringify(post).replace(/"/g, '&quot;')}, event)"><i class="fa fa-pencil"></i></div>
+                                    <div class="action-circle-btn delete" onclick="deleteMemory(\${post.id}, event)"><i class="fa fa-trash"></i></div>
+                                </div>
+                            ` : ''}
+                        </div>
+                        <div class="memory-body">
+                            <h4 class="memory-title">Travel Memory</h4>
+                            <p class="memory-desc">\${post.caption || 'Exploring the unseen wonders of nature.'}</p>
+                            <div class="memory-footer">
+                                <div class="memory-stats">
+                                    <div class="stat-icon-text \${isLiked ? 'liked' : ''}" onclick="toggleLike(\${post.id}, this, event)">
+                                        <i class="fa \${isLiked ? 'fa-heart' : 'fa-heart-o'}"></i> \${post.likes || 0}
+                                    </div>
+                                    <div class="stat-icon-text"><i class="fa fa-eye"></i> \${post.views || 0}</div>
+                                </div>
+                                <div class="memory-time">\${timeAgo(post.createdAt)}</div>
+                            </div>
+                        </div>
+                    </div>
+                `;
                 grid.append(html);
             });
-        }
-
-        function toggleLike(postId, element, event) {
-            event.stopPropagation();
-            const icon = $(element);
-            const countSpan = icon.closest('.post-card').find('.post-likes-count');
-            let currentCount = parseInt(countSpan.text().trim()) || 0;
-            
-            if (icon.hasClass('liked')) {
-                icon.removeClass('liked');
-                countSpan.html('<i class="fa fa-heart"></i> ' + (currentCount - 1));
-            } else {
-                icon.addClass('liked');
-                countSpan.html('<i class="fa fa-heart"></i> ' + (currentCount + 1));
-            }
-            $.post('/user/profile/api/posts/' + postId + '/like');
-        }
-
-        function prepareNewPost() {
-            $('#postId').val('');
-            $('#postModalTitle').text('New Travel Memory');
-            $('#postSubmitBtn').text('Post to Journey');
-            $('#uploadPostForm')[0].reset();
-            $('#mediaPreview').hide();
-            openModal('postModal');
-        }
-
-        function editPost(post, event) {
-            event.stopPropagation();
-            $('#postId').val(post.id);
-            $('#postModalTitle').text('Refine Travel Memory');
-            $('#postSubmitBtn').text('Update Memory');
-            
-            const form = $('#uploadPostForm');
-            form.find('textarea[name="caption"]').val(post.caption);
-            
-            const preview = $('#mediaPreview');
-            preview.empty().show();
-            if (post.mediaType === 'video') {
-                preview.append('<video src="' + post.mediaUrl + '" style="width:100%;height:100%;object-fit:cover;" autoplay muted loop></video>');
-            } else {
-                preview.append('<img src="' + post.mediaUrl + '" style="width:100%;height:100%;object-fit:cover;">');
-            }
-            
-            // File input is not required for update
-            $('#mediaInput').prop('required', false);
-            
-            openModal('postModal');
-        }
-
-        function deleteMemory(postId, event) {
-            event.stopPropagation();
-            if (confirm('Are you sure you want to delete this memory?')) {
-                $.ajax({
-                    url: '/user/profile/api/posts/' + postId,
-                    type: 'DELETE',
-                    success: function() {
-                        loadProfileData();
-                    }
-                });
-            }
         }
 
         function renderAdvices(advices, likedAdviceIds) {
             const grid = $('#adviceGrid');
             grid.empty();
-            
             if (!advices || advices.length === 0) {
-                grid.append('<div style="grid-column: 1/-1; text-align: center; color: var(--text-dim); padding: 40px; background: var(--glass-bg); border-radius: 15px;">No advices yet.</div>');
+                grid.append('<div style="grid-column: 1/-1; text-align: center; color: var(--text-muted); padding: 60px;">No advices shared yet.</div>');
                 return;
             }
-
             advices.forEach(adv => {
-                let iconClass = 'fa-lightbulb-o';
-                if (adv.categories === 'Solo Travel') iconClass = 'fa-user';
-                else if (adv.categories === 'Adventure Trip') iconClass = 'fa-mountain';
-                else if (adv.categories === 'Budget Travel') iconClass = 'fa-money';
-                else if (adv.categories === 'Luxury Escape') iconClass = 'fa-diamond';
-                else if (adv.categories === 'Food & Culture') iconClass = 'fa-cutlery';
-                else if (adv.categories === 'Road Trip') iconClass = 'fa-car';
-
-                let isLiked = likedAdviceIds.includes(adv.id);
-                let heartClass = isLiked ? 'fa-heart liked' : 'fa-heart';
-
-                let html = '<div class="advice-premium-card" style="position: relative; cursor: pointer;" onclick="showAdviceDetail(' + JSON.stringify(adv).replace(/"/g, '&quot;') + ')">';
-                
-                // Show Edit/Delete only on own profile
-                if (dataCache && dataCache.isOwnProfile) {
-                    html += '<div style="position: absolute; top: 15px; right: 45px; display: flex; gap: 10px; z-index: 10;">' +
-                            '<i class="fa fa-pencil" style="cursor: pointer; color: #ff9f43;" onclick="event.stopPropagation(); editAdvice(' + JSON.stringify(adv).replace(/"/g, '&quot;') + ')"></i>' +
-                            '<i class="fa fa-trash" style="cursor: pointer; color: #e63946;" onclick="event.stopPropagation(); deleteAdvice(' + adv.id + ')"></i>' +
-                            '</div>';
-                }
-
-                html += '<i class="fa ' + heartClass + ' post-like-btn" style="bottom: auto; top: 15px; right: 15px; font-size: 18px;" onclick="toggleAdviceLike(' + adv.id + ', this, event)"></i>' +
-                    '<div class="advice-header">' +
-                    '<div class="advice-icon-box"><i class="fa ' + iconClass + '"></i></div>' +
-                    '<div class="ms-3">' +
-                    '<h4 class="advice-title">' + adv.title + '</h4>' +
-                    '<span style="font-size: 10px; color: #ff9f43; text-transform: uppercase;">' + (adv.categories || 'General') + '</span>' +
-                    '</div>' +
-                    '</div>' +
-                    '<p class="advice-body">' + adv.content + '</p>';
-                
-                // Add conditional fields
-                const tips = [
-                    { label: 'Best Time', val: adv.bestTimeToVisit },
-                    { label: 'Packing', val: adv.whatToPack },
-                    { label: 'Safety', val: adv.safetyTips },
-                    { label: 'Budget', val: adv.budgetTips },
-                    { label: 'Food & Stay', val: adv.stayFoodAdvice },
-                    { label: 'Transport', val: adv.transportTips },
-                    { label: 'Network', val: adv.connectivityTips },
-                    { label: 'Local Rules', val: adv.localRules },
-                    { label: 'Eco Tips', val: adv.environmentalTips },
-                    { label: 'Pro Tips', val: adv.proTips }
-                ];
-                
-                tips.forEach(t => {
-                    if (t.val && t.val.trim() !== '') {
-                        html += '<div style="margin-top: 10px; font-size: 11px; border-left: 2px solid #ff9f43; padding-left: 8px;">' +
-                                '<strong style="color: #ff9f43;">' + t.label + ':</strong> ' + t.val + '</div>';
-                    }
-                });
-
-                html += '<div style="margin-top: 15px; font-size: 12px; color: var(--text-muted);">' +
-                    '<span class="advice-likes-count"><i class="fa fa-heart"></i> ' + adv.likes + ' likes</span>' +
-                    '</div>' +
-                    '</div>';
+                const isLiked = likedAdviceIds.includes(adv.id);
+                let html = `
+                    <div class="advice-card">
+                        <div class="category-badge" style="background:#fff7ed; color:#ea580c;"><i class="fa fa-bolt"></i> \${adv.categories || 'Tips'}</div>
+                        <div class="advice-icon-wrap"><i class="fa fa-lightbulb-o"></i></div>
+                        <h4 class="memory-title">\${adv.title}</h4>
+                        <p class="memory-desc">\${adv.content}</p>
+                        \${adv.bestTimeToVisit ? `<div style="font-size:12px; margin-bottom:10px; color:var(--text-muted)"><strong>Best Time:</strong> \${adv.bestTimeToVisit}</div>` : ''}
+                        <div class="memory-footer">
+                            <div class="memory-stats">
+                                <div class="stat-icon-text \${isLiked ? 'liked' : ''}" onclick="toggleAdviceLike(\${adv.id}, this, event)">
+                                    <i class="fa \${isLiked ? 'fa-heart' : 'fa-heart-o'}"></i> \${adv.likes || 0}
+                                </div>
+                            </div>
+                            <div class="d-flex gap-3 align-items-center">
+                                <span class="memory-time">\${timeAgo(adv.createdAt)}</span>
+                                \${dataCache.isOwnProfile ? `
+                                    <i class="fa fa-pencil text-muted" style="cursor:pointer" onclick="editAdvice(\${JSON.stringify(adv).replace(/"/g, '&quot;')})"></i>
+                                    <i class="fa fa-trash text-danger" style="cursor:pointer" onclick="deleteAdvice(\${adv.id})"></i>
+                                ` : ''}
+                            </div>
+                        </div>
+                    </div>
+                `;
                 grid.append(html);
+            });
+        }  }
+
+        function toggleLike(postId, el, e) {
+            e.stopPropagation();
+            const icon = $(el).find('i');
+            let count = parseInt($(el).text());
+            if ($(el).hasClass('liked')) {
+                $(el).removeClass('liked'); icon.removeClass('fa-heart').addClass('fa-heart-o');
+                $(el).html('<i class="fa fa-heart-o"></i> ' + (count - 1));
+            } else {
+                $(el).addClass('liked'); icon.removeClass('fa-heart-o').addClass('fa-heart');
+                $(el).html('<i class="fa fa-heart"></i> ' + (count + 1));
+            }
+            $.post('/user/profile/api/posts/' + postId + '/like');
+        }
+
+        function toggleAdviceLike(id, el, e) {
+            e.stopPropagation();
+            const icon = $(el).find('i');
+            let count = parseInt($(el).text());
+            if ($(el).hasClass('liked')) {
+                $(el).removeClass('liked'); icon.removeClass('fa-heart').addClass('fa-heart-o');
+                $(el).html('<i class="fa fa-heart-o"></i> ' + (count - 1));
+            } else {
+                $(el).addClass('liked'); icon.removeClass('fa-heart-o').addClass('fa-heart');
+                $(el).html('<i class="fa fa-heart"></i> ' + (count + 1));
+            }
+            $.post('/user/profile/api/advices/' + id + '/like');
+        }
+
+        function deleteMemory(id, e) {
+            e.stopPropagation();
+            if(confirm('Delete memory?')) {
+                $.ajax({ url: '/user/profile/api/posts/' + id, type: 'DELETE', success: loadProfileData });
+            }
+        }
+
+        function deleteAdvice(id) {
+            if(confirm('Delete advice?')) {
+                $.ajax({ url: '/user/profile/api/advices/' + id, type: 'DELETE', success: loadProfileData });
+            }
+        }
+
+        function editPost(post, e) {
+            e.stopPropagation();
+            $('#postId').val(post.id);
+            $('#postModalTitle').text('Refine Travel Memory');
+            $('#postSubmitBtn').text('Update Memory');
+            $('textarea[name="caption"]').val(post.caption);
+            $('#mediaInput').prop('required', false);
+            openModal('postModal');
+        }
+
+        function editAdvice(adv) {
+            $('#adviceId').val(adv.id);
+            $('input[name="title"]').val(adv.title);
+            $('select[name="categories"]').val(adv.categories);
+            $('textarea[name="content"]').val(adv.content);
+            $('input[name="bestTimeToVisit"]').val(adv.bestTimeToVisit);
+            openModal('adviceModal');
+        }
+
+        function previewPhoto(input) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = e => { $('#photoPreviewImg').attr('src', e.target.result); $('#photoPreview').show(); }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        function handleProfilePhotoUpload(e) {
+            e.preventDefault();
+            $.ajax({
+                url: '/user/profile/api/upload-photo', type: 'POST', data: new FormData(e.target),
+                processData: false, contentType: false,
+                success: function() { closeModal('profilePhotoModal'); loadProfileData(); location.reload(); }
             });
         }
 
-        function toggleAdviceLike(adviceId, element, event) {
-            event.stopPropagation();
-            const icon = $(element);
-            const countSpan = icon.closest('.advice-premium-card').find('.advice-likes-count');
-            let currentCount = parseInt(countSpan.text().trim());
-            
-            if (icon.hasClass('liked')) {
-                icon.removeClass('liked');
-                countSpan.html('<i class="fa fa-heart"></i> ' + (currentCount - 1) + ' likes');
-            } else {
-                icon.addClass('liked');
-                countSpan.html('<i class="fa fa-heart"></i> ' + (currentCount + 1) + ' likes');
-            }
-            $.post('/user/profile/api/advices/' + adviceId + '/like');
+        function prepareNewPost() {
+            $('#postId').val('');
+            $('#uploadPostForm')[0].reset();
+            $('#mediaInput').prop('required', true);
+            $('#mediaPreview').hide();
+            openModal('postModal');
+        }
+
+        function prepareNewAdvice() {
+            $('#adviceId').val('');
+            $('#uploadAdviceForm')[0].reset();
+            openModal('adviceModal');
+        }
+
+        function showMyPoints() {
+            $('#modalTotalPointsLabel').text($('#countPoints').text());
+            openModal('pointsDetailModal');
         }
     </script>
 </body>
