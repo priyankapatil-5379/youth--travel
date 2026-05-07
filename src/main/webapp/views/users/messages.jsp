@@ -1,140 +1,73 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="utf-8">
-    <title>My Messages | Youth Travel</title>
+    <meta charset="UTF-8">
+    <title>Messaging Center | Youth Travel</title>
     <link rel="stylesheet" href="<c:url value='/views/assets/css/bootstrap.min.css'/>">
     <link rel="stylesheet" href="<c:url value='/views/assets/css/font-awesome.min.css'/>">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.5.1/sockjs.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
     <style>
         :root {
             --primary: #008080;
             --primary-hover: #077378;
-            --accent-red: #e63946;
             --bg-body: #f1f5f9;
-            --bg-card: #ffffff;
-            --border-color: #e2e8f0;
-            --text-main: #0f172a;
+            --text-main: #1e293b;
             --text-muted: #64748b;
+            --border-color: #e2e8f0;
             --sidebar-width: 260px;
-            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
+        body { font-family: 'Inter', sans-serif; background: var(--bg-body); color: var(--text-main); margin: 0; height: 100vh; overflow: hidden; }
+        .main-content { margin-left: var(--sidebar-width); display: flex; flex-direction: column; height: 100vh; }
 
-        body.light-theme { 
-            background: var(--bg-body); 
-            color: var(--text-main); 
-            font-family: 'Inter', sans-serif; 
-            margin: 0; padding: 0; 
-            overflow: hidden; 
-            height: 100vh; 
-            -webkit-font-smoothing: antialiased;
-        }
+        .page-header { padding: 20px 32px; background: white; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; }
+        .page-header h1 { font-size: 22px; font-weight: 800; margin: 0; }
 
-        .wrapper { display: flex; height: 100vh; }
+        .chat-container { display: flex; flex: 1; overflow: hidden; background: white; margin: 20px; border-radius: 20px; border: 1px solid var(--border-color); box-shadow: 0 4px 6px -1px rgba(0,0,0,0.04); }
 
-        .main-content { 
-            flex: 1; 
-            margin-left: var(--sidebar-width); 
-            height: 100vh; 
-            display: flex; 
-            flex-direction: column; 
-            background: var(--bg-body);
-        }
+        /* Left panel */
+        .conv-panel { width: 340px; border-right: 1px solid var(--border-color); display: flex; flex-direction: column; flex-shrink: 0; }
+        .conv-panel-header { padding: 20px; border-bottom: 1px solid var(--border-color); }
+        .conv-panel-header h5 { margin: 0; font-weight: 700; font-size: 15px; }
+        .search-box input { width: 100%; padding: 10px 14px; border-radius: 10px; border: 1px solid var(--border-color); background: #f8fafc; font-size: 13px; outline: none; margin-top: 10px; }
+        .conv-list { flex: 1; overflow-y: auto; }
+        .conv-item { padding: 15px 20px; display: flex; gap: 14px; cursor: pointer; border-bottom: 1px solid #f8fafc; transition: 0.2s; text-decoration: none; color: inherit; }
+        .conv-item:hover { background: #f8fafc; }
+        .conv-item.active { background: #f0f9f9; border-left: 4px solid var(--primary); }
+        .vendor-avatar { width: 46px; height: 46px; border-radius: 12px; object-fit: cover; }
+        .conv-info { flex: 1; overflow: hidden; }
+        .conv-header-row { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 3px; }
+        .vendor-name { font-weight: 700; font-size: 14px; }
+        .last-time { font-size: 11px; color: var(--text-muted); }
+        .last-msg { font-size: 12px; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .unread-badge { background: var(--primary); color: white; border-radius: 50%; width: 18px; height: 18px; font-size: 10px; display: flex; align-items: center; justify-content: center; font-weight: 700; margin-left: auto; flex-shrink: 0; }
 
-        /* Top Header */
-        .page-header { 
-            padding: 24px 40px; 
-            background: var(--bg-card); 
-            border-bottom: 1px solid var(--border-color); 
-            display: flex; 
-            align-items: center; 
-            justify-content: space-between; 
-            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-            z-index: 10;
-        }
-        .page-header h2 { margin: 0; font-weight: 800; font-size: 24px; color: var(--text-main); letter-spacing: -0.5px; }
+        /* Right panel */
+        .chat-panel { flex: 1; display: flex; flex-direction: column; background: #fafafa; overflow: hidden; }
+        .chat-header { padding: 15px 28px; background: white; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; }
+        .header-user { display: flex; align-items: center; gap: 12px; }
+        .online-dot { width: 8px; height: 8px; border-radius: 50%; background: #10b981; animation: pulse 1.5s infinite; }
+        @keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:0.4;} }
 
-        /* Chat UI Container */
-        .chat-container { display: flex; flex: 1; overflow: hidden; background: var(--bg-card); margin: 24px; border-radius: 16px; border: 1px solid var(--border-color); box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
+        .messages-area { flex: 1; padding: 24px; overflow-y: auto; display: flex; flex-direction: column; gap: 16px; }
+        .msg-bubble { max-width: 68%; padding: 12px 16px; border-radius: 16px; font-size: 14px; line-height: 1.5; }
+        .msg-user { align-self: flex-end; background: var(--primary); color: white; border-bottom-right-radius: 4px; }
+        .msg-vendor { align-self: flex-start; background: white; border: 1px solid var(--border-color); border-bottom-left-radius: 4px; }
+        .msg-vendor .sender-label { font-size: 11px; font-weight: 700; color: var(--primary); margin-bottom: 4px; display: block; }
+        .msg-time { font-size: 10px; margin-top: 5px; opacity: 0.65; display: block; }
 
-        /* Left Inbox List */
-        .inbox-list { width: 350px; background: #f8fafc; border-right: 1px solid var(--border-color); overflow-y: auto; display: flex; flex-direction: column; }
-        .inbox-search { padding: 20px; border-bottom: 1px solid var(--border-color); background: #ffffff; }
-        .inbox-search input { 
-            width: 100%; 
-            background: #f1f5f9; 
-            border: 1px solid var(--border-color); 
-            border-radius: 12px; 
-            padding: 12px 16px; 
-            color: var(--text-main); 
-            outline: none; 
-            transition: var(--transition); 
-            font-size: 14px;
-            font-weight: 500;
-        }
-        .inbox-search input:focus { border-color: var(--primary); background: #ffffff; box-shadow: 0 0 0 4px rgba(0, 128, 128, 0.1); }
-        
-        .inbox-item { padding: 20px; border-bottom: 1px solid var(--border-color); cursor: pointer; transition: var(--transition); display: flex; align-items: center; gap: 16px; background: #ffffff; }
-        .inbox-item:hover { background: #f8fafc; }
-        .inbox-item.active { background: #f0fdfa; border-left: 4px solid var(--primary); }
-        
-        .inbox-details { flex: 1; overflow: hidden; }
-        .inbox-name { font-weight: 700; font-size: 15px; margin-bottom: 4px; display: flex; justify-content: space-between; align-items: center; color: var(--text-main); }
-        .inbox-preview { font-size: 13px; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-weight: 500; }
-        
-        /* Right Chat Area */
-        .chat-view { flex: 1; display: flex; flex-direction: column; background: #ffffff; }
-        
-        .chat-header { padding: 20px 32px; border-bottom: 1px solid var(--border-color); background: #ffffff; display: flex; align-items: center; justify-content: space-between; }
-        
-        .chat-messages { flex: 1; padding: 32px; overflow-y: auto; display: flex; flex-direction: column; gap: 24px; background: #f8fafc; }
-        
-        .msg-bubble { max-width: 70%; padding: 14px 20px; border-radius: 16px; font-size: 15px; line-height: 1.5; position: relative; font-weight: 500; }
-        .msg-time { font-size: 11px; margin-top: 6px; display: block; font-weight: 600; }
-        
-        /* Bubble from Me */
-        .msg-sent { align-self: flex-end; background: var(--primary); color: #ffffff; border-bottom-right-radius: 4px; box-shadow: 0 4px 6px -1px rgba(0, 128, 128, 0.2); }
-        .msg-sent .msg-time { text-align: right; color: rgba(255,255,255,0.8); }
-        
-        /* Bubble from Them */
-        .msg-received { align-self: flex-start; background: #ffffff; border: 1px solid var(--border-color); border-bottom-left-radius: 4px; color: var(--text-main); box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); }
-        .msg-received .msg-time { color: var(--text-muted); }
-        
-        /* Input Area */
-        .chat-input-area { padding: 24px 32px; border-top: 1px solid var(--border-color); background: #ffffff; }
-        .chat-form { display: flex; gap: 16px; align-items: center; }
-        .chat-input { 
-            flex: 1; 
-            background: #f1f5f9; 
-            border: 1px solid var(--border-color); 
-            border-radius: 12px; 
-            padding: 14px 20px; 
-            color: var(--text-main); 
-            outline: none; 
-            transition: var(--transition); 
-            font-weight: 500;
-        }
-        .chat-input:focus { border-color: var(--primary); background: #ffffff; box-shadow: 0 0 0 4px rgba(0, 128, 128, 0.1); }
-        
-        .btn-send { 
-            background: var(--primary); 
-            color: #ffffff; 
-            border: none; 
-            width: 48px; 
-            height: 48px; 
-            border-radius: 12px; 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            cursor: pointer; 
-            transition: var(--transition); 
-            box-shadow: 0 4px 6px -1px rgba(0, 128, 128, 0.2); 
-            flex-shrink: 0; 
-        }
-        .btn-send:hover { background: var(--primary-hover); transform: translateY(-1px); }
+        .input-area { padding: 18px 28px; background: white; border-top: 1px solid var(--border-color); flex-shrink: 0; }
+        .input-wrapper { display: flex; gap: 12px; align-items: center; background: #f8fafc; border: 1px solid var(--border-color); border-radius: 14px; padding: 4px 12px; }
+        .input-wrapper input { flex: 1; border: none; background: transparent; padding: 10px; outline: none; font-size: 14px; }
+        .btn-send { background: var(--primary); color: white; width: 38px; height: 38px; border-radius: 10px; display: flex; align-items: center; justify-content: center; border: none; cursor: pointer; transition: 0.2s; flex-shrink: 0; }
+        .btn-send:hover { background: var(--primary-hover); transform: scale(1.05); }
+
+        .empty-state { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--text-muted); padding: 40px; }
+        .empty-state i { font-size: 56px; margin-bottom: 16px; opacity: 0.2; }
+        .no-convs { padding: 40px 20px; text-align: center; color: var(--text-muted); font-size: 13px; }
 
         /* Mobile Responsiveness */
         .mobile-header {
@@ -164,28 +97,28 @@
             .main-content { margin-left: 0; padding-top: 70px; height: calc(100vh - 70px); }
             .page-header { padding: 15px 24px; }
             .chat-container { margin: 10px; border-radius: 12px; height: calc(100% - 100px); }
-            .inbox-list { width: 100%; }
-            .chat-view { display: none; }
-            .chat-view.mobile-active { 
+            .conv-panel { width: 100%; }
+            .chat-panel { display: none; }
+            .chat-panel.mobile-active { 
                 display: flex; 
                 position: fixed; 
                 top: 0; left: 0; right: 0; bottom: 0; 
                 z-index: 2000; 
                 height: 100vh;
+                margin: 0;
+                border-radius: 0;
             }
             .mobile-back-btn { display: flex !important; }
         }
 
         @media (max-width: 576px) {
-            .page-header h2 { font-size: 18px; }
-            .chat-messages { padding: 20px; }
-            .chat-input-area { padding: 15px 20px; }
+            .page-header h1 { font-size: 18px; }
+            .messages-area { padding: 20px; }
+            .input-area { padding: 15px 20px; }
         }
         .mobile-back-btn { display: none; align-items: center; gap: 8px; color: var(--primary); font-weight: 700; cursor: pointer; border: none; background: none; padding: 0; font-size: 14px; }
     </style>
 </head>
-
-    
 <body class="light-theme">
     <div class="wrapper">
         <jsp:include page="user-sidebar.jsp">
@@ -204,142 +137,280 @@
             </button>
         </header>
 
-    <!-- Main Content -->
-    <div class="main-content">
-        <div class="page-header">
-            <h2>Messaging Center</h2>
-            <span style="background: #f0fdf4; color: #166534; padding: 6px 12px; border-radius: 100px; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">Support Active</span>
-        </div>
-
-        <div class="chat-container">
-            <!-- Inbox List -->
-            <div class="inbox-list">
-                <div class="inbox-search">
-                    <input type="text" placeholder="Search conversations...">
+        <main class="main-content">
+            <div class="page-header">
+                <div>
+                    <h1>Messaging Center</h1>
+                    <p style="margin:0; color:var(--text-muted); font-size:13px;">Real-time chat with your trip vendors</p>
                 </div>
-                
-                <c:forEach var="entry" items="${conversations}">
-                    <c:set var="lastMsg" value="${entry.value[entry.value.size() - 1]}" />
-                    <c:set var="vendor" value="${entry.key}" />
-                    <a href="<c:url value='/user/messages?chatWith=${vendor.id}'/>" style="text-decoration: none; color: inherit; display: block;">
-                        <div class="inbox-item ${chatWithVendor != null && chatWithVendor.id == vendor.id ? 'active' : ''}">
-                            <div style="width: 48px; height: 48px; border-radius: 12px; background: #f0fdfa; display: flex; align-items: center; justify-content: center; font-size: 20px; color: var(--primary); flex-shrink: 0; border: 1px solid #ccfbf1;">
-                                <i class="fa fa-building"></i>
-                            </div>
-                            <div class="inbox-details">
-                                <div class="inbox-name">
-                                    ${vendor.businessName}
-                                    <span style="font-size: 11px; color: var(--text-muted); font-weight: 500;">
-                                        ${lastMsg.formattedTime}
-                                    </span>
-                                </div>
-                                <div class="inbox-preview">
-                                    <c:if test="${not lastMsg.isFromVendor()}">You: </c:if>${lastMsg.content}
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </c:forEach>
-                
-                <c:if test="${empty conversations}">
-                    <div style="padding: 40px 20px; text-align: center; color: var(--text-muted);">
-                        <i class="fa fa-inbox mb-3" style="font-size: 40px; opacity: 0.3;"></i>
-                        <p>No messages yet.</p>
-                    </div>
-                </c:if>
+                <div id="connStatus" style="background:#f0fdf4;color:#166534;padding:5px 14px;border-radius:100px;font-weight:700;font-size:11px;">
+                    <i class="fa fa-circle" style="font-size:8px;"></i> CONNECTING...
+                </div>
             </div>
 
-            <!-- Chat Area -->
-            <div class="chat-view">
-                <c:choose>
-                    <c:when test="${not empty chatWithVendor}">
-                        <!-- Active Chat Header -->
+            <div class="chat-container">
+                <!-- Left conversation list -->
+                <div class="conv-panel">
+                    <div class="conv-panel-header">
+                        <h5>Conversations</h5>
+                        <div class="search-box">
+                            <input type="text" id="searchInput" placeholder="Search vendors..." oninput="filterConversations(this.value)">
+                        </div>
+                    </div>
+                    <div class="conv-list" id="convList">
+                        <c:forEach var="entry" items="${conversations}">
+                            <c:set var="msgs" value="${entry.value}" />
+                            <c:set var="lastMsg" value="${msgs[msgs.size()-1]}" />
+                            <div class="conv-item" id="conv-vendor-${entry.key.id}"
+                                 onclick="loadConversation(${entry.key.id}, '${entry.key.businessName}', ${lastMsg.booking != null ? lastMsg.booking.id : 0})"
+                                 data-vendor-name="${entry.key.businessName}">
+                                <img src="https://ui-avatars.com/api/?name=${entry.key.businessName}&background=random&rounded=true" class="vendor-avatar" alt="${entry.key.businessName}">
+                                <div class="conv-info">
+                                    <div class="conv-header-row">
+                                        <span class="vendor-name">${entry.key.businessName}</span>
+                                        <span class="last-time" id="last-time-${entry.key.id}">${lastMsg.formattedTime}</span>
+                                    </div>
+                                    <div class="last-msg" id="last-msg-${entry.key.id}">${lastMsg.content}</div>
+                                </div>
+                            </div>
+                        </c:forEach>
+                        <c:if test="${empty conversations}">
+                            <div class="no-convs">
+                                <i class="fa fa-comments-o" style="font-size:36px;opacity:0.2;display:block;margin-bottom:10px;"></i>
+                                No conversations yet.<br>Book a trip to start chatting with vendors.
+                            </div>
+                        </c:if>
+                    </div>
+                </div>
+
+                <!-- Right chat area -->
+                <div class="chat-panel">
+                    <div id="chatEmpty" class="empty-state">
+                        <i class="fa fa-comments-o"></i>
+                        <h4 style="font-weight:700;margin-bottom:8px;">Your Messages</h4>
+                        <p style="margin:0;font-size:14px;">Select a conversation to start chatting</p>
+                    </div>
+
+                    <div id="chatActive" style="display:none; flex-direction:column; height:100%; overflow:hidden;">
                         <div class="chat-header">
-                            <div style="display: flex; align-items: center; gap: 15px;">
+                            <div class="header-user">
                                 <button class="mobile-back-btn" onclick="closeChatMobile()">
                                     <i class="fa fa-chevron-left"></i>
                                 </button>
-                                <div style="width: 45px; height: 45px; border-radius: 12px; background: #f0fdfa; display: flex; align-items: center; justify-content: center; font-size: 20px; color: var(--primary); border: 1px solid #ccfbf1;">
-                                    <i class="fa fa-building"></i>
-                                </div>
+                                <img id="activeVendorAvatar" src="" class="vendor-avatar" style="width:40px;height:40px;">
                                 <div>
-                                    <h4 style="margin: 0; font-size: 18px; font-weight: 800; color: var(--text-main); letter-spacing: -0.3px;">${chatWithVendor.businessName}</h4>
-                                    <div style="font-size: 13px; color: #166534; font-weight: 600;"><i class="fa fa-circle" style="font-size: 8px; margin-right: 4px;"></i> Online</div>
+                                    <div id="activeVendorName" style="font-weight:800;font-size:15px;"></div>
+                                    <div style="font-size:11px;color:#10b981;font-weight:700;display:flex;align-items:center;gap:5px;">
+                                        <div class="online-dot"></div> Live Connected
+                                    </div>
                                 </div>
                             </div>
+                            <div style="color:var(--text-muted);font-size:12px;" id="activeBookingInfo"></div>
                         </div>
 
-                        <!-- Messages -->
-                        <div class="chat-messages" id="chatBox">
-                            <div style="text-align: center; margin-bottom: 8px;">
-                                <span style="background: #ffffff; padding: 6px 16px; border-radius: 100px; font-size: 12px; color: var(--text-muted); font-weight: 600; border: 1px solid var(--border-color); box-shadow: 0 1px 2px 0 rgba(0,0,0,0.05);">Secure encrypted conversation started</span>
+                        <div class="messages-area" id="msgArea"></div>
+
+                        <div class="input-area">
+                            <div class="input-wrapper">
+                                <i class="fa fa-smile-o" style="color:var(--text-muted);"></i>
+                                <input type="text" id="msgInput" placeholder="Type your message..."
+                                       onkeypress="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendMsg();}">
+                                <button class="btn-send" onclick="sendMsg()">
+                                    <i class="fa fa-paper-plane"></i>
+                                </button>
                             </div>
-
-                            <c:forEach var="msg" items="${activeChat}">
-                                <c:choose>
-                                    <c:when test="${not msg.isFromVendor()}">
-                                        <div class="msg-bubble msg-sent">
-                                            ${msg.content}
-                                            <span class="msg-time">${msg.formattedTime}</span>
-                                        </div>
-                                    </c:when>
-                                    <c:otherwise>
-                                        <div class="msg-bubble msg-received">
-                                            ${msg.content}
-                                            <span class="msg-time">${msg.formattedTime}</span>
-                                        </div>
-                                    </c:otherwise>
-                                </c:choose>
-                            </c:forEach>
                         </div>
-
-                        <!-- Input Box -->
-                        <div class="chat-input-area">
-                            <form class="chat-form" action="<c:url value='/user/send-reply'/>" method="post">
-                                <input type="hidden" name="vendorId" value="${chatWithVendor.id}">
-                                <input type="text" name="content" class="chat-input" placeholder="Type your message to ${chatWithVendor.businessName}..." required autocomplete="off">
-                                <button type="submit" class="btn-send"><i class="fa fa-paper-plane"></i></button>
-                            </form>
-                        </div>
-                    </c:when>
-                    <c:otherwise>
-                        <!-- Empty State -->
-                        <div style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--text-muted); background: #f8fafc;">
-                            <div style="width: 80px; height: 80px; border-radius: 20px; background: #ffffff; display: flex; align-items: center; justify-content: center; margin-bottom: 24px; border: 1px solid var(--border-color); box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);">
-                                <i class="fa fa-comments-o" style="font-size: 40px; color: #e2e8f0;"></i>
-                            </div>
-                            <h3 style="color: var(--text-main); font-weight: 800; margin-bottom: 8px;">Your Messages</h3>
-                            <p style="font-weight: 500;">Select a conversation to start chatting.</p>
-                        </div>
-                    </c:otherwise>
-                </c:choose>
+                    </div>
+                </div>
             </div>
-        </div>
+        </main>
     </div>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script>
-        // Auto-scroll to bottom
-        const chatBox = document.getElementById('chatBox');
-        if (chatBox) {
-            chatBox.scrollTop = chatBox.scrollHeight;
+        // ── State ────────────────────────────────────────────
+        const userEmail    = '${user.email}';
+        const userName     = '${user.fullName}';
+        const safeEmail    = userEmail.replace(/@/g, '_at_').replace(/\./g, '_dot_');
+
+        let stompClient    = null;
+        let activeVendorId = null;
+        let activeBookingId= null;
+
+        // ── WebSocket connection ─────────────────────────────
+        function connect() {
+            const socket = new SockJS('/ws');
+            stompClient = Stomp.over(socket);
+            stompClient.debug = null;
+            stompClient.connect({}, function(frame) {
+                document.getElementById('connStatus').innerHTML =
+                    '<i class="fa fa-circle" style="font-size:8px;"></i> LIVE';
+                document.getElementById('connStatus').style.color = '#166534';
+
+                // Subscribe to user's personal topic — receives vendor messages
+                stompClient.subscribe('/topic/user/' + safeEmail, function(msg) {
+                    const data = JSON.parse(msg.body);
+                    handleIncoming(data);
+                });
+            }, function() {
+                document.getElementById('connStatus').innerHTML =
+                    '<i class="fa fa-circle" style="font-size:8px;color:#ef4444;"></i> OFFLINE';
+                // Retry after 3s
+                setTimeout(connect, 3000);
+            });
+        }
+
+        function handleIncoming(msg) {
+            const vendorIdStr = String(msg.vendorId);
+
+            // Update sidebar preview for this vendor conversation
+            const lastMsgEl  = document.getElementById('last-msg-' + msg.vendorId);
+            const lastTimeEl = document.getElementById('last-time-' + msg.vendorId);
+            if (lastMsgEl)  lastMsgEl.innerText  = msg.content;
+            if (lastTimeEl) lastTimeEl.innerText = msg.formattedTime || '';
+
+            // If the chat area for this vendor is currently open
+            if (activeVendorId && vendorIdStr === String(activeVendorId)) {
+                // Only append vendor messages — user messages are added optimistically
+                if (msg.fromVendor) {
+                    appendMessage(msg.content, false, msg.formattedTime || '', msg.senderName || 'Vendor');
+                }
+            } else if (msg.fromVendor) {
+                // Conversation not open — add unread badge
+                const convEl = document.getElementById('conv-vendor-' + msg.vendorId);
+                if (convEl) {
+                    let badge = convEl.querySelector('.unread-badge');
+                    if (!badge) {
+                        badge = document.createElement('div');
+                        badge.className = 'unread-badge';
+                        badge.innerText = '1';
+                        convEl.querySelector('.conv-info').appendChild(badge);
+                    } else {
+                        badge.innerText = (parseInt(badge.innerText) || 0) + 1;
+                    }
+                }
+            }
         }
 
         // Mobile Chat View Management
-        window.onload = function() {
-            const urlParams = new URLSearchParams(window.location.search);
-            if (urlParams.has('chatWith') && window.innerWidth < 991) {
-                document.querySelector('.chat-view').classList.add('mobile-active');
-            }
-            
-            // Re-scroll if chatBox exists after potential load
-            if (chatBox) chatBox.scrollTop = chatBox.scrollHeight;
+        function closeChatMobile() {
+            document.querySelector('.chat-panel').classList.remove('mobile-active');
         }
 
-        function closeChatMobile() {
-            document.querySelector('.chat-view').classList.remove('mobile-active');
-            // Optional: update URL to remove chatWith without reload
-            window.history.pushState({}, '', '/user/messages');
+        // ── Load conversation ────────────────────────────────
+        async function loadConversation(vendorId, vendorName, bookingId) {
+            activeVendorId  = vendorId;
+            activeBookingId = bookingId;
+
+            // UI switch
+            document.getElementById('chatEmpty').style.display  = 'none';
+            const chatActive = document.getElementById('chatActive');
+            chatActive.style.display = 'flex';
+
+            // Mobile handling
+            if (window.innerWidth < 991) {
+                document.querySelector('.chat-panel').classList.add('mobile-active');
+            }
+
+            // Mark active in list and clear unread badge
+            document.querySelectorAll('.conv-item').forEach(el => el.classList.remove('active'));
+            const convEl = document.getElementById('conv-vendor-' + vendorId);
+            if (convEl) {
+                convEl.classList.add('active');
+                const badge = convEl.querySelector('.unread-badge');
+                if (badge) badge.remove();
+            }
+
+            // Set header
+            document.getElementById('activeVendorName').innerText = vendorName;
+            document.getElementById('activeVendorAvatar').src =
+                'https://ui-avatars.com/api/?name=' + encodeURIComponent(vendorName) + '&background=random&rounded=true';
+            document.getElementById('activeBookingInfo').innerText =
+                bookingId && bookingId > 0 ? 'Booking #' + bookingId : '';
+
+            // Always use the merged chat API (includes booking + non-booking messages)
+            try {
+                const resp = await fetch('/user/api/chat/' + vendorId);
+                if (!resp.ok) throw new Error('HTTP ' + resp.status);
+                const messages = await resp.json();
+
+                const area = document.getElementById('msgArea');
+                area.innerHTML = '';
+                if (!Array.isArray(messages) || messages.length === 0) {
+                    area.innerHTML = '<div style="text-align:center;color:var(--text-muted);font-size:13px;padding:20px;">No messages yet. Say hello!</div>';
+                } else {
+                    messages.forEach(m => {
+                        const isUser = !m.fromVendor;
+                        appendMessage(m.content, isUser, m.formattedTime, isUser ? userName : (m.senderName || vendorName));
+                    });
+                }
+            } catch(err) {
+                console.error('Error loading chat:', err);
+            }
         }
+
+        // ── Append message bubble ────────────────────────────
+        function appendMessage(content, isUser, time, senderName) {
+            const area = document.getElementById('msgArea');
+            const div = document.createElement('div');
+            div.className = 'msg-bubble ' + (isUser ? 'msg-user' : 'msg-vendor');
+            if (!isUser && senderName) {
+                div.innerHTML = '<span class="sender-label">' + senderName + '</span>' +
+                    escapeHtml(content) + '<span class="msg-time">' + (time || '') + '</span>';
+            } else {
+                div.innerHTML = escapeHtml(content) + '<span class="msg-time">' + (time || '') + '</span>';
+            }
+            area.appendChild(div);
+            area.scrollTop = area.scrollHeight;
+        }
+
+        // ── Send message ─────────────────────────────────────
+        function sendMsg() {
+            const input = document.getElementById('msgInput');
+            const content = input.value.trim();
+            if (!content || !stompClient || !activeVendorId) return;
+
+            const now = new Date();
+            const timeStr = now.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'}) +
+                            ', ' + now.toLocaleDateString('en-US',{month:'short',day:'2-digit'});
+
+            // Optimistic UI update
+            appendMessage(content, true, timeStr, userName);
+            input.value = '';
+
+            // Send via WebSocket
+            const payload = {
+                content:     content,
+                vendorId:    activeVendorId,
+                senderEmail: userEmail,
+                senderName:  userName,
+                isFromVendor:false,
+                bookingId:   activeBookingId || null,
+                userEmail:   userEmail
+            };
+            stompClient.send('/app/chat.sendMessage', {}, JSON.stringify(payload));
+
+            // Update preview
+            const lastMsgEl = document.getElementById('last-msg-' + activeVendorId);
+            if (lastMsgEl) lastMsgEl.innerText = content;
+        }
+
+        // ── Search/filter conversations ───────────────────────
+        function filterConversations(query) {
+            document.querySelectorAll('.conv-item').forEach(el => {
+                const name = (el.dataset.vendorName || '').toLowerCase();
+                el.style.display = name.includes(query.toLowerCase()) ? '' : 'none';
+            });
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.appendChild(document.createTextNode(text));
+            return div.innerHTML;
+        }
+
+        // ── Init ─────────────────────────────────────────────
+        connect();
     </script>
 </body>
 </html>

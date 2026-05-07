@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<%@ taglib prefix="fmt" uri="jakarta.tags.fmt" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -158,7 +159,7 @@
                                             <td style="font-weight: 700; color: var(--text-main);">${payment.booking.trip.title}</td>
                                             <td class="amount-text">₹${payment.amount}</td>
                                             <td><span class="status-badge status-${payment.status.toLowerCase()}">${payment.status}</span></td>
-                                            <td>${payment.paymentDate}</td>
+                                            <td><fmt:parseDate value="${payment.paymentDate}" pattern="yyyy-MM-dd'T'HH:mm" var="parsedDate" type="both" /><fmt:formatDate value="${parsedDate}" pattern="dd MMM yyyy, hh:mm a" /></td>
                                         </tr>
                                     </c:forEach>
                                 </tbody>
