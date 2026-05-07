@@ -38,7 +38,24 @@
         }
 
         @media (max-width: 991px) {
-            .main-content { margin-left: 0; padding: 20px; }
+            .main-content { 
+                margin-left: 0 !important; 
+                padding: 20px !important; 
+                padding-top: 85px !important; 
+            }
+            .profile-card {
+                padding: 24px !important;
+            }
+            .nav-tabs {
+                flex-direction: column;
+                width: 100% !important;
+                border-radius: 12px;
+                gap: 6px !important;
+            }
+            .nav-tabs .nav-link {
+                text-align: center;
+                padding: 12px !important;
+            }
         }
 
         .page-header {

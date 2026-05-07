@@ -189,6 +189,9 @@ public class VendorController {
     @Autowired
     private com.youthtravel.repository.ReviewRepository reviewRepository;
 
+    @Autowired
+    private com.youthtravel.repository.TripScheduleRepository tripScheduleRepository;
+
     @GetMapping("/dashboard")
     public String showVendorDashboard(HttpSession session, org.springframework.ui.Model model) {
         Vendor vendor = (Vendor) session.getAttribute("loggedInVendor");
@@ -224,13 +227,58 @@ public class VendorController {
 
         java.util.List<com.youthtravel.entity.Trip> trips = tripService.getTripsByVendor(vendor);
         java.util.Map<Long, Integer> occupiedMap = new java.util.HashMap<>();
+        java.util.Map<Long, java.util.List<com.youthtravel.entity.TripSchedule>> schedulesMap = new java.util.HashMap<>();
+        
         for (com.youthtravel.entity.Trip trip : trips) {
             occupiedMap.put(trip.getId(), bookingService.getOccupiedSlotsByTrip(trip));
+            schedulesMap.put(trip.getId(), tripScheduleRepository.findByTrip(trip));
         }
 
         model.addAttribute("trips", trips);
         model.addAttribute("occupiedMap", occupiedMap);
+        model.addAttribute("schedulesMap", schedulesMap);
         return "vendor/inventory";
+    }
+
+    @PostMapping("/inventory/adjust-slots")
+    @ResponseBody
+    public java.util.Map<String, Object> adjustSlots(
+            @RequestParam("tripId") Long tripId,
+            @RequestParam(value = "scheduleId", required = false) Long scheduleId,
+            @RequestParam("newCapacity") Integer newCapacity) {
+        
+        java.util.Map<String, Object> response = new java.util.HashMap<>();
+        try {
+            if (scheduleId != null) {
+                java.util.Optional<com.youthtravel.entity.TripSchedule> schedOpt = tripScheduleRepository.findById(scheduleId);
+                if (schedOpt.isPresent()) {
+                    com.youthtravel.entity.TripSchedule schedule = schedOpt.get();
+                    int diff = newCapacity - schedule.getTotalSeats();
+                    schedule.setTotalSeats(newCapacity);
+                    schedule.setAvailableSeats(Math.max(0, schedule.getAvailableSeats() + diff));
+                    tripScheduleRepository.save(schedule);
+                    response.put("success", true);
+                    response.put("message", "Schedule capacity updated successfully!");
+                    return response;
+                }
+            } else {
+                java.util.Optional<com.youthtravel.entity.Trip> tripOpt = tripService.getTripById(tripId);
+                if (tripOpt.isPresent()) {
+                    com.youthtravel.entity.Trip trip = tripOpt.get();
+                    trip.setMaxTravelers(newCapacity);
+                    tripService.saveTrip(trip);
+                    response.put("success", true);
+                    response.put("message", "Trip capacity updated successfully!");
+                    return response;
+                }
+            }
+            response.put("success", false);
+            response.put("message", "Trip or Schedule not found.");
+        } catch (Exception e) {
+            response.put("success", false);
+            response.put("message", "Error: " + e.getMessage());
+        }
+        return response;
     }
 
     @GetMapping("/guest-list")

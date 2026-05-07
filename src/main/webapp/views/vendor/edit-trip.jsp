@@ -12,37 +12,35 @@
             <link rel="stylesheet" href="<c:url value='/views/assets/css/style.css'/>">
             <link rel="stylesheet" href="<c:url value='/views/assets/css/font-awesome.min.css'/>">
             <link rel="stylesheet" href="<c:url value='/views/assets/css/premium-dashboard.css'/>">
-            <link href="https://fonts.googleapis.com/css?family=Dosis:300,400,500,600,700,800" rel="stylesheet">
+            <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
             <style>
-                body.yt-dark {
-                    background: transparent;
-                    color: #fff;
-                    font-family: 'Dosis', sans-serif;
-                }
+                :root { --primary: #008080; --bg-body: #ffffff; --bg-card: #ffffff; --border-color: #e2e8f0; --text-main: #0f172a; --text-muted: #64748b; }
+                body.yt-dark { background: #ffffff !important; background-image: none !important; color: var(--text-main); font-family: 'Inter', sans-serif; }
+                body.premium-theme::before { display: none !important; }
+                .sun-rays-container { display: none; }
 
                 .form-card {
-                    background: rgba(0,0,0,0.3);
-                    backdrop-filter: blur(15px);
-                    border: 1px solid rgba(255, 255, 255, 0.1);
-                    border-radius: 24px;
+                    background: var(--bg-card);
+                    border: 1px solid var(--border-color);
+                    border-radius: 16px;
                     padding: 40px;
-                    box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+                    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
                 }
 
                 .section-title {
                     font-size: 24px;
                     font-weight: 800;
-                    color: #fff;
+                    color: var(--text-main);
                     margin-bottom: 35px;
                     display: flex;
                     align-items: center;
                     gap: 12px;
-                    text-shadow: 0 4px 15px rgba(0,0,0,0.8);
+                    text-shadow: none;
                 }
 
                 .section-title .badge {
-                    background: rgba(240, 76, 38, 0.15);
-                    color: #f04c26;
+                    background: rgba(0, 128, 128, 0.15);
+                    color: #008080;
                     padding: 6px 12px;
                     border-radius: 8px;
                     font-size: 12px;
@@ -53,29 +51,28 @@
                 }
 
                 .form-group label {
-                    color: #fff;
+                    color: var(--text-main);
                     font-weight: 700;
                     font-size: 15px;
                     margin-bottom: 12px;
                     display: block;
-                    text-shadow: 0 2px 5px rgba(0,0,0,0.8);
+                    text-shadow: none;
                 }
 
                 .form-control {
-                    background: rgba(0,0,0,0.4);
-                    border: 1px solid rgba(255, 255, 255, 0.2);
+                    background: #ffffff;
+                    border: 1px solid var(--border-color);
                     border-radius: 12px;
-                    color: #fff;
+                    color: var(--text-main);
                     height: 50px;
                     padding: 0 16px;
                     transition: all 0.2s;
-                    backdrop-filter: blur(5px);
                 }
 
                 .form-control:focus {
-                    background: rgba(255, 255, 255, 0.08);
-                    border-color: #f04c26;
-                    box-shadow: 0 0 0 4px rgba(240, 76, 38, 0.15);
+                    background: #ffffff;
+                    border-color: #008080;
+                    box-shadow: 0 0 0 4px rgba(0, 128, 128, 0.15);
                     outline: none;
                 }
 
@@ -95,8 +92,8 @@
                 }
 
                 .form-control option {
-                    background: #1a1f2b;
-                    color: #fff;
+                    background: #ffffff;
+                    color: var(--text-main);
                     padding: 10px;
                 }
 
@@ -114,12 +111,12 @@
                     cursor: pointer;
                     font-size: 14px;
                     font-weight: 600;
-                    color: #ffffff !important;
+                    color: var(--text-main) !important;
                     user-select: none;
                     display: block;
                     transition: all 0.2s;
                     line-height: 20px;
-                    text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+                    text-shadow: none;
                 }
 
                 .custom-checkbox input {
@@ -136,21 +133,21 @@
                     left: 0;
                     height: 20px;
                     width: 20px;
-                    background-color: rgba(255, 255, 255, 0.1);
-                    border: 1px solid rgba(255, 255, 255, 0.2);
+                    background-color: #ffffff;
+                    border: 1px solid var(--border-color);
                     border-radius: 6px;
                     transition: all 0.2s;
                 }
 
                 .custom-checkbox:hover .checkmark {
-                    background-color: rgba(255, 255, 255, 0.2);
-                    border-color: #f04c26;
+                    background-color: #f1f5f9;
+                    border-color: #008080;
                 }
 
                 .custom-checkbox input:checked ~ .checkmark {
-                    background-color: #f04c26;
-                    border-color: #f04c26;
-                    box-shadow: 0 0 10px rgba(240, 76, 38, 0.3);
+                    background-color: #008080;
+                    border-color: #008080;
+                    box-shadow: 0 0 10px rgba(0, 128, 128, 0.3);
                 }
 
                 .checkmark:after {
@@ -174,19 +171,19 @@
                 }
 
                 .dropdown-menu {
-                    background: #1a1f2b !important;
-                    border: 1px solid rgba(255,255,255,0.1) !important;
-                    box-shadow: 0 15px 35px rgba(0,0,0,0.5) !important;
+                    background: #ffffff !important;
+                    border: 1px solid var(--border-color) !important;
+                    box-shadow: 0 4px 6px rgba(0,0,0,0.1) !important;
                     padding: 15px !important;
                 }
 
                 .dropdown-menu label:hover {
-                    color: #f04c26 !important;
+                    color: #008080 !important;
                 }
 
                 .btn-submit {
-                    background: #f04c26;
-                    color: #fff;
+                    background: #008080;
+                    color: var(--text-main);
                     font-weight: 800;
                     border: none;
                     border-radius: 12px;
@@ -194,18 +191,18 @@
                     font-size: 16px;
                     margin-top: 20px;
                     transition: all 0.2s;
-                    box-shadow: 0 10px 20px rgba(240, 76, 38, 0.2);
+                    box-shadow: 0 10px 20px rgba(0, 128, 128, 0.2);
                 }
 
                 .btn-submit:hover {
-                    background: #d93d1a;
+                    background: #077378;
                     transform: translateY(-2px);
-                    box-shadow: 0 15px 30px rgba(240, 76, 38, 0.3);
+                    box-shadow: 0 15px 30px rgba(0, 128, 128, 0.3);
                 }
 
                 .btn-prev {
-                    background: rgba(255, 255, 255, 0.05);
-                    color: #fff;
+                    background: var(--bg-body);
+                    color: var(--text-main);
                     font-weight: 700;
                     border: 1px solid rgba(255, 255, 255, 0.1);
                     border-radius: 12px;
@@ -213,15 +210,14 @@
                 }
 
                 .itinerary-day {
-                    background: rgba(0,0,0,0.3);
-                    backdrop-filter: blur(10px);
-                    border: 1px solid rgba(255, 255, 255, 0.1);
+                    background: var(--bg-card);
+                    border: 1px solid var(--border-color);
                     border-radius: 16px;
                     padding: 30px;
                     margin-bottom: 25px;
                     position: relative;
                     animation: slideDown 0.3s ease-out;
-                    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+                    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
                 }
 
                 /* Utility Classes */
@@ -265,20 +261,20 @@
                     position: absolute;
                     top: -12px;
                     left: 20px;
-                    background: #f04c26;
-                    color: #fff;
+                    background: #008080;
+                    color: var(--text-main);
                     padding: 4px 15px;
                     border-radius: 20px;
                     font-weight: 800;
                     font-size: 12px;
-                    box-shadow: 0 4px 10px rgba(240, 76, 38, 0.3);
+                    box-shadow: 0 4px 10px rgba(0, 128, 128, 0.3);
                 }
 
                 .remove-day {
                     position: absolute;
                     top: 15px;
                     right: 15px;
-                    color: rgba(255, 255, 255, 0.3);
+                    color: var(--text-muted);
                     cursor: pointer;
                     transition: all 0.2s;
                 }
@@ -291,8 +287,8 @@
                     display: inline-flex;
                     align-items: center;
                     gap: 8px;
-                    background: rgba(255, 255, 255, 0.05);
-                    border: 1px solid rgba(255, 255, 255, 0.1);
+                    background: var(--bg-body);
+                    border: 1px solid var(--border-color);
                     padding: 8px 16px;
                     border-radius: 10px;
                     margin-right: 10px;
@@ -318,7 +314,7 @@
                     display: block;
                     margin-bottom: 60px;
                     padding-bottom: 40px;
-                    border-bottom: 1px solid rgba(255,255,255,0.05);
+                    border-bottom: 1px solid var(--border-color);
                     animation: fadeIn 0.4s ease-out;
                 }
 
@@ -336,7 +332,7 @@
                     left: 0;
                     right: 0;
                     height: 2px;
-                    background: rgba(255, 255, 255, 0.05);
+                    background: var(--bg-body);
                     z-index: 1;
                 }
 
@@ -350,8 +346,8 @@
                 .step-dot {
                     width: 32px;
                     height: 32px;
-                    background: #1a1f2b;
-                    border: 2px solid rgba(255, 255, 255, 0.1);
+                    background: #ffffff;
+                    border: 2px solid var(--border-color);
                     border-radius: 50%;
                     margin: 0 auto 10px;
                     display: flex;
@@ -359,32 +355,32 @@
                     justify-content: center;
                     font-weight: 800;
                     font-size: 14px;
-                    color: rgba(255, 255, 255, 0.3);
+                    color: var(--text-muted);
                     transition: all 0.3s;
                 }
 
                 .step-item.active .step-dot {
-                    border-color: #f04c26;
-                    color: #fff;
-                    background: #f04c26;
-                    box-shadow: 0 0 15px rgba(240, 76, 38, 0.4);
+                    border-color: #008080;
+                    color: var(--text-main);
+                    background: #008080;
+                    box-shadow: 0 0 15px rgba(0, 128, 128, 0.4);
                 }
 
                 .step-item.completed .step-dot {
                     background: #22c55e;
                     border-color: #22c55e;
-                    color: #fff;
+                    color: var(--text-main);
                 }
 
                 .step-label {
                     font-size: 13px;
                     font-weight: 700;
-                    color: rgba(255, 255, 255, 0.3);
+                    color: var(--text-muted);
                     transition: all 0.3s;
                 }
 
                 .step-item.active .step-label {
-                    color: #f04c26;
+                    color: #008080;
                 }
 
                 @media (max-width: 768px) {
@@ -489,14 +485,14 @@
                 }
 
                 .pricing-toggle {
-                    background: rgba(255, 255, 255, 0.03);
-                    border: 1px solid rgba(255, 255, 255, 0.08);
+                    background: #ffffff;
+                    border: 1px solid var(--border-color);
                     padding: 15px 25px;
                     border-radius: 16px;
                     cursor: pointer;
                     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
                     font-weight: 700;
-                    color: rgba(255, 255, 255, 0.4);
+                    color: var(--text-muted);
                     display: flex;
                     align-items: center;
                     justify-content: center;
@@ -508,15 +504,15 @@
                 }
 
                 .pricing-toggle.active {
-                    background: linear-gradient(135deg, rgba(240, 76, 38, 0.15), rgba(240, 76, 38, 0.05));
-                    border-color: #f04c26;
-                    color: #fff;
-                    box-shadow: 0 8px 20px rgba(240, 76, 38, 0.15);
+                    background: linear-gradient(135deg, rgba(0, 128, 128, 0.15), rgba(0, 128, 128, 0.05));
+                    border-color: #008080;
+                    color: var(--text-main);
+                    box-shadow: 0 8px 20px rgba(0, 128, 128, 0.15);
                 }
 
                 .occ-card {
-                    background: rgba(255, 255, 255, 0.02);
-                    border: 1px solid rgba(255, 255, 255, 0.06);
+                    background: var(--bg-body);
+                    border: 1px solid var(--border-color);
                     border-radius: 16px;
                     padding: 20px;
                     margin-bottom: 15px;
@@ -524,8 +520,8 @@
                 }
 
                 .occ-card:hover {
-                    border-color: rgba(240, 76, 38, 0.3);
-                    background: rgba(255, 255, 255, 0.04);
+                    border-color: rgba(0, 128, 128, 0.3);
+                    background: #e2e8f0;
                 }
 
                 .day-chip-group {
@@ -546,20 +542,20 @@
                 .day-chip .chip-label {
                     display: inline-block;
                     padding: 10px 18px;
-                    background: rgba(255, 255, 255, 0.03);
-                    border: 1px solid rgba(255, 255, 255, 0.08);
+                    background: #ffffff;
+                    border: 1px solid var(--border-color);
                     border-radius: 12px;
                     font-weight: 700;
                     font-size: 13px;
-                    color: rgba(255, 255, 255, 0.5);
+                    color: var(--text-muted);
                     transition: all 0.2s;
                 }
 
                 .day-chip input:checked+.chip-label {
-                    background: #f04c26;
-                    color: #fff;
-                    border-color: #f04c26;
-                    box-shadow: 0 4px 12px rgba(240, 76, 38, 0.2);
+                    background: #008080;
+                    color: var(--text-main);
+                    border-color: #008080;
+                    box-shadow: 0 4px 12px rgba(0, 128, 128, 0.2);
                 }
             </style>
         </head>
@@ -583,8 +579,8 @@
                     </div>
                 </div>
                 <div style="margin-bottom: 35px;">
-                    <h1 style="font-weight: 800; font-size: 32px;">Edit Adventure</h1>
-                    <p style="color: rgba(255,255,255,0.5);">Updating details for <strong>${trip.title}</strong>
+                    <h1 style="font-weight: 800; font-size: 32px; color: var(--text-main);">Edit Adventure</h1>
+                    <p style="color: var(--text-main);">Updating details for <strong style="color: #000;">${trip.title}</strong>
                     </p>
                 </div>
 
@@ -594,16 +590,16 @@
                     .step-item:hover { opacity: 1; transform: translateY(-2px); }
                     .step-item.active { opacity: 1; }
                     .step-label { 
-                        color: #ffffff !important; 
+                        color: var(--text-main) !important; 
                         font-weight: 600; 
-                        text-shadow: 0 2px 4px rgba(0,0,0,0.8); 
+                        text-shadow: none; 
                         font-size: 11px;
                         margin-top: 5px;
                     }
                     .step-item.active .step-dot, .step-item.completed .step-dot {
-                        background: #f04c26;
-                        border-color: #f04c26;
-                        box-shadow: 0 0 15px rgba(240, 76, 38, 0.5);
+                        background: #008080;
+                        border-color: #008080;
+                        box-shadow: 0 0 15px rgba(0, 128, 128, 0.5);
                     }
                     .day-image-upload {
                         border: 2px dashed rgba(255,255,255,0.1);
@@ -616,12 +612,12 @@
                         cursor: pointer;
                         transition: 0.3s;
                         background: rgba(255,255,255,0.02);
-                        color: rgba(255,255,255,0.5);
+                        color: var(--text-muted);
                     }
                     .day-image-upload:hover {
-                        border-color: #f04c26;
-                        background: rgba(240, 76, 38, 0.05);
-                        color: #f04c26;
+                        border-color: #008080;
+                        background: rgba(0, 128, 128, 0.05);
+                        color: #008080;
                     }
                     .day-image-preview img {
                         width: 80px;
@@ -639,7 +635,7 @@
                         transition: 0.3s;
                     }
                     .occ-card:hover {
-                        border-color: rgba(240, 76, 38, 0.4);
+                        border-color: rgba(0, 128, 128, 0.4);
                         background: rgba(255,255,255,0.05);
                         transform: translateX(5px);
                     }
@@ -665,15 +661,15 @@
                         font-size: 13px;
                     }
                     .day-chip input:checked + .chip-label {
-                        background: #f04c26;
-                        border-color: #f04c26;
-                        box-shadow: 0 4px 12px rgba(240, 76, 38, 0.3);
+                        background: #008080;
+                        border-color: #008080;
+                        box-shadow: 0 4px 12px rgba(0, 128, 128, 0.3);
                     }
                     .occ-icon {
                         width: 35px;
                         height: 35px;
-                        background: rgba(240, 76, 38, 0.1);
-                        color: #f04c26;
+                        background: rgba(0, 128, 128, 0.1);
+                        color: #008080;
                         border-radius: 10px;
                         display: flex;
                         align-items: center;
@@ -681,7 +677,7 @@
                         margin-bottom: 10px;
                     }
                 </style>
-                <div class="step-indicator-container" style="overflow-x: auto; padding-bottom: 20px; margin-bottom: 30px; background: rgba(0,0,0,0.2); border-radius: 15px; padding-top: 15px;">
+                <div class="step-indicator-container" style="overflow-x: auto; padding-bottom: 20px; margin-bottom: 30px; background: transparent; border-radius: 15px; padding-top: 15px;">
                     <div class="step-indicator" style="min-width: 900px; display: flex; justify-content: space-between; padding: 0 20px;">
                         <div class="step-item active" id="stepIndicator1" onclick="jumpToStep(0)"><div class="step-dot">1</div><div class="step-label">Basic</div></div>
                         <div class="step-item" id="stepIndicator2" onclick="jumpToStep(1)"><div class="step-dot">2</div><div class="step-label">Dest</div></div>
@@ -724,7 +720,7 @@
                                                 Select Audience Types
                                             </button>
                                             <div class="dropdown-menu p-3 bg-dark border-secondary w-100"
-                                                style="background: #1a1f2b; min-width: 250px; max-height: 300px; overflow-y: auto;">
+                                                style="background: #ffffff; min-width: 250px; max-height: 300px; overflow-y: auto;">
                                                 <label class="custom-checkbox mb-2 d-flex"><input type="checkbox" name="travelerCategories" value="Solo" onchange="updateSubCategories()"><span class="checkmark"></span> Solo Travelers</label>
                                                 <label class="custom-checkbox mb-2 d-flex"><input type="checkbox" name="travelerCategories" value="Group" onchange="updateSubCategories()"><span class="checkmark"></span> Group / Friends</label>
                                                 <label class="custom-checkbox mb-2 d-flex"><input type="checkbox" name="travelerCategories" value="Corporate" onchange="updateSubCategories()"><span class="checkmark"></span> Corporate / Team</label>
@@ -753,7 +749,7 @@
                                         <label>Sub-Categories</label>
                                         <div class="dropdown">
                                             <button id="subCategoryBtn" class="form-control text-start select-custom" type="button" data-toggle="dropdown">Select Interests</button>
-                                            <div id="subCategoryList" class="dropdown-menu p-3 bg-dark border-secondary w-100" style="background: #1a1f2b; max-height: 250px; overflow-y: auto;">
+                                            <div id="subCategoryList" class="dropdown-menu p-3 bg-dark border-secondary w-100" style="background: #ffffff; max-height: 250px; overflow-y: auto;">
                                                 <p class="text-white-50 small mb-0">Select Audience first...</p>
                                             </div>
                                         </div>
@@ -864,8 +860,8 @@
                                             transition: all 0.2s ease;
                                         }
                                         .duration-preset:hover {
-                                            background: #f04c26;
-                                            border-color: #f04c26;
+                                            background: #008080;
+                                            border-color: #008080;
                                             transform: translateY(-2px);
                                         }
                                     </style>
@@ -905,9 +901,9 @@
                         <div class="form-step" id="step4">
                             <div class="section-title"><span class="badge">04</span> PRICING & BOOKING OPTIONS</div>
                             <div class="row g-3">
-                                <div class="col-md-12">
-                                    <label class="small text-white-50 mb-2">Price Model</label>
-                                    <div class="d-flex gap-2 mb-3">
+                                <div class="col-md-12 mb-4">
+                                    <label class="small text-muted mb-3" style="font-weight: 700;">Price Model</label>
+                                    <div class="d-flex gap-2">
                                         <div class="pricing-toggle active w-100 text-center" onclick="setPricingType('perPerson', this)"><i class="fa fa-user"></i> Per Person</div>
                                         <div class="pricing-toggle w-100 text-center" onclick="setPricingType('perGroup', this)"><i class="fa fa-users"></i> Per Group</div>
                                         <input type="hidden" name="pricingType" id="pricingTypeInput" value="perPerson">
@@ -1043,7 +1039,7 @@
                                 </div>
                                 <div class="col-md-12 mt-3">
                                     <label class="small text-white-50 mb-3 d-block uppercase tracking-wider">Stay Photos (Multiple)</label>
-                                    <div onclick="document.getElementById('stayPhotos').click()" class="p-4 border-2 border-dashed rounded text-center cursor-pointer" style="border: 2px dashed rgba(240, 76, 38, 0.3); background: rgba(240, 76, 38, 0.02);">
+                                    <div onclick="document.getElementById('stayPhotos').click()" class="p-4 border-2 border-dashed rounded text-center cursor-pointer" style="border: 2px dashed rgba(0, 128, 128, 0.3); background: rgba(0, 128, 128, 0.02);">
                                         <i class="fa fa-university fa-2x text-orange mb-2"></i>
                                         <div class="small">Upload Stay/Hotel Photos</div>
                                         <input type="file" id="stayPhotos" name="stayPhotos" accept="image/*" multiple class="d-none" onchange="previewStayImage(this)">
@@ -1198,7 +1194,7 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <label>Add Photos</label>
-                                    <div onclick="document.getElementById('photoFiles').click()" class="p-4 border-2 border-dashed rounded text-center cursor-pointer" style="border: 2px dashed rgba(240, 76, 38, 0.3);">
+                                    <div onclick="document.getElementById('photoFiles').click()" class="p-4 border-2 border-dashed rounded text-center cursor-pointer" style="border: 2px dashed rgba(0, 128, 128, 0.3);">
                                         <i class="fa fa-picture-o fa-2x text-orange mb-2"></i>
                                         <div class="small">Upload Photos</div>
                                         <input type="file" id="photoFiles" name="photoFiles" accept="image/*" multiple class="d-none" onchange="previewMedia(this, 'photoPreview')">
@@ -1855,21 +1851,21 @@
                                             <div class="occ-icon"><i class="fa fa-calendar-check-o"></i></div>
                                             <label class="small text-white-50 mb-1 d-block">Departure Date <span class="text-danger">*</span></label>
                                             <div class="input-group input-group-sm">
-                                                <input type="date" class="form-control occ-date" min="\${today}" style="background: rgba(0,0,0,0.2); border-color: rgba(255,255,255,0.1); color: white;">
+                                                <input type="date" class="form-control occ-date" min="\${today}" style="background: transparent; border-color: rgba(255,255,255,0.1); color: white;">
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="occ-icon" style="background: rgba(59, 130, 246, 0.1); color: #3b82f6;"><i class="fa fa-clock-o"></i></div>
                                             <label class="small text-white-50 mb-1 d-block">Time</label>
                                             <div class="input-group input-group-sm">
-                                                <input type="time" class="form-control occ-time" style="background: rgba(0,0,0,0.2); border-color: rgba(255,255,255,0.1); color: white;">
+                                                <input type="time" class="form-control occ-time" style="background: transparent; border-color: rgba(255,255,255,0.1); color: white;">
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="occ-icon" style="background: rgba(46, 213, 115, 0.1); color: #2ed573;"><i class="fa fa-users"></i></div>
                                             <label class="small text-white-50 mb-1 d-block">Batch Size</label>
                                             <div class="input-group input-group-sm">
-                                                <input type="number" class="form-control occ-seats" placeholder="Seats" value="20" style="background: rgba(0,0,0,0.2); border-color: rgba(255,255,255,0.1); color: white;">
+                                                <input type="number" class="form-control occ-seats" placeholder="Seats" value="20" style="background: transparent; border-color: rgba(255,255,255,0.1); color: white;">
                                             </div>
                                         </div>
                                         <div class="col-md-2 text-end">
@@ -2173,21 +2169,21 @@
                                                                     <div class="occ-icon"><i class="fa fa-calendar-check-o"></i></div>
                                                                     <label class="small text-white-50 mb-1 d-block">Departure Date</label>
                                                                     <div class="input-group input-group-sm">
-                                                                        <input type="date" class="form-control occ-date" value="\${s.date}" min="\${today}" style="background: rgba(0,0,0,0.2); border-color: rgba(255,255,255,0.1); color: white;">
+                                                                        <input type="date" class="form-control occ-date" value="\${s.date}" min="\${today}" style="background: transparent; border-color: rgba(255,255,255,0.1); color: white;">
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-md-3">
                                                                     <div class="occ-icon" style="background: rgba(59, 130, 246, 0.1); color: #3b82f6;"><i class="fa fa-clock-o"></i></div>
                                                                     <label class="small text-white-50 mb-1 d-block">Time</label>
                                                                     <div class="input-group input-group-sm">
-                                                                        <input type="time" class="form-control occ-time" value="\${s.time}" style="background: rgba(0,0,0,0.2); border-color: rgba(255,255,255,0.1); color: white;">
+                                                                        <input type="time" class="form-control occ-time" value="\${s.time}" style="background: transparent; border-color: rgba(255,255,255,0.1); color: white;">
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-md-3">
                                                                     <div class="occ-icon" style="background: rgba(46, 213, 115, 0.1); color: #2ed573;"><i class="fa fa-users"></i></div>
                                                                     <label class="small text-white-50 mb-1 d-block">Batch Size</label>
                                                                     <div class="input-group input-group-sm">
-                                                                        <input type="number" class="form-control occ-seats" placeholder="Seats" value="\${s.seats}" style="background: rgba(0,0,0,0.2); border-color: rgba(255,255,255,0.1); color: white;">
+                                                                        <input type="number" class="form-control occ-seats" placeholder="Seats" value="\${s.seats}" style="background: transparent; border-color: rgba(255,255,255,0.1); color: white;">
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-md-2 text-end">

@@ -42,7 +42,21 @@
         }
 
         @media (max-width: 991px) {
-            .main-content { margin-left: 0; padding: 20px; }
+            .main-content { 
+                margin-left: 0 !important; 
+                padding: 20px !important; 
+                padding-top: 85px !important; 
+            }
+            .page-header {
+                flex-direction: column;
+                align-items: stretch !important;
+                gap: 15px;
+            }
+            .btn-create {
+                display: block;
+                text-align: center;
+                width: 100%;
+            }
         }
 
         /* Header Area */
@@ -105,8 +119,8 @@
         /* Trip Grid */
         .trip-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 24px;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 20px;
         }
 
         /* Trip Card */
@@ -128,7 +142,7 @@
         }
 
         .card-image {
-            height: 200px;
+            height: 150px;
             position: relative;
             overflow: hidden;
         }
@@ -173,7 +187,7 @@
         }
 
         .card-body {
-            padding: 20px;
+            padding: 16px;
             flex-grow: 1;
             display: flex;
             flex-direction: column;
@@ -189,7 +203,7 @@
         }
 
         .card-title {
-            font-size: 18px;
+            font-size: 15px;
             font-weight: 700;
             color: var(--text-main);
             margin: 0 0 12px;
@@ -249,9 +263,9 @@
         }
 
         .btn-icon {
-            width: 36px;
-            height: 36px;
-            border-radius: 10px;
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
             display: flex;
             align-items: center;
             justify-content: center;

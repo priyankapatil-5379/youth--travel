@@ -15,14 +15,14 @@
     }
 
     .sidebar {
-<<<<<<< HEAD
+
         background:linear-gradient(to bottom, #81A6C6,darkcyan);
         backdrop-filter: blur(25px);
         border-right: 1px solid rgba(255,255,255,0.1);
-=======
+
         background: var(--sidebar-bg-gradient);
         border-right: 1px solid rgba(255, 255, 255, 0.1);
->>>>>>> 2ddce92670cb8d95dcedca2c09d2207a88ba4c70
+
         height: 100vh;
         position: fixed;
         left: 0;
@@ -124,7 +124,7 @@
             left: 15px;
             width: 40px;
             height: 40px;
-            background: var(--sidebar-bg);
+            background: var(--primary-teal);
             border-radius: 8px;
             border: 1px solid rgba(255,255,255,0.1);
             color: #fff;

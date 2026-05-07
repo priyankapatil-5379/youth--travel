@@ -47,6 +47,25 @@
                     font-weight: 600;
                     text-shadow: 0 1px 3px rgba(0,0,0,0.5);
                 }
+                @media (max-width: 991px) {
+                    .main-content { 
+                        margin-left: 0 !important; 
+                        padding: 20px !important; 
+                        padding-top: 85px !important; 
+                    }
+                    .d-flex.justify-content-between.align-items-center.mb-5 {
+                        flex-direction: column !important;
+                        align-items: stretch !important;
+                        gap: 15px;
+                    }
+                    h2 {
+                        font-size: 24px !important;
+                    }
+                    .btn-primary {
+                        width: 100% !important;
+                        text-align: center;
+                    }
+                }
             </style>
         </head>
 

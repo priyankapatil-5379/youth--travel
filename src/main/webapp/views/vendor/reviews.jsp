@@ -39,7 +39,22 @@
         }
 
         @media (max-width: 991px) {
-            .main-content { margin-left: 0; padding: 20px; }
+            .main-content { 
+                margin-left: 0 !important; 
+                padding: 20px !important; 
+                padding-top: 85px !important; 
+            }
+            .page-header {
+                flex-direction: column;
+                align-items: stretch !important;
+                gap: 15px;
+            }
+            .rating-summary {
+                text-align: center !important;
+            }
+            .big-star {
+                justify-content: center !important;
+            }
         }
 
         .page-header {
