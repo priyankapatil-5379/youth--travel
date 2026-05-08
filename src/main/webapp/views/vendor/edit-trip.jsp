@@ -10,58 +10,40 @@
             <title>Edit Trip | Youth Travel</title>
             <link rel="stylesheet" href="<c:url value='/views/assets/css/bootstrap.min.css'/>">
             <link rel="stylesheet" href="<c:url value='/views/assets/css/font-awesome.min.css'/>">
+
+            <link rel="stylesheet" href="<c:url value='/views/assets/css/premium-dashboard.css'/>">
             <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
             <style>
-                :root {
-                    --primary: #008080;
-                    --primary-hover: #077378;
-                    --accent-red: #ef4444;
-                    --bg-body: #f1f5f9;
-                    --bg-card: #ffffff;
-                    --border-color: #e2e8f0;
-                    --text-main: #0f172a;
-                    --text-muted: #64748b;
-                    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-                }
-
-                body {
-                    background-color: var(--bg-body);
-                    color: var(--text-main);
-                    font-family: 'Inter', sans-serif;
-                    margin: 0;
-                    padding: 0;
-                    -webkit-font-smoothing: antialiased;
-                }
-
-                .main-content {
-                    flex: 1;
-                    margin-left: 260px;
-                    padding: 40px !important;
-                    min-height: 100vh;
-                }
+                :root { --primary: #008080; --bg-body: #ffffff; --bg-card: #ffffff; --border-color: #e2e8f0; --text-main: #0f172a; --text-muted: #64748b; }
+                body.yt-dark { background: #ffffff !important; background-image: none !important; color: var(--text-main); font-family: 'Inter', sans-serif; }
+                body.premium-theme::before { display: none !important; }
+                .sun-rays-container { display: none; }
 
                 .form-card {
                     background: var(--bg-card);
                     border: 1px solid var(--border-color);
-                    border-radius: 20px;
+
+                    border-radius: 16px;
                     padding: 40px;
-                    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+                    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+
                 }
 
                 .section-title {
                     font-size: 20px;
                     font-weight: 800;
                     color: var(--text-main);
-                    margin-bottom: 32px;
+
+                    margin-bottom: 35px;
                     display: flex;
                     align-items: center;
                     gap: 12px;
-                    letter-spacing: -0.5px;
+                    text-shadow: none;
                 }
 
                 .section-title .badge {
-                    background: #e0f2f2;
-                    color: var(--primary);
+                    background: rgba(0, 128, 128, 0.15);
+                    color: #008080;
                     padding: 6px 12px;
                     border-radius: 8px;
                     font-size: 11px;
@@ -69,33 +51,34 @@
                 }
 
                 .form-group {
-                    margin-bottom: 24px;
+                    margin-bottom: 35px !important;
                 }
 
                 .form-group label {
                     color: var(--text-main);
-                    font-weight: 600;
-                    font-size: 14px;
-                    margin-bottom: 10px;
+
+                    font-weight: 700;
+                    font-size: 15px;
+                    margin-bottom: 12px;
                     display: block;
+                    text-shadow: none;
                 }
 
                 .form-control {
-                    background: #f8fafc;
+                    background: #ffffff;
                     border: 1px solid var(--border-color);
                     border-radius: 12px;
                     color: var(--text-main);
-                    height: 48px;
+                    height: 50px;
                     padding: 0 16px;
-                    transition: var(--transition);
-                    font-size: 14px;
-                    font-weight: 500;
+                    transition: all 0.2s;
                 }
 
                 .form-control:focus {
-                    background: #fff;
-                    border-color: var(--primary);
-                    box-shadow: 0 0 0 4px rgba(0, 128, 128, 0.1);
+                    background: #ffffff;
+                    border-color: #008080;
+                    box-shadow: 0 0 0 4px rgba(0, 128, 128, 0.15);
+
                     outline: none;
                 }
 
@@ -115,8 +98,18 @@
                 }
 
                 .form-control option {
-                    background: #fff;
+
+                    background: #ffffff;
                     color: var(--text-main);
+                    padding: 10px;
+                }
+
+                .checkbox-group {
+                    display: flex;
+                    gap: 20px;
+                    flex-wrap: wrap;
+                    margin-top: 10px;
+
                 }
 
                 .custom-checkbox {
@@ -125,12 +118,17 @@
                     margin-bottom: 12px;
                     cursor: pointer;
                     font-size: 14px;
-                    font-weight: 500;
-                    color: var(--text-main);
+
+                    font-weight: 600;
+                    color: var(--text-main) !important;
+
                     user-select: none;
                     display: block;
                     transition: 0.2s;
                     line-height: 20px;
+
+                    text-shadow: none;
+
                 }
 
                 .custom-checkbox input { position: absolute; opacity: 0; cursor: pointer; height: 0; width: 0; }
@@ -141,17 +139,25 @@
                     left: 0;
                     height: 20px;
                     width: 20px;
-                    background-color: #f1f5f9;
+
+                    background-color: #ffffff;
+
                     border: 1px solid var(--border-color);
                     border-radius: 6px;
                     transition: 0.2s;
                 }
 
-                .custom-checkbox:hover .checkmark { border-color: var(--primary); }
+
+                .custom-checkbox:hover .checkmark {
+                    background-color: #f1f5f9;
+                    border-color: #008080;
+                }
 
                 .custom-checkbox input:checked ~ .checkmark {
-                    background-color: var(--primary);
-                    border-color: var(--primary);
+                    background-color: #008080;
+                    border-color: #008080;
+                    box-shadow: 0 0 10px rgba(0, 128, 128, 0.3);
+
                 }
 
                 .checkmark:after {
@@ -172,84 +178,238 @@
                     transform: rotate(45deg);
                 }
 
+
+                .dropdown-menu {
+                    background: #ffffff !important;
+                    border: 1px solid var(--border-color) !important;
+                    box-shadow: 0 4px 6px rgba(0,0,0,0.1) !important;
+                    padding: 15px !important;
+                }
+
+                .dropdown-menu label:hover {
+                    color: #008080 !important;
+                }
+
                 .btn-submit {
-                    background: var(--accent-red);
-                    color: #fff;
-                    font-weight: 700;
+                    background: #008080;
+                    color: var(--text-main);
+                    font-weight: 800;
                     border: none;
                     border-radius: 12px;
-                    padding: 14px 28px;
-                    font-size: 15px;
-                    transition: var(--transition);
-                    box-shadow: 0 4px 6px -1px rgba(239, 68, 68, 0.2);
+                    padding: 15px 30px;
+                    font-size: 16px;
+                    margin-top: 20px;
+                    transition: all 0.2s;
+                    box-shadow: 0 10px 20px rgba(0, 128, 128, 0.2);
                 }
 
                 .btn-submit:hover {
-                    background: #dc2626;
-                    transform: translateY(-1px);
-                    box-shadow: 0 10px 15px -3px rgba(239, 68, 68, 0.3);
+                    background: #077378;
+                    transform: translateY(-2px);
+                    box-shadow: 0 15px 30px rgba(0, 128, 128, 0.3);
                 }
 
                 .btn-prev {
-                    background: #f1f5f9;
+                    background: var(--bg-body);
                     color: var(--text-main);
-                    font-weight: 600;
-                    border: 1px solid var(--border-color);
+                    font-weight: 700;
+                    border: 1px solid rgba(255, 255, 255, 0.1);
+
                     border-radius: 12px;
                     padding: 14px 28px;
                     font-size: 15px;
                     transition: 0.2s;
                 }
 
-                .btn-prev:hover { background: #e2e8f0; }
+                .itinerary-day {
+                    background: var(--bg-card);
+                    border: 1px solid var(--border-color);
+                    border-radius: 16px;
+                    padding: 30px;
+                    margin-bottom: 25px;
+                    position: relative;
+                    animation: slideDown 0.3s ease-out;
+                    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+                }
+
+                .itinerary-day input,
+                .itinerary-day textarea {
+                    margin-bottom: 20px !important;
+                }
+
+                .itinerary-day .form-group label {
+                    margin-bottom: 10px !important;
+                    display: block;
+                    font-weight: 700;
+                    color: var(--text-main);
+                }
+
+                /* Utility Classes */
+                .d-none {
+                    display: none !important;
+                }
+
+                .d-flex {
+                    display: flex !important;
+                }
+
+                .flex-wrap {
+                    flex-wrap: wrap !important;
+                }
+
+                .gap-2 {
+                    gap: 10px !important;
+                }
+
+                .w-100 {
+                    width: 100% !important;
+                }
+
+                .text-start {
+                    text-align: left !important;
+                }
+
+                .p-3 {
+                    padding: 15px !important;
+                }
+
+                .mb-0 {
+                    margin-bottom: 0 !important;
+                }
+
+                .mt-2 {
+                    margin-top: 10px !important;
+                }
+
+                .day-number {
+                    position: absolute;
+                    top: -12px;
+                    left: 20px;
+                    background: #008080;
+                    color: var(--text-main);
+                    padding: 4px 15px;
+                    border-radius: 20px;
+                    font-weight: 800;
+                    font-size: 12px;
+                    box-shadow: 0 4px 10px rgba(0, 128, 128, 0.3);
+                }
+
+                .remove-day {
+                    position: absolute;
+                    top: 15px;
+                    right: 15px;
+                    color: var(--text-muted);
+                    cursor: pointer;
+                    transition: all 0.2s;
+                }
+
+                .remove-day:hover {
+                    color: #ef4444;
+                }
+
+                .inclusion-chip {
+                    display: inline-flex;
+                    align-items: center;
+                    gap: 8px;
+                    background: var(--bg-body);
+                    border: 1px solid var(--border-color);
+                    padding: 8px 16px;
+                    border-radius: 10px;
+                    margin-right: 10px;
+                    margin-bottom: 10px;
+                    cursor: pointer;
+                    transition: all 0.2s;
+                }
+
+                .inclusion-chip.active {
+                    background: rgba(34, 197, 94, 0.1);
+                    border-color: #22c55e;
+                    color: #22c55e;
+                }
+
+                .exclusion-chip.active {
+                    background: rgba(239, 68, 68, 0.1);
+                    border-color: #ef4444;
+                    color: #ef4444;
+                }
 
                 /* Wizard Styles */
-                .step-indicator-container {
-                    background: #fff !important;
-                    border: 1px solid var(--border-color);
-                    border-radius: 20px;
-                    padding: 24px !important;
-                    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+                .form-step {
+                    display: block;
+                    margin-bottom: 60px;
+                    padding-bottom: 40px;
+                    border-bottom: 1px solid var(--border-color);
+                    animation: fadeIn 0.4s ease-out;
+                }
+
+                .step-indicator {
+                    display: flex;
+                    justify-content: space-between;
+                    margin-bottom: 40px;
+                    position: relative;
+                }
+
+                .step-indicator::before {
+                    content: '';
+                    position: absolute;
+                    top: 15px;
+                    left: 0;
+                    right: 0;
+                    height: 2px;
+                    background: var(--bg-body);
+                    z-index: 1;
+                }
+
+                .step-item {
+                    position: relative;
+                    z-index: 2;
+                    text-align: center;
+                    width: 25%;
+
                 }
 
                 .step-dot {
                     width: 32px;
                     height: 32px;
-                    background: #f1f5f9;
-                    border: 1px solid var(--border-color);
+
+                    background: #ffffff;
+                    border: 2px solid var(--border-color);
+
                     border-radius: 50%;
                     margin: 0 auto 8px;
                     display: flex;
                     align-items: center;
                     justify-content: center;
-                    font-weight: 700;
-                    font-size: 13px;
+
+                    font-weight: 800;
+                    font-size: 14px;
                     color: var(--text-muted);
-                    transition: 0.3s;
+                    transition: all 0.3s;
                 }
 
-                .step-item.active .step-dot, .step-item.completed .step-dot {
-                    background: var(--accent-red) !important;
-                    border-color: var(--accent-red) !important;
-                    color: #fff !important;
-                    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+                .step-item.active .step-dot {
+                    border-color: #008080;
+                    color: var(--text-main);
+                    background: #008080;
+                    box-shadow: 0 0 15px rgba(0, 128, 128, 0.4);
+                }
+
+                .step-item.completed .step-dot {
+                    background: #22c55e;
+                    border-color: #22c55e;
+                    color: var(--text-main);
                 }
 
                 .step-label {
-                    color: var(--text-muted) !important;
-                    font-size: 11px !important;
-                    text-shadow: none !important;
-                    text-transform: uppercase;
-                    letter-spacing: 0.5px;
+                    font-size: 13px;
+                    font-weight: 700;
+                    color: var(--text-muted);
+                    transition: all 0.3s;
                 }
 
-                .step-item.active .step-label { color: var(--accent-red) !important; font-weight: 700 !important; }
+                .step-item.active .step-label {
+                    color: #008080;
 
-                /* Sidebar Overrides - MATCHING THE IMAGE */
-                .sidebar {
-                    background: #006d77 !important; /* Dark Sea Green/Teal from image */
-                    border-right: none !important;
-                    width: 260px !important;
                 }
 
                 .sidebar .nav-item a {
@@ -281,25 +441,112 @@
                     padding: 10px 20px !important;
                 }
 
-                .day-chip input:checked + .chip-label {
-                    background: var(--primary) !important;
-                    border-color: var(--primary) !important;
-                    color: #fff !important;
+
+                @keyframes fadeIn {
+                    from {
+                        opacity: 0;
+                        transform: translateY(10px);
+                    }
+
+                    to {
+                        opacity: 1;
+                        transform: translateY(0);
+                    }
+                }
+
+                @keyframes slideDown {
+                    from {
+                        opacity: 0;
+                        transform: translateY(-10px);
+                    }
+
+                    to {
+                        opacity: 1;
+                        transform: translateY(0);
+                    }
+                }
+
+                .pricing-toggle {
+                    background: #ffffff;
+                    border: 1px solid var(--border-color);
+                    padding: 15px 25px;
+                    border-radius: 16px;
+                    cursor: pointer;
+                    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                    font-weight: 700;
+                    color: var(--text-muted);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    gap: 10px;
+                }
+
+                .pricing-toggle i {
+                    font-size: 18px;
+                }
+
+                .pricing-toggle.active {
+                    background: linear-gradient(135deg, rgba(0, 128, 128, 0.15), rgba(0, 128, 128, 0.05));
+                    border-color: #008080;
+                    color: var(--text-main);
+                    box-shadow: 0 8px 20px rgba(0, 128, 128, 0.15);
                 }
 
                 .occ-card {
-                    background: #fff;
+                    background: var(--bg-body);
+
                     border: 1px solid var(--border-color);
                     border-radius: 16px;
                     transition: 0.3s;
                 }
                 .occ-card:hover { border-color: var(--primary); transform: translateX(4px); }
 
-                .text-primary { color: var(--primary) !important; }
-                .text-muted { color: var(--text-muted) !important; }
 
+                .occ-card:hover {
+                    border-color: rgba(0, 128, 128, 0.3);
+                    background: #e2e8f0;
+                }
+
+                .day-chip-group {
+                    display: flex;
+                    gap: 10px;
+                    flex-wrap: wrap;
+                }
+
+                .day-chip {
+                    cursor: pointer;
+                    user-select: none;
+                }
+
+                .day-chip input {
+                    display: none;
+                }
+
+                .day-chip .chip-label {
+                    display: inline-block;
+                    padding: 10px 18px;
+                    background: #ffffff;
+                    border: 1px solid var(--border-color);
+                    border-radius: 12px;
+                    font-weight: 700;
+                    font-size: 13px;
+                    color: var(--text-muted);
+                    transition: all 0.2s;
+                }
+
+                .day-chip input:checked+.chip-label {
+                    background: #008080;
+                    color: var(--text-main);
+                    border-color: #008080;
+                    box-shadow: 0 4px 12px rgba(0, 128, 128, 0.2);
+
+                }
                 @media (max-width: 991px) {
-                    .main-content { margin-left: 0; padding: 24px !important; }
+                    .main-content { 
+                        margin-left: 0 !important; 
+                        padding: 20px !important; 
+                        padding-top: 85px !important; 
+                    }
                 }
             </style>
             </style>
@@ -311,30 +558,114 @@
     </jsp:include>
 
     <div class="main-content">
-        <div class="dashboard-header">
-            <div class="header-content">
-                <h1>Edit Adventure</h1>
-                <p>Updating details for <strong>${trip.title}</strong></p>
-            </div>
-        </div>
+
+                <div style="margin-bottom: 35px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;">
+                    <div>
+                        <h1 style="font-weight: 800; font-size: 32px; color: var(--text-main); margin: 0;">Edit Adventure</h1>
+                        <p style="color: var(--text-main); margin: 5px 0 0 0;">Updating details for <strong style="color: #000;">${trip.title}</strong></p>
+                    </div>
+                    <a href="<c:url value='/vendor/tours'/>" class="btn btn-default" style="background: #ef4444; border: 1px solid var(--border-color); border-radius: 10px; padding: 10px 20px; font-weight: 600; color: var(--text-main); text-decoration: none; display: inline-flex; align-items: center; gap: 8px; transition: 0.2s;">
+                        <i class="fa fa-arrow-left"></i> Back
+                    </a>
+                </div>
 
                 <!-- Wizard Progress -->
-                <div class="step-indicator-container">
-                    <div class="step-indicator" style="display: flex; justify-content: space-between; align-items: center;">
-                        <div class="step-item active" id="stepIndicator1" onclick="jumpToStep(0)"><div class="step-dot">1</div><div class="step-label">Basic</div></div>
-                        <div class="step-item" id="stepIndicator2" onclick="jumpToStep(1)"><div class="step-dot">2</div><div class="step-label">Dest</div></div>
-                        <div class="step-item" id="stepIndicator3" onclick="jumpToStep(2)"><div class="step-dot">3</div><div class="step-label">Time</div></div>
-                        <div class="step-item" id="stepIndicator4" onclick="jumpToStep(3)"><div class="step-dot">4</div><div class="step-label">Price</div></div>
-                        <div class="step-item" id="stepIndicator5" onclick="jumpToStep(4)"><div class="step-dot">5</div><div class="step-label">Stay</div></div>
-                        <div class="step-item" id="stepIndicator6" onclick="jumpToStep(5)"><div class="step-dot">6</div><div class="step-label">Trans</div></div>
-                        <div class="step-item" id="stepIndicator7" onclick="jumpToStep(6)"><div class="step-dot">7</div><div class="step-label">Meals</div></div>
-                        <div class="step-item" id="stepIndicator8" onclick="jumpToStep(7)"><div class="step-dot">8</div><div class="step-label">Plan</div></div>
-                        <div class="step-item" id="stepIndicator9" onclick="jumpToStep(8)"><div class="step-dot">9</div><div class="step-label">Media</div></div>
-                        <div class="step-item" id="stepIndicator10" onclick="jumpToStep(9)"><div class="step-dot">10</div><div class="step-label">Dates</div></div>
-                        <div class="step-item" id="stepIndicator11" onclick="jumpToStep(10)"><div class="step-dot">11</div><div class="step-label">Terms</div></div>
-                        <div class="step-item" id="stepIndicator12" onclick="jumpToStep(11)"><div class="step-dot">12</div><div class="step-label">Review</div></div>
-                    </div>
-                </div>
+                <style>
+                    .step-item { cursor: pointer; transition: all 0.3s ease; opacity: 0.7; }
+                    .step-item:hover { opacity: 1; transform: translateY(-2px); }
+                    .step-item.active { opacity: 1; }
+                    .step-label { 
+                        color: var(--text-main) !important; 
+                        font-weight: 600; 
+                        text-shadow: none; 
+                        font-size: 11px;
+                        margin-top: 5px;
+                    }
+                    .step-item.active .step-dot, .step-item.completed .step-dot {
+                        background: #008080;
+                        border-color: #008080;
+                        box-shadow: 0 0 15px rgba(0, 128, 128, 0.5);
+                    }
+                    .day-image-upload {
+                        border: 2px dashed rgba(255,255,255,0.1);
+                        border-radius: 12px;
+                        height: 100px;
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+                        justify-content: center;
+                        cursor: pointer;
+                        transition: 0.3s;
+                        background: rgba(255,255,255,0.02);
+                        color: var(--text-muted);
+                    }
+                    .day-image-upload:hover {
+                        border-color: #008080;
+                        background: rgba(0, 128, 128, 0.05);
+                        color: #008080;
+                    }
+                    .day-image-preview img {
+                        width: 80px;
+                        height: 80px;
+                        border-radius: 8px;
+                        object-fit: cover;
+                        border: 2px solid rgba(255,255,255,0.1);
+                    }
+                    .occ-card {
+                     background: #f8fafc !important;
+                     padding: 24px 30px !important;
+                     margin-bottom: 20px !important;
+                        background: rgba(255,255,255,0.03);
+                        border: 1px solid rgba(255,255,255,0.1);
+                        border-radius: 16px;
+                        padding: 20px;
+                        margin-bottom: 15px;
+                        transition: 0.3s;
+                    }
+                    .occ-card:hover {
+                        border-color: rgba(0, 128, 128, 0.4);
+                        background: rgba(255,255,255,0.05);
+                        transform: translateX(5px);
+                    }
+                    .day-chip-group {
+                        display: flex;
+                        gap: 10px;
+                        flex-wrap: wrap;
+                    }
+                    .day-chip {
+                        cursor: pointer;
+                        user-select: none;
+                    }
+                    .day-chip input { display: none; }
+                    .chip-label {
+                        display: block;
+                        padding: 10px 18px;
+                        background: rgba(255,255,255,0.05);
+                        border: 1px solid rgba(255,255,255,0.1);
+                        border-radius: 12px;
+                        color: white;
+                        font-weight: 600;
+                        transition: 0.3s;
+                        font-size: 13px;
+                    }
+                    .day-chip input:checked + .chip-label {
+                        background: #008080;
+                        border-color: #008080;
+                        box-shadow: 0 4px 12px rgba(0, 128, 128, 0.3);
+                    }
+                    .occ-icon {
+                        width: 35px;
+                        height: 35px;
+                        background: rgba(0, 128, 128, 0.1);
+                        color: #008080;
+                        border-radius: 10px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        margin-bottom: 10px;
+                    }
+                </style>
+               
 
                 <form action="<c:url value='/vendor/edit-trip'/>" id="editForm" method="post"
                     enctype="multipart/form-data">
@@ -362,7 +693,7 @@
                                                 Select Audience Types
                                             </button>
                                             <div class="dropdown-menu p-3 bg-dark border-secondary w-100"
-                                                style="background: #1a1f2b; min-width: 250px; max-height: 300px; overflow-y: auto;">
+                                                style="background: #ffffff; min-width: 250px; max-height: 300px; overflow-y: auto;">
                                                 <label class="custom-checkbox mb-2 d-flex"><input type="checkbox" name="travelerCategories" value="Solo" onchange="updateSubCategories()"><span class="checkmark"></span> Solo Travelers</label>
                                                 <label class="custom-checkbox mb-2 d-flex"><input type="checkbox" name="travelerCategories" value="Group" onchange="updateSubCategories()"><span class="checkmark"></span> Group / Friends</label>
                                                 <label class="custom-checkbox mb-2 d-flex"><input type="checkbox" name="travelerCategories" value="Corporate" onchange="updateSubCategories()"><span class="checkmark"></span> Corporate / Team</label>
@@ -391,8 +722,10 @@
                                         <label>Sub-Categories</label>
                                         <div class="dropdown">
                                             <button id="subCategoryBtn" class="form-control text-start select-custom" type="button" data-toggle="dropdown">Select Interests</button>
-                                            <div id="subCategoryList" class="dropdown-menu p-3 bg-dark border-secondary w-100" style="background: #1a1f2b; max-height: 250px; overflow-y: auto;">
-                                                <p class="text-muted small mb-0">Select Audience first...</p>
+
+                                            <div id="subCategoryList" class="dropdown-menu p-3 bg-dark border-secondary w-100" style="background: #ffffff; max-height: 250px; overflow-y: auto;">
+                                                <p class="text-white-50 small mb-0">Select Audience first...</p>
+
                                             </div>
                                         </div>
                                         <div id="subOtherInputCont" style="display:none;" class="mt-2">
@@ -417,56 +750,56 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label>Destination City <span class="text-danger">*</span></label>
-                                        <input type="text" name="destination" value="${trip.destination}" class="form-control" placeholder="e.g., Manali">
+                                        <input type="text" name="destination" value="${trip.destination}" class="form-control" placeholder="e.g., Manali" required>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label>State <span class="text-danger">*</span></label>
-                                        <input type="text" name="state" value="${trip.state}" class="form-control" placeholder="e.g., Himachal Pradesh">
+                                        <input type="text" name="state" value="${trip.state}" class="form-control" placeholder="e.g., Himachal Pradesh" required>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label>Country</label>
-                                        <input type="text" name="country" class="form-control" value="India">
+                                        <label>Country <span class="text-danger">*</span></label>
+                                        <input type="text" name="country" class="form-control" value="India" required>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label>Origin City</label>
-                                        <input type="text" name="originCity" value="${trip.originCity}" class="form-control" placeholder="e.g., Delhi">
+                                        <label>Origin City <span class="text-danger">*</span></label>
+                                        <input type="text" name="originCity" value="${trip.originCity}" class="form-control" placeholder="e.g., Delhi" required>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label>Origin State</label>
-                                        <input type="text" name="originState" value="${trip.originState}" class="form-control" placeholder="e.g., Delhi">
+                                        <label>Origin State <span class="text-danger">*</span></label>
+                                        <input type="text" name="originState" value="${trip.originState}" class="form-control" placeholder="e.g., Delhi" required>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label>Region</label>
-                                        <select name="region" class="form-control select-custom">
+                                        <label>Region <span class="text-danger">*</span></label>
+                                        <select name="region" class="form-control select-custom" required>
                                             <option value="">Select region</option>
                                             <optgroup label="Domestic (India)">
-                                                <option value="North India">North India</option>
-                                                <option value="South India">South India</option>
-                                                <option value="East India">East India</option>
-                                                <option value="West India">West India</option>
-                                                <option value="Central India">Central India</option>
-                                                <option value="Northeast India">Northeast India</option>
+                                                <option value="North India" ${trip.region == 'North India' ? 'selected' : ''}>North India</option>
+                                                <option value="South India" ${trip.region == 'South India' ? 'selected' : ''}>South India</option>
+                                                <option value="East India" ${trip.region == 'East India' ? 'selected' : ''}>East India</option>
+                                                <option value="West India" ${trip.region == 'West India' ? 'selected' : ''}>West India</option>
+                                                <option value="Central India" ${trip.region == 'Central India' ? 'selected' : ''}>Central India</option>
+                                                <option value="Northeast India" ${trip.region == 'Northeast India' ? 'selected' : ''}>Northeast India</option>
                                             </optgroup>
                                             <optgroup label="International">
-                                                <option value="Southeast Asia">Southeast Asia</option>
-                                                <option value="Middle East">Middle East</option>
-                                                <option value="Europe">Europe</option>
-                                                <option value="North America">North America</option>
-                                                <option value="South America">South America</option>
-                                                <option value="Africa">Africa</option>
-                                                <option value="Australia / Oceania">Australia / Oceania</option>
-                                                <option value="Central Asia">Central Asia</option>
-                                                <option value="East Asia">East Asia</option>
+                                                <option value="Southeast Asia" ${trip.region == 'Southeast Asia' ? 'selected' : ''}>Southeast Asia</option>
+                                                <option value="Middle East" ${trip.region == 'Middle East' ? 'selected' : ''}>Middle East</option>
+                                                <option value="Europe" ${trip.region == 'Europe' ? 'selected' : ''}>Europe</option>
+                                                <option value="North America" ${trip.region == 'North America' ? 'selected' : ''}>North America</option>
+                                                <option value="South America" ${trip.region == 'South America' ? 'selected' : ''}>South America</option>
+                                                <option value="Africa" ${trip.region == 'Africa' ? 'selected' : ''}>Africa</option>
+                                                <option value="Australia / Oceania" ${trip.region == 'Australia / Oceania' ? 'selected' : ''}>Australia / Oceania</option>
+                                                <option value="Central Asia" ${trip.region == 'Central Asia' ? 'selected' : ''}>Central Asia</option>
+                                                <option value="East Asia" ${trip.region == 'East Asia' ? 'selected' : ''}>East Asia</option>
                                             </optgroup>
                                         </select>
                                     </div>
@@ -495,15 +828,18 @@
                                 <div class="d-flex flex-wrap gap-2">
                                     <style>
                                         .duration-preset {
-                                            background: rgba(255,255,255,0.1);
-                                            border: 1px solid rgba(255,255,255,0.2);
-                                            color: white !important;
-                                            font-weight: 500;
+                                            background: #f1f5f9;
+                                            border: 1px solid var(--border-color);
+                                            color: var(--text-main) !important;
+                                            font-weight: 600;
+                                            border-radius: 8px;
+                                            padding: 8px 16px;
                                             transition: all 0.2s ease;
                                         }
                                         .duration-preset:hover {
-                                            background: #f04c26;
-                                            border-color: #f04c26;
+                                            background: #008080;
+                                            border-color: #008080;
+                                            color: white !important;
                                             transform: translateY(-2px);
                                         }
                                     </style>
@@ -542,51 +878,52 @@
                         <!-- STEP 4: PRICING -->
                         <div class="form-step" id="step4">
                             <div class="section-title"><span class="badge">04</span> PRICING & BOOKING OPTIONS</div>
-                            <div class="row g-3">
-                                <div class="col-md-12">
-                                    <label class="small text-muted mb-2">Price Model</label>
-                                    <div class="d-flex gap-2 mb-3">
-                                        <div class="pricing-toggle active w-100 text-center" onclick="setPricingType('perPerson', this)"><i class="fa fa-user"></i> Per Person</div>
-                                        <div class="pricing-toggle w-100 text-center" onclick="setPricingType('perGroup', this)"><i class="fa fa-users"></i> Per Group</div>
+                            <div class="row" style="row-gap: 25px !important;">
+
+                                <div class="col-md-12" style="margin-bottom: 40px !important;">
+                                    <label class="small text-muted" style="font-weight: 700; display: block; margin-bottom: 12px !important; letter-spacing: 0.5px;">Price Model</label>
+                                    <div class="d-flex gap-3">
+                                        <div class="pricing-toggle active w-100 text-center" onclick="setPricingType('perPerson', this)" style="padding: 16px;"><i class="fa fa-user"></i> Per Person</div>
+                                        <div class="pricing-toggle w-100 text-center" onclick="setPricingType('perGroup', this)" style="padding: 16px;"><i class="fa fa-users"></i> Per Group</div>
                                         <input type="hidden" name="pricingType" id="pricingTypeInput" value="perPerson">
                                     </div>
                                 </div>
                                 <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label id="mainPriceLabel">Base Price (₹) <span class="text-danger">*</span></label>
+                                    <div class="form-group" style="margin-bottom: 30px !important;">
+                                        <label id="mainPriceLabel" style="margin-bottom: 12px !important; display: block; font-weight: 700;">Base Price (₹) <span class="text-danger">*</span></label>
                                         <input type="number" name="price" value="${trip.price}" class="form-control" placeholder="e.g. 5000">
                                         <input type="hidden" name="adultPrice" id="hiddenAdultPrice">
                                     </div>
                                 </div>
                                 <div class="col-md-4">
-                                    <div class="form-group" id="childPriceCont">
-                                        <label>Child Price (₹)</label>
+                                    <div class="form-group" id="childPriceCont" style="margin-bottom: 30px !important;">
+                                        <label style="margin-bottom: 12px !important; display: block; font-weight: 700;">Child Price (₹)</label>
                                         <input type="number" name="childPrice" value="${trip.childPrice}" class="form-control" placeholder="Optional">
                                     </div>
                                 </div>
                                 <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label>Booking Amount (₹)</label>
+                                    <div class="form-group" style="margin-bottom: 30px !important;">
+                                        <label style="margin-bottom: 12px !important; display: block; font-weight: 700;">Booking Amount (₹)</label>
                                         <input type="number" name="bookingAmount" value="${trip.bookingAmount}" class="form-control" placeholder="Token to block seat">
-                                        <small class="text-muted">Set 0 for full payment</small>
+                                        <small class="text-muted mt-2 d-block" style="font-size: 11px;">Set 0 for full payment</small>
                                     </div>
                                 </div>
                                 <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label>Weekend Surcharge (Extra ₹)</label>
+                                    <div class="form-group" style="margin-bottom: 30px !important;">
+                                        <label style="margin-bottom: 12px !important; display: block; font-weight: 700;">Weekend Surcharge (Extra ₹)</label>
                                         <input type="number" name="weekendPrice" value="${trip.weekendPrice}" class="form-control" placeholder="e.g. 500 (Add-on)">
-                                        <small class="text-muted">Extra amount added to base price for weekend dates.</small>
+                                        <small class="text-muted mt-2 d-block" style="font-size: 11px; line-height: 1.4;">Extra amount added to base price for weekend dates.</small>
                                     </div>
                                 </div>
                                 <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label>Discount (%)</label>
+                                    <div class="form-group" style="margin-bottom: 30px !important;">
+                                        <label style="margin-bottom: 12px !important; display: block; font-weight: 700;">Discount (%)</label>
                                         <input type="number" name="discount" value="${trip.discount}" class="form-control" placeholder="e.g. 10">
                                     </div>
                                 </div>
                                 <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label>GST / Taxes</label>
+                                    <div class="form-group" style="margin-bottom: 30px !important;">
+                                        <label style="margin-bottom: 12px !important; display: block; font-weight: 700;">GST / Taxes</label>
                                         <select name="taxStatus" class="form-control select-custom">
                                             <option value="Inclusive">Inclusive of GST</option>
                                             <option value="Exclusive">Exclusive of GST</option>
@@ -594,9 +931,9 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-md-12">
-                                    <div class="p-3 border border-secondary border-opacity-10 rounded-4 mt-2">
-                                        <label class="custom-checkbox small mb-0 d-flex align-items-center">
+                                <div class="col-md-12" style="margin-top: 15px !important;">
+                                    <div class="p-4 rounded-4" style="background: #f8fafc; border: 1px solid var(--border-color);">
+                                        <label class="custom-checkbox small mb-0 d-flex align-items-center" style="font-weight: 500; color: var(--text-main); cursor: pointer;">
                                             <input type="checkbox" name="studentDiscountAvailable" value="true">
                                             <span class="checkmark"></span> 
                                             <span class="ms-2">Extra Student Discount Available (Requires Valid ID)</span>
@@ -609,79 +946,91 @@
                         <!-- STEP 5: ACCOMMODATION -->
                         <div class="form-step" id="step5">
                             <div class="section-title"><span class="badge">05</span> STAY DETAILS</div>
-                            <div class="row g-3">
+                            <div class="row" style="row-gap: 30px !important;">
                                 <div class="col-md-12">
-                                    <div class="form-group">
-                                        <label>Stay / Hotel Name</label>
+                                    <div class="form-group" style="margin-bottom: 25px !important;">
+                                        <label style="margin-bottom: 12px !important; display: block; font-weight: 700;">Stay / Hotel Name</label>
                                         <input type="text" name="stayName" value="${trip.stayName}" class="form-control" placeholder="e.g. Grand Orchid Resort / Multiple Stays">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
-                                    <label>Stay Category</label>
-                                    <select name="stayCategory" id="stayCategory" class="form-control select-custom" onchange="updateStayTypes()">
-                                        <option value="">Select Category</option>
-                                        <option value="Hotels">🏢 Hotels</option>
-                                        <option value="Resorts">🏝️ Resorts</option>
-                                        <option value="Homestays">🧑‍🤝‍🧑 Homestays</option>
-                                        <option value="Camping">🏕️ Camping</option>
-                                        <option value="Unique">💎 Unique Stays</option>
-                                    </select>
+                                    <div class="form-group" style="margin-bottom: 25px !important;">
+                                        <label style="margin-bottom: 12px !important; display: block; font-weight: 700;">Stay Category</label>
+                                        <select name="stayCategory" id="stayCategory" class="form-control select-custom" onchange="updateStayTypes()">
+                                            <option value="">Select Category</option>
+                                            <option value="Hotels"> Hotels</option>
+                                            <option value="Resorts"> Resorts</option>
+                                            <option value="Homestays"> Homestays</option>
+                                            <option value="Camping"> Camping</option>
+                                            <option value="Unique"> Unique Stays</option>
+                                        </select>
+                                    </div>
                                 </div>
                                 <div class="col-md-6">
-                                    <label>Stay Type</label>
-                                    <select name="stayType" id="stayType" class="form-control select-custom"><option value="">Select Type</option></select>
+                                    <div class="form-group" style="margin-bottom: 25px !important;">
+                                        <label style="margin-bottom: 12px !important; display: block; font-weight: 700;">Stay Type</label>
+                                        <select name="stayType" id="stayType" class="form-control select-custom"><option value="">Select Type</option></select>
+                                    </div>
                                 </div>
                                 <div class="col-md-6">
-                                    <label>Stay Variant</label>
-                                    <select name="stayVariant" class="form-control select-custom">
-                                        <option value="Budget">Budget</option>
-                                        <option value="Standard">Standard</option>
-                                        <option value="Premium">Premium</option>
-                                        <option value="Luxury">Luxury</option>
-                                    </select>
+                                    <div class="form-group" style="margin-bottom: 25px !important;">
+                                        <label style="margin-bottom: 12px !important; display: block; font-weight: 700;">Stay Variant</label>
+                                        <select name="stayVariant" class="form-control select-custom">
+                                            <option value="Budget">Budget</option>
+                                            <option value="Standard">Standard</option>
+                                            <option value="Premium">Premium</option>
+                                            <option value="Luxury">Luxury</option>
+                                        </select>
+                                    </div>
                                 </div>
                                 <div class="col-md-6">
-                                    <label>Room Sharing</label>
-                                    <select name="roomSharing" class="form-control select-custom">
-                                        <option value="N/A">N/A</option>
-                                        <option value="Single Occupancy">Single Occupancy</option>
-                                        <option value="2 sharing (Double)">2 sharing (Double)</option>
-                                        <option value="3 sharing (Triple)">3 sharing (Triple)</option>
-                                        <option value="4 sharing (Quad)">4 sharing (Quad)</option>
-                                        <option value="Dormitory">Dormitory</option>
-                                        <option value="Tent Sharing">Tent Sharing</option>
-                                    </select>
+                                    <div class="form-group" style="margin-bottom: 25px !important;">
+                                        <label style="margin-bottom: 12px !important; display: block; font-weight: 700;">Room Sharing</label>
+                                        <select name="roomSharing" class="form-control select-custom">
+                                            <option value="N/A">N/A</option>
+                                            <option value="Single Occupancy">Single Occupancy</option>
+                                            <option value="2 sharing (Double)">2 sharing (Double)</option>
+                                            <option value="3 sharing (Triple)">3 sharing (Triple)</option>
+                                            <option value="4 sharing (Quad)">4 sharing (Quad)</option>
+                                            <option value="Dormitory">Dormitory</option>
+                                            <option value="Tent Sharing">Tent Sharing</option>
+                                        </select>
+                                    </div>
                                 </div>
-                                <div class="col-md-12 mt-3">
-                                    <label class="small text-muted mb-3 d-block uppercase tracking-wider">Stay Amenities</label>
-                                    <div class="p-4 bg-light rounded-4 border border-secondary border-opacity-10">
-                                        <div class="row g-3">
-                                            <div class="col-md-3"><label class="custom-checkbox"><input type="checkbox" class="stay-amenity" value="WiFi"><span class="checkmark"></span> WiFi</label></div>
-                                            <div class="col-md-3"><label class="custom-checkbox"><input type="checkbox" class="stay-amenity" value="Air Conditioning"><span class="checkmark"></span> AC</label></div>
-                                            <div class="col-md-3"><label class="custom-checkbox"><input type="checkbox" class="stay-amenity" value="Heater"><span class="checkmark"></span> Heater</label></div>
-                                            <div class="col-md-3"><label class="custom-checkbox"><input type="checkbox" class="stay-amenity" value="Attached Washroom"><span class="checkmark"></span> Attached Washroom</label></div>
-                                            <div class="col-md-3"><label class="custom-checkbox"><input type="checkbox" class="stay-amenity" value="Geyser / Hot Water"><span class="checkmark"></span> Geyser</label></div>
-                                            <div class="col-md-3"><label class="custom-checkbox"><input type="checkbox" class="stay-amenity" value="Swimming Pool"><span class="checkmark"></span> Pool</label></div>
-                                            <div class="col-md-3"><label class="custom-checkbox"><input type="checkbox" class="stay-amenity" value="Parking"><span class="checkmark"></span> Parking</label></div>
-                                            <div class="col-md-3"><label class="custom-checkbox"><input type="checkbox" class="stay-amenity" value="CCTV Security"><span class="checkmark"></span> Security</label></div>
+                                <div class="col-md-12">
+                                    <div class="form-group" style="margin-bottom: 25px !important;">
+                                        <label style="margin-bottom: 15px !important; display: block; font-weight: 700;">Stay Amenities</label>
+                                        <div class="p-4 rounded-4" style="background: #f8fafc; border: 1px solid var(--border-color);">
+                                            <div class="row g-3">
+                                                <div class="col-md-3"><label class="custom-checkbox" style="font-weight: 500; color: var(--text-main);"><input type="checkbox" class="stay-amenity" value="WiFi"><span class="checkmark"></span> WiFi</label></div>
+                                                <div class="col-md-3"><label class="custom-checkbox" style="font-weight: 500; color: var(--text-main);"><input type="checkbox" class="stay-amenity" value="Air Conditioning"><span class="checkmark"></span> AC</label></div>
+                                                <div class="col-md-3"><label class="custom-checkbox" style="font-weight: 500; color: var(--text-main);"><input type="checkbox" class="stay-amenity" value="Heater"><span class="checkmark"></span> Heater</label></div>
+                                                <div class="col-md-3"><label class="custom-checkbox" style="font-weight: 500; color: var(--text-main);"><input type="checkbox" class="stay-amenity" value="Attached Washroom"><span class="checkmark"></span> Attached Washroom</label></div>
+                                                <div class="col-md-3"><label class="custom-checkbox" style="font-weight: 500; color: var(--text-main);"><input type="checkbox" class="stay-amenity" value="Geyser / Hot Water"><span class="checkmark"></span> Geyser</label></div>
+                                                <div class="col-md-3"><label class="custom-checkbox" style="font-weight: 500; color: var(--text-main);"><input type="checkbox" class="stay-amenity" value="Swimming Pool"><span class="checkmark"></span> Pool</label></div>
+                                                <div class="col-md-3"><label class="custom-checkbox" style="font-weight: 500; color: var(--text-main);"><input type="checkbox" class="stay-amenity" value="Parking"><span class="checkmark"></span> Parking</label></div>
+                                                <div class="col-md-3"><label class="custom-checkbox" style="font-weight: 500; color: var(--text-main);"><input type="checkbox" class="stay-amenity" value="CCTV Security"><span class="checkmark"></span> Security</label></div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-md-12">
-                                    <div class="form-group">
-                                        <label>Hotel Link (Website / Google Maps)</label>
+                                    <div class="form-group" style="margin-bottom: 25px !important;">
+                                        <label style="margin-bottom: 12px !important; display: block; font-weight: 700;">Hotel Link (Website / Google Maps)</label>
                                         <input type="url" name="stayLink" value="${trip.stayLink}" class="form-control" placeholder="https://example.com or Google Maps link">
                                     </div>
                                 </div>
                                 <div class="col-md-12">
-                                    <div class="form-group">
-                                        <label>Additional Stay Details</label>
+                                    <div class="form-group" style="margin-bottom: 25px !important;">
+                                        <label style="margin-bottom: 12px !important; display: block; font-weight: 700;">Additional Stay Details</label>
                                         <textarea name="stayDescription" class="form-control" rows="3" placeholder="Describe the property, view, location, or any specific rules...">${trip.stayDescription}</textarea>
                                     </div>
                                 </div>
                                 <div class="col-md-12 mt-3">
-                                    <label class="small text-muted mb-3 d-block uppercase tracking-wider">Stay Photos (Multiple)</label>
-                                    <div onclick="document.getElementById('stayPhotos').click()" class="p-4 border-2 border-dashed rounded text-center cursor-pointer" style="border: 2px dashed rgba(240, 76, 38, 0.3); background: rgba(240, 76, 38, 0.02);">
+
+                                    <label class="small text-white-50 mb-3 d-block uppercase tracking-wider">Stay Photos (Multiple)</label>
+                                    <div onclick="document.getElementById('stayPhotos').click()" class="p-4 border-2 border-dashed rounded text-center cursor-pointer" style="border: 2px dashed rgba(0, 128, 128, 0.3); background: rgba(0, 128, 128, 0.02);">
+
                                         <i class="fa fa-university fa-2x text-orange mb-2"></i>
                                         <div class="small">Upload Stay/Hotel Photos</div>
                                         <input type="file" id="stayPhotos" name="stayPhotos" accept="image/*" multiple class="d-none" onchange="previewStayImage(this)">
@@ -705,52 +1054,62 @@
                         <!-- STEP 6: TRANSPORT -->
                         <div class="form-step" id="step6">
                             <div class="section-title"><span class="badge">06</span> TRANSPORTATION</div>
-                            <div class="row g-3">
+                            <div class="row" style="row-gap: 30px !important;">
                                 <div class="col-md-6">
-                                    <label>Transport Category</label>
-                                    <select name="transportCategory" id="transportCategory" class="form-control select-custom" onchange="updateTransportTypes()">
-                                        <option value="">Select Category</option>
-                                        <option value="Road">Road 🛣️</option>
-                                        <option value="Rail">Rail 🚆</option>
-                                        <option value="Air">Air ✈️</option>
-                                        <option value="Water">Water 🚢</option>
-                                        <option value="Adventure">Adventure 🚙</option>
-                                    </select>
+                                    <div class="form-group" style="margin-bottom: 25px !important;">
+                                        <label style="margin-bottom: 12px !important; display: block; font-weight: 700;">Transport Category</label>
+                                        <select name="transportCategory" id="transportCategory" class="form-control select-custom" onchange="updateTransportTypes()">
+                                            <option value="">Select Category</option>
+                                            <option value="Road">Road ️</option>
+                                            <option value="Rail">Rail </option>
+                                            <option value="Air">Air </option>
+                                            <option value="Water">Water </option>
+                                            <option value="Adventure">Adventure </option>
+                                        </select>
+                                    </div>
                                 </div>
                                 <div class="col-md-6">
-                                    <label>Transport Type</label>
-                                    <select name="transportType" id="transportType" class="form-control select-custom"><option value="">Select Type</option></select>
+                                    <div class="form-group" style="margin-bottom: 25px !important;">
+                                        <label style="margin-bottom: 12px !important; display: block; font-weight: 700;">Transport Type</label>
+                                        <select name="transportType" id="transportType" class="form-control select-custom"><option value="">Select Type</option></select>
+                                    </div>
                                 </div>
                                 <div class="col-md-12">
-                                    <div class="form-group">
-                                        <label>Vehicle Name / Model</label>
+                                    <div class="form-group" style="margin-bottom: 25px !important;">
+                                        <label style="margin-bottom: 12px !important; display: block; font-weight: 700;">Vehicle Name / Model</label>
                                         <input type="text" name="vehicleName" value="${trip.vehicleName}" class="form-control" placeholder="e.g. Urbania / Tempo Traveller / Force Traveler">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
-                                    <label>Comfort Level</label>
-                                    <div class="d-flex gap-2">
-                                        <label class="custom-checkbox"><input type="radio" name="acType" value="AC"><span class="checkmark"></span> AC</label>
-                                        <label class="custom-checkbox"><input type="radio" name="acType" value="Non-AC"><span class="checkmark"></span> Non-AC</label>
+                                    <div class="form-group" style="margin-bottom: 25px !important;">
+                                        <label style="margin-bottom: 15px !important; display: block; font-weight: 700;">Comfort Level</label>
+                                        <div class="d-flex gap-3 mt-1">
+                                            <label class="custom-checkbox" style="font-weight: 500; color: var(--text-main); margin-right: 15px;"><input type="radio" name="acType" value="AC"><span class="checkmark"></span> AC</label>
+                                            <label class="custom-checkbox" style="font-weight: 500; color: var(--text-main);"><input type="radio" name="acType" value="Non-AC"><span class="checkmark"></span> Non-AC</label>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
-                                    <label>Transfer Type</label>
-                                    <div class="d-flex gap-2">
-                                        <label class="custom-checkbox"><input type="radio" name="transferType" value="Shared" checked><span class="checkmark"></span> Shared</label>
-                                        <label class="custom-checkbox"><input type="radio" name="transferType" value="Private"><span class="checkmark"></span> Private</label>
+                                    <div class="form-group" style="margin-bottom: 25px !important;">
+                                        <label style="margin-bottom: 15px !important; display: block; font-weight: 700;">Transfer Type</label>
+                                        <div class="d-flex gap-3 mt-1">
+                                            <label class="custom-checkbox" style="font-weight: 500; color: var(--text-main); margin-right: 15px;"><input type="radio" name="transferType" value="Shared" checked><span class="checkmark"></span> Shared</label>
+                                            <label class="custom-checkbox" style="font-weight: 500; color: var(--text-main);"><input type="radio" name="transferType" value="Private"><span class="checkmark"></span> Private</label>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="col-md-12 mt-3">
-                                    <label class="small text-muted mb-3 d-block uppercase tracking-wider">Transport Inclusions</label>
-                                    <div class="p-4 bg-light rounded-4 border border-secondary border-opacity-10">
-                                        <div class="row g-3">
-                                            <div class="col-md-4"><label class="custom-checkbox"><input type="checkbox" name="transportInclusions" value="Fuel Charges"><span class="checkmark"></span> Fuel Charges</label></div>
-                                            <div class="col-md-4"><label class="custom-checkbox"><input type="checkbox" name="transportInclusions" value="Driver Allowance"><span class="checkmark"></span> Driver Allowance</label></div>
-                                            <div class="col-md-4"><label class="custom-checkbox"><input type="checkbox" name="transportInclusions" value="Tolls & Parking"><span class="checkmark"></span> Tolls & Parking</label></div>
-                                            <div class="col-md-4"><label class="custom-checkbox"><input type="checkbox" name="transportInclusions" value="State Tax"><span class="checkmark"></span> State Tax</label></div>
-                                            <div class="col-md-4"><label class="custom-checkbox"><input type="checkbox" name="transportInclusions" value="Airport Pickup"><span class="checkmark"></span> Airport Pickup</label></div>
-                                            <div class="col-md-4"><label class="custom-checkbox"><input type="checkbox" name="transportInclusions" value="Local Sightseeing"><span class="checkmark"></span> Local Sightseeing</label></div>
+                                <div class="col-md-12">
+                                    <div class="form-group" style="margin-bottom: 25px !important;">
+                                        <label style="margin-bottom: 15px !important; display: block; font-weight: 700;">Transport Inclusions</label>
+                                        <div class="p-4 rounded-4" style="background: #f8fafc; border: 1px solid var(--border-color);">
+                                            <div class="row g-3">
+                                                <div class="col-md-4"><label class="custom-checkbox" style="font-weight: 500; color: var(--text-main);"><input type="checkbox" name="transportInclusions" value="Fuel Charges"><span class="checkmark"></span> Fuel Charges</label></div>
+                                                <div class="col-md-4"><label class="custom-checkbox" style="font-weight: 500; color: var(--text-main);"><input type="checkbox" name="transportInclusions" value="Driver Allowance"><span class="checkmark"></span> Driver Allowance</label></div>
+                                                <div class="col-md-4"><label class="custom-checkbox" style="font-weight: 500; color: var(--text-main);"><input type="checkbox" name="transportInclusions" value="Tolls & Parking"><span class="checkmark"></span> Tolls & Parking</label></div>
+                                                <div class="col-md-4"><label class="custom-checkbox" style="font-weight: 500; color: var(--text-main);"><input type="checkbox" name="transportInclusions" value="State Tax"><span class="checkmark"></span> State Tax</label></div>
+                                                <div class="col-md-4"><label class="custom-checkbox" style="font-weight: 500; color: var(--text-main);"><input type="checkbox" name="transportInclusions" value="Airport Pickup"><span class="checkmark"></span> Airport Pickup</label></div>
+                                                <div class="col-md-4"><label class="custom-checkbox" style="font-weight: 500; color: var(--text-main);"><input type="checkbox" name="transportInclusions" value="Local Sightseeing"><span class="checkmark"></span> Local Sightseeing</label></div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -760,40 +1119,46 @@
                         <!-- STEP 7: MEALS & DIETARY -->
                         <div class="form-step" id="step7">
                             <div class="section-title"><span class="badge">07</span> MEALS & DIETARY</div>
-                            <div class="row g-3">
+                            <div class="row" style="row-gap: 30px !important;">
                                 <div class="col-md-6">
-                                    <label>Standard Meal Plan</label>
-                                    <select name="mealPlan" class="form-control select-custom">
-                                        <option value="EP">EP (Room Only - No Meals)</option>
-                                        <option value="CP" selected>CP (Continental Plan - Breakfast Only)</option>
-                                        <option value="MAP">MAP (Modified American Plan - Breakfast + Dinner)</option>
-                                        <option value="AP">AP (American Plan - All Meals)</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-6">
-                                    <label>Dietary Availability</label>
-                                    <div class="d-flex gap-3 mt-2">
-                                        <label class="custom-checkbox"><input type="checkbox" name="dietType" value="Veg" checked><span class="checkmark"></span> Veg</label>
-                                        <label class="custom-checkbox"><input type="checkbox" name="dietType" value="Non-Veg"><span class="checkmark"></span> Non-Veg</label>
-                                        <label class="custom-checkbox"><input type="checkbox" name="dietType" value="Jain"><span class="checkmark"></span> Jain</label>
+                                    <div class="form-group" style="margin-bottom: 25px !important;">
+                                        <label style="margin-bottom: 12px !important; display: block; font-weight: 700;">Standard Meal Plan</label>
+                                        <select name="mealPlan" class="form-control select-custom">
+                                            <option value="EP">EP (Room Only - No Meals)</option>
+                                            <option value="CP" selected>CP (Continental Plan - Breakfast Only)</option>
+                                            <option value="MAP">MAP (Modified American Plan - Breakfast + Dinner)</option>
+                                            <option value="AP">AP (American Plan - All Meals)</option>
+                                        </select>
                                     </div>
                                 </div>
-                                <div class="col-md-12 mt-3">
-                                    <label class="small text-muted mb-3 d-block uppercase tracking-wider">Inclusions & Refreshments</label>
-                                    <div class="p-4 bg-light rounded-4 border border-secondary border-opacity-10">
-                                        <div class="row g-3">
-                                            <div class="col-md-4"><label class="custom-checkbox"><input type="checkbox" class="meal-check" value="Breakfast" checked><span class="checkmark"></span> Breakfast</label></div>
-                                            <div class="col-md-4"><label class="custom-checkbox"><input type="checkbox" class="meal-check" value="Lunch"><span class="checkmark"></span> Lunch</label></div>
-                                            <div class="col-md-4"><label class="custom-checkbox"><input type="checkbox" class="meal-check" value="Dinner"><span class="checkmark"></span> Dinner</label></div>
-                                            <div class="col-md-4"><label class="custom-checkbox"><input type="checkbox" class="meal-check" value="Welcome Drink"><span class="checkmark"></span> Welcome Drink</label></div>
-                                            <div class="col-md-4"><label class="custom-checkbox"><input type="checkbox" class="meal-check" value="Evening Snacks"><span class="checkmark"></span> Evening Snacks</label></div>
-                                            <div class="col-md-4"><label class="custom-checkbox"><input type="checkbox" class="meal-check" value="Tea / Coffee"><span class="checkmark"></span> Tea / Coffee</label></div>
+                                <div class="col-md-6">
+                                    <div class="form-group" style="margin-bottom: 25px !important;">
+                                        <label style="margin-bottom: 15px !important; display: block; font-weight: 700;">Dietary Availability</label>
+                                        <div class="d-flex gap-3 mt-1">
+                                            <label class="custom-checkbox" style="font-weight: 500; color: var(--text-main); margin-right: 15px;"><input type="checkbox" name="dietType" value="Veg" checked><span class="checkmark"></span> Veg</label>
+                                            <label class="custom-checkbox" style="font-weight: 500; color: var(--text-main); margin-right: 15px;"><input type="checkbox" name="dietType" value="Non-Veg"><span class="checkmark"></span> Non-Veg</label>
+                                            <label class="custom-checkbox" style="font-weight: 500; color: var(--text-main);"><input type="checkbox" name="dietType" value="Jain"><span class="checkmark"></span> Jain</label>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-md-12">
-                                    <div class="form-group">
-                                        <label>Specific Meal Notes</label>
+                                    <div class="form-group" style="margin-bottom: 25px !important;">
+                                        <label style="color: var(--text-main); font-weight: 700; margin-bottom: 15px !important; display: block;">Inclusions & Refreshments</label>
+                                        <div class="p-4 rounded-4" style="background: #f8fafc; border: 1px solid var(--border-color);">
+                                            <div class="row g-3">
+                                                <div class="col-md-4"><label class="custom-checkbox" style="font-weight: 500; color: var(--text-main);"><input type="checkbox" class="meal-check" value="Breakfast" checked><span class="checkmark"></span> Breakfast</label></div>
+                                                <div class="col-md-4"><label class="custom-checkbox" style="font-weight: 500; color: var(--text-main);"><input type="checkbox" class="meal-check" value="Lunch"><span class="checkmark"></span> Lunch</label></div>
+                                                <div class="col-md-4"><label class="custom-checkbox" style="font-weight: 500; color: var(--text-main);"><input type="checkbox" class="meal-check" value="Dinner"><span class="checkmark"></span> Dinner</label></div>
+                                                <div class="col-md-4"><label class="custom-checkbox" style="font-weight: 500; color: var(--text-main);"><input type="checkbox" class="meal-check" value="Welcome Drink"><span class="checkmark"></span> Welcome Drink</label></div>
+                                                <div class="col-md-4"><label class="custom-checkbox" style="font-weight: 500; color: var(--text-main);"><input type="checkbox" class="meal-check" value="Evening Snacks"><span class="checkmark"></span> Evening Snacks</label></div>
+                                                <div class="col-md-4"><label class="custom-checkbox" style="font-weight: 500; color: var(--text-main);"><input type="checkbox" class="meal-check" value="Tea / Coffee"><span class="checkmark"></span> Tea / Coffee</label></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group" style="margin-bottom: 25px !important;">
+                                        <label style="margin-bottom: 12px !important; display: block; font-weight: 700;">Specific Meal Notes</label>
                                         <input type="text" name="mealNotes" value="${trip.mealNotes}" class="form-control" placeholder="e.g. Local Himachali cuisine included, Buffet style...">
                                     </div>
                                 </div>
@@ -836,7 +1201,7 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <label>Add Photos</label>
-                                    <div onclick="document.getElementById('photoFiles').click()" class="p-4 border-2 border-dashed rounded text-center cursor-pointer" style="border: 2px dashed rgba(240, 76, 38, 0.3);">
+                                    <div onclick="document.getElementById('photoFiles').click()" class="p-4 border-2 border-dashed rounded text-center cursor-pointer" style="border: 2px dashed rgba(0, 128, 128, 0.3);">
                                         <i class="fa fa-picture-o fa-2x text-orange mb-2"></i>
                                         <div class="small">Upload Photos</div>
                                         <input type="file" id="photoFiles" name="photoFiles" accept="image/*" multiple class="d-none" onchange="previewMedia(this, 'photoPreview')">
@@ -880,13 +1245,13 @@
                         <!-- STEP 10: DEPARTURES -->
                         <div class="form-step" id="step10">
                             <div class="section-title"><span class="badge">10</span> DEPARTURE DATES</div>
-                            <div class="d-flex gap-2 mb-4">
+                            <div class="d-flex gap-2" style="margin-bottom: 25px !important;">
                                 <div class="pricing-toggle active w-100 text-center" onclick="setScheduleMode('specific', this)"><i class="fa fa-calendar"></i> Specific</div>
                                 <div class="pricing-toggle w-100 text-center" onclick="setScheduleMode('recurring', this)"><i class="fa fa-refresh"></i> Weekly</div>
                                 <input type="hidden" name="scheduleMode" id="scheduleModeInput" value="specific">
                             </div>
-                            <div id="specificDatesCont">
-                                <div id="occurrenceContainer"></div>
+                            <div id="specificDatesCont" style="margin-top: 20px !important;">
+                                <div id="occurrenceContainer" style="margin-bottom: 20px !important;"></div>
                                 <button type="button" onclick="addOccurrence()" class="btn btn-outline-orange w-100 mb-3" style="border-style: dashed;"><i class="fa fa-plus-circle"></i> Add Date</button>
                             </div>
                             <div id="recurringCont" style="display:none;" class="p-4 bg-light rounded-4 mb-4 border border-secondary border-opacity-10">
@@ -933,32 +1298,32 @@
                                     <input type="number" name="maxTravelers" class="form-control" value="20">
                                 </div>
                                 
-                                <div class="col-md-6 mt-3">
-                                    <label class="small text-muted mb-3 d-block uppercase tracking-wider">What's Included</label>
-                                    <div class="p-3 bg-light rounded-4 border border-secondary border-opacity-10">
-                                        <div class="row g-2">
-                                            <div class="col-12"><label class="custom-checkbox"><input type="checkbox" name="inclusions" value="Entry Fees"><span class="checkmark"></span> Entry Fees / Permits</label></div>
-                                            <div class="col-12"><label class="custom-checkbox"><input type="checkbox" name="inclusions" value="Tour Guide"><span class="checkmark"></span> Certified Tour Guide</label></div>
-                                            <div class="col-12"><label class="custom-checkbox"><input type="checkbox" name="inclusions" value="Equipment"><span class="checkmark"></span> Trekking Equipment</label></div>
-                                            <div class="col-12"><label class="custom-checkbox"><input type="checkbox" name="inclusions" value="Insurance"><span class="checkmark"></span> Travel Insurance</label></div>
-                                            <div class="col-12"><label class="custom-checkbox"><input type="checkbox" id="inclOthers" onchange="toggleOtherInput('inclOthers', 'inclOtherInput')"><span class="checkmark"></span> Others</label></div>
+                                <div class="col-md-6 mt-4">
+                                    <label style="color: var(--text-muted); font-weight: 600; margin-bottom: 12px; display: block;">What's Included</label>
+                                    <div class="p-4 rounded-4" style="background: #f8fafc; border: 1px solid var(--border-color);">
+                                        <div class="row g-3">
+                                            <div class="col-12"><label class="custom-checkbox" style="font-weight: 500; color: var(--text-main);"><input type="checkbox" name="inclusions" value="Entry Fees"><span class="checkmark"></span> Entry Fees / Permits</label></div>
+                                            <div class="col-12"><label class="custom-checkbox" style="font-weight: 500; color: var(--text-main);"><input type="checkbox" name="inclusions" value="Tour Guide"><span class="checkmark"></span> Certified Tour Guide</label></div>
+                                            <div class="col-12"><label class="custom-checkbox" style="font-weight: 500; color: var(--text-main);"><input type="checkbox" name="inclusions" value="Equipment"><span class="checkmark"></span> Trekking Equipment</label></div>
+                                            <div class="col-12"><label class="custom-checkbox" style="font-weight: 500; color: var(--text-main);"><input type="checkbox" name="inclusions" value="Insurance"><span class="checkmark"></span> Travel Insurance</label></div>
+                                            <div class="col-12"><label class="custom-checkbox" style="font-weight: 500; color: var(--text-main);"><input type="checkbox" id="inclOthers" onchange="toggleOtherInput('inclOthers', 'inclOtherInput')"><span class="checkmark"></span> Others</label></div>
                                             <div class="col-12 mt-2" id="inclOtherInput" style="display:none;">
-                                                <input type="text" name="inclusionsOther" value="${trip.inclusionsOther}" class="form-control form-control-sm" placeholder="Specify other inclusions...">
+                                                <input type="text" name="inclusionsOther" value="${trip.inclusionsOther}" class="form-control form-control-sm" placeholder="Specify other inclusions..." style="border-radius: 8px;">
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-6 mt-3">
-                                    <label class="small text-muted mb-3 d-block uppercase tracking-wider">Things to Carry</label>
-                                    <div class="p-3 bg-light rounded-4 border border-secondary border-opacity-10">
-                                        <div class="row g-2">
-                                            <div class="col-12"><label class="custom-checkbox"><input type="checkbox" name="essentials" value="Powerbank"><span class="checkmark"></span> Powerbank & Charger</label></div>
-                                            <div class="col-12"><label class="custom-checkbox"><input type="checkbox" name="essentials" value="Shoes"><span class="checkmark"></span> Trekking Shoes</label></div>
-                                            <div class="col-12"><label class="custom-checkbox"><input type="checkbox" name="essentials" value="Raincoat"><span class="checkmark"></span> Raincoat / Poncho</label></div>
-                                            <div class="col-12"><label class="custom-checkbox"><input type="checkbox" name="essentials" value="ID Proof"><span class="checkmark"></span> Original ID Proof</label></div>
-                                            <div class="col-12"><label class="custom-checkbox"><input type="checkbox" id="essOthers" onchange="toggleOtherInput('essOthers', 'essOtherInput')"><span class="checkmark"></span> Others</label></div>
+                                <div class="col-md-6 mt-4">
+                                    <label style="color: var(--text-muted); font-weight: 600; margin-bottom: 12px; display: block;">Things to Carry</label>
+                                    <div class="p-4 rounded-4" style="background: #f8fafc; border: 1px solid var(--border-color);">
+                                        <div class="row g-3">
+                                            <div class="col-12"><label class="custom-checkbox" style="font-weight: 500; color: var(--text-main);"><input type="checkbox" name="essentials" value="Powerbank"><span class="checkmark"></span> Powerbank & Charger</label></div>
+                                            <div class="col-12"><label class="custom-checkbox" style="font-weight: 500; color: var(--text-main);"><input type="checkbox" name="essentials" value="Shoes"><span class="checkmark"></span> Trekking Shoes</label></div>
+                                            <div class="col-12"><label class="custom-checkbox" style="font-weight: 500; color: var(--text-main);"><input type="checkbox" name="essentials" value="Raincoat"><span class="checkmark"></span> Raincoat / Poncho</label></div>
+                                            <div class="col-12"><label class="custom-checkbox" style="font-weight: 500; color: var(--text-main);"><input type="checkbox" name="essentials" value="ID Proof"><span class="checkmark"></span> Original ID Proof</label></div>
+                                            <div class="col-12"><label class="custom-checkbox" style="font-weight: 500; color: var(--text-main);"><input type="checkbox" id="essOthers" onchange="toggleOtherInput('essOthers', 'essOtherInput')"><span class="checkmark"></span> Others</label></div>
                                             <div class="col-12 mt-2" id="essOtherInput" style="display:none;">
-                                                <input type="text" name="essentialsOther" value="${trip.essentialsOther}" class="form-control form-control-sm" placeholder="Specify other essentials...">
+                                                <input type="text" name="essentialsOther" value="${trip.essentialsOther}" class="form-control form-control-sm" placeholder="Specify other essentials..." style="border-radius: 8px;">
                                             </div>
                                         </div>
                                     </div>
@@ -974,29 +1339,31 @@
                         <!-- STEP 12: REVIEW -->
                         <div class="form-step" id="step12">
                             <div class="section-title"><span class="badge">12</span> FINAL REVIEW</div>
-                            <div class="p-4 bg-light rounded-4 border border-secondary border-opacity-10" id="reviewSummary">
-                                <p class="text-muted mb-4">Please review all your details before launching.</p>
-                                <div class="review-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 25px;">
-                                    <div class="rev-item"><small class="text-primary d-block">Trip Title</small><span id="rev_title" class="fw-bold">-</span></div>
-                                    <div class="rev-item"><small class="text-primary d-block">Price</small><span id="rev_price" class="fw-bold">-</span></div>
-                                    <div class="rev-item"><small class="text-primary d-block">Destination</small><span id="rev_dest" class="fw-bold">-</span></div>
-                                    <div class="rev-item"><small class="text-primary d-block">Duration</small><span id="rev_duration" class="fw-bold">-</span></div>
+                            <div class="p-5 rounded-4" id="reviewSummary" style="background: #f8fafc; border: 1px solid var(--border-color);">
+                                <p class="mb-4" style="color: var(--text-muted); font-weight: 500; font-size: 16px;">Please review all your details before launching.</p>
+                                <div class="review-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 30px;">
+                                    <div class="rev-item"><small style="color: var(--primary); font-weight: 700; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 4px;">Trip Title</small><span id="rev_title" class="fw-bold" style="color: var(--text-main); font-size: 16px;">-</span></div>
+                                    <div class="rev-item"><small style="color: var(--primary); font-weight: 700; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 4px;">Price</small><span id="rev_price" class="fw-bold" style="color: var(--text-main); font-size: 16px;">-</span></div>
+                                    <div class="rev-item"><small style="color: var(--primary); font-weight: 700; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 4px;">Destination</small><span id="rev_dest" class="fw-bold" style="color: var(--text-main); font-size: 16px;">-</span></div>
+                                    <div class="rev-item"><small style="color: var(--primary); font-weight: 700; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 4px;">Duration</small><span id="rev_duration" class="fw-bold" style="color: var(--text-main); font-size: 16px;">-</span></div>
                                     
-                                    <div class="rev-item"><small class="text-primary d-block">Audience</small><span id="rev_audience" class="fw-bold">-</span></div>
-                                    <div class="rev-item"><small class="text-primary d-block">Categories</small><span id="rev_subs" class="fw-bold">-</span></div>
+                                    <div class="rev-item"><small style="color: var(--primary); font-weight: 700; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 4px;">Audience</small><span id="rev_audience" class="fw-bold" style="color: var(--text-main); font-size: 16px;">-</span></div>
+                                    <div class="rev-item"><small style="color: var(--primary); font-weight: 700; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 4px;">Categories</small><span id="rev_subs" class="fw-bold" style="color: var(--text-main); font-size: 16px;">-</span></div>
                                     
-                                    <div class="rev-item"><small class="text-primary d-block">Stay</small><span id="rev_stay" class="fw-bold">-</span></div>
-                                    <div class="rev-item"><small class="text-primary d-block">Transport</small><span id="rev_trans" class="fw-bold">-</span></div>
-                                    <div class="rev-item"><small class="text-primary d-block">Meal Plan</small><span id="rev_meals" class="fw-bold">-</span></div>
+                                    <div class="rev-item"><small style="color: var(--primary); font-weight: 700; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 4px;">Stay</small><span id="rev_stay" class="fw-bold" style="color: var(--text-main); font-size: 16px;">-</span></div>
+                                    <div class="rev-item"><small style="color: var(--primary); font-weight: 700; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 4px;">Transport</small><span id="rev_trans" class="fw-bold" style="color: var(--text-main); font-size: 16px;">-</span></div>
+                                    <div class="rev-item"><small style="color: var(--primary); font-weight: 700; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 4px;">Meal Plan</small><span id="rev_meals" class="fw-bold" style="color: var(--text-main); font-size: 16px;">-</span></div>
                                     
-                                    <div class="rev-item"><small class="text-primary d-block">Departure Mode</small><span id="rev_mode" class="fw-bold">-</span></div>
-                                    <div class="rev-item"><small class="text-primary d-block">Min Batch</small><span id="rev_batch" class="fw-bold">-</span></div>
+                                    <div class="rev-item"><small style="color: var(--primary); font-weight: 700; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 4px;">Departure Mode</small><span id="rev_mode" class="fw-bold" style="color: var(--text-main); font-size: 16px;">-</span></div>
+                                    <div class="rev-item"><small style="color: var(--primary); font-weight: 700; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 4px;">Min Batch</small><span id="rev_batch" class="fw-bold" style="color: var(--text-main); font-size: 16px;">-</span></div>
                                     
-                                    <div class="rev-item" style="grid-column: 1 / -1;"><small class="text-primary d-block">Inclusions</small><span id="rev_inclusions" class="small text-muted">-</span></div>
-                                    <div class="rev-item" style="grid-column: 1 / -1;"><small class="text-primary d-block">Stay Photos Preview</small><div id="rev_stayPhotos" class="d-flex flex-wrap gap-2 mt-1"></div></div>
-                                    <div class="rev-item" style="grid-column: 1 / -1;"><small class="text-primary d-block">Itinerary Photos Preview</small><div id="rev_itinPhotos" class="d-flex flex-wrap gap-2 mt-1"></div></div>
-                                    <div class="rev-item" style="grid-column: 1 / -1;"><small class="text-primary d-block">Things to Carry</small><span id="rev_carry" class="small text-muted">-</span></div>
-                                    <div class="rev-item" style="grid-column: 1 / -1;"><small class="text-primary d-block">Cancellation Policy</small><span id="rev_policy" class="small text-muted">-</span></div>
+                                    <div class="rev-item" style="grid-column: 1 / -1;"><small style="color: var(--primary); font-weight: 700; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 4px;">Inclusions</small><span id="rev_inclusions" class="fw-semibold" style="color: var(--text-main); font-size: 14px;">-</span></div>
+                                    <div class="rev-item" style="grid-column: 1 / -1;"><small style="color: var(--primary); font-weight: 700; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 4px;">Media Gallery Photos</small><div id="rev_mediaPhotos" class="d-flex flex-wrap gap-2 mt-2"></div></div>
+                                    <div class="rev-item" style="grid-column: 1 / -1;"><small style="color: var(--primary); font-weight: 700; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 4px;">Media Gallery Videos</small><div id="rev_mediaVideos" class="d-flex flex-wrap gap-2 mt-2"></div></div>
+                                    <div class="rev-item" style="grid-column: 1 / -1;"><small style="color: var(--primary); font-weight: 700; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 4px;">Stay Photos Preview</small><div id="rev_stayPhotos" class="d-flex flex-wrap gap-2 mt-2"></div></div>
+                                    <div class="rev-item" style="grid-column: 1 / -1;"><small style="color: var(--primary); font-weight: 700; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 4px;">Itinerary Photos Preview</small><div id="rev_itinPhotos" class="d-flex flex-wrap gap-2 mt-2"></div></div>
+                                    <div class="rev-item" style="grid-column: 1 / -1;"><small style="color: var(--primary); font-weight: 700; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 4px;">Things to Carry</small><span id="rev_carry" class="fw-semibold" style="color: var(--text-main); font-size: 14px;">-</span></div>
+                                    <div class="rev-item" style="grid-column: 1 / -1;"><small style="color: var(--primary); font-weight: 700; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 4px;">Cancellation Policy</small><span id="rev_policy" class="fw-semibold" style="color: var(--text-main); font-size: 14px;">-</span></div>
                                 </div>
                             </div>
                         </div>
@@ -1102,28 +1469,74 @@
                     document.getElementById('rev_carry').innerText = getChecked('essentials') + (getVal('essentialsOther') !== 'N/A' ? ', ' + getVal('essentialsOther') : '');
                     document.getElementById('rev_policy').innerText = getVal('cancellationPolicy');
 
+                    // Populate Media Photos Preview in Review
+                    const mediaPhotosRev = document.getElementById('rev_mediaPhotos');
+                    if (mediaPhotosRev) {
+                        mediaPhotosRev.innerHTML = '';
+                        const photoOriginals = document.querySelectorAll('#photoPreview img');
+                        photoOriginals.forEach(img => {
+                            const clone = img.cloneNode(true);
+                            clone.style.width = '60px';
+                            clone.style.height = '60px';
+                            clone.style.objectFit = 'cover';
+                            clone.style.borderRadius = '8px';
+                            mediaPhotosRev.appendChild(clone);
+                        });
+                        const existingPhotos = document.querySelectorAll('#photoPreview .existing-media img');
+                        existingPhotos.forEach(img => {
+                            const clone = img.cloneNode(true);
+                            clone.style.width = '60px';
+                            clone.style.height = '60px';
+                            clone.style.objectFit = 'cover';
+                            clone.style.borderRadius = '8px';
+                            mediaPhotosRev.appendChild(clone);
+                        });
+                    }
+
+                    // Populate Media Videos Preview in Review
+                    const mediaVideosRev = document.getElementById('rev_mediaVideos');
+                    if (mediaVideosRev) {
+                        mediaVideosRev.innerHTML = '';
+                        const videoOriginals = document.querySelectorAll('#videoPreview .existing-media');
+                        videoOriginals.forEach(div => {
+                            const clone = div.cloneNode(true);
+                            clone.style.width = '60px';
+                            clone.style.height = '60px';
+                            clone.style.objectFit = 'cover';
+                            clone.style.borderRadius = '8px';
+                            mediaVideosRev.appendChild(clone);
+                        });
+                    }
+
                     // Populate Stay Photos Preview in Review
                     const stayRev = document.getElementById('rev_stayPhotos');
-                    stayRev.innerHTML = '';
-                    const stayOriginals = document.querySelectorAll('#stayPhotoPreview img');
-                    stayOriginals.forEach(img => {
-                        const clone = img.cloneNode(true);
-                        clone.style.width = '50px';
-                        clone.style.height = '50px';
-                        stayRev.appendChild(clone);
-                    });
+                    if (stayRev) {
+                        stayRev.innerHTML = '';
+                        const stayOriginals = document.querySelectorAll('#stayPhotoPreview img');
+                        stayOriginals.forEach(img => {
+                            const clone = img.cloneNode(true);
+                            clone.style.width = '60px';
+                            clone.style.height = '60px';
+                            clone.style.objectFit = 'cover';
+                            clone.style.borderRadius = '8px';
+                            stayRev.appendChild(clone);
+                        });
+                    }
 
                     // Populate Itinerary Photos Preview in Review
                     const itinRev = document.getElementById('rev_itinPhotos');
-                    itinRev.innerHTML = '';
-                    const itinOriginals = document.querySelectorAll('.day-image-preview img');
-                    itinOriginals.forEach(img => {
-                        const clone = img.cloneNode(true);
-                        clone.style.width = '50px';
-                        clone.style.height = '50px';
-                        clone.style.marginRight = '5px';
-                        itinRev.appendChild(clone);
-                    });
+                    if (itinRev) {
+                        itinRev.innerHTML = '';
+                        const itinOriginals = document.querySelectorAll('.day-image-preview img');
+                        itinOriginals.forEach(img => {
+                            const clone = img.cloneNode(true);
+                            clone.style.width = '60px';
+                            clone.style.height = '60px';
+                            clone.style.objectFit = 'cover';
+                            clone.style.borderRadius = '8px';
+                            itinRev.appendChild(clone);
+                        });
+                    }
                 }
 
                 function validateStep() {
@@ -1490,28 +1903,28 @@
                     const html = `<div class="occ-card animate__animated animate__fadeInUp" id="occ_\${id}">
                                     <div class="row g-3 align-items-center">
                                         <div class="col-md-4">
-                                            <div class="occ-icon"><i class="fa fa-calendar-check-o"></i></div>
-                                            <label class="small text-muted mb-1 d-block">Departure Date <span class="text-danger">*</span></label>
+                                            <div class="occ-icon" style="background: rgba(0, 128, 128, 0.1); color: #008080;"><i class="fa fa-calendar-check-o"></i></div>
+                                            <label class="small text-muted mb-1 d-block" style="font-weight: 600;">Departure Date <span class="text-danger">*</span></label>
                                             <div class="input-group input-group-sm">
-                                                <input type="date" class="form-control occ-date" min="\${today}" style="background: #ffffff; border-color: #e2e8f0; color: #0f172a;">
+                                                <input type="date" class="form-control occ-date" min="\${today}" style="background: #ffffff !important; border: 1px solid var(--border-color) !important; color: var(--text-main) !important; height: 38px !important; border-radius: 8px !important;">
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="occ-icon" style="background: rgba(59, 130, 246, 0.1); color: #3b82f6;"><i class="fa fa-clock-o"></i></div>
-                                            <label class="small text-muted mb-1 d-block">Time</label>
+                                            <label class="small text-muted mb-1 d-block" style="font-weight: 600;">Time</label>
                                             <div class="input-group input-group-sm">
-                                                <input type="time" class="form-control occ-time" style="background: #ffffff; border-color: #e2e8f0; color: #0f172a;">
+                                                <input type="time" class="form-control occ-time" style="background: #ffffff !important; border: 1px solid var(--border-color) !important; color: var(--text-main) !important; height: 38px !important; border-radius: 8px !important;">
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="occ-icon" style="background: rgba(46, 213, 115, 0.1); color: #2ed573;"><i class="fa fa-users"></i></div>
-                                            <label class="small text-muted mb-1 d-block">Batch Size</label>
+                                            <label class="small text-muted mb-1 d-block" style="font-weight: 600;">Batch Size</label>
                                             <div class="input-group input-group-sm">
-                                                <input type="number" class="form-control occ-seats" placeholder="Seats" value="20" style="background: #ffffff; border-color: #e2e8f0; color: #0f172a;">
+                                                <input type="number" class="form-control occ-seats" placeholder="Seats" value="20" style="background: #ffffff !important; border: 1px solid var(--border-color) !important; color: var(--text-main) !important; height: 38px !important; border-radius: 8px !important;">
                                             </div>
                                         </div>
                                         <div class="col-md-2 text-end">
-                                            <button type="button" class="btn btn-sm btn-outline-danger border-0 mt-4" onclick="$('#occ_\${id}').remove()">
+                                            <button type="button" class="btn btn-sm btn-outline-danger border-0 mt-4" onclick="$('#occ_\${id}').remove()" style="margin-top: 25px !important;">
                                                 <i class="fa fa-trash-o fa-lg"></i>
                                             </button>
                                         </div>
@@ -1808,28 +2221,28 @@
                                             const html = `<div class="occ-card animate__animated animate__fadeInUp" id="occ_\${id}">
                                                             <div class="row g-3 align-items-center">
                                                                 <div class="col-md-4">
-                                                                    <div class="occ-icon"><i class="fa fa-calendar-check-o"></i></div>
-                                                                    <label class="small text-muted mb-1 d-block">Departure Date</label>
+                                                                    <div class="occ-icon" style="background: rgba(0, 128, 128, 0.1); color: #008080;"><i class="fa fa-calendar-check-o"></i></div>
+                                                                    <label class="small text-muted mb-1 d-block" style="font-weight: 600;">Departure Date</label>
                                                                     <div class="input-group input-group-sm">
-                                                                        <input type="date" class="form-control occ-date" value="\${s.date}" min="\${today}" style="background: #ffffff; border-color: #e2e8f0; color: #0f172a;">
+                                                                        <input type="date" class="form-control occ-date" value="\${s.date}" min="\${today}" style="background: #ffffff !important; border: 1px solid var(--border-color) !important; color: var(--text-main) !important; height: 38px !important; border-radius: 8px !important;">
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-md-3">
                                                                     <div class="occ-icon" style="background: rgba(59, 130, 246, 0.1); color: #3b82f6;"><i class="fa fa-clock-o"></i></div>
-                                                                    <label class="small text-muted mb-1 d-block">Time</label>
+                                                                    <label class="small text-muted mb-1 d-block" style="font-weight: 600;">Time</label>
                                                                     <div class="input-group input-group-sm">
-                                                                        <input type="time" class="form-control occ-time" value="\${s.time}" style="background: #ffffff; border-color: #e2e8f0; color: #0f172a;">
+                                                                        <input type="time" class="form-control occ-time" value="\${s.time}" style="background: #ffffff !important; border: 1px solid var(--border-color) !important; color: var(--text-main) !important; height: 38px !important; border-radius: 8px !important;">
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-md-3">
                                                                     <div class="occ-icon" style="background: rgba(46, 213, 115, 0.1); color: #2ed573;"><i class="fa fa-users"></i></div>
-                                                                    <label class="small text-muted mb-1 d-block">Batch Size</label>
+                                                                    <label class="small text-muted mb-1 d-block" style="font-weight: 600;">Batch Size</label>
                                                                     <div class="input-group input-group-sm">
-                                                                        <input type="number" class="form-control occ-seats" placeholder="Seats" value="\${s.seats}" style="background: #ffffff; border-color: #e2e8f0; color: #0f172a;">
+                                                                        <input type="number" class="form-control occ-seats" placeholder="Seats" value="\${s.seats}" style="background: #ffffff !important; border: 1px solid var(--border-color) !important; color: var(--text-main) !important; height: 38px !important; border-radius: 8px !important;">
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-md-2 text-end">
-                                                                    <button type="button" class="btn btn-sm btn-outline-danger border-0 mt-4" onclick="$('#occ_\${id}').remove()">
+                                                                    <button type="button" class="btn btn-sm btn-outline-danger border-0 mt-4" onclick="$('#occ_\${id}').remove()" style="margin-top: 25px !important;">
                                                                         <i class="fa fa-trash-o fa-lg"></i>
                                                                     </button>
                                                                 </div>

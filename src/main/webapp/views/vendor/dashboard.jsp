@@ -292,8 +292,45 @@
 
         @media (max-width: 991px) {
             .grid-layout { grid-template-columns: 1fr; }
-            .main-content { margin-left: 0; padding: 24px !important; }
-            .dashboard-header { flex-direction: column; align-items: flex-start; gap: 15px; }
+            .main-content { 
+                margin-left: 0 !important; 
+                padding: 20px !important; 
+                padding-top: 85px !important; 
+            }
+            .dashboard-header { 
+                flex-direction: column; 
+                align-items: stretch !important; 
+                gap: 15px; 
+            }
+            .header-actions {
+                width: 100%;
+            }
+            .header-actions .btn {
+                display: block;
+                width: 100%;
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header-content h1 {
+                font-size: 22px !important;
+            }
+            .stat-card {
+                padding: 16px !important;
+                gap: 12px !important;
+            }
+            .stat-icon {
+                width: 48px !important;
+                height: 48px !important;
+                font-size: 18px !important;
+            }
+            .stat-info h3 {
+                font-size: 20px !important;
+            }
+            .action-cards {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
@@ -307,7 +344,7 @@
         
         <div class="dashboard-header">
             <div class="header-content">
-                <h1>Welcome back, ${loggedInVendor.businessName != null ? loggedInVendor.businessName : 'Partner'}! 👋</h1>
+                <h1>Welcome back, ${loggedInVendor.businessName != null ? loggedInVendor.businessName : 'Partner'}!</h1>
                 <p>Monitor your performance and manage your travel offerings.</p>
             </div>
             <div class="header-actions">
@@ -496,4 +533,3 @@
 </body>
 
 </html>
-html>

@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<%@ taglib prefix="fmt" uri="jakarta.tags.fmt" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -40,7 +41,11 @@
         }
 
         @media (max-width: 991px) {
-            .main-content { margin-left: 0; padding: 20px; }
+            .main-content { 
+                margin-left: 0 !important; 
+                padding: 20px !important; 
+                padding-top: 85px !important; 
+            }
         }
 
         .page-header {
@@ -96,24 +101,25 @@
         }
 
         .payout-stat {
-            padding: 16px;
+            padding: 14px 10px;
             background: #f8fafc;
             border-radius: 12px;
             border: 1px solid var(--border-color);
+            text-align: center;
         }
 
         .payout-stat .label {
-            font-size: 11px;
+            font-size: 10px;
             font-weight: 700;
             text-transform: uppercase;
             color: var(--text-muted);
-            margin-bottom: 4px;
+            margin-bottom: 6px;
             letter-spacing: 0.5px;
         }
 
         .payout-stat .value {
-            font-size: 18px;
-            font-weight: 700;
+            font-size: 15px;
+            font-weight: 800;
             color: var(--text-main);
         }
 
@@ -209,7 +215,7 @@
             <div class="col-md-4">
                 <div class="analytics-card">
                     <p class="earning-label">Total Confirmed Earnings</p>
-                    <div class="earning-amount">₹${totalEarnings != null ? totalEarnings : '0.00'}</div>
+                    <div class="earning-amount">₹<fmt:formatNumber value="${totalEarnings != null ? totalEarnings : 0.00}" type="number" maxFractionDigits="2" minFractionDigits="2" /></div>
                     <div class="growth-indicator">
                         <i class="fa fa-arrow-up"></i> 100% Verified Revenue
                     </div>
@@ -219,22 +225,22 @@
                 <div class="analytics-card payout-tracker">
                     <h4>Payout Tracker</h4>
                     <div class="row g-3">
-                        <div class="col-md-4">
+                        <div class="col-md-4 col-sm-4">
                             <div class="payout-stat">
                                 <div class="label">Gross Revenue</div>
-                                <div class="value">₹${totalEarnings}</div>
+                                <div class="value">₹<fmt:formatNumber value="${totalEarnings}" type="number" maxFractionDigits="2" minFractionDigits="2" /></div>
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-4 col-sm-4">
                             <div class="payout-stat">
                                 <div class="label">Platform Fee (10%)</div>
-                                <div class="value" style="color: var(--danger);">- ₹${totalEarnings * 0.1}</div>
+                                <div class="value" style="color: var(--danger);">- ₹<fmt:formatNumber value="${totalEarnings * 0.1}" type="number" maxFractionDigits="2" minFractionDigits="2" /></div>
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-4 col-sm-4">
                             <div class="payout-stat">
                                 <div class="label">Withdrawable Amount</div>
-                                <div class="value" style="color: var(--success);">₹${totalEarnings * 0.9}</div>
+                                <div class="value" style="color: var(--success);">₹<fmt:formatNumber value="${totalEarnings * 0.9}" type="number" maxFractionDigits="2" minFractionDigits="2" /></div>
                             </div>
                         </div>
                     </div>

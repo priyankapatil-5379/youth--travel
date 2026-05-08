@@ -41,7 +41,35 @@
         }
 
         @media (max-width: 991px) {
-            .main-content { margin-left: 0; }
+            body {
+                overflow: auto !important;
+                height: auto !important;
+            }
+            .main-content { 
+                margin-left: 0 !important; 
+                height: auto !important;
+                padding-top: 85px !important;
+            }
+            .chat-container {
+                flex-direction: column !important;
+                height: auto !important;
+            }
+            .inbox-list {
+                width: 100% !important;
+                border-right: none !important;
+                border-bottom: 1px solid var(--border-color) !important;
+                max-height: 300px !important;
+            }
+            .chat-view {
+                width: 100% !important;
+                min-height: 450px !important;
+            }
+            .page-header {
+                flex-direction: column;
+                align-items: stretch !important;
+                gap: 12px;
+                padding: 16px 20px !important;
+            }
         }
 
         .page-header {

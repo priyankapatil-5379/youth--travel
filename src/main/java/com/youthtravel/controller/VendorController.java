@@ -194,6 +194,8 @@ public class VendorController {
     private com.youthtravel.repository.ReviewRepository reviewRepository;
 
     @Autowired
+    private com.youthtravel.repository.TripScheduleRepository tripScheduleRepository;
+    @Autowired
     private org.springframework.messaging.simp.SimpMessagingTemplate messagingTemplate;
 
     @GetMapping("/dashboard")
@@ -231,13 +233,71 @@ public class VendorController {
 
         java.util.List<com.youthtravel.entity.Trip> trips = tripService.getTripsByVendor(vendor);
         java.util.Map<Long, Integer> occupiedMap = new java.util.HashMap<>();
+        java.util.Map<Long, java.util.List<com.youthtravel.entity.TripSchedule>> schedulesMap = new java.util.HashMap<>();
+        java.util.Map<Long, Integer> scheduleOccupiedMap = new java.util.HashMap<>();
+        
         for (com.youthtravel.entity.Trip trip : trips) {
             occupiedMap.put(trip.getId(), bookingService.getOccupiedSlotsByTrip(trip));
+            java.util.List<com.youthtravel.entity.TripSchedule> schedules = tripScheduleRepository.findByTrip(trip);
+            schedulesMap.put(trip.getId(), schedules);
+            
+            java.util.List<com.youthtravel.entity.Booking> bookings = bookingService.getBookingsByTrip(trip);
+            for (com.youthtravel.entity.TripSchedule sched : schedules) {
+                int schedOccupied = bookings.stream()
+                        .filter(b -> "Confirmed".equalsIgnoreCase(b.getStatus()) || "Pending".equalsIgnoreCase(b.getStatus()))
+                        .filter(b -> b.getSelectedDate() != null && b.getSelectedDate().equals(sched.getStartDate().toString()))
+                        .mapToInt(b -> b.getNumberOfTravelers() != null ? b.getNumberOfTravelers() : 1)
+                        .sum();
+                scheduleOccupiedMap.put(sched.getId(), schedOccupied);
+            }
         }
 
         model.addAttribute("trips", trips);
         model.addAttribute("occupiedMap", occupiedMap);
+        model.addAttribute("schedulesMap", schedulesMap);
+        model.addAttribute("scheduleOccupiedMap", scheduleOccupiedMap);
         return "vendor/inventory";
+    }
+
+    @PostMapping("/inventory/adjust-slots")
+    @ResponseBody
+    public java.util.Map<String, Object> adjustSlots(
+            @RequestParam("tripId") Long tripId,
+            @RequestParam(value = "scheduleId", required = false) Long scheduleId,
+            @RequestParam("newCapacity") Integer newCapacity) {
+        
+        java.util.Map<String, Object> response = new java.util.HashMap<>();
+        try {
+            if (scheduleId != null) {
+                java.util.Optional<com.youthtravel.entity.TripSchedule> schedOpt = tripScheduleRepository.findById(scheduleId);
+                if (schedOpt.isPresent()) {
+                    com.youthtravel.entity.TripSchedule schedule = schedOpt.get();
+                    int diff = newCapacity - schedule.getTotalSeats();
+                    schedule.setTotalSeats(newCapacity);
+                    schedule.setAvailableSeats(Math.max(0, schedule.getAvailableSeats() + diff));
+                    tripScheduleRepository.save(schedule);
+                    response.put("success", true);
+                    response.put("message", "Schedule capacity updated successfully!");
+                    return response;
+                }
+            } else {
+                java.util.Optional<com.youthtravel.entity.Trip> tripOpt = tripService.getTripById(tripId);
+                if (tripOpt.isPresent()) {
+                    com.youthtravel.entity.Trip trip = tripOpt.get();
+                    trip.setMaxTravelers(newCapacity);
+                    tripService.saveTrip(trip);
+                    response.put("success", true);
+                    response.put("message", "Trip capacity updated successfully!");
+                    return response;
+                }
+            }
+            response.put("success", false);
+            response.put("message", "Trip or Schedule not found.");
+        } catch (Exception e) {
+            response.put("success", false);
+            response.put("message", "Error: " + e.getMessage());
+        }
+        return response;
     }
 
     @GetMapping("/guest-list")

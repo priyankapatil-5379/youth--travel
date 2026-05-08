@@ -47,4 +47,8 @@ public class BookingService {
                 .mapToInt(b -> b.getNumberOfTravelers() != null ? b.getNumberOfTravelers() : 1)
                 .sum();
     }
+
+    public List<Booking> getBookingsByTrip(com.youthtravel.entity.Trip trip) {
+        return bookingRepository.findByTrip(trip);
+    }
 }

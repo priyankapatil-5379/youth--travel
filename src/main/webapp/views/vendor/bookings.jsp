@@ -42,7 +42,11 @@
         }
 
         @media (max-width: 991px) {
-            .main-content { margin-left: 0; padding: 20px; }
+            .main-content { 
+                margin-left: 0 !important; 
+                padding: 20px !important; 
+                padding-top: 85px !important; 
+            }
         }
 
         .page-header {
