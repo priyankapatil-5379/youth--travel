@@ -828,15 +828,18 @@
                                 <div class="d-flex flex-wrap gap-2">
                                     <style>
                                         .duration-preset {
-                                            background: rgba(255,255,255,0.1);
-                                            border: 1px solid rgba(255,255,255,0.2);
-                                            color: white !important;
-                                            font-weight: 500;
+                                            background: #f1f5f9;
+                                            border: 1px solid var(--border-color);
+                                            color: var(--text-main) !important;
+                                            font-weight: 600;
+                                            border-radius: 8px;
+                                            padding: 8px 16px;
                                             transition: all 0.2s ease;
                                         }
                                         .duration-preset:hover {
                                             background: #008080;
                                             border-color: #008080;
+                                            color: white !important;
                                             transform: translateY(-2px);
                                         }
                                     </style>

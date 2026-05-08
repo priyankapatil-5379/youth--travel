@@ -167,9 +167,8 @@
 
 <div class="sidebar">
     <div class="sidebar-logo">
-        <a href="<c:url value='/'/>" style="text-decoration: none; display: flex; align-items: center; gap: 10px;">
-            <i class="fa fa-compass" style="font-size: 22px; color: #ffffff;"></i>
-            <span style="font-family: 'Inter', sans-serif; font-weight: 800; font-size: 18px; color: #ffffff; letter-spacing: -0.5px; text-transform: uppercase;">Youth Travel</span>
+        <a href="<c:url value='/'/>">
+            <img src="<c:url value='/views/assets/images/logo.png'/>" alt="Youth Travel">
         </a>
     </div>
     <ul class="nav-sidebar">
