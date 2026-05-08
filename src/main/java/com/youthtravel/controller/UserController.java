@@ -250,12 +250,10 @@ public class UserController {
         User user = (User) session.getAttribute("user");
         if (user == null) return "redirect:/user/login";
 
-        List<User> users = userRepository.findAll();
-        List<Post> posts = postRepository.findAll();
-        List<Advice> advices = adviceRepository.findAll();
-
-        // 1. Exclude logged-in user
-        users.removeIf(u -> u.getId().equals(user.getId()));
+        // Fetch data excluding the logged-in user
+        List<User> users = userRepository.findByIdNot(user.getId());
+        List<Post> posts = postRepository.findByUserNot(user);
+        List<Advice> advices = adviceRepository.findByUserNot(user);
 
         // 2. Search & Filters
         if (search != null && !search.trim().isEmpty()) {
@@ -295,6 +293,12 @@ public class UserController {
             .map(f -> f.getFollowing().getId())
             .collect(Collectors.toList());
 
+        // Calculate post counts for badges
+        Map<Long, Long> userPostsCount = new HashMap<>();
+        for (User u : users) {
+            userPostsCount.put(u.getId(), postRepository.countByUser(u));
+        }
+
         model.addAttribute("user", user);
         model.addAttribute("users", users);
         model.addAttribute("posts", posts);
@@ -303,6 +307,7 @@ public class UserController {
         model.addAttribute("selectedCountry", country);
         model.addAttribute("sortBy", sortBy);
         model.addAttribute("followingIds", followingIds);
+        model.addAttribute("userPostsCount", userPostsCount);
         
         return "users/explore";
     }

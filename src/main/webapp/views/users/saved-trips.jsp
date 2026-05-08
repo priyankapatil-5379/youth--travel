@@ -39,7 +39,11 @@
         .page-header h1 { font-size: 28px; font-weight: 800; color: var(--text-main); margin: 0; letter-spacing: -0.5px; }
         .page-header p { color: var(--text-muted); margin: 4px 0 0; font-size: 15px; font-weight: 500; }
 
-        .package-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 24px; }
+        .package-grid { 
+            display: grid; 
+            grid-template-columns: repeat(4, 1fr); 
+            gap: 20px; 
+        }
         
         .package-card { 
             background: var(--bg-card); 
@@ -53,21 +57,21 @@
         }
         .package-card:hover { transform: translateY(-4px); box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); border-color: var(--primary); }
         
-        .package-img-wrapper { position: relative; width: 100%; aspect-ratio: 16 / 10; overflow: hidden; background: #f1f5f9; }
+        .package-img-wrapper { position: relative; width: 100%; height: 160px; overflow: hidden; background: #f1f5f9; }
         .package-img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
         .package-card:hover .package-img { transform: scale(1.05); }
         
-        .package-content { padding: 24px; flex: 1; display: flex; flex-direction: column; }
-        .package-meta { font-size: 13px; color: var(--primary); margin-bottom: 12px; display: flex; align-items: center; font-weight: 600; }
-        .package-meta i { margin-right: 8px; }
+        .package-content { padding: 16px; flex: 1; display: flex; flex-direction: column; }
+        .package-meta { font-size: 11px; color: var(--primary); margin-bottom: 10px; display: flex; align-items: center; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+        .package-meta i { margin-right: 6px; }
         
         .package-title { 
-            font-size: 18px; 
-            font-weight: 700; 
-            margin-bottom: 16px; 
+            font-size: 15px; 
+            font-weight: 800; 
+            margin-bottom: 12px; 
             color: var(--text-main); 
-            line-height: 1.4;
-            height: 50px;
+            line-height: 1.3;
+            height: 40px;
             overflow: hidden;
             display: -webkit-box;
             -webkit-line-clamp: 2;
@@ -79,23 +83,25 @@
             align-items: center; 
             justify-content: space-between; 
             margin-top: auto; 
-            padding-top: 20px; 
+            padding-top: 12px; 
             border-top: 1px solid var(--border-color); 
+            gap: 10px;
         }
         
-        .package-price { font-size: 22px; font-weight: 800; color: var(--text-main); }
-        .package-price span { font-size: 13px; font-weight: 500; color: var(--text-muted); }
+        .package-price { font-size: 18px; font-weight: 900; color: var(--text-main); }
+        .package-price span { font-size: 11px; font-weight: 600; color: var(--text-muted); }
         
         .btn-view { 
             background: var(--primary); 
             color: #ffffff !important; 
-            padding: 10px 20px; 
-            border-radius: 10px; 
-            font-size: 13px; 
-            font-weight: 700; 
+            padding: 8px 14px; 
+            border-radius: 8px; 
+            font-size: 11px; 
+            font-weight: 800; 
             transition: var(--transition); 
             text-decoration: none !important; 
             display: inline-block; 
+            white-space: nowrap;
         }
         .btn-view:hover { background: var(--primary-hover); transform: translateY(-1px); }
 
@@ -133,9 +139,21 @@
             padding: 8px;
         }
 
+        @media (max-width: 1500px) {
+            .package-grid { grid-template-columns: repeat(3, 1fr); }
+        }
+
+        @media (max-width: 1200px) {
+            .package-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+
         @media (max-width: 991px) {
             .mobile-header { display: flex; }
             .main-content { margin-left: 0; padding: 100px 20px 40px !important; }
+        }
+
+        @media (max-width: 768px) {
+            .package-grid { grid-template-columns: repeat(2, 1fr); }
         }
 
         @media (max-width: 576px) {

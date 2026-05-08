@@ -35,6 +35,8 @@ public class Review {
     private Boolean recommended;
     private String photos;
     private String travelDate;
+    private Integer helpfulVotes = 0;
+    private Integer views = 0;
 
     private LocalDateTime createdAt;
 
@@ -80,6 +82,12 @@ public class Review {
 
     public String getTravelDate() { return travelDate; }
     public void setTravelDate(String travelDate) { this.travelDate = travelDate; }
+
+    public Integer getHelpfulVotes() { return helpfulVotes; }
+    public void setHelpfulVotes(Integer helpfulVotes) { this.helpfulVotes = helpfulVotes; }
+
+    public Integer getViews() { return views; }
+    public void setViews(Integer views) { this.views = views; }
 
     public LocalDateTime getCreatedAt() { return createdAt; }
     public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }

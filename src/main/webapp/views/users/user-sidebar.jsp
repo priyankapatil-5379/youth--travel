@@ -144,8 +144,7 @@
                 <c:set var="defaultAvatar"
                     value="https://ui-avatars.com/api/?name=${user.name}&background=fff&color=008080" />
                 <img src="${not empty user.profilePhoto ? user.profilePhoto : defaultAvatar}" alt="Profile">
-                <div class="info">
-                    <span class="label">Explorer</span>
+                <div class="info">             
                     <span class="name">${user.name}</span>
                 </div>
             </div>

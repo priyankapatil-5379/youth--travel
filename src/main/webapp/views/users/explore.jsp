@@ -171,81 +171,89 @@
         @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
         /* Traveler Cards */
-        .users-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px; }
+        .users-grid { 
+            display: grid; 
+            grid-template-columns: repeat(4, 1fr); 
+            gap: 20px; 
+        }
         .user-card {
             background: white;
-            border-radius: 24px;
-            padding: 30px 20px;
+            border-radius: 20px;
+            padding: 20px 15px;
             border: 1px solid var(--border-color);
             text-align: center;
             transition: var(--transition);
             position: relative;
             overflow: hidden;
+            display: flex;
+            flex-direction: column;
         }
-        .user-card:hover { transform: translateY(-10px); border-color: var(--primary); box-shadow: 0 20px 30px -10px rgba(0,0,0,0.08); }
+        .user-card:hover { transform: translateY(-8px); border-color: var(--primary); box-shadow: 0 20px 30px -10px rgba(0,0,0,0.08); }
         
         .user-lvl-badge {
             position: absolute;
-            top: 15px;
-            right: 15px;
+            top: 12px;
+            right: 12px;
             background: var(--primary);
             color: white;
-            font-size: 10px;
+            font-size: 9px;
             font-weight: 900;
-            padding: 4px 10px;
+            padding: 3px 8px;
             border-radius: 100px;
             box-shadow: 0 4px 10px rgba(0,128,128,0.2);
+            z-index: 5;
         }
 
         .user-card-avatar {
-            width: 100px;
-            height: 100px;
+            width: 80px;
+            height: 80px;
             border-radius: 50%;
-            padding: 5px;
+            padding: 4px;
             background: linear-gradient(135deg, var(--primary), var(--accent-blue));
-            margin: 0 auto 20px;
+            margin: 0 auto 15px;
             position: relative;
         }
-        .user-card-avatar img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 4px solid white; }
+        .user-card-avatar img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 3px solid white; }
         
         .online-dot {
             position: absolute;
-            bottom: 5px;
-            right: 5px;
-            width: 14px;
-            height: 14px;
+            bottom: 4px;
+            right: 4px;
+            width: 12px;
+            height: 12px;
             background: #10b981;
-            border: 3px solid white;
+            border: 2px solid white;
             border-radius: 50%;
         }
 
-        .user-card h3 { font-size: 18px; font-weight: 800; color: var(--text-main); margin-bottom: 4px; }
-        .user-card .username { font-size: 13px; color: var(--primary); font-weight: 700; margin-bottom: 12px; display: block; }
-        .user-card .location { font-size: 12px; color: var(--text-muted); font-weight: 600; margin-bottom: 20px; display: flex; align-items: center; justify-content: center; gap: 5px; }
+        .user-card h3 { font-size: 16px; font-weight: 800; color: var(--text-main); margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .user-card .username { font-size: 12px; color: var(--primary); font-weight: 700; margin-bottom: 10px; display: block; }
+        .user-card .location { font-size: 11px; color: var(--text-muted); font-weight: 600; margin-bottom: 15px; display: flex; align-items: center; justify-content: center; gap: 4px; }
 
-        .user-tags { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-bottom: 25px; }
-        .tag-pill { font-size: 10px; font-weight: 800; padding: 4px 12px; border-radius: 100px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .user-tags { display: flex; flex-wrap: wrap; justify-content: center; gap: 5px; margin-bottom: 15px; }
+        .tag-pill { font-size: 9px; font-weight: 800; padding: 3px 10px; border-radius: 100px; text-transform: uppercase; letter-spacing: 0.5px; }
         .tag-green { background: #ecfdf5; color: #059669; }
         .tag-blue { background: #eff6ff; color: #2563eb; }
         .tag-orange { background: #fff7ed; color: #ea580c; }
 
         .user-card-footer {
+            margin-top: auto;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding-top: 20px;
+            padding-top: 15px;
             border-top: 1px solid #f1f5f9;
         }
         .points-box { text-align: left; }
-        .points-box span { font-size: 10px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; display: block; }
-        .points-box strong { font-size: 14px; font-weight: 900; color: var(--accent-coral); }
+        .points-box span { font-size: 9px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; display: block; }
+        .points-box strong { font-size: 12px; font-weight: 900; color: var(--accent-coral); }
 
         .btn-follow {
             background: var(--primary);
             color: white !important;
-            padding: 8px 18px;
-            border-radius: 10px;
-            font-size: 12px;
+            padding: 6px 14px;
+            border-radius: 8px;
+            font-size: 11px;
             font-weight: 800;
             border: none;
             transition: var(--transition);
@@ -257,62 +265,70 @@
         .memories-column { flex: 2; }
         .sidebar-column { flex: 1; }
 
-        .memory-posts-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 25px; }
+        .memory-posts-grid { 
+            display: grid; 
+            grid-template-columns: repeat(4, 1fr); 
+            gap: 20px; 
+        }
         
         .memory-post-card {
             background: white;
-            border-radius: 24px;
+            border-radius: 20px;
             overflow: hidden;
             border: 1px solid var(--border-color);
             transition: var(--transition);
+            display: flex;
+            flex-direction: column;
         }
         .memory-post-card:hover { transform: translateY(-5px); border-color: var(--primary); box-shadow: var(--shadow-premium); }
 
-        .post-header { padding: 15px 20px; display: flex; align-items: center; gap: 12px; }
-        .post-author-img { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; }
-        .post-author-info span { font-size: 13px; font-weight: 800; color: var(--text-main); display: block; }
-        .post-author-info small { font-size: 11px; color: var(--text-muted); font-weight: 600; }
+        .post-header { padding: 12px 15px; display: flex; align-items: center; gap: 10px; }
+        .post-author-img { width: 30px; height: 30px; border-radius: 50%; object-fit: cover; }
+        .post-author-info span { font-size: 12px; font-weight: 800; color: var(--text-main); display: block; }
+        .post-author-info small { font-size: 10px; color: var(--text-muted); font-weight: 600; }
 
         .post-media { width: 100%; aspect-ratio: 1; position: relative; overflow: hidden; background: #f1f5f9; }
         .post-media img, .post-media video { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s ease; }
         .memory-post-card:hover .post-media img { transform: scale(1.05); }
 
-        .post-body { padding: 20px; }
-        .post-caption { font-size: 14px; color: var(--text-main); font-weight: 500; line-height: 1.5; margin-bottom: 15px; }
+        .post-body { padding: 15px; flex: 1; display: flex; flex-direction: column; }
+        .post-caption { font-size: 13px; color: var(--text-main); font-weight: 500; line-height: 1.4; margin-bottom: 12px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
         
-        .post-actions { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
-        .action-btns { display: flex; gap: 15px; font-size: 20px; }
+        .post-actions { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; margin-top: auto; }
+        .action-btns { display: flex; gap: 12px; font-size: 18px; }
         .action-btns i { cursor: pointer; transition: 0.2s; color: var(--text-main); }
         .action-btns i:hover { color: var(--primary); transform: scale(1.1); }
         .action-btns i.fa-heart:hover { color: #e63946; }
 
-        .post-stats-text { font-size: 13px; font-weight: 800; color: var(--text-main); }
+        .post-stats-text { font-size: 11px; font-weight: 800; color: var(--text-main); }
 
         /* Advice Cards */
-        .advice-list { display: flex; flex-direction: column; gap: 20px; }
+        .advice-list { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
         .advice-mini-card {
             background: white;
-            padding: 20px;
+            padding: 15px;
             border-radius: 20px;
             border: 1px solid var(--border-color);
             transition: var(--transition);
+            display: flex;
+            flex-direction: column;
         }
-        .advice-mini-card:hover { border-color: var(--primary); transform: translateX(5px); box-shadow: 0 10px 20px rgba(0,0,0,0.03); }
+        .advice-mini-card:hover { border-color: var(--primary); transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.03); }
         
-        .advice-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 15px; }
-        .advice-user { display: flex; align-items: center; gap: 10px; }
-        .advice-user img { width: 30px; height: 30px; border-radius: 50%; object-fit: cover; }
-        .advice-user span { font-size: 12px; font-weight: 800; }
+        .advice-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+        .advice-user { display: flex; align-items: center; gap: 8px; }
+        .advice-user img { width: 24px; height: 24px; border-radius: 50%; object-fit: cover; }
+        .advice-user span { font-size: 11px; font-weight: 800; }
         
-        .advice-time { font-size: 11px; color: var(--text-muted); font-weight: 600; }
+        .advice-time { font-size: 10px; color: var(--text-muted); font-weight: 600; }
         
-        .advice-title { font-size: 15px; font-weight: 800; color: var(--text-main); margin-bottom: 8px; display: block; }
+        .advice-title { font-size: 14px; font-weight: 800; color: var(--text-main); margin-bottom: 8px; display: block; line-height: 1.3; }
         .advice-title:hover { color: var(--primary); text-decoration: none; }
-        .advice-desc { font-size: 13px; color: var(--text-muted); line-height: 1.5; margin-bottom: 15px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+        .advice-desc { font-size: 12px; color: var(--text-muted); line-height: 1.4; margin-bottom: 12px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; flex: 1; }
         
-        .advice-footer { display: flex; justify-content: space-between; align-items: center; }
-        .advice-tag { background: var(--primary-light); color: var(--primary); padding: 4px 10px; border-radius: 8px; font-size: 10px; font-weight: 800; }
-        .advice-votes { font-size: 12px; color: var(--text-muted); font-weight: 700; display: flex; align-items: center; gap: 5px; }
+        .advice-footer { display: flex; justify-content: space-between; align-items: center; margin-top: auto; }
+        .advice-tag { background: var(--primary-light); color: var(--primary); padding: 3px 8px; border-radius: 6px; font-size: 9px; font-weight: 800; }
+        .advice-votes { font-size: 11px; color: var(--text-muted); font-weight: 700; display: flex; align-items: center; gap: 4px; }
 
         .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
         .section-header h2 { font-size: 20px; font-weight: 900; margin: 0; color: var(--text-main); }
@@ -342,9 +358,14 @@
             padding: 8px;
         }
 
+        @media (max-width: 1400px) {
+            .users-grid, .memory-posts-grid, .advice-list { grid-template-columns: repeat(3, 1fr); }
+        }
+
         @media (max-width: 1200px) {
             .explore-content-layout { flex-direction: column; }
             .sidebar-column { order: -1; }
+            .users-grid, .memory-posts-grid, .advice-list { grid-template-columns: repeat(2, 1fr); }
         }
 
         @media (max-width: 991px) {
@@ -358,12 +379,13 @@
             .hero-content { margin: 0 auto; }
             .filter-bar { flex-direction: column; }
             .search-box, .filter-select { width: 100%; }
+            .users-grid, .memory-posts-grid, .advice-list { grid-template-columns: repeat(2, 1fr); }
         }
 
         @media (max-width: 576px) {
             .main-content { padding: 90px 15px 30px !important; }
             .explore-header h1 { font-size: 22px; }
-            .users-grid, .posts-grid, .advices-grid { grid-template-columns: 1fr; }
+            .users-grid, .memory-posts-grid, .advice-list { grid-template-columns: 1fr; }
             .user-card { padding: 24px 16px; }
         }
         }
@@ -474,7 +496,7 @@
                                         </p>
 
                                         <div class="user-tags">
-                                            <c:forEach var="badge" items="${u.getDynamicBadges(0)}" varStatus="st">
+                                            <c:forEach var="badge" items="${u.getDynamicBadges(userPostsCount[u.id])}" varStatus="st">
                                                 <c:set var="badgeClass" value="${st.index % 3 == 0 ? 'tag-green' : (st.index % 3 == 1 ? 'tag-blue' : 'tag-orange')}" />
                                                 <span class="tag-pill ${badgeClass}">${badge}</span>
                                             </c:forEach>
@@ -509,7 +531,9 @@
                                         <span>${p.user.fullName}</span>
                                         <small><i class="fa fa-globe"></i> ${not empty p.user.city ? p.user.city : 'Traveler'}</small>
                                     </div>
-                                    <div class="ms-auto" style="font-size:10px; color:var(--text-muted); font-weight:700;">2H AGO</div>
+                                    <div class="ms-auto post-time" data-time="${p.createdAt}" style="font-size:10px; color:var(--text-muted); font-weight:700;">
+                                        <c:out value="${p.createdAt}" />
+                                    </div>
                                 </div>
                                 <div class="post-media" onclick="window.location.href='/profile?username=${not empty p.user.username ? p.user.username : p.user.fullName}'" style="cursor:pointer">
                                     <c:choose>
@@ -584,6 +608,24 @@
                 const tabId = $(this).data('tab');
                 $('.tab-pane').removeClass('active');
                 $('#tab-' + tabId).addClass('active');
+            });
+
+            // Time Ago dynamic formatting
+            function timeAgo(date) {
+                const now = new Date();
+                const diff = Math.floor((now - new Date(date)) / 1000);
+                if (diff < 60) return 'JUST NOW';
+                if (diff < 3600) return Math.floor(diff / 60) + 'M AGO';
+                if (diff < 86400) return Math.floor(diff / 3600) + 'H AGO';
+                if (diff < 604800) return Math.floor(diff / 86400) + 'D AGO';
+                return new Date(date).toLocaleDateString();
+            }
+
+            $('.post-time').each(function() {
+                const timeStr = $(this).data('time');
+                if (timeStr) {
+                    $(this).text(timeAgo(timeStr));
+                }
             });
         });
 

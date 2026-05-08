@@ -364,28 +364,30 @@
 
         .memory-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 30px;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
         }
 
         .memory-card {
             background: white;
-            border-radius: 24px;
+            border-radius: 20px;
             overflow: hidden;
             border: 1px solid var(--border-color);
             transition: var(--transition);
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            display: flex;
+            flex-direction: column;
         }
 
         .memory-card:hover {
-            transform: translateY(-10px);
+            transform: translateY(-8px);
             box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
             border-color: var(--primary);
         }
 
         .memory-media {
             position: relative;
-            height: 240px;
+            height: 180px;
             overflow: hidden;
         }
 
@@ -396,31 +398,31 @@
             transition: transform 0.6s ease;
         }
 
-        .memory-card:hover .memory-media img { transform: scale(1.05); }
+        .memory-card:hover .memory-media img { transform: scale(1.1); }
 
         .category-badge {
             position: absolute;
-            top: 15px;
-            right: 15px;
-            background: var(--glass-bg);
+            top: 12px;
+            right: 12px;
+            background: rgba(255, 255, 255, 0.9);
             backdrop-filter: blur(5px);
-            padding: 6px 14px;
-            border-radius: 12px;
-            font-size: 11px;
+            padding: 4px 10px;
+            border-radius: 10px;
+            font-size: 10px;
             font-weight: 800;
             color: var(--text-main);
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 4px;
             z-index: 2;
         }
 
         .memory-actions-overlay {
             position: absolute;
-            top: 15px;
-            left: 15px;
+            top: 12px;
+            left: 12px;
             display: flex;
-            gap: 8px;
+            gap: 6px;
             opacity: 0;
             transition: var(--transition);
             z-index: 2;
@@ -429,34 +431,35 @@
         .memory-card:hover .memory-actions-overlay { opacity: 1; }
 
         .action-circle-btn {
-            width: 36px; height: 36px;
+            width: 32px; height: 32px;
             background: rgba(0,0,0,0.5);
             color: white;
             border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
             cursor: pointer;
             transition: var(--transition);
+            font-size: 14px;
         }
 
         .action-circle-btn:hover { background: var(--primary); transform: scale(1.1); }
-        .action-circle-btn.delete:hover { background: var(--accent-red); }
+        .action-circle-btn.delete:hover { background: #ef4444; }
 
-        .memory-body { padding: 20px; }
-        .memory-title { font-size: 18px; font-weight: 800; color: var(--text-main); margin-bottom: 8px; }
-        .memory-desc { font-size: 14px; color: var(--text-muted); line-height: 1.5; margin-bottom: 15px; }
+        .memory-body { padding: 15px; flex: 1; display: flex; flex-direction: column; }
+        .memory-title { font-size: 16px; font-weight: 800; color: var(--text-main); margin-bottom: 6px; line-height: 1.3; }
+        .memory-desc { font-size: 13px; color: var(--text-muted); line-height: 1.5; margin-bottom: 12px; flex: 1; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
 
         .memory-footer {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding-top: 15px;
+            padding-top: 12px;
             border-top: 1px solid #f1f5f9;
         }
 
-        .memory-stats { display: flex; gap: 15px; font-size: 13px; font-weight: 600; }
-        .stat-icon-text { display: flex; align-items: center; gap: 5px; color: var(--text-muted); transition: 0.2s; }
+        .memory-stats { display: flex; gap: 12px; font-size: 12px; font-weight: 600; }
+        .stat-icon-text { display: flex; align-items: center; gap: 4px; color: var(--text-muted); transition: 0.2s; }
         .stat-icon-text.liked { color: var(--accent-coral); }
-        .memory-time { font-size: 12px; color: var(--text-muted); font-weight: 500; }
+        .memory-time { font-size: 11px; color: var(--text-muted); font-weight: 600; }
 
         /* Advice specific cards */
         .advice-card {
@@ -526,6 +529,10 @@
             padding: 8px;
         }
 
+        @media (max-width: 1200px) {
+            .memory-grid { grid-template-columns: repeat(3, 1fr); }
+        }
+
         @media (max-width: 991px) {
             .mobile-header { display: flex; }
             .main-content { margin-left: 0; padding: 100px 20px 40px !important; }
@@ -533,6 +540,7 @@
             .profile-meta-footer { justify-content: center; flex-wrap: wrap; }
             .stats-grid { flex-wrap: wrap; justify-content: center; }
             .hero-bg-visual { width: 100%; opacity: 0.1; }
+            .memory-grid { grid-template-columns: repeat(2, 1fr); }
         }
 
         @media (max-width: 576px) {

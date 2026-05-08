@@ -7,5 +7,6 @@ import java.util.List;
 
 public interface AdviceRepository extends JpaRepository<Advice, Long> {
     List<Advice> findByUserOrderByCreatedAtDesc(User user);
+    List<Advice> findByUserNot(User user);
     long countByUser(User user);
 }

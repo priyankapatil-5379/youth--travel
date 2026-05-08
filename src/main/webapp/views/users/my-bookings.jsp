@@ -71,7 +71,11 @@
         }
 
         /* Booking Cards */
-        .booking-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 24px; }
+        .booking-grid { 
+            display: grid; 
+            grid-template-columns: repeat(4, 1fr); 
+            gap: 20px; 
+        }
         .booking-card { 
             background: var(--bg-card); 
             border: 1px solid var(--border-color); 
@@ -79,20 +83,22 @@
             overflow: hidden; 
             transition: var(--transition); 
             box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+            display: flex;
+            flex-direction: column;
         }
         .booking-card:hover { transform: translateY(-4px); box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); border-color: var(--primary); }
         
-        .card-image { width: 100%; aspect-ratio: 16 / 9; position: relative; overflow: hidden; background: #f1f5f9; }
+        .card-image { width: 100%; height: 160px; position: relative; overflow: hidden; background: #f1f5f9; }
         .card-image img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
         .booking-card:hover .card-image img { transform: scale(1.05); }
         
         .status-badge { 
-            position: absolute; top: 16px; right: 16px; 
+            position: absolute; top: 12px; right: 12px; 
             background: var(--primary); 
             color: #ffffff; 
-            padding: 6px 14px; 
+            padding: 4px 12px; 
             border-radius: 100px; 
-            font-size: 11px; 
+            font-size: 10px; 
             font-weight: 700; 
             text-transform: uppercase; 
             letter-spacing: 0.5px;
@@ -100,34 +106,36 @@
             z-index: 10;
         }
 
-        .card-body { padding: 24px; }
-        .card-title { font-size: 18px; font-weight: 700; margin-bottom: 16px; color: var(--text-main); line-height: 1.4; }
-        .info-item { display: flex; align-items: center; gap: 12px; font-size: 13px; font-weight: 600; color: var(--text-muted); margin-bottom: 12px; }
-        .info-item i { color: var(--primary); width: 16px; font-size: 14px; }
+        .card-body { padding: 16px; flex: 1; display: flex; flex-direction: column; }
+        .card-title { font-size: 16px; font-weight: 800; margin-bottom: 12px; color: var(--text-main); line-height: 1.3; height: 42px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+        .info-item { display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 600; color: var(--text-muted); margin-bottom: 8px; }
+        .info-item i { color: var(--primary); width: 14px; font-size: 13px; }
 
         .card-footer { 
-            margin-top: 20px; 
+            margin-top: auto; 
             display: flex; 
             justify-content: space-between; 
             align-items: center; 
-            padding-top: 20px; 
+            padding-top: 12px; 
             border-top: 1px solid var(--border-color); 
+            gap: 10px;
         }
-        .card-price { font-size: 22px; font-weight: 800; color: var(--text-main); }
+        .card-price { font-size: 18px; font-weight: 900; color: var(--text-main); }
         
         .btn-view { 
             background: var(--bg-body); 
             color: var(--text-main); 
             border: 1px solid var(--border-color); 
-            padding: 10px 20px; 
-            border-radius: 10px; 
+            padding: 8px 12px; 
+            border-radius: 8px; 
             font-weight: 700; 
-            font-size: 12px; 
+            font-size: 11px; 
             text-decoration: none !important; 
             text-transform: uppercase; 
             letter-spacing: 0.5px; 
             transition: var(--transition);
             cursor: pointer;
+            white-space: nowrap;
         }
         .btn-view:hover { background: var(--primary); color: #ffffff; border-color: var(--primary); transform: translateY(-1px); }
 
@@ -194,6 +202,14 @@
             padding: 8px;
         }
 
+        @media (max-width: 1500px) {
+            .booking-grid { grid-template-columns: repeat(3, 1fr); }
+        }
+
+        @media (max-width: 1200px) {
+            .booking-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+
         @media (max-width: 991px) {
             .mobile-header { display: flex; }
             .main-content { margin-left: 0; padding: 100px 20px 40px !important; }
@@ -201,13 +217,16 @@
             .tab-item { flex: 0 0 auto; }
         }
 
+        @media (max-width: 768px) {
+            .booking-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+
         @media (max-width: 576px) {
             .main-content { padding: 90px 15px 30px !important; }
             .page-title { font-size: 22px; }
             .booking-grid { grid-template-columns: 1fr; }
-            .card-footer { flex-direction: column; align-items: stretch !important; gap: 15px; }
-            .btn-group-reflection { justify-content: stretch !important; }
-            .btn-group-reflection .btn-view { flex: 1; text-align: center; }
+            .card-footer { flex-direction: row; align-items: center; gap: 10px; }
+            .btn-group-reflection { justify-content: flex-end !important; }
         }
     </style>
 </head>
