@@ -293,5 +293,62 @@
     </div>
 
     <script src="<c:url value='/views/assets/js/jquery.min.js'/>"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        $(document).ready(function() {
+            $('.btn-payout').click(function() {
+                const withdrawable = ${totalEarnings != null ? totalEarnings * 0.9 : 0};
+                
+                if (withdrawable <= 0) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Insufficient Balance',
+                        text: 'You have no available cleared funds to withdraw at the moment.',
+                        confirmButtonColor: '#008080'
+                    });
+                    return;
+                }
+
+                Swal.fire({
+                    title: 'Request Payout?',
+                    text: 'Are you sure you want to withdraw ₹' + withdrawable.toFixed(2) + ' to your bank account?',
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonColor: '#e63946',
+                    cancelButtonColor: '#64748b',
+                    confirmButtonText: 'Yes, withdraw it!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        Swal.fire({
+                            title: 'Processing...',
+                            text: 'Communicating with the payment gateway...',
+                            allowOutsideClick: false,
+                            didOpen: () => {
+                                Swal.showLoading()
+                            }
+                        });
+
+                        // Simulate API call delay
+                        setTimeout(() => {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Payout Requested!',
+                                text: 'Your withdrawal of ₹' + withdrawable.toFixed(2) + ' has been submitted. Funds will arrive in your registered bank account within 24-48 hours.',
+                                confirmButtonColor: '#008080'
+                            });
+                            
+                            // Visually disable button
+                            $('.btn-payout').prop('disabled', true).text('Processing Payout...').css({
+                                'background': '#64748b',
+                                'box-shadow': 'none',
+                                'cursor': 'not-allowed',
+                                'transform': 'none'
+                            });
+                        }, 2000);
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 </html>

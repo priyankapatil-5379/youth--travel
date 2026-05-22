@@ -680,7 +680,7 @@
                                     <div class="form-group">
                                         <label>Trip Title <span class="text-danger">*</span></label>
                                         <input type="text" name="title" value="${trip.title}" class="form-control"
-                                            placeholder="e.g. Kedarkantha Winter Trek">
+                                            placeholder="e.g. Kedarkantha Winter Trek" required pattern=".*[a-zA-Z]+.*" title="Trip title must contain letters and cannot be only numbers">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
@@ -891,34 +891,34 @@
                                 <div class="col-md-4">
                                     <div class="form-group" style="margin-bottom: 30px !important;">
                                         <label id="mainPriceLabel" style="margin-bottom: 12px !important; display: block; font-weight: 700;">Base Price (₹) <span class="text-danger">*</span></label>
-                                        <input type="number" name="price" value="${trip.price}" class="form-control" placeholder="e.g. 5000">
+                                        <input type="number" name="price" value="${trip.price}" class="form-control" placeholder="e.g. 5000" min="0" oninput="if(this.value !== '' && this.value < 0) this.value = 0;">
                                         <input type="hidden" name="adultPrice" id="hiddenAdultPrice">
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group" id="childPriceCont" style="margin-bottom: 30px !important;">
                                         <label style="margin-bottom: 12px !important; display: block; font-weight: 700;">Child Price (₹)</label>
-                                        <input type="number" name="childPrice" value="${trip.childPrice}" class="form-control" placeholder="Optional">
+                                        <input type="number" name="childPrice" value="${trip.childPrice}" class="form-control" placeholder="Optional" min="0" oninput="if(this.value !== '' && this.value < 0) this.value = 0;">
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group" style="margin-bottom: 30px !important;">
                                         <label style="margin-bottom: 12px !important; display: block; font-weight: 700;">Booking Amount (₹)</label>
-                                        <input type="number" name="bookingAmount" value="${trip.bookingAmount}" class="form-control" placeholder="Token to block seat">
+                                        <input type="number" name="bookingAmount" value="${trip.bookingAmount}" class="form-control" placeholder="Token to block seat" min="0" oninput="if(this.value !== '' && this.value < 0) this.value = 0;">
                                         <small class="text-muted mt-2 d-block" style="font-size: 11px;">Set 0 for full payment</small>
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group" style="margin-bottom: 30px !important;">
                                         <label style="margin-bottom: 12px !important; display: block; font-weight: 700;">Weekend Surcharge (Extra ₹)</label>
-                                        <input type="number" name="weekendPrice" value="${trip.weekendPrice}" class="form-control" placeholder="e.g. 500 (Add-on)">
+                                        <input type="number" name="weekendPrice" value="${trip.weekendPrice}" class="form-control" placeholder="e.g. 500 (Add-on)" min="0" oninput="if(this.value !== '' && this.value < 0) this.value = 0;">
                                         <small class="text-muted mt-2 d-block" style="font-size: 11px; line-height: 1.4;">Extra amount added to base price for weekend dates.</small>
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group" style="margin-bottom: 30px !important;">
                                         <label style="margin-bottom: 12px !important; display: block; font-weight: 700;">Discount (%)</label>
-                                        <input type="number" name="discount" value="${trip.discount}" class="form-control" placeholder="e.g. 10">
+                                        <input type="number" name="discount" value="${trip.discount}" class="form-control" placeholder="e.g. 10" min="0" max="100" oninput="if(this.value !== '' && this.value < 0) this.value = 0; if(this.value !== '' && this.value > 100) this.value = 100;">
                                     </div>
                                 </div>
                                 <div class="col-md-4">
@@ -1276,11 +1276,11 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label>Min Batch Size</label>
-                                            <input type="number" name="minBatchSize" class="form-control" placeholder="e.g. 5" value="1">
+                                            <input type="number" name="minBatchSize" class="form-control" placeholder="e.g. 5" value="1" min="1" oninput="if(this.value !== '' && this.value < 1) this.value = 1;">
                                             <small class="text-muted">Minimum people to run the trip.</small>
                                         </div>
                                     </div>
-                                    <div class="col-md-6"><label>Capacity</label><input type="number" name="recTotalSeats" value="${trip.recTotalSeats}" class="form-control" placeholder="Seats"></div>
+                                    <div class="col-md-6"><label>Capacity</label><input type="number" name="recTotalSeats" value="${trip.recTotalSeats}" class="form-control" placeholder="Seats" min="1" oninput="if(this.value !== '' && this.value < 1) this.value = 1;"></div>
                                 </div>
                             </div>
                         </div>
@@ -1294,8 +1294,8 @@
                                     <textarea name="cancellationPolicy" class="form-control" rows="4" placeholder="Describe your cancellation tiers (e.g., 100% refund before 10 days, 50% refund before 5 days...)">${trip.cancellationPolicy}</textarea>
                                 </div>
                                 <div class="col-md-6">
-                                    <label>Batch Capacity (Max travelers)</label>
-                                    <input type="number" name="maxTravelers" class="form-control" value="20">
+                                    <label>Batch Capacity (Max travelers) <span class="text-danger">*</span></label>
+                                    <input type="number" name="maxTravelers" class="form-control" value="${trip.maxTravelers}" required min="1" oninput="if(this.value !== '' && this.value < 1) this.value = 1;">
                                 </div>
                                 
                                 <div class="col-md-6 mt-4">
@@ -1540,6 +1540,18 @@
                 }
 
                 function validateStep() {
+                    const activeStep = document.getElementsByClassName("form-step")[currentStep];
+                    if (!activeStep) return true;
+
+                    const inputs = activeStep.querySelectorAll("input, select, textarea");
+                    for (let input of inputs) {
+                        if (!input.checkValidity()) {
+                            input.classList.add("is-invalid");
+                            input.reportValidity();
+                            return false;
+                        }
+                        input.classList.remove("is-invalid");
+                    }
                     return true;
                 }
 
@@ -1876,7 +1888,7 @@
                     $('.pricing-toggle').removeClass('active');
                     $(el).addClass('active');
                     $('#pricingTypeInput').val(val);
-                    $('#mainPriceLabel').text((val === 'perGroup') ? 'Group Price (₹)' : 'Adult Price (₹)');
+                    $('#mainPriceLabel').html((val === 'perGroup') ? 'Group Price (₹) <span class="text-danger">*</span>' : 'Adult Price (₹) <span class="text-danger">*</span>');
                     if (val === 'perGroup') $('#childPriceCont').fadeOut(); else $('#childPriceCont').fadeIn();
                 }
                 function syncMainPrice(v) { $('#hiddenAdultPrice').val(v); }
@@ -1920,7 +1932,7 @@
                                             <div class="occ-icon" style="background: rgba(46, 213, 115, 0.1); color: #2ed573;"><i class="fa fa-users"></i></div>
                                             <label class="small text-muted mb-1 d-block" style="font-weight: 600;">Batch Size</label>
                                             <div class="input-group input-group-sm">
-                                                <input type="number" class="form-control occ-seats" placeholder="Seats" value="20" style="background: #ffffff !important; border: 1px solid var(--border-color) !important; color: var(--text-main) !important; height: 38px !important; border-radius: 8px !important;">
+                                                <input type="number" class="form-control occ-seats" placeholder="Seats" value="20" style="background: #ffffff !important; border: 1px solid var(--border-color) !important; color: var(--text-main) !important; height: 38px !important; border-radius: 8px !important;" min="1" oninput="if(this.value !== '' && this.value < 1) this.value = 1;">
                                             </div>
                                         </div>
                                         <div class="col-md-2 text-end">
@@ -2238,7 +2250,7 @@
                                                                     <div class="occ-icon" style="background: rgba(46, 213, 115, 0.1); color: #2ed573;"><i class="fa fa-users"></i></div>
                                                                     <label class="small text-muted mb-1 d-block" style="font-weight: 600;">Batch Size</label>
                                                                     <div class="input-group input-group-sm">
-                                                                        <input type="number" class="form-control occ-seats" placeholder="Seats" value="\${s.seats}" style="background: #ffffff !important; border: 1px solid var(--border-color) !important; color: var(--text-main) !important; height: 38px !important; border-radius: 8px !important;">
+                                                                        <input type="number" class="form-control occ-seats" placeholder="Seats" value="\${s.seats}" style="background: #ffffff !important; border: 1px solid var(--border-color) !important; color: var(--text-main) !important; height: 38px !important; border-radius: 8px !important;" min="1" oninput="if(this.value !== '' && this.value < 1) this.value = 1;">
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-md-2 text-end">

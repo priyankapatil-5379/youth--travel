@@ -620,7 +620,7 @@
 
                     <div class="form-group mt-4">
                         <label class="d-flex align-items-center gap-3 cursor-pointer">
-                            <input type="checkbox" id="termsCheck" name="termsAccepted" value="true" style="width: 20px; height: 20px; accent-color: var(--primary-teal);">
+                            <input type="checkbox" id="termsCheck" name="termsAccepted" value="true" required style="width: 20px; height: 20px; accent-color: var(--primary-teal);">
                             <span class="text-muted small">I accept the Vendor Agreement and Terms of Service.</span>
                         </label>
                     </div>
@@ -646,6 +646,14 @@
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
         let marker;
 
+        // Prevent Enter key from submitting the form prematurely
+        $(window).keydown(function(event) {
+            if (event.keyCode == 13 && event.target.nodeName !== 'TEXTAREA') {
+                event.preventDefault();
+                return false;
+            }
+        });
+
         map.on('click', function (e) {
             setMarker(e.latlng);
         });
@@ -661,7 +669,7 @@
         function searchLocation() {
             const query = $('#mapSearch').val();
             if (!query) return;
-            fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${query}`)
+            fetch('https://nominatim.openstreetmap.org/search?format=json&q=' + encodeURIComponent(query))
                 .then(res => res.json())
                 .then(data => {
                     if (data.length > 0) {
@@ -732,6 +740,12 @@
 
             $('#step' + step).addClass('active');
             $('#stepIndicator' + step).addClass('active');
+            
+            if (step === 2) {
+                setTimeout(() => {
+                    if(typeof map !== 'undefined') map.invalidateSize();
+                }, 100);
+            }
 
             for (let i = 1; i < step; i++) {
                 $('#stepIndicator' + i).addClass('completed');

@@ -36,6 +36,9 @@ public class AdminController {
     @Autowired
     private com.youthtravel.repository.EnquiryRepository enquiryRepository;
 
+    @Autowired
+    private com.youthtravel.service.BookingService bookingService;
+
     @GetMapping("/login")
     public String showLoginForm(jakarta.servlet.http.HttpSession session) {
         if (session.getAttribute("adminLoggedIn") != null) {
@@ -117,6 +120,19 @@ public class AdminController {
             model.addAttribute("currentStatus", "ALL");
         }
         return "Admin/vendors";
+    }
+
+    @RequestMapping("/payouts")
+    public String payouts(jakarta.servlet.http.HttpSession session, org.springframework.ui.Model model) {
+        if (session.getAttribute("adminLoggedIn") == null) return "redirect:/admin/login";
+        java.util.List<com.youthtravel.entity.Vendor> vendors = vendorRepository.findAll();
+        java.util.Map<Long, Double> earningsMap = new java.util.HashMap<>();
+        for (com.youthtravel.entity.Vendor v : vendors) {
+            earningsMap.put(v.getId(), bookingService.getTotalEarnings(v) * 0.9);
+        }
+        model.addAttribute("vendors", vendors);
+        model.addAttribute("earningsMap", earningsMap);
+        return "Admin/payouts";
     }
 
     @RequestMapping("/vendors/{id}")

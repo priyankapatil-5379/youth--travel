@@ -30,7 +30,7 @@ public class HomeController {
 	public String Home(org.springframework.ui.Model model) {
 		model.addAttribute("galleryImages", homeImageRepository.findBySection("GALLERY"));
 		model.addAttribute("momentImages", homeImageRepository.findBySection("MOMENTS"));
-		model.addAttribute("featuredTrips", tripRepository.findTop5ByStatusOrderByCreatedAtDesc("Active"));
+		model.addAttribute("featuredTrips", tripRepository.findTop4ByStatusOrderByCreatedAtDesc("Active"));
 		return "index";
 	}
 
@@ -56,7 +56,8 @@ public class HomeController {
 	}
 
 	@RequestMapping("/gallery")
-	public String gallery() {
+	public String gallery(Model model) {
+		model.addAttribute("galleryImages", homeImageRepository.findBySection("GALLERY"));
 		return "gallery";
 	}
 

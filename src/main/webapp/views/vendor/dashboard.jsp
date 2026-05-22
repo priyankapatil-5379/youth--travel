@@ -379,7 +379,7 @@
             <a href="<c:url value='/vendor/earnings'/>" class="stat-card">
                 <div class="stat-icon info"><i class="fa fa-inr"></i></div>
                 <div class="stat-info">
-                    <h3>14.2K</h3>
+                    <h3>${estRevenue != null ? estRevenue : '0'}</h3>
                     <p>Est. Revenue</p>
                 </div>
             </a>
@@ -479,10 +479,10 @@
             new Chart(revCtx, {
                 type: 'line',
                 data: {
-                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
+                    labels: [${revenueLabels}],
                     datasets: [{
                         label: 'Revenue (₹)',
-                        data: [12000, 19000, 15000, 28000, 22000, 35000, 42000],
+                        data: [${revenueData}],
                         borderColor: '#008080',
                         backgroundColor: gradient,
                         tension: 0.4,

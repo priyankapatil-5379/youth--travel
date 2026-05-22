@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<%@ taglib prefix="fmt" uri="jakarta.tags.fmt" %>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -1630,46 +1631,71 @@
                 <span class="yt-line"></span>
             </div>
             <div class="row">
-                <div class="col-sm-6 col-md-3" style="margin-bottom:18px;">
-                    <div class="yt-trip-card">
-                        <div class="yt-trip-price">2999</div>
-                        <img src="https://images.unsplash.com/photo-1598209279122-8541213a0387?w=600&auto=format&fit=crop&q=60" alt="Ride" />
-                        <div class="yt-trip-body">
-                            <h4>KTM Bengaluru Ride</h4>
-                            <p>2 Days / 1 Night<br>Bengaluru ’ Nandi Hills</p>
+                <c:choose>
+                    <c:when test="${not empty featuredTrips}">
+                        <c:forEach var="pkg" items="${featuredTrips}">
+                            <div class="col-sm-6 col-md-3" style="margin-bottom:18px;">
+                                <a href="<c:url value='/user/package/${pkg.id}'/>" style="text-decoration: none; color: inherit;">
+                                    <div class="yt-trip-card">
+                                        <div class="yt-trip-price">₹<fmt:formatNumber value="${pkg.price}" type="number" maxFractionDigits="0" /></div>
+                                        <c:set var="mainImage" value="https://images.unsplash.com/photo-1598209279122-8541213a0387?w=600&auto=format&fit=crop&q=60" />
+                                        <c:if test="${not empty pkg.mediaUrls}">
+                                            <c:set var="mainImage" value="${pkg.mediaUrls.split(',')[0]}" />
+                                        </c:if>
+                                        <img src="${mainImage}" alt="${pkg.title}" onerror="this.src='https://images.unsplash.com/photo-1598209279122-8541213a0387?w=600&auto=format&fit=crop&q=60';" />
+                                        <div class="yt-trip-body">
+                                            <h4>${pkg.title}</h4>
+                                            <p>${pkg.days} Days / ${pkg.days - 1} Nights<br>${pkg.destination}</p>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </c:forEach>
+                    </c:when>
+                    <c:otherwise>
+                        <!-- Fallback static trips -->
+                        <div class="col-sm-6 col-md-3" style="margin-bottom:18px;">
+                            <div class="yt-trip-card">
+                                <div class="yt-trip-price">2999</div>
+                                <img src="https://images.unsplash.com/photo-1598209279122-8541213a0387?w=600&auto=format&fit=crop&q=60" alt="Ride" />
+                                <div class="yt-trip-body">
+                                    <h4>KTM Bengaluru Ride</h4>
+                                    <p>2 Days / 1 Night<br>Bengaluru ’ Nandi Hills</p>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
-                <div class="col-sm-6 col-md-3" style="margin-bottom:18px;">
-                    <div class="yt-trip-card">
-                        <div class="yt-trip-price">4499</div>
-                        <img src="https://images.unsplash.com/photo-1551632811-561732d1e306?w=600&auto=format&fit=crop&q=60" alt="Trek" />
-                        <div class="yt-trip-body">
-                            <h4>Kudremukh Trek</h4>
-                            <p>3 Days / 2 Nights<br>Karnataka</p>
+                        <div class="col-sm-6 col-md-3" style="margin-bottom:18px;">
+                            <div class="yt-trip-card">
+                                <div class="yt-trip-price">4499</div>
+                                <img src="https://images.unsplash.com/photo-1551632811-561732d1e306?w=600&auto=format&fit=crop&q=60" alt="Trek" />
+                                <div class="yt-trip-body">
+                                    <h4>Kudremukh Trek</h4>
+                                    <p>3 Days / 2 Nights<br>Karnataka</p>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
-                <div class="col-sm-6 col-md-3" style="margin-bottom:18px;">
-                    <div class="yt-trip-card">
-                        <div class="yt-trip-price">1999</div>
-                        <img src="https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?w=600&auto=format&fit=crop&q=60" alt="Camping" />
-                        <div class="yt-trip-body">
-                            <h4>Camping at Saklespur</h4>
-                            <p>1 Day / 1 Night<br>Adventure & Campfire</p>
+                        <div class="col-sm-6 col-md-3" style="margin-bottom:18px;">
+                            <div class="yt-trip-card">
+                                <div class="yt-trip-price">1999</div>
+                                <img src="https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?w=600&auto=format&fit=crop&q=60" alt="Camping" />
+                                <div class="yt-trip-body">
+                                    <h4>Camping at Saklespur</h4>
+                                    <p>1 Day / 1 Night<br>Adventure & Campfire</p>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
-                <div class="col-sm-6 col-md-3" style="margin-bottom:18px;">
-                    <div class="yt-trip-card">
-                        <div class="yt-trip-price">999</div>
-                        <img src="https://images.unsplash.com/photo-1432405972618-c60b0225b8f9?w=600&auto=format&fit=crop&q=60" alt="Day out" />
-                        <div class="yt-trip-body">
-                            <h4>Coorg Day Out</h4>
-                            <p>Day Trip<br>Waterfalls & Fun</p>
+                        <div class="col-sm-6 col-md-3" style="margin-bottom:18px;">
+                            <div class="yt-trip-card">
+                                <div class="yt-trip-price">999</div>
+                                <img src="https://images.unsplash.com/photo-1432405972618-c60b0225b8f9?w=600&auto=format&fit=crop&q=60" alt="Day out" />
+                                <div class="yt-trip-body">
+                                    <h4>Coorg Day Out</h4>
+                                    <p>Day Trip<br>Waterfalls & Fun</p>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
+                    </c:otherwise>
+                </c:choose>
             </div>
 
             <div class="row yt-feature-icons">

@@ -297,8 +297,9 @@
                             <!-- STAY PHOTOS -->
                             <div class="d-flex flex-wrap gap-2 mt-2">
                                 <c:if test="${not empty trip.mediaUrls}">
-                                    <c:forEach var="url" items="${fn:split(trip.mediaUrls, ',')}">
-                                        <c:if test="${fn:contains(url, 'stay_')}">
+                                    <c:forEach var="rawUrl" items="${fn:split(trip.mediaUrls, ',')}">
+                                        <c:set var="url" value="${fn:trim(rawUrl)}" />
+                                        <c:if test="${not empty url and fn:contains(url, 'stay_')}">
                                             <div style="width: 70px; height: 50px; border-radius: 8px; overflow: hidden; border: 1px solid var(--border-color); cursor: pointer;" onclick="window.open('<c:url value='${url}'/>', '_blank')">
                                                 <img src="<c:url value='${url}'/>" style="width: 100%; height: 100%; object-fit: cover;">
                                             </div>
@@ -353,22 +354,28 @@
 
                     <div class="section-card">
                         <div class="section-title"><i class="fa fa-camera"></i> Package Gallery</div>
-                        <div class="d-flex flex-wrap gap-3">
+                        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px;">
                             <c:if test="${not empty trip.mediaUrls}">
-                                <c:forEach var="url" items="${fn:split(trip.mediaUrls, ',')}">
-                                    <c:if test="${!fn:contains(url, 'stay_')}">
-
-                                        <div class="gallery-item" style="width: 150px; height: 100px; border-radius: 12px; overflow: hidden; border: 1px solid var(--border-color); cursor: pointer; transition: 0.3s;" onclick="window.open('<c:url value='${url}'/>', '_blank')">
-
-                                            <img src="<c:url value='${url}'/>" style="width: 100%; height: 100%; object-fit: cover;">
-                                        </div>
+                                <c:forEach var="rawUrl" items="${fn:split(trip.mediaUrls, ',')}">
+                                    <c:set var="url" value="${fn:trim(rawUrl)}" />
+                                    <c:if test="${not empty url and !fn:contains(url, 'stay_')}">
+                                        <c:choose>
+                                            <c:when test="${fn:endsWith(fn:toLowerCase(url), '.mp4') or fn:endsWith(fn:toLowerCase(url), '.webm') or fn:endsWith(fn:toLowerCase(url), '.ogg')}">
+                                                <div class="gallery-item" style="width: 100%; height: 160px; border-radius: 12px; overflow: hidden; border: 1px solid var(--border-color); cursor: pointer; transition: 0.3s;" onclick="window.open('<c:url value='${url}'/>', '_blank')">
+                                                    <video src="<c:url value='${url}'/>" style="width: 100%; height: 100%; object-fit: cover;" autoplay muted loop></video>
+                                                </div>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <div class="gallery-item" style="width: 100%; height: 160px; border-radius: 12px; overflow: hidden; border: 1px solid var(--border-color); cursor: pointer; transition: 0.3s;" onclick="window.open('<c:url value='${url}'/>', '_blank')">
+                                                    <img src="<c:url value='${url}'/>" style="width: 100%; height: 100%; object-fit: cover;">
+                                                </div>
+                                            </c:otherwise>
+                                        </c:choose>
                                     </c:if>
                                 </c:forEach>
                             </c:if>
                             <c:if test="${empty trip.mediaUrls}">
-
-                                <p class="">No gallery images uploaded.</p>
-
+                                <p style="grid-column: 1 / -1; margin: 0; padding: 10px 0;">No gallery images uploaded.</p>
                             </c:if>
                         </div>
                     </div>
