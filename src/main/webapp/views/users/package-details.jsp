@@ -385,14 +385,245 @@
                         <input type="hidden" name="tripId" value="${trip.id}">
                         <input type="hidden" name="tripType" value="Package">
 
-                        <div class="mb-3">
-                            <label class="booking-label">1. Select Your Batch</label>
-                            <select name="selectedDate" class="luxe-input" required>
-                                <c:forEach var="s" items="${schedules}">
-                                    <option value="${s.startDate}">${s.startDate} (${s.availableSeats} Seats)</option>
-                                </c:forEach>
-                            </select>
+                        <style>
+                            .unified-selector { display: flex; background: #ffffff; border: 1px solid var(--glass-border); border-radius: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.03); position: relative; margin-bottom: 20px; }
+                            .unified-col { flex: 1; padding: 16px 20px; cursor: pointer; display: flex; align-items: center; gap: 15px; transition: 0.3s; position: relative; }
+                            .unified-col:first-child { border-right: 1px solid var(--glass-border); }
+                            .unified-col:hover { background: #f8fafc; border-radius: 16px; }
+                            .unified-icon { color: var(--accent-teal); font-size: 22px; width: 24px; text-align: center; }
+                            .unified-text { display: flex; flex-direction: column; flex-grow: 1; }
+                            .unified-label { font-size: 10px; font-weight: 800; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 2px; }
+                            .unified-value { font-size: 15px; font-weight: 900; color: var(--text-light); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+                            
+                            .smart-popup { position: absolute; top: calc(100% + 10px); left: 0; width: 100%; background: #ffffff; border: 1px solid var(--glass-border); border-radius: 16px; box-shadow: 0 20px 50px rgba(0,0,0,0.1); z-index: 100; display: none; animation: popupFade 0.2s ease-out; }
+                            @keyframes popupFade { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+                            
+                            .batch-list { max-height: 280px; overflow-y: auto; padding: 12px; }
+                            .batch-item { padding: 14px; border-radius: 12px; cursor: pointer; transition: 0.2s; display: flex; justify-content: space-between; align-items: center; border: 1px solid transparent; margin-bottom: 8px; background: #f8fafc; }
+                            .batch-item:hover { background: #ffffff; border-color: var(--accent-teal); box-shadow: 0 5px 15px var(--accent-teal-glow); }
+                            .batch-item.selected { background: var(--accent-teal); color: #fff; }
+                            
+                            .traveler-popup { padding: 24px; width: 320px; right: 0; left: auto; cursor: default; }
+                            .traveler-ctrl { display: flex; align-items: center; justify-content: space-between; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 10px; margin-bottom: 20px; }
+                            .btn-ctrl { width: 36px; height: 36px; border-radius: 50%; border: none; background: #ffffff; color: var(--accent-teal); font-weight: bold; font-size: 18px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); cursor: pointer; transition: 0.2s; display: flex; align-items: center; justify-content: center; }
+                            .btn-ctrl:hover { background: var(--accent-teal); color: #fff; }
+                            .traveler-input { width: 60px; text-align: center; border: none; background: transparent; font-weight: 900; font-size: 18px; color: var(--text-light); outline: none; }
+                            
+                            .quick-select { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
+                            .chip { width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 50%; border: 1px solid #e2e8f0; font-size: 13px; font-weight: 800; cursor: pointer; transition: 0.2s; background: #fff; color: var(--text-dim); }
+                            .chip:hover, .chip.active { background: var(--accent-teal); color: #fff; border-color: var(--accent-teal); box-shadow: 0 4px 10px var(--accent-teal-glow); }
+                            
+                            .custom-input-box { border: 1px solid #e2e8f0; border-radius: 12px; padding: 12px 16px; display: flex; align-items: center; background: #f8fafc; transition: 0.3s; }
+                            .custom-input-box:focus-within { border-color: var(--accent-teal); background: #fff; box-shadow: 0 0 0 3px var(--accent-teal-glow); }
+                            .custom-input-box input { border: none; outline: none; width: 100%; font-weight: 800; color: var(--text-light); background: transparent; }
+                            
+                            .cal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; font-weight: 800; color: var(--text-light); }
+                            .cal-nav { cursor: pointer; padding: 5px; color: var(--text-dim); transition: 0.2s; }
+                            .cal-nav:hover { color: var(--accent-teal); transform: scale(1.1); }
+                            .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; text-align: center; }
+                            .cal-day-name { font-size: 10px; font-weight: 800; color: var(--text-dim); text-transform: uppercase; margin-bottom: 5px; }
+                            .cal-day { font-size: 13px; font-weight: 700; color: var(--text-light); padding: 8px 0; border-radius: 50%; cursor: pointer; transition: 0.2s; }
+                            .cal-day:hover { background: var(--accent-teal-glow); color: var(--accent-teal); }
+                            .cal-day.active { background: var(--accent-teal); color: #fff; }
+                            .cal-day.disabled { color: #cbd5e1; cursor: not-allowed; }
+                            .cal-day.disabled:hover { background: transparent; color: #cbd5e1; }
+                        </style>
+
+                        <div class="mb-4" id="smartSelectorContainer">
+                            <label class="booking-label">1. Smart Booking Setup</label>
+                            <input type="hidden" name="selectedDate" id="realSelectedDate" required>
+                            
+                            <div class="unified-selector">
+                                <!-- Left: Date -->
+                                <div class="unified-col" onclick="togglePopup('calendarPopup')">
+                                    <i class="fa fa-calendar unified-icon"></i>
+                                    <div class="unified-text">
+                                        <span class="unified-label">Select Date</span>
+                                        <span class="unified-value" id="displayDate">Choose Date</span>
+                                    </div>
+                                    <i class="fa fa-chevron-down ms-auto text-muted" style="font-size: 12px;"></i>
+                                    
+                                    <!-- Custom Calendar Popup -->
+                                    <div class="smart-popup traveler-popup" id="calendarPopup" style="width: 320px; left: 0;" onclick="event.stopPropagation()">
+                                        <div class="cal-header">
+                                            <i class="fa fa-chevron-left cal-nav" onclick="changeMonth(-1)"></i>
+                                            <span id="calMonthYear"></span>
+                                            <i class="fa fa-chevron-right cal-nav" onclick="changeMonth(1)"></i>
+                                        </div>
+                                        <div class="cal-grid">
+                                            <div class="cal-day-name">Su</div><div class="cal-day-name">Mo</div><div class="cal-day-name">Tu</div>
+                                            <div class="cal-day-name">We</div><div class="cal-day-name">Th</div><div class="cal-day-name">Fr</div><div class="cal-day-name">Sa</div>
+                                        </div>
+                                        <div class="cal-grid" id="calDaysGrid">
+                                            <!-- JS populated -->
+                                        </div>
+                                        <div class="mt-3 text-center">
+                                            <button type="button" class="btn btn-sm btn-light w-100 fw-bold py-2" style="font-size: 11px; text-transform: uppercase; border-radius: 12px;" onclick="clearDate()">Clear Date</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Right: Travelers -->
+                                <div class="unified-col" onclick="togglePopup('travelerPopup')">
+                                    <i class="fa fa-users unified-icon"></i>
+                                    <div class="unified-text">
+                                        <span class="unified-label">Travelers</span>
+                                        <span class="unified-value" id="displayTravelers">1</span>
+                                    </div>
+                                    <i class="fa fa-chevron-down ms-auto text-muted" style="font-size: 12px;"></i>
+                                    
+                                    <!-- Traveler Popup -->
+                                    <div class="smart-popup traveler-popup" id="travelerPopup" onclick="event.stopPropagation()">
+                                        <div class="fw-bold mb-3 small" style="color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px;">Number of Travelers</div>
+                                        <div class="traveler-ctrl">
+                                            <button type="button" class="btn-ctrl" onclick="updatePax(-1)"><i class="fa fa-minus"></i></button>
+                                            <input type="number" id="paxInput" class="traveler-input" value="1" min="1" max="50" onchange="setPax(this.value)">
+                                            <button type="button" class="btn-ctrl" onclick="updatePax(1)"><i class="fa fa-plus"></i></button>
+                                        </div>
+                                        
+                                        <div class="fw-bold mb-3 small" style="color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px;">Quick Select</div>
+                                        <div class="quick-select">
+                                            <div class="chip active" onclick="setPax(1)">1</div>
+                                            <div class="chip" onclick="setPax(2)">2</div>
+                                            <div class="chip" onclick="setPax(4)">4</div>
+                                            <div class="chip" onclick="setPax(8)">8</div>
+                                            <div class="chip" onclick="setPax(12)">12+</div>
+                                        </div>
+                                        
+                                        <div class="fw-bold mb-2 small" style="color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px;"><i class="fa fa-keyboard-o"></i> Enter any number</div>
+                                        <div class="custom-input-box">
+                                            <input type="number" id="customPaxInput" placeholder="Max 50 travelers" onkeyup="if(event.key==='Enter') setPax(this.value)">
+                                            <i class="fa fa-check" style="cursor: pointer; color: var(--accent-teal); font-size: 16px;" onclick="setPax(document.getElementById('customPaxInput').value)"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
+
+                        <script>
+                            function togglePopup(id) {
+                                const popup = document.getElementById(id);
+                                const isVisible = popup.style.display === 'block';
+                                document.querySelectorAll('.smart-popup').forEach(p => p.style.display = 'none');
+                                if (!isVisible) {
+                                    popup.style.display = 'block';
+                                }
+                            }
+                            
+                            document.addEventListener('click', function(e) {
+                                if (!document.getElementById('smartSelectorContainer').contains(e.target)) {
+                                    document.querySelectorAll('.smart-popup').forEach(p => p.style.display = 'none');
+                                }
+                            });
+
+                            let currentMonth = new Date().getMonth();
+                            let currentYear = new Date().getFullYear();
+                            const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+                            function renderCalendar() {
+                                const grid = document.getElementById('calDaysGrid');
+                                grid.innerHTML = '';
+                                document.getElementById('calMonthYear').innerText = monthNames[currentMonth] + ' ' + currentYear;
+                                
+                                const firstDay = new Date(currentYear, currentMonth, 1).getDay();
+                                const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+                                const today = new Date();
+                                
+                                for (let i = 0; i < firstDay; i++) {
+                                    grid.innerHTML += '<div class="cal-day disabled"></div>';
+                                }
+                                
+                                for (let i = 1; i <= daysInMonth; i++) {
+                                    const dateStr = currentYear + '-' + String(currentMonth + 1).padStart(2, '0') + '-' + String(i).padStart(2, '0');
+                                    const isPast = new Date(currentYear, currentMonth, i) < new Date(today.getFullYear(), today.getMonth(), today.getDate());
+                                    
+                                    let className = 'cal-day';
+                                    if (isPast) className += ' disabled';
+                                    if (document.getElementById('realSelectedDate').value === dateStr) className += ' active';
+                                    
+                                    let clickAttr = isPast ? '' : "selectCustomDate('" + dateStr + "')";
+                                    grid.innerHTML += '<div class="' + className + '" onclick="' + clickAttr + '">' + i + '</div>';
+                                }
+                            }
+
+                            function changeMonth(dir) {
+                                currentMonth += dir;
+                                if (currentMonth < 0) { currentMonth = 11; currentYear--; }
+                                else if (currentMonth > 11) { currentMonth = 0; currentYear++; }
+                                renderCalendar();
+                            }
+
+                            function selectCustomDate(dateStr) {
+                                document.getElementById('realSelectedDate').value = dateStr;
+                                document.getElementById('displayDate').innerText = dateStr;
+                                document.getElementById('realSelectedDate').setCustomValidity('');
+                                document.getElementById('calendarPopup').style.display = 'none';
+                                renderCalendar();
+                            }
+
+                            function clearDate() {
+                                document.getElementById('realSelectedDate').value = '';
+                                document.getElementById('displayDate').innerText = 'Choose Date';
+                                renderCalendar();
+                            }
+                            
+                            window.addEventListener('DOMContentLoaded', () => { renderCalendar(); });
+
+                            function updatePax(change) {
+                                const input = document.getElementById('paxInput');
+                                let val = parseInt(input.value) || 1;
+                                val += change;
+                                setPax(val);
+                            }
+
+                            function setPax(val) {
+                                val = parseInt(val);
+                                if (isNaN(val) || val < 1) val = 1;
+                                if (val > 50) val = 50;
+                                
+                                document.getElementById('paxInput').value = val;
+                                document.getElementById('displayTravelers').innerText = val;
+                                
+                                // Sync with legacy select if it exists
+                                const legacySelect = document.getElementById('paxSelect');
+                                if (legacySelect) {
+                                    if (!Array.from(legacySelect.options).some(o => o.value == val)) {
+                                        legacySelect.add(new Option(val + ' Adults', val));
+                                    }
+                                    legacySelect.value = val;
+                                    if (typeof updateLuxePrice === 'function') updateLuxePrice();
+                                }
+                                
+                                // Update Chips
+                                document.querySelectorAll('.chip').forEach(c => {
+                                    c.classList.remove('active');
+                                    if (c.innerText == val || (c.innerText === '12+' && val >= 12)) c.classList.add('active');
+                                });
+                                
+                                // Automatically close traveler popup on quick select
+                                if(event && event.target && event.target.classList.contains('chip')) {
+                                    document.getElementById('travelerPopup').style.display = 'none';
+                                }
+                            }
+
+                            document.getElementById('luxeBookingForm').addEventListener('submit', function(e) {
+                                const selectedDateInput = document.getElementById('realSelectedDate');
+                                if (!selectedDateInput.value) {
+                                    e.preventDefault();
+                                    alert('Please select a travel date to proceed.');
+                                }
+                            });
+                            
+                            // Initialize
+                            window.addEventListener('DOMContentLoaded', () => {
+                                setPax(1);
+                                // Hide the old "Total Explorers" label and select visually since it's now integrated
+                                const legacySelect = document.getElementById('paxSelect');
+                                if(legacySelect && legacySelect.parentElement) {
+                                    legacySelect.parentElement.style.display = 'none';
+                                }
+                            });
+                        </script>
                         
                         <div class="mb-3">
                             <label class="booking-label">2. Total Explorers</label>

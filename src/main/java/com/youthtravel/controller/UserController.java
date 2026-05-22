@@ -212,8 +212,21 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public String registerUser(@ModelAttribute User user, RedirectAttributes redirectAttributes) {
+    public String registerUser(@ModelAttribute User user, RedirectAttributes redirectAttributes, Model model, jakarta.servlet.http.HttpServletResponse response) {
         try {
+            String emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$";
+            if (user.getEmail() == null || !user.getEmail().matches(emailRegex)) {
+                response.setStatus(jakarta.servlet.http.HttpServletResponse.SC_BAD_REQUEST);
+                model.addAttribute("error", "Invalid email format");
+                return "users/register";
+            }
+
+            if (user.getPhoneNumber() == null || !user.getPhoneNumber().matches("^\\d{10}$")) {
+                response.setStatus(jakarta.servlet.http.HttpServletResponse.SC_BAD_REQUEST);
+                model.addAttribute("error", "Phone number must contain exactly 10 digits");
+                return "users/register";
+            }
+
             if (userService.getUserByEmail(user.getEmail()) != null) {
                 redirectAttributes.addFlashAttribute("error", "Email is already registered!");
                 return "redirect:/user/register";

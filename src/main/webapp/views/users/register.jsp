@@ -338,7 +338,7 @@
                                 <label class="form-label">Phone</label>
                                 <div class="input-wrapper">
                                     <i class="fa fa-phone input-icon"></i>
-                                    <input type="text" name="phoneNumber" class="form-control-custom" placeholder="+91..." required>
+                                    <input type="text" name="phoneNumber" class="form-control-custom" placeholder="e.g. 9876543210" required maxlength="10" minlength="10" pattern="\d{10}" title="Phone number must contain exactly 10 digits" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
                                 </div>
                             </div>
                         </div>

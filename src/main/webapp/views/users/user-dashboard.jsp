@@ -454,6 +454,7 @@
                         </div>
 
                         <button type="submit" class="btn-apply-filters mb-3">Apply Filters</button>
+						<br><br>
                         <button type="button" class="btn-reset-filters" onclick="window.location.href='/user/dashboard'">Reset</button>
                     </div>
 
