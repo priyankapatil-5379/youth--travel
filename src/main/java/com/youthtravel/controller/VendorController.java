@@ -209,11 +209,42 @@ public class VendorController {
         model.addAttribute("inactiveTourCount", tripService.getInactiveTourCountByVendor(vendor));
         model.addAttribute("bookingCount", bookingService.getBookingCountByVendor(vendor));
 
-        // Mock data for Analytics
-        model.addAttribute("monthlyRevenue", new double[] { 12000, 19000, 15000, 25000, 22000, 30000 });
-        model.addAttribute("monthlyLabels", new String[] { "Jan", "Feb", "Mar", "Apr", "May", "Jun" });
-        model.addAttribute("categoryStats", new int[] { 45, 25, 20, 10 });
-        model.addAttribute("categoryLabels", new String[] { "Adventure", "Water Sports", "Workation", "Others" });
+        double estRevenue = bookingService.getTotalEarnings(vendor);
+        
+        String formattedRevenue;
+        if (estRevenue >= 10000000) {
+            formattedRevenue = String.format("%.1fCr", estRevenue / 10000000.0);
+        } else if (estRevenue >= 100000) {
+            formattedRevenue = String.format("%.2fL", estRevenue / 100000.0);
+        } else if (estRevenue >= 1000) {
+            formattedRevenue = String.format("%.1fK", estRevenue / 1000.0);
+        } else {
+            formattedRevenue = String.format("%.0f", estRevenue);
+        }
+        model.addAttribute("estRevenue", formattedRevenue);
+
+        // Dynamic Revenue Analytics for last 6 months
+        java.util.List<com.youthtravel.entity.Booking> vendorBookingsForAnalytics = bookingService.getBookingsByVendor(vendor);
+        java.time.YearMonth currentMonth = java.time.YearMonth.now();
+        java.util.List<String> labels = new java.util.ArrayList<>();
+        java.util.List<Double> data = new java.util.ArrayList<>();
+        
+        for (int i = 5; i >= 0; i--) {
+            java.time.YearMonth ym = currentMonth.minusMonths(i);
+            String monthName = ym.getMonth().getDisplayName(java.time.format.TextStyle.SHORT, java.util.Locale.ENGLISH);
+            labels.add("'" + monthName + "'");
+            
+            double sum = vendorBookingsForAnalytics.stream()
+                .filter(b -> ("Confirmed".equalsIgnoreCase(b.getStatus()) || "Completed".equalsIgnoreCase(b.getStatus())) && 
+                             b.getBookingDate() != null && 
+                             java.time.YearMonth.from(b.getBookingDate()).equals(ym))
+                .mapToDouble(b -> b.getTotalPrice() != null ? b.getTotalPrice() : 0.0)
+                .sum();
+            data.add(sum);
+        }
+        
+        model.addAttribute("revenueLabels", String.join(",", labels));
+        model.addAttribute("revenueData", data.stream().map(String::valueOf).collect(java.util.stream.Collectors.joining(",")));
 
         java.util.List<com.youthtravel.entity.Trip> allTrips = tripService.getTripsByVendor(vendor);
         java.util.List<com.youthtravel.entity.Trip> recentTrips = allTrips.stream()

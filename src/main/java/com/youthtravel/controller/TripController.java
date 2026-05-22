@@ -195,10 +195,14 @@ public class TripController {
         }
 
         if (!finalCategories.isEmpty()) {
-            trip.setTravelerCategory(String.join(", ", finalCategories));
+            String joinedCats = String.join(", ", finalCategories);
+            trip.setTravelerCategory(joinedCats);
+            trip.setCategory(joinedCats);
         }
         if (!finalSubCategories.isEmpty()) {
-            trip.setTravelerSubCategory(String.join(", ", finalSubCategories));
+            String joinedSubs = String.join(", ", finalSubCategories);
+            trip.setTravelerSubCategory(joinedSubs);
+            trip.setSubCategory(joinedSubs);
         }
 
         trip.setVendor(vendor);
@@ -498,10 +502,14 @@ public class TripController {
         }
 
         if (!finalCategories.isEmpty()) {
-            trip.setTravelerCategory(String.join(", ", finalCategories));
+            String joinedCats = String.join(", ", finalCategories);
+            trip.setTravelerCategory(joinedCats);
+            trip.setCategory(joinedCats);
         }
         if (!finalSubCategories.isEmpty()) {
-            trip.setTravelerSubCategory(String.join(", ", finalSubCategories));
+            String joinedSubs = String.join(", ", finalSubCategories);
+            trip.setTravelerSubCategory(joinedSubs);
+            trip.setSubCategory(joinedSubs);
         }
         
         if (inclusions != null && !inclusions.isEmpty()) {

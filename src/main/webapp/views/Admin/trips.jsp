@@ -287,6 +287,9 @@
                 <a href="<c:url value='/admin/vendors'/>" class="admin-nav-item ">
                     <i class="fa fa-handshake-o"></i> Vendor Requests
                 </a>
+                <a href="<c:url value='/admin/payouts'/>" class="admin-nav-item ">
+                    <i class="fa fa-money"></i> Payout Requests
+                </a>
                 <a href="<c:url value='/admin/home-images'/>" class="admin-nav-item ">
                     <i class="fa fa-image"></i> Homepage Photos
                 </a>

@@ -79,6 +79,9 @@
                 <a href="<c:url value='/admin/vendors'/>" class="admin-nav-item active">
                     <i class="fa fa-handshake-o"></i> Vendor Requests
                 </a>
+                <a href="<c:url value='/admin/payouts'/>" class="admin-nav-item ">
+                    <i class="fa fa-money"></i> Payout Requests
+                </a>
                 <a href="<c:url value='/admin/home-images'/>" class="admin-nav-item ">
                     <i class="fa fa-image"></i> Homepage Photos
                 </a>
@@ -102,6 +105,9 @@
                 <div style="margin-bottom: 20px; display: flex; gap: 10px;">
                     <a href="<c:url value='/admin/vendors'/>" class="btn btn-sm ${empty currentStatus || currentStatus == 'ALL' ? 'btn-primary' : 'btn-secondary'}" style="${empty currentStatus || currentStatus == 'ALL' ? 'background:#ff4d4d; border:none; color:white; padding: 8px 15px; border-radius: 5px; text-decoration: none;' : 'background:#333; border:none; color:white; padding: 8px 15px; border-radius: 5px; text-decoration: none;'}">All Vendors</a>
                     <a href="<c:url value='/admin/vendors?status=PENDING'/>" class="btn btn-sm ${currentStatus == 'PENDING' ? 'btn-primary' : 'btn-secondary'}" style="${currentStatus == 'PENDING' ? 'background:#ff4d4d; border:none; color:white; padding: 8px 15px; border-radius: 5px; text-decoration: none;' : 'background:#333; border:none; color:white; padding: 8px 15px; border-radius: 5px; text-decoration: none;'}">Pending Requests</a>
+                <a href="<c:url value='/admin/payouts'/>" class="admin-nav-item ">
+                    <i class="fa fa-money"></i> Payout Requests
+                </a>
                 </div>
                 
                 <c:if test="${not empty message}">

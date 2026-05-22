@@ -17,6 +17,7 @@ public interface TripRepository extends JpaRepository<Trip, Long> {
     long countByVendor_IdAndStatus(Long vendorId, String status);
     
     List<Trip> findTop5ByStatusOrderByCreatedAtDesc(String status);
+    List<Trip> findTop4ByStatusOrderByCreatedAtDesc(String status);
 
     List<Trip> findByStatusAndPriceBetweenAndTravelerCategoryContainingIgnoreCase(String status, Double minPrice, Double maxPrice, String category);
 }

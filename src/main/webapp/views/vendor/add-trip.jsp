@@ -481,7 +481,7 @@
                                     <div class="form-group">
                                         <label>Trip Title <span class="text-danger">*</span></label>
                                         <input type="text" name="title" class="form-control"
-                                            placeholder="e.g. Kedarkantha Winter Trek" required>
+                                            placeholder="e.g. Kedarkantha Winter Trek" required pattern=".*[a-zA-Z]+.*" title="Trip title must contain letters and cannot be only numbers">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
@@ -689,34 +689,34 @@
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label id="mainPriceLabel">Base Price (₹) <span class="text-danger">*</span></label>
-                                        <input type="number" name="price" class="form-control" placeholder="e.g. 5000" required>
+                                        <input type="number" name="price" class="form-control" placeholder="e.g. 5000" required min="0" oninput="if(this.value !== '' && this.value < 0) this.value = 0;">
                                         <input type="hidden" name="adultPrice" id="hiddenAdultPrice">
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group" id="childPriceCont">
                                         <label>Child Price (₹)</label>
-                                        <input type="number" name="childPrice" class="form-control" placeholder="Optional">
+                                        <input type="number" name="childPrice" class="form-control" placeholder="Optional" min="0" oninput="if(this.value !== '' && this.value < 0) this.value = 0;">
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label>Booking Amount (₹)</label>
-                                        <input type="number" name="bookingAmount" class="form-control" placeholder="Token to block seat">
+                                        <input type="number" name="bookingAmount" class="form-control" placeholder="Token to block seat" min="0" oninput="if(this.value !== '' && this.value < 0) this.value = 0;">
                                         <small class="text-white-50">Set 0 for full payment</small>
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label>Weekend Surcharge (Extra ₹)</label>
-                                        <input type="number" name="weekendPrice" class="form-control" placeholder="e.g. 500 (Add-on)">
+                                        <input type="number" name="weekendPrice" class="form-control" placeholder="e.g. 500 (Add-on)" min="0" oninput="if(this.value !== '' && this.value < 0) this.value = 0;">
                                         <small class="text-white-50">Extra amount added to base price for weekend dates.</small>
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label>Discount (%)</label>
-                                        <input type="number" name="discount" class="form-control" placeholder="e.g. 10">
+                                        <input type="number" name="discount" class="form-control" placeholder="e.g. 10" min="0" max="100" oninput="if(this.value !== '' && this.value < 0) this.value = 0; if(this.value !== '' && this.value > 100) this.value = 100;">
                                     </div>
                                 </div>
                                 <div class="col-md-4">
@@ -952,7 +952,8 @@
                                             <div class="row">
                                                 <div class="col-12">
                                                     <div class="form-group">
-                                                        <input type="text" class="form-control day-title" placeholder="Day Title (e.g. Arrival at Manali) *" required>
+                                                        <label class="small d-block mb-2" style="color: var(--text-muted); font-weight: 600;">Day Title <span class="text-danger">*</span></label>
+                                                        <input type="text" class="form-control day-title" placeholder="Day Title (e.g. Arrival at Manali)" required>
                                                     </div>
                                                 </div>
                                                 <div class="col-12">
@@ -1054,11 +1055,11 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label>Min Batch Size</label>
-                                            <input type="number" name="minBatchSize" class="form-control" placeholder="e.g. 5" value="1">
+                                            <input type="number" name="minBatchSize" class="form-control" placeholder="e.g. 5" value="1" min="1" oninput="if(this.value !== '' && this.value < 1) this.value = 1;">
                                             <small class="text-white-50">Minimum people to run the trip.</small>
                                         </div>
                                     </div>
-                                    <div class="col-md-6"><label>Capacity</label><input type="number" name="recTotalSeats" class="form-control" placeholder="Seats"></div>
+                                    <div class="col-md-6"><label>Capacity</label><input type="number" name="recTotalSeats" class="form-control" placeholder="Seats" min="1" oninput="if(this.value !== '' && this.value < 1) this.value = 1;"></div>
                                 </div>
                             </div>
                         </div>
@@ -1077,7 +1078,7 @@
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label style="color: var(--text-muted); font-weight: 600; margin-bottom: 12px; display: block;">Batch Capacity (Max travelers) <span class="text-danger">*</span></label>
-                                        <input type="number" name="maxTravelers" class="form-control" value="20" required>
+                                        <input type="number" name="maxTravelers" class="form-control" value="20" required min="1" oninput="if(this.value !== '' && this.value < 1) this.value = 1;">
                                     </div>
                                 </div>
                                 
@@ -1368,11 +1369,11 @@
                     const activeStep = document.getElementsByClassName("form-step")[currentStep];
                     if (!activeStep) return true;
 
-                    const inputs = activeStep.querySelectorAll("input[required], select[required], textarea[required]");
+                    const inputs = activeStep.querySelectorAll("input, select, textarea");
                     for (let input of inputs) {
-                        if (!input.value) {
+                        if (!input.checkValidity()) {
                             input.classList.add("is-invalid");
-                            alert("Please fill in all required fields marked with *");
+                            input.reportValidity();
                             return false;
                         }
                         input.classList.remove("is-invalid");
@@ -1554,7 +1555,8 @@
                                 <div class="row">
                                     <div class="col-12">
                                         <div class="form-group">
-                                            <input type="text" class="form-control day-title" placeholder="Day Title (e.g. Arrival at Manali) *" required>
+                                            <label class="small d-block mb-2" style="color: var(--text-muted); font-weight: 600;">Day Title <span class="text-danger">*</span></label>
+                                            <input type="text" class="form-control day-title" placeholder="Day Title (e.g. Arrival at Manali)" required>
                                         </div>
                                     </div>
                                     <div class="col-12">
@@ -1706,21 +1708,21 @@
                     const html = `
                         <div class="row g-3 align-items-end pickup-item" id="row_${id}" style="background: #f8fafc; border: 1px solid var(--border-color); border-radius: 12px; padding: 20px; margin-bottom: 24px !important; margin-top: 12px !important;">
                             <div class="col-md-5">
-                                <label class="small mb-2 d-block" style="color: var(--text-muted); font-weight: 600;">Location Name</label>
+                                <label class="small mb-2 d-block" style="color: var(--text-muted); font-weight: 600;">Location Name <span class="text-danger">*</span></label>
                                 <div class="input-group">
                                     <span class="input-group-text bg-white border-end-0" style="border-color: var(--border-color); color: var(--primary);"><i class="fa fa-map-marker"></i></span>
                                     <input type="text" class="form-control pickup-name" value="${savedName}" placeholder="e.g. Silk Board" required style="border-left: 0; border-color: var(--border-color); color: var(--text-main); background: #white;">
                                 </div>
                             </div>
                             <div class="col-md-3">
-                                <label class="small mb-2 d-block" style="color: var(--text-muted); font-weight: 600;">Time</label>
+                                <label class="small mb-2 d-block" style="color: var(--text-muted); font-weight: 600;">Time <span class="text-danger">*</span></label>
                                 <div class="input-group">
                                     <span class="input-group-text bg-white border-end-0" style="border-color: var(--border-color); color: var(--text-muted);"><i class="fa fa-clock-o"></i></span>
                                     <input type="time" class="form-control pickup-time" value="${savedTime}" required style="border-left: 0; border-color: var(--border-color); color: var(--text-main); background: #white;">
                                 </div>
                             </div>
                             <div class="col-md-3">
-                                <label class="small mb-2 d-block" style="color: var(--text-muted); font-weight: 600;">Point Type</label>
+                                <label class="small mb-2 d-block" style="color: var(--text-muted); font-weight: 600;">Point Type <span class="text-danger">*</span></label>
                                 <select class="form-control form-select pickup-type" required style="border-color: var(--border-color); color: var(--text-main); background: #white; border-radius: 8px; height: 38px;">
                                     <option value="Pickup" \${savedType === 'Pickup' ? 'selected' : ''}>Pickup Point</option>
                                     <option value="Drop" \${savedType === 'Drop' ? 'selected' : ''}>Drop Point</option>
@@ -1741,7 +1743,7 @@
                     $('.pricing-toggle').removeClass('active');
                     $(el).addClass('active');
                     $('#pricingTypeInput').val(val);
-                    $('#mainPriceLabel').text((val === 'perGroup') ? 'Group Price (₹)' : 'Adult Price (₹)');
+                    $('#mainPriceLabel').html((val === 'perGroup') ? 'Group Price (₹) <span class="text-danger">*</span>' : 'Adult Price (₹) <span class="text-danger">*</span>');
                     if (val === 'perGroup') $('#childPriceCont').fadeOut(); else $('#childPriceCont').fadeIn();
                 }
                 function syncMainPrice(v) { $('#hiddenAdultPrice').val(v); }
@@ -1786,7 +1788,7 @@
                                             <div class="occ-icon" style="background: rgba(46, 213, 115, 0.1); color: #2ed573;"><i class="fa fa-users"></i></div>
                                             <label class="small mb-1 d-block" style="color: var(--text-muted); font-weight: 600;">Batch Size</label>
                                             <div class="input-group input-group-sm">
-                                                <input type="number" class="form-control occ-seats" placeholder="Seats" value="20" style="border-radius: 8px;">
+                                                <input type="number" class="form-control occ-seats" placeholder="Seats" value="20" style="border-radius: 8px;" min="1" oninput="if(this.value !== '' && this.value < 1) this.value = 1;">
                                             </div>
                                         </div>
                                         <div class="col-md-2 text-end">

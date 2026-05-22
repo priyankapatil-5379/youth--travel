@@ -419,6 +419,13 @@
 
             <div class="yt-gallery-grid">
                 <div class="row">
+                    <c:forEach var="img" items="${galleryImages}">
+                        <div class="col-sm-6 col-md-3 yt-gallery-card">
+                            <a class="yt-gallery-thumb" href="<c:url value='${img.imageUrl}'/>" data-fancybox="yt-gallery" data-type="image" data-caption="${img.caption}">
+                                <img src="<c:url value='${img.imageUrl}'/>" alt="${img.caption}" />
+                            </a>
+                        </div>
+                    </c:forEach>
                     <div class="col-sm-6 col-md-3 yt-gallery-card">
                         <a class="yt-gallery-thumb" href="<c:url value='/views/assets/images/gallery-bike.png'/>" data-fancybox="yt-gallery" data-type="image" data-caption="Bike ride">
                             <img src="<c:url value='/views/assets/images/gallery-bike.png'/>" alt="Bike ride" />
